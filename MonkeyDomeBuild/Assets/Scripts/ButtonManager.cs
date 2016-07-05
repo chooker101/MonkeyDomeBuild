@@ -18,7 +18,7 @@ public class ButtonManager : MonoBehaviour {
 
     public void StartButton()
     {
-        Application.LoadLevel("InitScene");
+        Application.LoadLevel("test01");
     }
 
     public void QuitButton()
