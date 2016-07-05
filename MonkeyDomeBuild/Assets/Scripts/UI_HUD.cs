@@ -41,6 +41,7 @@ public class UI_HUD : MonoBehaviour {
             "Speed Limit: " + player_1.GetComponent<PlayerAction>().speedLimit + "\n" +
             "Mov: " + player_1.GetComponent<PlayerAction>().mov + "\n\n" +
             "# Jumps: " + player_1.GetComponent<PlayerAction>().stat_jump + "\n" +
+            "# Throws: " + player_1.GetComponent<PlayerAction>().stat_throw + "\n" +
             "# catches: " + player_1.GetComponent<PlayerAction>().stat_catch + "\n"
             ;
     }

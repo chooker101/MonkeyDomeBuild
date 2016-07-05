@@ -18,6 +18,7 @@ public class PlayerAction : Player {
 
     // Player Stats
     public int stat_jump = 0;
+    public int stat_throw = 0;
     public int stat_catch = 0;
 
     void Start ()
