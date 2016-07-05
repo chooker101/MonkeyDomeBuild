@@ -20,4 +20,9 @@ public class ButtonManager : MonoBehaviour {
     {
         Application.LoadLevel("InitScene");
     }
+
+    public void QuitButton()
+    {
+        Application.Quit();
+    }
 }
