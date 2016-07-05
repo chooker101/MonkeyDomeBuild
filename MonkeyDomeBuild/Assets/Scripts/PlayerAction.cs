@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerAction : Player
-{
+public class PlayerAction : Player {
 
     public float moveForce;
     public float speedLimit;
@@ -26,11 +25,11 @@ public class PlayerAction : Player
         bool mLeft = Input.GetKey(KeyCode.A);
         bool mRight = Input.GetKey(KeyCode.D);
         Vector3 movement = new Vector3();
-        if (mLeft && Mathf.Abs(m_rigid.velocity.x) < speedLimit)
+        if (mLeft && Mathf.Abs(m_rigid.velocity.x) < speedLimit && !RayCastSide(-1))
         {
             movement.x = -moveForce;
         }
-        else if (mRight && Mathf.Abs(m_rigid.velocity.x) < speedLimit)
+        else if (mRight && Mathf.Abs(m_rigid.velocity.x) < speedLimit && !RayCastSide(1))
         {
             movement.x = moveForce;
         }
@@ -45,6 +44,10 @@ public class PlayerAction : Player
         if (RayCast(-1))
         {
             canJump = true;
+        }
+        else
+        {
+            m_rigid.AddForce(new Vector3(0f, -10f));
         }
         if (mJump && canJump)
         {
@@ -61,8 +64,26 @@ public class PlayerAction : Player
         }
         else
         {
-            m_rigid.AddForce(new Vector3(0f, -10f));
             return false;
+        }
+    }
+    bool RayCastSide(int leftOrRight)
+    {
+        bool hit = Physics.Raycast(m_rigid.position, leftOrRight * Vector3.right, 0.5f + 0.1f, layerMask);
+        if (hit)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            Debug.Log("hit");
         }
     }
 }
