@@ -10,6 +10,7 @@ public class UI_HUD : MonoBehaviour {
     public Text p1_score;
     public Text p2_score;
     public Text p3_score;
+    public Text match_time;
     public Text debug_log;
 
 	// Use this for initialization
@@ -28,6 +29,10 @@ public class UI_HUD : MonoBehaviour {
         p3_score.text =
             "c:"
             ;
+        match_time.text =
+            "42:69"
+            ;
+
 
         debug_log.text =
 
