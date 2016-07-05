@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerAction : Player {
 
@@ -11,6 +12,10 @@ public class PlayerAction : Player {
     private float jumpForce;
     private int layerMask;
     private bool ballInRange = false;
+    private GameObject ball = null;
+    private GameObject ballHolding = null;
+    private bool haveBall = false;
+
 
     void Start ()
     {
@@ -22,6 +27,14 @@ public class PlayerAction : Player {
     }
 	
 	void FixedUpdate ()
+    {
+        Movement();
+        JumpCheck();
+        CatchCheck();
+        ThrowCheck();
+        mov = m_rigid.velocity;
+	}
+    private void Movement()
     {
         bool mLeft = Input.GetKey(KeyCode.A);
         bool mRight = Input.GetKey(KeyCode.D);
@@ -35,9 +48,7 @@ public class PlayerAction : Player {
             movement.x = moveForce;
         }
         m_rigid.AddForce(movement);
-        JumpCheck();
-        mov = m_rigid.velocity;
-	}
+    }
     private void JumpCheck()
     {
         bool mJump = Input.GetKey(KeyCode.Space);
@@ -59,10 +70,23 @@ public class PlayerAction : Player {
     private void CatchCheck()
     {
         bool mCatch = Input.GetKey(KeyCode.F);
-        if (mCatch)
+        if (mCatch && ball != null)
         {
-
+            if (!haveBall && ballInRange)
+            {
+                ballHolding = ball.transform.parent.gameObject;
+                ball.transform.parent.GetComponent<Rigidbody>().useGravity = false;
+                ball.transform.parent.transform.parent = this.transform;
+                haveBall = true;
+            }
         }
+        if (haveBall && ballHolding != null)
+        {
+            ballHolding.transform.position = new Vector3(m_rigid.transform.position.x, m_rigid.transform.position.y+0.5f, 0f);
+        }
+    }
+    private void ThrowCheck()
+    {
 
     }
     bool RayCast(int direction)
@@ -94,6 +118,7 @@ public class PlayerAction : Player {
         if (other.gameObject.CompareTag("Ball"))
         {
             ballInRange = true;
+            ball = other.gameObject;
         }
     }
     void OnTriggerExit(Collider other)
@@ -101,6 +126,9 @@ public class PlayerAction : Player {
         if (other.gameObject.CompareTag("Ball"))
         {
             ballInRange = false;
+            haveBall = false;
+            ball = null;
+            ballHolding = null;
         }
     }
 }
