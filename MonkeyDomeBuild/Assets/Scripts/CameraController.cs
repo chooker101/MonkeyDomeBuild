@@ -31,18 +31,22 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-        GetMidPos();
 
-
-
-        Vector3 cameraFollow = midpointAtoB + offset;
-
-        if(transform.position.y <= initY)
+        if (player != null && player2 != null)
         {
-            transform.position.Set(transform.position.x,initY,transform.position.z);
+            GetMidPos();
+            Vector3 cameraFollow = midpointAtoB + offset;
+            if (transform.position.y <= initY)
+            {
+                transform.position.Set(transform.position.x, initY, transform.position.z);
+            }
+            transform.position = Vector3.Lerp(transform.position, cameraFollow, smoothing * Time.deltaTime);
         }
-
-        transform.position = Vector3.Lerp(transform.position, cameraFollow, smoothing * Time.deltaTime);
+        else if(player != null && player2 == null)
+        {
+            Vector3 cameraFollow = player.transform.position;
+            transform.position = Vector3.Lerp(transform.position, cameraFollow, smoothing * Time.deltaTime);
+        }
 
 
     }

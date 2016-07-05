@@ -18,12 +18,13 @@ public class PlayerAction : Player {
 
     // Player Stats
     public int stat_jump = 0;
+    public int stat_throw = 0;
     public int stat_catch = 0;
 
     void Start ()
     {
         moveForce = 40f;
-        jumpForce = 5f;
+        jumpForce = 15f;
         speedLimit = 8f;
         m_rigid = GetComponent<Rigidbody>();
         layerMask = 1 << LayerMask.NameToLayer("Floor");
@@ -54,7 +55,7 @@ public class PlayerAction : Player {
     }
     private void JumpCheck()
     {
-        bool mJump = Input.GetKey(KeyCode.Space);
+        bool mJump = Input.GetKeyDown(KeyCode.Space);
 
         if (RayCast(-1))
         {
@@ -62,7 +63,7 @@ public class PlayerAction : Player {
         }
         else
         {
-            m_rigid.AddForce(new Vector3(0f, -10f));
+            m_rigid.AddForce(new Vector3(0f, -30f));
         }
         if (mJump && canJump)
         {
@@ -73,7 +74,7 @@ public class PlayerAction : Player {
     }
     private void CatchCheck()
     {
-        bool mCatch = Input.GetKey(KeyCode.F);
+        bool mCatch = Input.GetKeyDown(KeyCode.F);
         if (mCatch && ball != null)
         {
             if (!haveBall && ballInRange)
@@ -96,7 +97,7 @@ public class PlayerAction : Player {
     }
     bool RayCast(int direction)
     {
-        bool hit = Physics.Raycast(m_rigid.position, direction * Vector3.up, 0.5f + 0.1f, layerMask);
+        bool hit = Physics.Raycast(m_rigid.position, direction * Vector3.up, 0.5f + 0.07f, layerMask);
         if (hit)
         {
             return true;
@@ -108,7 +109,7 @@ public class PlayerAction : Player {
     }
     bool RayCastSide(int leftOrRight)
     {
-        bool hit = Physics.Raycast(m_rigid.position, leftOrRight * Vector3.right, 0.5f + 0.1f, layerMask);
+        bool hit = Physics.Raycast(m_rigid.position, leftOrRight * Vector3.right, 0.5f + 0.05f, layerMask);
         if (hit)
         {
             return true;
@@ -135,5 +136,9 @@ public class PlayerAction : Player {
             ball = null;
             ballHolding = null;
         }
+    }
+    public bool IsHoldingBall()
+    {
+        return haveBall;
     }
 }
