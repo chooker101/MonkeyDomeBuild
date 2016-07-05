@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerAction : MonoBehaviour {
+public class PlayerAction : Player {
 
     public float moveForce;
     public float speedLimit;
