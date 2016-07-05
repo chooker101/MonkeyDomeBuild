@@ -137,4 +137,8 @@ public class PlayerAction : Player {
             ballHolding = null;
         }
     }
+    public bool IsHoldingBall()
+    {
+        return haveBall;
+    }
 }
