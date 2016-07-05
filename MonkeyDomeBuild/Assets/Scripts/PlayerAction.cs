@@ -10,6 +10,7 @@ public class PlayerAction : Player {
     private bool canJump = true;
     private float jumpForce;
     private int layerMask;
+    private bool ballInRange = false;
 
     void Start ()
     {
@@ -55,6 +56,15 @@ public class PlayerAction : Player {
             m_rigid.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
         }
     }
+    private void CatchCheck()
+    {
+        bool mCatch = Input.GetKey(KeyCode.F);
+        if (mCatch)
+        {
+
+        }
+
+    }
     bool RayCast(int direction)
     {
         bool hit = Physics.Raycast(m_rigid.position, direction * Vector3.up, 0.5f + 0.1f, layerMask);
@@ -83,7 +93,14 @@ public class PlayerAction : Player {
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            Debug.Log("hit");
+            ballInRange = true;
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            ballInRange = false;
         }
     }
 }
