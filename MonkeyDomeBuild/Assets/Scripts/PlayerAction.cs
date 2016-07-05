@@ -16,6 +16,9 @@ public class PlayerAction : Player {
     private GameObject ballHolding = null;
     private bool haveBall = false;
 
+    // Player Stats
+    public int stat_jump = 0;
+    public int stat_catch = 0;
 
     void Start ()
     {
@@ -65,6 +68,7 @@ public class PlayerAction : Player {
         {
             canJump = false;
             m_rigid.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+            stat_jump++; // Adds one to jump stat
         }
     }
     private void CatchCheck()
@@ -78,6 +82,7 @@ public class PlayerAction : Player {
                 ball.transform.parent.GetComponent<Rigidbody>().useGravity = false;
                 ball.transform.parent.transform.parent = this.transform;
                 haveBall = true;
+                stat_catch++;
             }
         }
         if (haveBall && ballHolding != null)

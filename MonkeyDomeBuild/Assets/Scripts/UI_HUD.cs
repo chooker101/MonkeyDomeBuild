@@ -36,17 +36,12 @@ public class UI_HUD : MonoBehaviour {
 
         debug_log.text =
 
-            "Player 1 Move Force: " + player_1.GetComponent<PlayerAction>().moveForce + "\n" +
-            "Player 1 Speed Limit: " + player_1.GetComponent<PlayerAction>().speedLimit + "\n" +
-            "Player 1 Mov: " + player_1.GetComponent<PlayerAction>().mov + "\n\n" +
-
-            "Player 2 Move Force: " + player_1.GetComponent<PlayerAction>().moveForce + "\n" +
-            "Player 2 Speed Limit: " + player_1.GetComponent<PlayerAction>().speedLimit + "\n" +
-            "Player 2 Mov: " + player_1.GetComponent<PlayerAction>().mov + "\n\n" +
-
-            "Player 3 Move Force: " + player_3.GetComponent<PlayerAction>().moveForce + "\n" +
-            "Player 3 Speed Limit: " + player_3.GetComponent<PlayerAction>().speedLimit + "\n" +
-            "Player 3 Mov: " + player_3.GetComponent<PlayerAction>().mov + "\n\n"
+            "PLAYER 1 STATS: \n" +
+            "Move Force: " + player_1.GetComponent<PlayerAction>().moveForce + "\n" +
+            "Speed Limit: " + player_1.GetComponent<PlayerAction>().speedLimit + "\n" +
+            "Mov: " + player_1.GetComponent<PlayerAction>().mov + "\n\n" +
+            "# Jumps: " + player_1.GetComponent<PlayerAction>().stat_jump + "\n" +
+            "# catches: " + player_1.GetComponent<PlayerAction>().stat_catch + "\n"
             ;
     }
 }
