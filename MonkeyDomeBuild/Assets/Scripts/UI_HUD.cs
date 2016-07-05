@@ -29,12 +29,12 @@ public class UI_HUD : MonoBehaviour {
         p3_score.text =
             "c:"
             ;
-        match_time.text =
+        match_time.text = // time of the match left
             "42:69"
             ;
 
-
-        debug_log.text =
+        
+        debug_log.text = // Displays all debug info
 
             "PLAYER 1 STATS: \n" +
             "Move Force: " + player_1.GetComponent<PlayerAction>().moveForce + "\n" +
