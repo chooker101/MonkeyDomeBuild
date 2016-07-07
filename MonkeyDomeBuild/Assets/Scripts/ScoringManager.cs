@@ -1,22 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScoringManager : MonoBehaviour {
+public static class ScoringManager {
 
     /*
      * This script holds a bunch of methods that other scripts should call whenever a score occurs.
      * Every method takes an integer (should be 0,1, or 2) to reference an index of the specific type of score required.
+     * All values and calculations are ARBITRARY and are EXPECTED TO CHANGE. 
+     * 
+     ******* Still under construction/consideration ********
+     *      - track each players' score here
+     *      - method for returning/get player scores
+     *      - methods for subtracting score (ie, not passsing in time for shot clock, gorilla, 
      */
 
     private const int MINSCORE = 5;
     private const int MIDSCORE = 15;
     private const int MAXSCORE = 30;
+    private const int BADSCORE = -5;
 
-    private int[] targetScores = new int[3];
-    private int[] catchScores = new int[3];
-    private int[] turnoverScores = new int[2];
-    private int[] miscScores = new int[3];
-    private int[] scoresArray = new int[3] {MINSCORE,MIDSCORE,MAXSCORE};
+    private static int[] targetScores = new int[3];
+    private static int[] catchScores = new int[4];
+    private static int[] turnoverScores = new int[2];
+    private static int[] miscScores = new int[3];
+    private static int[] scoresArray = new int[3] {MINSCORE,MIDSCORE,MAXSCORE};
 
     /*
      * Call when player hits a target.
@@ -24,7 +31,7 @@ public class ScoringManager : MonoBehaviour {
      * use targetRank 1 is for throwing the ball directly at the target
      * use targetRank 2 is for bouncing the ball once and hitting a target
      */
-    public int TargetScore(int targetRank)
+    public static int TargetScore(int targetRank)
     {
         for (int i = 0; i < targetScores.Length; i++)
         {
@@ -38,8 +45,9 @@ public class ScoringManager : MonoBehaviour {
      * use throwRank 0 for a nearby direct pass
      * use throwRank 1 for a faraway direct pass
      * use throwRank 2 for a pass that has bounced once
+     * use throwRank 3 for a pass that is not caught by monkey (only catching monkey calls)
      */
-    public int CatchScore(int throwRank)
+    public static int CatchScore(int throwRank)
     {
         for (int i = 0; i < catchScores.Length; i++)
         {
@@ -52,8 +60,11 @@ public class ScoringManager : MonoBehaviour {
      * Call when there is a turnover. All players must call this method when a turnover occurs. 
      * use turnoverSide 0 for Gorilla player
      * use turnoverSide 1 for monkey players
+     *          ******** NOTES **********
+     *              - can/should gorilla just call this on his own and 
+     *              detract all other players' scores, or does this work as is?
      */
-    public int TurnoverScore(int turnoverSide)
+    public static int TurnoverScore(int turnoverSide)
     {
         for (int i = 0; i < turnoverScores.Length; i++)
         {
@@ -75,7 +86,7 @@ public class ScoringManager : MonoBehaviour {
      * use miscPlay 1 for knocking down monkey (gorilla, call multiple times for knocking down multiple monkeys);
      * use miscPlay 2 for taunting next to gorilla without getting knocked down (monkey)
      */
-    public int MiscScore(int miscPlay)
+    public static int MiscScore(int miscPlay)
     {
         for (int i = 0; i < miscScores.Length; i++)
         {
