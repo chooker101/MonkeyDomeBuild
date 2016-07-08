@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerAction : Player {
+public class PlayerAction : Player
+{
 
+    public int whichPlayer;
     public float moveForce;
     public float speedLimit;
     private Rigidbody m_rigid;
@@ -16,47 +18,75 @@ public class PlayerAction : Player {
     private GameObject ballHolding = null;
     private bool haveBall = false;
 
+    private float mX;
+    public float mY;
+    private bool mJump;
+    private bool mCatch;
+
+
     // Player Stats
     public int stat_jump = 0;
     public int stat_throw = 0;
     public int stat_catch = 0;
 
-    void Start ()
+    void Start()
     {
+        whichPlayer = 1;
         moveForce = 40f;
-        jumpForce = 15f;
+        jumpForce = 30f;
         speedLimit = 8f;
         m_rigid = GetComponent<Rigidbody>();
         layerMask = 1 << LayerMask.NameToLayer("Floor");
     }
-	
-	void FixedUpdate ()
+
+    void FixedUpdate()
     {
+        CheckInputs();
         Movement();
         JumpCheck();
-        CatchCheck();
-        ThrowCheck();
+        Aim();
+        if (haveBall)
+        {
+            ThrowCheck();
+        }
+        else
+        {
+            CatchCheck();
+        }
         mov = m_rigid.velocity;
-	}
+    }
+    private void CheckInputs()
+    {
+        switch (whichPlayer)
+        {
+            case 1:
+                mX = Input.GetAxis("p1_joy_x");
+                mY = -Input.GetAxis("p1_joy_y");
+                mJump = Input.GetButton("p1_jump");
+                mCatch = Input.GetButtonDown("p1_catch/throw");
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+        }
+    }
     private void Movement()
     {
-        bool mLeft = Input.GetKey(KeyCode.A);
-        bool mRight = Input.GetKey(KeyCode.D);
         Vector3 movement = new Vector3();
-        if (mLeft && Mathf.Abs(m_rigid.velocity.x) < speedLimit && !RayCastSide(-1))
+        if (mX != 0 && Mathf.Abs(m_rigid.velocity.x) < speedLimit)
         {
-            movement.x = -moveForce;
-        }
-        else if (mRight && Mathf.Abs(m_rigid.velocity.x) < speedLimit && !RayCastSide(1))
-        {
-            movement.x = moveForce;
+            if ((mX > 0 && !RayCastSide(1)) || (mX < 0 && !RayCastSide(-1)))
+            {
+                movement.x = mX * moveForce;
+            }
         }
         m_rigid.AddForce(movement);
     }
     private void JumpCheck()
     {
-        bool mJump = Input.GetKeyDown(KeyCode.Space);
-
         if (RayCast(-1))
         {
             canJump = true;
@@ -74,7 +104,6 @@ public class PlayerAction : Player {
     }
     private void CatchCheck()
     {
-        bool mCatch = Input.GetKeyDown(KeyCode.F);
         if (mCatch && ball != null)
         {
             if (!haveBall && ballInRange)
@@ -86,18 +115,28 @@ public class PlayerAction : Player {
                 stat_catch++;
             }
         }
-        if (haveBall && ballHolding != null)
-        {
-            ballHolding.transform.position = new Vector3(m_rigid.transform.position.x, m_rigid.transform.position.y+0.5f, 0f);
-        }
     }
     private void ThrowCheck()
     {
-
+        if (mCatch && haveBall)
+        {
+            haveBall = false;
+            Rigidbody ballRigid = ball.transform.parent.GetComponent<Rigidbody>();
+            ballRigid.useGravity = true;
+            Vector3 throwF = new Vector3(10f, 0);
+            ballRigid.AddForce(mX*30, mY*30, 0f, ForceMode.Impulse);
+            ball.transform.parent.transform.parent = null;
+            ball = null;
+            stat_throw++;
+        }
+        if (haveBall && ballHolding != null)
+        {
+            ballHolding.transform.position = new Vector3(m_rigid.transform.position.x, m_rigid.transform.position.y, 0f);
+        }
     }
-    bool RayCast(int direction)
+    private bool RayCast(int direction)
     {
-        bool hit = Physics.Raycast(m_rigid.position, direction * Vector3.up, 0.5f + 0.07f, layerMask);
+        bool hit = Physics.Raycast(m_rigid.position, direction * Vector3.up, transform.localScale.y/2 + 0.07f, layerMask);
         if (hit)
         {
             return true;
@@ -107,9 +146,9 @@ public class PlayerAction : Player {
             return false;
         }
     }
-    bool RayCastSide(int leftOrRight)
+    private bool RayCastSide(int leftOrRight)
     {
-        bool hit = Physics.Raycast(m_rigid.position, leftOrRight * Vector3.right, 0.5f + 0.05f, layerMask);
+        bool hit = Physics.Raycast(m_rigid.position, leftOrRight * Vector3.right, transform.localScale.x/2 + 0.05f, layerMask);
         if (hit)
         {
             return true;
@@ -137,8 +176,16 @@ public class PlayerAction : Player {
             ballHolding = null;
         }
     }
+    private void Aim()
+    {
+        Debug.DrawLine(m_rigid.position, new Vector3(m_rigid.position.x + mX * 2, m_rigid.position.y + mY * 2));
+
+    }
+
+
     public bool IsHoldingBall()
     {
         return haveBall;
     }
+
 }
