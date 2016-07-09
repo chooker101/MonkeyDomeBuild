@@ -8,10 +8,12 @@ public class PlayerAction : Player
     public int whichPlayer;
     public float moveForce;
     public float speedLimit;
-    private Rigidbody m_rigid;
+    public float jumpForce;
+    public float throwForce;
     public Vector3 mov;
+
+    private Rigidbody m_rigid;
     private bool canJump = true;
-    private float jumpForce;
     private int layerMask;
     private bool ballInRange = false;
     private GameObject ball = null;
@@ -19,7 +21,7 @@ public class PlayerAction : Player
     private bool haveBall = false;
 
     private float mX;
-    public float mY;
+    private float mY;
     private bool mJump;
     private bool mCatch;
 
@@ -35,6 +37,7 @@ public class PlayerAction : Player
         moveForce = 40f;
         jumpForce = 30f;
         speedLimit = 8f;
+        throwForce = 30f;
         m_rigid = GetComponent<Rigidbody>();
         layerMask = 1 << LayerMask.NameToLayer("Floor");
     }
@@ -64,12 +67,35 @@ public class PlayerAction : Player
                 mY = -Input.GetAxis("p1_joy_y");
                 mJump = Input.GetButton("p1_jump");
                 mCatch = Input.GetButtonDown("p1_catch/throw");
+                //temp keyboard input
+                if (Input.GetKey(KeyCode.A))
+                {
+                    mX = -1;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    mX = 1;
+                }
+                if (Input.GetKey(KeyCode.W))
+                {
+                    mY = 1;
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    mY = -1;
+                }
                 break;
             case 2:
-
+                mX = Input.GetAxis("p2_joy_x");
+                mY = -Input.GetAxis("p2_joy_y");
+                mJump = Input.GetButton("p2_jump");
+                mCatch = Input.GetButtonDown("p2_catch/throw");
                 break;
             case 3:
-
+                mX = Input.GetAxis("p3_joy_x");
+                mY = -Input.GetAxis("p3_joy_y");
+                mJump = Input.GetButton("p3_jump");
+                mCatch = Input.GetButtonDown("p3_catch/throw");
                 break;
         }
     }
@@ -123,8 +149,7 @@ public class PlayerAction : Player
             haveBall = false;
             Rigidbody ballRigid = ball.transform.parent.GetComponent<Rigidbody>();
             ballRigid.useGravity = true;
-            Vector3 throwF = new Vector3(10f, 0);
-            ballRigid.AddForce(mX*30, mY*30, 0f, ForceMode.Impulse);
+            ballRigid.AddForce(mX*throwForce, mY* throwForce, 0f, ForceMode.Impulse);
             ball.transform.parent.transform.parent = null;
             ball = null;
             stat_throw++;
@@ -175,6 +200,10 @@ public class PlayerAction : Player
             ball = null;
             ballHolding = null;
         }
+    }
+    void OnTriggerStay(Collider other)
+    {
+        OnTriggerEnter(other);
     }
     private void Aim()
     {
