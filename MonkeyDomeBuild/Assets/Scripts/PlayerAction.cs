@@ -29,7 +29,7 @@ public class PlayerAction : Player
     // Player Stats
     public int stat_jump = 0;
     public int stat_throw = 0;
-    public int stat_catch = 0;
+    public int stat_ballGrab = 0;
 
     void Start()
     {
@@ -138,7 +138,7 @@ public class PlayerAction : Player
                 ball.transform.parent.GetComponent<Rigidbody>().useGravity = false;
                 ball.transform.parent.transform.parent = this.transform;
                 haveBall = true;
-                stat_catch++;
+                stat_ballGrab++;
             }
         }
     }

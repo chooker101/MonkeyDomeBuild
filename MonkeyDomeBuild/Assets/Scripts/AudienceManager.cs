@@ -13,6 +13,7 @@ using System.Collections.Generic;
 
 public class AudienceManager : MonoBehaviour {
 
+    public static int[] audienceApproval = new int[3];
 
     // Use this for initialization
     void Start () {
