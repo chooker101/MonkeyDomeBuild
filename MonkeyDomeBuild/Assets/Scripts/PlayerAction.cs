@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class PlayerAction : Player
 {
 
-    public int whichPlayer;
+    public int whichPlayer = 1;
     public float moveForce;
     public float speedLimit;
     public float jumpForce;
@@ -19,11 +19,23 @@ public class PlayerAction : Player
     private GameObject ball = null;
     private GameObject ballHolding = null;
     private bool haveBall = false;
+    public bool isClimbing = false;
+    public bool canClimb = false;
+    public float climbSpeedLimit;
+    public float downForce;
+    public float climbDrag;
+    public float normalDrag;
+    public float climbForce;
+    public float tempDownForce;
+    public float downForceIncrement;
+    public float maxDownForce;
 
     private float mX;
     private float mY;
     private bool mJump;
     private bool mCatch;
+    private bool mClimb;
+
 
 
     // Player Stats
@@ -33,12 +45,20 @@ public class PlayerAction : Player
 
     void Start()
     {
-        whichPlayer = 1;
-        moveForce = 40f;
-        jumpForce = 30f;
-        speedLimit = 8f;
-        throwForce = 30f;
+        //whichPlayer = 0;
+        moveForce = 100f;
+        jumpForce = 65f;
+        speedLimit = 12f;
+        throwForce = 40f;
+        downForce = 80f;
+        tempDownForce = downForce;
+        downForceIncrement = 100f; // per second
+        maxDownForce = 200f;
+        climbForce = 200f; ;
+        climbSpeedLimit = speedLimit;
         m_rigid = GetComponent<Rigidbody>();
+        normalDrag = m_rigid.drag;
+        climbDrag = 12f;
         layerMask = 1 << LayerMask.NameToLayer("Floor");
     }
 
@@ -67,6 +87,42 @@ public class PlayerAction : Player
                 mY = -Input.GetAxis("p1_joy_y");
                 mJump = Input.GetButton("p1_jump");
                 mCatch = Input.GetButtonDown("p1_catch/throw");
+                mClimb = Input.GetButtonDown("p1_climb");
+                if (mClimb)
+                {
+                    if (canClimb && !isClimbing)
+                    {
+                        isClimbing = true;
+                        canJump = true;
+                    }
+                    else if (isClimbing)
+                    {
+                        isClimbing = false;
+                    }
+
+                }
+                if (mJump)
+                {
+                    if (isClimbing)
+                    {
+                        isClimbing = false;
+                    }
+                }
+                if (isClimbing)
+                {
+                    if (m_rigid.drag != climbDrag)
+                    {
+                        m_rigid.drag = climbDrag;
+                    }
+                }
+                else
+                {
+                    if (m_rigid.drag != normalDrag)
+                    {
+                        m_rigid.drag = normalDrag;
+                        tempDownForce = downForce;
+                    }
+                }
                 //temp keyboard input
                 if (Input.GetKey(KeyCode.A))
                 {
@@ -102,13 +158,38 @@ public class PlayerAction : Player
     private void Movement()
     {
         Vector3 movement = new Vector3();
-        if (mX != 0 && Mathf.Abs(m_rigid.velocity.x) < speedLimit)
+        if (!isClimbing)
         {
-            if ((mX > 0 && !RayCastSide(1)) || (mX < 0 && !RayCastSide(-1)))
+            if (mX != 0 && Mathf.Abs(m_rigid.velocity.x) < speedLimit)
             {
-                movement.x = mX * moveForce;
+                if ((mX > 0 && !RayCastSide(1)) || (mX < 0 && !RayCastSide(-1)))
+                {
+                    movement.x = mX * moveForce;
+                }
             }
         }
+        else
+        {
+            if (mX != 0 || mY!=0)
+            {
+                if (Mathf.Abs(m_rigid.velocity.x) < climbSpeedLimit)
+                {
+                    if ((mX > 0 && !RayCastSide(1)) || (mX < 0 && !RayCastSide(-1)))
+                    {
+                        movement.x = mX * climbForce;
+                    }
+                }
+                if (Mathf.Abs(m_rigid.velocity.y) < climbSpeedLimit)
+                {
+                    if ((mY > 0 && !RayCast(1)) || (mY < 0 && !RayCast(-1)))
+                    {
+                        movement.y = mY * climbForce;
+                    }
+                }
+
+            }
+        }
+
         m_rigid.AddForce(movement);
     }
     private void JumpCheck()
@@ -116,10 +197,21 @@ public class PlayerAction : Player
         if (RayCast(-1))
         {
             canJump = true;
+            if (tempDownForce != downForce)
+            {
+                tempDownForce = downForce;
+            }
         }
         else
         {
-            m_rigid.AddForce(new Vector3(0f, -30f));
+            if (!isClimbing)
+            {
+                if(tempDownForce< maxDownForce)
+                {
+                    tempDownForce += downForceIncrement * Time.deltaTime;
+                }
+                m_rigid.AddForce(new Vector3(0f, -tempDownForce));
+            }
         }
         if (mJump && canJump)
         {
@@ -185,10 +277,14 @@ public class PlayerAction : Player
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ball"))
+        if (other.gameObject.CompareTag("Ball") && !ballInRange)
         {
             ballInRange = true;
             ball = other.gameObject;
+        }
+        if (other.gameObject.CompareTag("Vine") && !canClimb)
+        {
+            canClimb = true;
         }
     }
     void OnTriggerExit(Collider other)
@@ -199,6 +295,11 @@ public class PlayerAction : Player
             haveBall = false;
             ball = null;
             ballHolding = null;
+        }
+        if (other.gameObject.CompareTag("Vine") && canClimb)
+        {
+            canClimb = false;
+            isClimbing = false;
         }
     }
     void OnTriggerStay(Collider other)
