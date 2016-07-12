@@ -1,8 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
+	public enum PlayerName
+	{
+		P1,
+		P2,
+		P3,
+		P4,
+		P5,
+		Length
+	}
+
 	private static GameManager s_Instance;
 	public static GameManager Instance
 	{
@@ -16,6 +27,16 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public Player gmplayer;
-	//public ButtonManager gmbuttonmanager;
+	public List<GameObject> gmPlayers;
+	public SpawnManager gmSpawnManager;
+	public ButtonManager gmButtonManager;
+	public GameObject gmPlayerPrefab;
+	public GameObject gmPlayerPrefabAI;
+	public UIManager gmUIManager;
+	public Actor gmActorScript;
+
+	void Awake()
+	{
+		gmActorScript.CreatePlayers();
+	}
 }

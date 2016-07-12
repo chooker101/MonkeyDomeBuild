@@ -2,11 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
 
-    public GameObject p1;
-    public GameObject p2;
-    public GameObject p3;
     public Text p1Score;
     public Text p2Score;
     public Text p3Score;
@@ -20,7 +18,8 @@ public class UIManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
         p1Score.text =
             "00"
             ;
@@ -38,12 +37,12 @@ public class UIManager : MonoBehaviour {
         debugLog.text = // Displays all debug info
 
             "PLAYER 1 STATS: \n" +
-            "Move Force: " + p1.GetComponent<PlayerAction>().moveForce + "\n" +
-            "Speed Limit: " + p1.GetComponent<PlayerAction>().speedLimit + "\n" +
-            "Mov: " + p1.GetComponent<PlayerAction>().mov + "\n\n" +
-            "# Jumps: " + p1.GetComponent<PlayerAction>().stat_jump + "\n" +
-            "# Ball Grabs: " + p1.GetComponent<PlayerAction>().stat_ballGrab + "\n" +
-            "# Throws: " + p1.GetComponent<PlayerAction>().stat_throw + "\n"
+            "Move Force: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().moveForce + "\n" +
+            "Speed Limit: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().speedLimit + "\n" +
+            "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().mov + "\n\n" +
+            "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_jump + "\n" +
+            "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_ballGrab + "\n" +
+            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_throw + "\n"
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"
             ;
