@@ -19,6 +19,7 @@ public class Player : Actor
     protected GameObject ball = null;
     protected GameObject ballHolding = null;
     protected bool haveBall = false;
+
     public bool isClimbing = false;
     public bool canClimb = false;
     public float climbSpeedLimit;
@@ -254,6 +255,9 @@ public class Player : Actor
     {
         return haveBall;
     }
+    protected void StompCheck()
+    {
 
+    }
 
 }

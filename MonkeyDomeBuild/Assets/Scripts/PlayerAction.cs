@@ -46,11 +46,13 @@ public class PlayerAction : Player
             }
             else
             {
+                StompCheck();
                 CatchCheck();
             }
         }
         else
         {
+
             CatchCheck();
         }
 
