@@ -3,7 +3,6 @@ using System.Collections;
 
 public class TargetManager : MonoBehaviour {
 
-
 	// Use this for initialization
 	void Start () {
 	}
@@ -18,6 +17,8 @@ public class TargetManager : MonoBehaviour {
         if (other.CompareTag("Ball"))
         {
             this.gameObject.SetActive(false);
+
+            ScoringManager.targetsHit++;
         }
     }
 

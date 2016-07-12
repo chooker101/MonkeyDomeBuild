@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour {
             "42:69"
             ;
 
-        
+
         debugLog.text = // Displays all debug info
 
             "PLAYER 1 STATS: \n" +
@@ -43,7 +43,8 @@ public class UIManager : MonoBehaviour {
             "Mov: " + p1.GetComponent<PlayerAction>().mov + "\n\n" +
             "# Jumps: " + p1.GetComponent<PlayerAction>().stat_jump + "\n" +
             "# Ball Grabs: " + p1.GetComponent<PlayerAction>().stat_ballGrab + "\n" +
-            "# Throws: " + p1.GetComponent<PlayerAction>().stat_throw + "\n"
+            "# Throws: " + p1.GetComponent<PlayerAction>().stat_throw + "\n" +
+            "# Targets hit: " + ScoringManager.targetsHit + "\n"
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"
             ;

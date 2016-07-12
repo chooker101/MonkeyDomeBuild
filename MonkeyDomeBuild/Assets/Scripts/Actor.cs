@@ -10,15 +10,17 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
 
+    public static int[] audienceApproval;
+
 	// Use this for initialization
 	void Start ()
 	{
-	
+	    
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	
+
 	}
 }
