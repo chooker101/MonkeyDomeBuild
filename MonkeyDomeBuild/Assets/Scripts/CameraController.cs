@@ -1,61 +1,93 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraController : MonoBehaviour {
 
-    public GameObject player;
-    public GameObject player2;
+    public List<GameObject> players;
+    public GameObject ball;
     public float smoothing = 3.0f;
 
     private Vector3 offset;
-    private Vector3 directionCtoA;
-    private Vector3 directionCtoB;
-    private Vector3 midpointAtoB;
-    private float initY;
-    private float initX;
-    //private float playerDist;
+    private float maxXDistance;
+    private float panningY;
+    private Vector3 panningScale = Vector3.zero;
+    private Vector3 positionSum = Vector3.zero;
+    private Vector3 meanPosition = Vector3.zero;
+    private Camera myCam;
+    private float camSize;
 
 
     // Use this for initialization
-    void Start () {
-        initY = transform.position.y;
-        initX = transform.position.x;
-        //playerDist = Vector3.Distance(player.transform.position, player2.transform.position);
-        GetMidPos();
+    void Start () { 
+        myCam = GetComponent<Camera>();
+        //CamSize = myCam.orthographicSize;
+        MeanOfPositions();
 
-        offset = transform.position - midpointAtoB;
+        offset = transform.position - meanPosition;
 
-        transform.position= player.transform.position + offset;
+        transform.position = meanPosition + offset;
 
     }
 	
-	// Update is called once per frame
 	void LateUpdate () {
 
-        if (player != null && player2 != null)
-        {
-            GetMidPos();
-            Vector3 cameraFollow = midpointAtoB + offset;
-            if (transform.position.y <= initY)
-            {
-                transform.position.Set(transform.position.x, initY, transform.position.z);
-            }
-            transform.position = Vector3.Lerp(transform.position, cameraFollow, smoothing * Time.deltaTime);
-        }
-        else if(player != null && player2 == null)
-        {
-            Vector3 cameraFollow = player.transform.position;
-            transform.position = Vector3.Lerp(transform.position, cameraFollow, smoothing * Time.deltaTime);
-        }
 
+        SetCamera();
 
     }
 
-    void GetMidPos() // temporarily, y is 1, use this later: (directionCtoA.y + directionCtoB.y) / 2.0f
+    // find mean of positions
+    void MeanOfPositions()
     {
-        directionCtoA = player.transform.position - transform.position; // directionCtoA = positionA - positionC
-        directionCtoB = player2.transform.position - transform.position; // directionCtoB = positionB - positionC
-        midpointAtoB = new Vector3((directionCtoA.x + directionCtoB.x) / 
-            2.0f, (1.0f), (directionCtoA.z + directionCtoB.z) / 2.0f); // midpoint between A B this is what you want
+
+        positionSum = Vector3.zero;
+
+        for(int i = 0;i < players.Capacity; i++)
+        {
+            positionSum += players[i].transform.position;
+        }
+        positionSum += ball.transform.position;
+        meanPosition = positionSum / (players.Capacity + 1);
+
     }
+
+    void FindPanning()
+    {
+        MeanOfPositions();
+        camSize = myCam.orthographicSize;
+        maxXDistance = 0f;
+        // get maxXDistance
+        for (int i = 0; i < players.Capacity; i++)
+        {
+            // not including ball yet, fix to grab x, not vector3
+            if(maxXDistance < Vector3.Distance(meanPosition,players[i].transform.position))
+            {
+                maxXDistance = Vector3.Distance(meanPosition, players[i].transform.position);
+            } 
+        }
+
+        //16:9ify the x into a y
+        panningY = maxXDistance * myCam.aspect;
+
+        //panningScale.Set(maxXDistance, panningY, 0.0f);
+
+    }
+
+    void SetCamera()
+    {
+        FindPanning();
+        Vector3 currentPos = transform.position;
+
+        Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, smoothing * Time.deltaTime);
+
+        myLerp.z = currentPos.z;
+
+        transform.position = myLerp;
+        // myCam.orthographicSize = Mathf.Lerp(camSize, panningY, Time.deltaTime);
+        myCam.orthographicSize = panningY;
+        
+
+    }
+
 }
