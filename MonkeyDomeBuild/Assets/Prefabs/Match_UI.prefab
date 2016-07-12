@@ -300,14 +300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df863ddf3b981949a098df480024a9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player_1: {fileID: 0}
-  player_2: {fileID: 0}
-  player_3: {fileID: 0}
-  p1_score: {fileID: 11467484}
-  p2_score: {fileID: 11463930}
-  p3_score: {fileID: 11440798}
-  match_time: {fileID: 11449650}
-  debug_log: {fileID: 11464862}
+  p1Score: {fileID: 11467484}
+  p2Score: {fileID: 11463930}
+  p3Score: {fileID: 11440798}
+  matchTime: {fileID: 11449650}
+  debugLog: {fileID: 11464862}
+  shotClock: {fileID: 0}
 --- !u!114 &11438360
 MonoBehaviour:
   m_ObjectHideFlags: 1
