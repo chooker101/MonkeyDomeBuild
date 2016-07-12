@@ -51,9 +51,10 @@ public class Player : Actor
             case 1:
                 mX = Input.GetAxis("p1_joy_x");
                 mY = -Input.GetAxis("p1_joy_y");
-                mJump = Input.GetButton("p1_jump");
                 mCatch = Input.GetButtonDown("p1_catch/throw");
-                mClimb = Input.GetButtonDown("p1_climb");
+                mJump = Input.GetButtonDown("p1_jump");
+
+                //mClimb = Input.GetButtonDown("p1_climb");
                 //temp keyboard input
                 if (Input.GetKey(KeyCode.A))
                 {
@@ -75,36 +76,34 @@ public class Player : Actor
             case 2:
                 mX = Input.GetAxis("p2_joy_x");
                 mY = -Input.GetAxis("p2_joy_y");
-                mJump = Input.GetButton("p2_jump");
+                mJump = Input.GetButtonDown("p2_jump");
                 mCatch = Input.GetButtonDown("p2_catch/throw");
-                mClimb = Input.GetButtonDown("p2_climb");
+                //mClimb = Input.GetButtonDown("p2_climb");
                 break;
             case 3:
                 mX = Input.GetAxis("p3_joy_x");
                 mY = -Input.GetAxis("p3_joy_y");
-                mJump = Input.GetButton("p3_jump");
+                mJump = Input.GetButtonDown("p3_jump");
                 mCatch = Input.GetButtonDown("p3_catch/throw");
-                mClimb = Input.GetButtonDown("p3_climb");
+                //mClimb = Input.GetButtonDown("p3_climb");
                 break;
-        }
-        if (mClimb)
-        {
-            if (canClimb && !isClimbing)
-            {
-                isClimbing = true;
-                canJump = true;
-            }
-            else if (isClimbing)
-            {
-                isClimbing = false;
-            }
-
         }
         if (mJump)
         {
             if (isClimbing)
             {
+                if (mY < 0)
+                {
+                    mJump = false;
+                }
                 isClimbing = false;
+                
+            }
+            else if (canClimb && !isClimbing)
+            {
+                isClimbing = true;
+                canJump = true;
+                mJump = false;
             }
         }
         if (isClimbing)
