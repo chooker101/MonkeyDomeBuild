@@ -11,6 +11,7 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
 
+
 	[SerializeField]
 	private uint TNOP;
 	[SerializeField]
@@ -46,12 +47,12 @@ public class Actor : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	
+	    
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	
+
 	}
 }

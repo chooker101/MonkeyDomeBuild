@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
             "42:69"
             ;
 
-        
+
         debugLog.text = // Displays all debug info
 
             "PLAYER 1 STATS: \n" +

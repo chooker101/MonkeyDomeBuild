@@ -25,6 +25,8 @@ public static class ScoringManager {
     private static int[] miscScores = new int[3];
     private static int[] scoresArray = new int[3] {MINSCORE,MIDSCORE,MAXSCORE};
 
+    public static int targetsHit;
+
     /*
      * Call when player hits a target.
      * use targetRank 0 is for touching target without throwing ball
