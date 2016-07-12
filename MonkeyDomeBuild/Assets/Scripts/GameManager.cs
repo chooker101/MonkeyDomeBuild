@@ -37,6 +37,6 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
 	{
-		gmActorScript.CreatePlayers();
+		//gmActorScript.CreatePlayers();
 	}
 }
