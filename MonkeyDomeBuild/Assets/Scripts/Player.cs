@@ -244,40 +244,7 @@ public class Player : Actor
             return false;
         }
     }
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Ball"))
-        {
-            if (!ballInRange && !other.GetComponent<Rigidbody>().isKinematic)
-            {
-                ballInRange = true;
-                ball = other.gameObject;
-            }
-        }
-        if (other.gameObject.CompareTag("Vine") && !canClimb)
-        {
-            canClimb = true;
-        }
-    }
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Ball"))
-        {
-            ballInRange = false;
-            haveBall = false;
-            ball = null;
-            ballHolding = null;
-        }
-        if (other.gameObject.CompareTag("Vine") && canClimb)
-        {
-            canClimb = false;
-            isClimbing = false;
-        }
-    }
-    void OnTriggerStay(Collider other)
-    {
-        OnTriggerEnter(other);
-    }
+
     protected void Aim()
     {
         Debug.DrawLine(m_rigid.position, new Vector3(m_rigid.position.x + mX * 2, m_rigid.position.y + mY * 2));

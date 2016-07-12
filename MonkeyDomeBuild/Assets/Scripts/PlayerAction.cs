@@ -56,6 +56,39 @@ public class PlayerAction : Player
 
         mov = m_rigid.velocity;
     }
-
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            if (!ballInRange && !other.transform.parent.GetComponent<Rigidbody>().isKinematic)
+            {
+                ballInRange = true;
+                ball = other.gameObject;
+            }
+        }
+        if (other.gameObject.CompareTag("Vine") && !canClimb)
+        {
+            canClimb = true;
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            ballInRange = false;
+            haveBall = false;
+            ball = null;
+            ballHolding = null;
+        }
+        if (other.gameObject.CompareTag("Vine") && canClimb)
+        {
+            canClimb = false;
+            isClimbing = false;
+        }
+    }
+    void OnTriggerStay(Collider other)
+    {
+        OnTriggerEnter(other);
+    }
 
 }
