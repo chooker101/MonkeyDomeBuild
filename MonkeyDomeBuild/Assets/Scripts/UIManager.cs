@@ -42,7 +42,8 @@ public class UIManager : MonoBehaviour
             "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().mov + "\n\n" +
             "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_jump + "\n" +
             "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_ballGrab + "\n" +
-            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_throw + "\n"
+            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_throw + "\n\n" +
+            "Targets Hit: " + ScoringManager.targetsHit;
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"
             ;
