@@ -2,12 +2,12 @@
 using System.Collections;
 
 public class BallInfo : MonoBehaviour {
-
+    [SerializeField]
     private GameObject lastThrowMonkey;
     private Rigidbody m_rigid;
     private Vector3 startPos = Vector3.up * 10;
     public bool timerUp = false;
-    public float timer = 5f;
+    private float timer = 1f;
     public float count = 0f;
 	void Start ()
     {
@@ -16,6 +16,10 @@ public class BallInfo : MonoBehaviour {
     }
     void Update()
     {
+        if (lastThrowMonkey == null)
+        {
+            PickRandomVictim();
+        }
         if (timerUp)
         {
             if (count >= timer)
@@ -73,6 +77,7 @@ public class BallInfo : MonoBehaviour {
             gorillaToSwitch.GetComponent<GorillaAction>().Mutate();
         }
         lastThrowMonkey.GetComponent<MonkeyAction>().Mutate();
+        PickRandomVictim();
         ResetPosition();
         timerUp = false;
     }
@@ -86,7 +91,7 @@ public class BallInfo : MonoBehaviour {
             index = Random.Range(0, allPlayer.Length);
             victim = allPlayer[index].GetComponent<Player>();
         }
-        UpdateLastThrowMonkey(allPlayer[index]);
+        lastThrowMonkey = allPlayer[index];
     }
 
 }

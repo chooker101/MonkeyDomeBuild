@@ -44,12 +44,14 @@ public class MonkeyAction : Player
         {
             if (!haveBall && ballInRange)
             {
-                ballHolding = ball.transform.parent.gameObject;
-                ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(gameObject);                
-                ballHolding.GetComponent<Rigidbody>().useGravity = false;
-                ballHolding.GetComponent<Rigidbody>().isKinematic = true;
-                ballHolding.transform.SetParent(transform);
                 haveBall = true;
+                ballHolding = ball.transform.parent.gameObject;
+                ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(gameObject);
+                Rigidbody ballRigid = ballHolding.GetComponent<Rigidbody>();
+                ballRigid.useGravity = false;
+                ballRigid.isKinematic = true;
+                ballRigid.position = transform.position;
+                ballHolding.transform.SetParent(transform);
                 stat_ballGrab++;
             }
         }

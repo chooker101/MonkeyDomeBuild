@@ -38,12 +38,11 @@ public class GorillaAction : Player
     {
         if (mCatch && ball != null)
         {
-            if (!haveBall && ballInRange)
+            if (ballInRange)
             {
                 ballHolding = ball.transform.parent.gameObject;
                 ballHolding.GetComponent<Rigidbody>().position += Vector3.up * 2;
                 ballHolding.GetComponent<BallInfo>().Change();
-                ballHolding.GetComponent<BallInfo>().PickRandomVictim();
                 stat_ballGrab++;
             }
         }
