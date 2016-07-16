@@ -1,0 +1,92 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class BallInfo : MonoBehaviour {
+
+    private GameObject lastThrowMonkey;
+    private Rigidbody m_rigid;
+    private Vector3 startPos = Vector3.up * 10;
+    public bool timerUp = false;
+    public float timer = 5f;
+    public float count = 0f;
+	void Start ()
+    {
+        m_rigid = GetComponent<Rigidbody>();
+        PickRandomVictim();
+    }
+    void Update()
+    {
+        if (timerUp)
+        {
+            if (count >= timer)
+            {
+                Change();
+            }
+            else
+            {
+                count += Time.deltaTime;
+            }
+        }
+    }
+	public void UpdateLastThrowMonkey(GameObject monkey)
+    {
+        lastThrowMonkey = monkey;
+        timerUp = true;
+    }
+    public GameObject GetLastThrowMonkey()
+    {
+        return lastThrowMonkey;
+    }
+    public void ResetPosition()
+    {
+        m_rigid.position = startPos;
+    }
+    public void Reset()
+    {
+        count = 0f;
+        timerUp = false;
+        m_rigid.useGravity = true;
+        m_rigid.isKinematic = false;
+        transform.parent = null;
+    }
+    public void Change()
+    {
+        float longestTimeGorilla = 0f;
+        count = 0;
+        GameObject[] allPlayer = GameObject.FindGameObjectsWithTag("Player");
+        GameObject gorillaToSwitch = null;
+        foreach (GameObject g in allPlayer)
+        {
+            Player p = g.GetComponent<Player>();
+            if (p is GorillaAction)
+            {
+                GorillaAction gor = (GorillaAction)p;
+                if (longestTimeGorilla < gor.GetTimeBeingGorilla())
+                {
+                    longestTimeGorilla = gor.GetTimeBeingGorilla();
+                    gorillaToSwitch = g;
+                }
+            }
+        }
+        if (gorillaToSwitch != null)
+        {
+            gorillaToSwitch.GetComponent<GorillaAction>().Mutate();
+        }
+        lastThrowMonkey.GetComponent<MonkeyAction>().Mutate();
+        ResetPosition();
+        timerUp = false;
+    }
+    public void PickRandomVictim()
+    {
+        GameObject[] allPlayer = GameObject.FindGameObjectsWithTag("Player");
+        int index = 0;
+        Player victim = null;
+        while (victim == null || victim is GorillaAction)
+        {
+            index = Random.Range(0, allPlayer.Length);
+            victim = allPlayer[index].GetComponent<Player>();
+        }
+        UpdateLastThrowMonkey(allPlayer[index]);
+    }
+
+}

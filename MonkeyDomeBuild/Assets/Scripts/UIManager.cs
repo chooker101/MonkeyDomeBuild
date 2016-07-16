@@ -37,12 +37,12 @@ public class UIManager : MonoBehaviour
         debugLog.text = // Displays all debug info
 
             "PLAYER 1 STATS: \n" +
-            "Move Force: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().moveForce + "\n" +
-            "Speed Limit: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().speedLimit + "\n" +
-            "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().mov + "\n\n" +
-            "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_jump + "\n" +
-            "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_ballGrab + "\n" +
-            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<PlayerAction>().stat_throw + "\n\n" +
+            "Move Force: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().moveForce + "\n" +
+            "Speed Limit: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().speedLimit + "\n" +
+            "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().mov + "\n\n" +
+            "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_jump + "\n" +
+            "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_ballGrab + "\n" +
+            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_throw + "\n\n" +
             "Targets Hit: " + ScoringManager.targetsHit;
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"

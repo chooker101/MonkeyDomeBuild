@@ -12,9 +12,9 @@ GameObject:
   - 23: {fileID: 2362600}
   - 136: {fileID: 13683524}
   - 54: {fileID: 5452918}
-  - 114: {fileID: 11425126}
+  - 114: {fileID: 11400774}
   m_Layer: 10
-  m_Name: Player
+  m_Name: Monkey
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &11425126
+--- !u!114 &11400774
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -89,10 +89,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 170768}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 941d1fd4d78c7c141a3f01432c544439, type: 3}
+  m_Script: {fileID: 11500000, guid: 17013dd102838c143ab7d72707be65c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whichPlayer: 0
+  TNOP: 0
+  NOP: 1
+  NOB: 0
+  isGorilla: 0
+  whichPlayer: 1
   moveForce: 0
   speedLimit: 0
   jumpForce: 0
