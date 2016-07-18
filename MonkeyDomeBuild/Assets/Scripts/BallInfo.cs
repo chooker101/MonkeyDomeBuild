@@ -9,9 +9,15 @@ public class BallInfo : MonoBehaviour {
     public bool timerUp = false;
     private float timer = 1f;
     public float count = 0f;
-	void Start ()
+    private PhysicMaterial ballMat;
+    [SerializeField]
+    private float bounciness;
+    
+    void Start ()
     {
         m_rigid = GetComponent<Rigidbody>();
+        ballMat = GetComponent<SphereCollider>().material;
+        bounciness = ballMat.bounciness;
         PickRandomVictim();
     }
     void Update()
