@@ -14,6 +14,7 @@ public class ScoringManager {
      *      - methods for subtracting score (ie, not passsing in time for shot clock, gorilla, 
      */
 
+
     private const int MINSCORE = 5;
     private const int MIDSCORE = 10;
     private const int MAXSCORE = 30;
@@ -25,14 +26,14 @@ public class ScoringManager {
     private const int VAL4 = 25;
 
 
-    private int[] targetScores = new int[3];
-    private int[] targetTiers = new int[4];
-    private int[] catchScores = new int[4];
-    private int[] turnoverScores = new int[2];
-    private int[] miscScores = new int[3];
-    private int[] gameRuleScores = new int[3];
-    private int[] scoresArray = new int[3] {MINSCORE,MIDSCORE,MAXSCORE};
-    private int[] miscValues = new int[4] { VAL1, VAL2, VAL3, VAL4 };
+    private static int[] targetScores = new int[3];
+    private static int[] targetTiers = new int[4];
+    private static int[] catchScores = new int[4];
+    private static int[] turnoverScores = new int[2];
+    private static int[] miscScores = new int[3];
+    private static int[] gameRuleScores = new int[3];
+    private  int[] scoresArray = new int[3] {MINSCORE,MIDSCORE,MAXSCORE};
+    private  int[] miscValues = new int[4] { VAL1, VAL2, VAL3, VAL4 };
 
     public static int targetsHit;
 
@@ -88,11 +89,6 @@ public class ScoringManager {
         }
     }
 
-    void Update()
-    {
-
-    }
-
     /*
      * Call when player hits a target.
      * use targetTier 0 if in target tier 1
@@ -103,7 +99,7 @@ public class ScoringManager {
      * use targetRank 1 is for throwing the ball directly at the target
      * use targetRank 2 is for bouncing the ball once and hitting a target
      */
-    public int TargetScore(int targetTier, int targetRank)
+    public static int TargetScore(int targetTier, int targetRank)
     {
         return targetScores[targetRank] + targetTiers[targetTier];
     }
@@ -115,7 +111,7 @@ public class ScoringManager {
      * use throwRank 2 for a pass that has bounced once
      * use throwRank 3 for a pass that is not caught by monkey (only catching monkey calls)
      */
-    public  int CatchScore(int throwRank)
+    public static int CatchScore(int throwRank)
     {
         return catchScores[throwRank];
     }
@@ -128,7 +124,7 @@ public class ScoringManager {
      *              - can/should gorilla just call this on his own and 
      *              detract all other players' scores, or does this work as is?
      */
-    public  int TurnoverScore(int turnoverSide)
+    public static int TurnoverScore(int turnoverSide)
     {
         return turnoverScores[turnoverSide];
     }
@@ -140,7 +136,7 @@ public class ScoringManager {
      * use gameAction 2 for shot clock turnover. Monkey holding ball when clock expires calls
      * use gameAction 3 for targetTier downgrade. Gorilla calls this when targets are downgraded
      */
-    public int GameRuleScore(int gameAction)
+    public static int GameRuleScore(int gameAction)
     {
         return gameRuleScores[gameAction];
     }
@@ -151,7 +147,7 @@ public class ScoringManager {
      * use miscPlay 1 for knocking down monkey (gorilla, call multiple times for knocking down multiple monkeys);
      * use miscPlay 2 for taunting next to gorilla without getting knocked down (monkey)
      */
-    public  int MiscScore(int miscPlay)
+    public static int MiscScore(int miscPlay)
     {
         return miscScores[miscPlay];
     }

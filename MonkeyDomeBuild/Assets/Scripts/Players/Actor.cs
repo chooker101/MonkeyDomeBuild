@@ -10,6 +10,7 @@ public class Actor : MonoBehaviour
      * - handle players' stats
      * - provide a key to accessing each player's stats 
      */
+    public int playerScore;
     public float moveForce;
     public float speedLimit;
     public float jumpForce;
