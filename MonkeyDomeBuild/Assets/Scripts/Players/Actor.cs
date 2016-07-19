@@ -2,9 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Player : Actor
+public class Actor : MonoBehaviour
 {
-    public int whichPlayer = 1;
+    /*
+     * We need this class to:
+     * - keep track of how many players are playing
+     * - handle players' stats
+     * - provide a key to accessing each player's stats 
+     */
     public float moveForce;
     public float speedLimit;
     public float jumpForce;
@@ -41,112 +46,46 @@ public class Player : Actor
     public int stat_throw = 0;
     public int stat_ballGrab = 0;
 
-    void Start ()
+    protected Character blah = new Gorilla();
+
+    [SerializeField]
+	private uint TNOP;
+	[SerializeField]
+	private uint NOP = 1;
+	[SerializeField]
+	private uint NOB = 0;
+
+	public void CreatePlayers()
 	{
+		if (GameManager.Instance.gmPlayers.Contains(null))
+		{
+			TNOP = NOP + NOB;
+			if (TNOP > 0)
+			{
+				for (int i = 0; i < TNOP; ++i)
+				{
+					Transform temp = GameManager.Instance.gmSpawnManager.SpawnPoints[i];
+					if (NOP > 0)
+					{
+						GameManager.Instance.gmPlayers[i] = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, temp.position, temp.rotation);
+						--NOP;
+					}
+					else if (NOB > 0)
+					{
+						GameManager.Instance.gmPlayers[i] = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
+						--NOB;
+					}
+				}
+			}
+		}
+	}
+    void Start()
+    {
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         m_rigid = GetComponent<Rigidbody>();
-    }
-    protected void CheckInputs()
-    {
-        switch (whichPlayer)
+        if(blah is Gorilla)
         {
-            case 1:
-                mX = Input.GetAxis("p1_joy_x");
-                mY = -Input.GetAxis("p1_joy_y");
-                mCatch = Input.GetButtonDown("p1_catch/throw");
-                mJump = Input.GetButtonDown("p1_jump");
-                if(GetComponent<Player>() is GorillaAction)
-                {
-                    mAimStomp = Input.GetButtonDown("p1_aim/stomp");
-                }
-                else
-                {
-                    mAimStomp = Input.GetButton("p1_aim/stomp");
-                }
-                //mClimb = Input.GetButtonDown("p1_climb");
-                //temp keyboard input
-                if (Input.GetKey(KeyCode.A))
-                {
-                    mX = -1;
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    mX = 1;
-                }
-                if (Input.GetKey(KeyCode.W))
-                {
-                    mY = 1;
-                }
-                if (Input.GetKey(KeyCode.S))
-                {
-                    mY = -1;
-                }
-                break;
 
-            case 2:
-                mX = Input.GetAxis("p2_joy_x");
-                mY = -Input.GetAxis("p2_joy_y");
-                mJump = Input.GetButtonDown("p2_jump");
-                mCatch = Input.GetButtonDown("p2_catch/throw");
-                if (GetComponent<Player>() is GorillaAction)
-                {
-                    mAimStomp = Input.GetButtonDown("p2_aim/stomp");
-                }
-                else
-                {
-                    mAimStomp = Input.GetButton("p2_aim/stomp");
-                }
-                //mClimb = Input.GetButtonDown("p2_climb");
-                break;
-
-            case 3:
-                mX = Input.GetAxis("p3_joy_x");
-                mY = -Input.GetAxis("p3_joy_y");
-                mJump = Input.GetButtonDown("p3_jump");
-                mCatch = Input.GetButtonDown("p3_catch/throw");
-                if (GetComponent<Player>() is GorillaAction)
-                {
-                    mAimStomp = Input.GetButtonDown("p3_aim/stomp");
-                }
-                else
-                {
-                    mAimStomp = Input.GetButton("p3_aim/stomp");
-                }
-                //mClimb = Input.GetButtonDown("p3_climb");
-                break;
-        }
-        if (mJump)
-        {
-            if (isClimbing)
-            {
-                if (mY < 0)
-                {
-                    mJump = false;
-                }
-                isClimbing = false;
-                
-            }
-            else if (canClimb && !isClimbing)
-            {
-                isClimbing = true;
-                canJump = true;
-                mJump = false;
-            }
-        }
-        if (isClimbing)
-        {
-            if (m_rigid.drag != climbDrag)
-            {
-                m_rigid.drag = climbDrag;
-            }
-        }
-        else
-        {
-            if (m_rigid.drag != normalDrag)
-            {
-                m_rigid.drag = normalDrag;
-                tempDownForce = downForce;
-            }
         }
     }
     protected void Movement()
@@ -306,4 +245,3 @@ public class Player : Actor
     {
     }
 }
-
