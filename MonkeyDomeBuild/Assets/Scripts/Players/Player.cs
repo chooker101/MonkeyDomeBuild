@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class Player : Actor
 {
-    public int whichPlayer = 1;
-
-    protected void CheckInputs()
+    public override void CheckInputs()
     {
+
+		/*
         switch (whichPlayer)
         {
             case 1:
@@ -75,13 +75,15 @@ public class Player : Actor
                 //mClimb = Input.GetButtonDown("p3_climb");
                 break;
         }
-        if (mJump)
+		*/
+
+        if (GameManager.Instance.gmInputs[whichplayer].mJump)
         {
             if (isClimbing)
             {
-                if (mY < 0)
+                if (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0)
                 {
-                    mJump = false;
+					GameManager.Instance.gmInputs[whichplayer].mJump = false;
                 }
                 isClimbing = false;
                 
@@ -90,22 +92,22 @@ public class Player : Actor
             {
                 isClimbing = true;
                 canJump = true;
-                mJump = false;
+				GameManager.Instance.gmInputs[whichplayer].mJump = false;
             }
         }
         if (isClimbing)
         {
-            if (m_rigid.drag != climbDrag)
+            if (GetComponent<Rigidbody>().drag != characterType.climbDrag)
             {
-                m_rigid.drag = climbDrag;
+				GetComponent<Rigidbody>().drag = characterType.climbDrag;
             }
         }
         else
         {
-            if (m_rigid.drag != normalDrag)
+            if (GetComponent<Rigidbody>().drag != characterType.normalDrag)
             {
-                m_rigid.drag = normalDrag;
-                tempDownForce = downForce;
+				GetComponent<Rigidbody>().drag = characterType.normalDrag;
+				characterType.tempDownForce = characterType.downForce;
             }
         }
     }

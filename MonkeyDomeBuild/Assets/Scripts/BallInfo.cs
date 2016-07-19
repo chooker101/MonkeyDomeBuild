@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BallInfo : MonoBehaviour {
+public class BallInfo : MonoBehaviour
+{
     [SerializeField]
-    private GameObject lastThrowMonkey;
+    private GameObject lastThrowMonkey = null;
     private Rigidbody m_rigid;
     private Vector3 startPos = Vector3.up * 10;
     public bool timerUp = false;
@@ -18,13 +19,13 @@ public class BallInfo : MonoBehaviour {
         m_rigid = GetComponent<Rigidbody>();
         ballMat = GetComponent<SphereCollider>().material;
         bounciness = ballMat.bounciness;
-        PickRandomVictim();
+        //PickRandomVictim();
     }
     void Update()
     {
         if (lastThrowMonkey == null)
         {
-            PickRandomVictim();
+            //PickRandomVictim();
         }
         if (timerUp)
         {
@@ -59,45 +60,46 @@ public class BallInfo : MonoBehaviour {
         m_rigid.isKinematic = false;
         transform.parent = null;
     }
+
     public void Change()
     {
         float longestTimeGorilla = 0f;
         count = 0;
-        GameObject[] allPlayer = GameObject.FindGameObjectsWithTag("Player");
         GameObject gorillaToSwitch = null;
-        foreach (GameObject g in allPlayer)
+        for(int i = 0; i < GameManager.Instance.TNOP; ++i)
         {
-            Player p = g.GetComponent<Player>();
-            if (p is GorillaAction)
+            if (GameManager.Instance.gmPlayers[i].GetComponent<Gorilla>() != null)
             {
-                GorillaAction gor = (GorillaAction)p;
+                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayers[i].GetComponent<Gorilla>();
                 if (longestTimeGorilla < gor.GetTimeBeingGorilla())
                 {
                     longestTimeGorilla = gor.GetTimeBeingGorilla();
-                    gorillaToSwitch = g;
+                    gorillaToSwitch = GameManager.Instance.gmPlayers[i];
                 }
             }
         }
         if (gorillaToSwitch != null)
         {
-            gorillaToSwitch.GetComponent<GorillaAction>().Mutate();
+            gorillaToSwitch.GetComponent<Gorilla>().Mutate();
         }
-        lastThrowMonkey.GetComponent<MonkeyAction>().Mutate();
-        PickRandomVictim();
+        lastThrowMonkey.GetComponent<Monkey>().Mutate();
+        //PickRandomVictim();
         ResetPosition();
         timerUp = false;
     }
+	
+	/*
     public void PickRandomVictim()
     {
-        GameObject[] allPlayer = GameObject.FindGameObjectsWithTag("Player");
         int index = 0;
-        Player victim = null;
-        while (victim == null || victim is GorillaAction)
+        Character victim = null;
+        while (victim == null || victim is Gorilla)
         {
-            index = Random.Range(0, allPlayer.Length);
-            victim = allPlayer[index].GetComponent<Player>();
+            index = Random.Range(0, GameManager.Instance.gmPlayers.Capacity);
+            victim = GameManager.Instance.gmPlayers[index].GetComponent<Player>().characterType;
         }
-        lastThrowMonkey = allPlayer[index];
+        lastThrowMonkey = GameManager.Instance.gmPlayers[index];
     }
-
+	*/
+	
 }

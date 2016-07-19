@@ -558,6 +558,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetTime: 1
+  alarm: 0
+  inAlarm: 0
 --- !u!1 &1109611626
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +929,6 @@ GameObject:
   - 4: {fileID: 1798689030}
   - 114: {fileID: 1798689029}
   - 114: {fileID: 1798689031}
-  - 114: {fileID: 1798689032}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -945,6 +947,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b46fa5a3563d0946ba3e29872cf547a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TNOP: 0
+  NOP: 3
+  NOB: 0
   gmPlayers:
   - {fileID: 0}
   - {fileID: 0}
@@ -956,7 +961,12 @@ MonoBehaviour:
   gmPlayerPrefab: {fileID: 170768, guid: 8f52d9bb375b4db4e803e72002922ca7, type: 2}
   gmPlayerPrefabAI: {fileID: 0}
   gmUIManager: {fileID: 1814327358}
-  gmActorScript: {fileID: 1798689032}
+  gmInputs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &1798689030
 Transform:
   m_ObjectHideFlags: 0
@@ -983,21 +993,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnPoints:
   - {fileID: 1390904667}
---- !u!114 &1798689032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1798689028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 797ad5ee8ad530e48ba36728652ad8c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obj: {fileID: 0}
-  TNOP: 1
-  NOP: 1
-  NOB: 0
+  - {fileID: 1109611627}
+  - {fileID: 1450720996}
+  - {fileID: 1390904667}
+  - {fileID: 1390904667}
 --- !u!114 &1814327358 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11436566, guid: 5a5d6eca87f6a0246a58c1240bfc3930,

@@ -4,190 +4,130 @@ using System.Collections.Generic;
 
 public class Actor : MonoBehaviour
 {
-    /*
+	/*
      * We need this class to:
      * - keep track of how many players are playing
      * - handle players' stats
      * - provide a key to accessing each player's stats 
      */
-    public float moveForce;
-    public float speedLimit;
-    public float jumpForce;
-    public float throwForce;
+
+	public int whichplayer;
+    
     public Vector3 mov;
 
-    protected Rigidbody m_rigid;
-    protected bool canJump = true;
-    protected int layerMask;
-    protected bool ballInRange = false;
-    protected GameObject ball = null;
-    protected GameObject ballHolding = null;
-    protected bool haveBall = false;
+    public bool canJump = true;
+    public int layerMask;
+    public bool ballInRange = false;
+    public GameObject ballHolding = null;
+    public bool haveBall = false;
 
     public bool isClimbing = false;
     public bool canClimb = false;
-    public float climbSpeedLimit;
-    public float downForce;
-    public float climbDrag;
-    public float normalDrag;
-    public float climbForce;
-    public float tempDownForce;
-    public float downForceIncrement;
-    public float maxDownForce;
-
-    protected float mX;
-    protected float mY;
-    protected bool mJump;
-    protected bool mCatch;
-    protected bool mClimb;
-    protected bool mAimStomp;
 
     public int stat_jump = 0;
     public int stat_throw = 0;
     public int stat_ballGrab = 0;
 
-    protected Character blah = new Gorilla();
+    public Character characterType;
 
-    [SerializeField]
-	private uint TNOP;
-	[SerializeField]
-	private uint NOP = 1;
-	[SerializeField]
-	private uint NOB = 0;
-
-	public void CreatePlayers()
-	{
-		if (GameManager.Instance.gmPlayers.Contains(null))
-		{
-			TNOP = NOP + NOB;
-			if (TNOP > 0)
-			{
-				for (int i = 0; i < TNOP; ++i)
-				{
-					Transform temp = GameManager.Instance.gmSpawnManager.SpawnPoints[i];
-					if (NOP > 0)
-					{
-						GameManager.Instance.gmPlayers[i] = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, temp.position, temp.rotation);
-						--NOP;
-					}
-					else if (NOB > 0)
-					{
-						GameManager.Instance.gmPlayers[i] = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
-						--NOB;
-					}
-				}
-			}
-		}
-	}
     void Start()
     {
         layerMask = 1 << LayerMask.NameToLayer("Floor");
-        m_rigid = GetComponent<Rigidbody>();
-        if(blah is Gorilla)
-        {
+	}
 
-        }
-    }
-    protected void Movement()
+	void Update()
+	{
+		characterType = GetComponent<Character>();
+	}
+
+	public virtual void CheckInputs() { }
+
+	public void Movement()
     {
         Vector3 movement = new Vector3();
         if (!isClimbing)
         {
-            if (mX != 0 && Mathf.Abs(m_rigid.velocity.x) < speedLimit)
+            if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 && Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.speedLimit)
             {
-                if ((mX > 0 && !RayCastSide(1)) || (mX < 0 && !RayCastSide(-1)))
+                if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
                 {
-                    movement.x = mX * moveForce;
+                    movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.moveForce;
                 }
             }
         }
         else
         {
-            if (mX != 0 || mY != 0)
+            if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 || GameManager.Instance.gmInputs[whichplayer].mXY.y != 0)
             {
-                if (Mathf.Abs(m_rigid.velocity.x) < climbSpeedLimit)
+                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.climbSpeedLimit)
                 {
-                    if ((mX > 0 && !RayCastSide(1)) || (mX < 0 && !RayCastSide(-1)))
+                    if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
                     {
-                        movement.x = mX * climbForce;
+                        movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.climbForce;
                     }
                 }
-                if (Mathf.Abs(m_rigid.velocity.y) < climbSpeedLimit)
+                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < characterType.climbSpeedLimit)
                 {
-                    if ((mY > 0 && !RayCast(1)) || (mY < 0 && !RayCast(-1)))
+                    if ((GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 && !RayCast(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0 && !RayCast(-1)))
                     {
-                        movement.y = mY * climbForce;
+                        movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.climbForce;
                     }
                 }
 
             }
         }
 
-        m_rigid.AddForce(movement);
+		GetComponent<Rigidbody>().AddForce(movement);
     }
-    protected void JumpCheck()
+    public void JumpCheck()
     {
         if (RayCast(-1))
         {
             canJump = true;
-            if (tempDownForce != downForce)
+            if (characterType.tempDownForce != characterType.downForce)
             {
-                tempDownForce = downForce;
+				characterType.tempDownForce = characterType.downForce;
             }
         }
         else
         {
             if (!isClimbing)
             {
-                if (tempDownForce < maxDownForce)
+                if (characterType.tempDownForce < characterType.maxDownForce)
                 {
-                    tempDownForce += downForceIncrement * Time.deltaTime;
+					characterType.tempDownForce += characterType.downForceIncrement * Time.deltaTime;
                 }
-                m_rigid.AddForce(new Vector3(0f, -tempDownForce));
+				GetComponent<Rigidbody>().AddForce(new Vector3(0f, -characterType.tempDownForce));
             }
         }
-        if (mJump && canJump)
+        if (GameManager.Instance.gmInputs[whichplayer].mJump && canJump)
         {
             canJump = false;
-            m_rigid.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+			GetComponent<Rigidbody>().AddForce(new Vector3(0, characterType.jumpForce, 0), ForceMode.Impulse);
             stat_jump++; // Adds one to jump stat
         }
     }
-    protected virtual void CatchCheck()
+
+    public void ThrowCheck()
     {
-    }
-    protected void ThrowCheck()
-    {
-        if (mCatch && haveBall)
+        if (GameManager.Instance.gmInputs[whichplayer].mCatch && haveBall)
         {
             haveBall = false;
             ballHolding.GetComponent<BallInfo>().Reset();
             Rigidbody ballRigid = ballHolding.GetComponent<Rigidbody>();
-            ballRigid.AddForce(mX * throwForce, mY * throwForce, 0f, ForceMode.Impulse);
-            ball = null;
+            ballRigid.AddForce(GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.throwForce, GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.throwForce, 0f, ForceMode.Impulse);
             ballHolding = null;
             stat_throw++;
         }
         if (haveBall && ballHolding != null)
         {
-            ballHolding.transform.position = new Vector3(m_rigid.transform.position.x, m_rigid.transform.position.y, 0f);
+            ballHolding.transform.position = new Vector3(GetComponent<Rigidbody>().transform.position.x, GetComponent<Rigidbody>().transform.position.y, 0f);
         }
     }
-    protected bool RayCast(int direction)
+
+    public bool RayCast(int direction)
     {
-        bool hit = Physics.Raycast(m_rigid.position, direction * Vector3.up, transform.localScale.y / 2 + 0.07f, layerMask);
-        if (hit)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    protected bool RayCastSide(int leftOrRight)
-    {
-        bool hit = Physics.Raycast(m_rigid.position, leftOrRight * Vector3.right, transform.localScale.x / 2 + 0.05f, layerMask);
+        bool hit = Physics.Raycast(GetComponent<Rigidbody>().position, direction * Vector3.up, transform.localScale.y / 2 + 0.07f, layerMask);
         if (hit)
         {
             return true;
@@ -198,15 +138,30 @@ public class Actor : MonoBehaviour
         }
     }
 
-    protected void Aim()
+    public bool RayCastSide(int leftOrRight)
     {
-        Debug.DrawLine(m_rigid.position, new Vector3(m_rigid.position.x + mX * 2, m_rigid.position.y + mY * 2));
+        bool hit = Physics.Raycast(GetComponent<Rigidbody>().position, leftOrRight * Vector3.right, transform.localScale.x / 2 + 0.05f, layerMask);
+        if (hit)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void Aim()
+    {
+        Debug.DrawLine(GetComponent<Rigidbody>().position, new Vector3(GetComponent<Rigidbody>().position.x + GameManager.Instance.gmInputs[whichplayer].mXY.x * 2, GetComponent<Rigidbody>().position.y + GameManager.Instance.gmInputs[whichplayer].mXY.y * 2));
 
     }
+
     public bool IsHoldingBall()
     {
         return haveBall;
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Ball"))
@@ -214,7 +169,6 @@ public class Actor : MonoBehaviour
             if (!ballInRange && !other.transform.parent.GetComponent<Rigidbody>().isKinematic)
             {
                 ballInRange = true;
-                ball = other.gameObject;
             }
         }
         if (other.gameObject.CompareTag("Vine") && !canClimb)
@@ -222,13 +176,13 @@ public class Actor : MonoBehaviour
             canClimb = true;
         }
     }
+
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Ball"))
         {
             ballInRange = false;
             haveBall = false;
-            ball = null;
             ballHolding = null;
         }
         if (other.gameObject.CompareTag("Vine") && canClimb)
@@ -237,11 +191,9 @@ public class Actor : MonoBehaviour
             isClimbing = false;
         }
     }
+
     void OnTriggerStay(Collider other)
     {
         OnTriggerEnter(other);
-    }
-    public virtual void Mutate()
-    {
     }
 }
