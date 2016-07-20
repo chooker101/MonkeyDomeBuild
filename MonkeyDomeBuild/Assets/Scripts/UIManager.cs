@@ -36,8 +36,8 @@ public class UIManager : MonoBehaviour
 
         debugLog.text = // Displays all debug info
             "PLAYER 1 STATS: \n" +
-            "Move Force: " + GameManager.Instance.gmPlayers[0].GetComponent<Character>() + "\n" +
-            "Speed Limit: " + GameManager.Instance.gmPlayers[0].GetComponent<Character>() + "\n" +
+            "Move Force: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().characterType.moveForce + "\n" +
+            "Speed Limit: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().characterType.speedLimit + "\n" +
             "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().mov + "\n\n" +
             "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_jump + "\n" +
             "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_ballGrab + "\n" +

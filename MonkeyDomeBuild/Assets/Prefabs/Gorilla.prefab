@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2386718}
   - 136: {fileID: 13625646}
   - 54: {fileID: 5496442}
-  - 114: {fileID: 11466602}
+  - 114: {fileID: 11443040}
   m_Layer: 10
   m_Name: Gorilla
   m_TagString: Player
@@ -81,7 +81,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &11466602
+--- !u!114 &11443040
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -89,28 +89,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 173216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dca0c246bd6690b42b07e68bbb5818de, type: 3}
+  m_Script: {fileID: 11500000, guid: 3972ede853467ca46ba418f4071d0a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TNOP: 0
-  NOP: 1
-  NOB: 0
-  whichPlayer: 1
-  moveForce: 0
-  speedLimit: 0
-  jumpForce: 0
-  throwForce: 0
+  whichplayer: 0
   mov: {x: 0, y: 0, z: 0}
+  canJump: 1
+  layerMask: 0
+  ballInRange: 0
+  ballHolding: {fileID: 0}
+  haveBall: 0
   isClimbing: 0
   canClimb: 0
-  climbSpeedLimit: 0
-  downForce: 0
-  climbDrag: 0
-  normalDrag: 0
-  climbForce: 0
-  tempDownForce: 0
-  downForceIncrement: 0
-  maxDownForce: 0
   stat_jump: 0
   stat_throw: 0
   stat_ballGrab: 0

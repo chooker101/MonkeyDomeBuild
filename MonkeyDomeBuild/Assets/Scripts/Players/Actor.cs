@@ -37,7 +37,17 @@ public class Actor : MonoBehaviour
 
 	void Update()
 	{
-		characterType = GetComponent<Character>();
+		CheckInputs();
+		JumpCheck();
+		Aim();
+		mov = GetComponent<Rigidbody>().velocity;
+		characterType.CHUpdate();
+	}
+
+	void FixedUpdate()
+	{
+		Movement();
+		characterType.CHFixedUpdate();
 	}
 
 	public virtual void CheckInputs() { }

@@ -394,6 +394,10 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
+--- !u!1 &1001700972 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 118004, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+  m_PrefabInternal: {fileID: 1868944871}
 --- !u!1 &1002642922
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,6 +954,8 @@ MonoBehaviour:
   TNOP: 0
   NOP: 3
   NOB: 0
+  RandomGorilla: 1
+  PlayerGorilla: 0
   gmPlayers:
   - {fileID: 0}
   - {fileID: 0}
@@ -960,11 +966,18 @@ MonoBehaviour:
   gmButtonManager: {fileID: 0}
   gmPlayerPrefab: {fileID: 170768, guid: 8f52d9bb375b4db4e803e72002922ca7, type: 2}
   gmPlayerPrefabAI: {fileID: 0}
+  gmBall: {fileID: 1001700972}
   gmUIManager: {fileID: 1814327358}
   gmInputs:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gmPlayerMats:
+  - {fileID: 2100000, guid: bb3dda135a96b0642ab2b06c6547223a, type: 2}
+  - {fileID: 2100000, guid: 20fa20cd45a9acd4ba12fe53d3010051, type: 2}
+  - {fileID: 2100000, guid: 0b7e6724be6d50d489be68f2e13e6151, type: 2}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!4 &1798689030

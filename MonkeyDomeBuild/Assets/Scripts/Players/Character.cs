@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Character : MonoBehaviour
+public class Character
 {
+	public float scaleSize = 2;
 	public float moveForce;
 	public float speedLimit;
 	public float jumpForce;
@@ -16,5 +17,17 @@ public class Character : MonoBehaviour
 	public float climbForce;
 	public float maxDownForce;
 
+	public virtual void CHUpdate()
+	{
+
+	}
+
+	public virtual void CHFixedUpdate()
+	{
+
+	}
+
 	public virtual float GetTimeBeingGorilla() { return 0.0f; }
+
+	public virtual void Mutate() { }
 }

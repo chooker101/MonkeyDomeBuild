@@ -6,9 +6,9 @@ public class Monkey : Character
 	private int myPlayer;
 	private Player cacheplayer;
 
-	void Awake()
+	public Monkey(int x)
 	{
-		myPlayer = this.gameObject.GetComponent<Actor>().whichplayer;
+		myPlayer = x;
 		moveForce = 100f;
 		jumpForce = 65f;
 		speedLimit = 12f;
@@ -24,11 +24,9 @@ public class Monkey : Character
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
 	}
 
-	void Update()
+	
+	public override void CHUpdate()
 	{
-		cacheplayer.CheckInputs();
-		cacheplayer.JumpCheck();
-		cacheplayer.Aim();
 		if (cacheplayer.haveBall)
 		{
 			cacheplayer.ThrowCheck();
@@ -37,13 +35,13 @@ public class Monkey : Character
 		{
 			CatchCheck();
 		}
-		cacheplayer.mov = cacheplayer.GetComponent<Rigidbody>().velocity;
 	}
 
-	void FixedUpdate()
+	public override void CHFixedUpdate()
 	{
-		cacheplayer.Movement();
+		
 	}
+
 	protected void CatchCheck()
 	{
 		if (GameManager.Instance.gmInputs[myPlayer].mCatch && GameManager.Instance.gmBall != null)
@@ -52,20 +50,19 @@ public class Monkey : Character
 			{
 				cacheplayer.haveBall = true;
 				cacheplayer.ballHolding = GameManager.Instance.gmBall;
-				cacheplayer.ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(gameObject);
+				cacheplayer.ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(cacheplayer.gameObject);
 				Rigidbody ballRigid = cacheplayer.ballHolding.GetComponent<Rigidbody>();
 				ballRigid.useGravity = false;
 				ballRigid.isKinematic = true;
-				ballRigid.position = transform.position;
-				cacheplayer.ballHolding.transform.SetParent(transform);
+				ballRigid.position = cacheplayer.transform.position;
+				cacheplayer.ballHolding.transform.SetParent(cacheplayer.transform);
 				cacheplayer.stat_ballGrab++;
 			}
 		}
 	}
 
-	public void Mutate()
+	public override void Mutate()
 	{
-		
 		
 		if (cacheplayer.haveBall && cacheplayer.ballHolding != null)
 		{
@@ -73,6 +70,9 @@ public class Monkey : Character
 			cacheplayer.ballHolding.GetComponent<BallInfo>().Reset();
 			cacheplayer.ballHolding = null;
 		}
+		cacheplayer.characterType = new Gorilla(myPlayer);
+		cacheplayer.GetComponent<Transform>().localScale = cacheplayer.GetComponent<Transform>().localScale * scaleSize;
+		/*
 		GameObject tempGorilla = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);
 
 		tempGorilla.GetComponent<Renderer>().material = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Renderer>().material;
@@ -90,7 +90,7 @@ public class Monkey : Character
 					break;
 				}
 			}
-			Destroy(gameObject);
-		
+			Destroy(gameObject);*/
+
 	}
 }

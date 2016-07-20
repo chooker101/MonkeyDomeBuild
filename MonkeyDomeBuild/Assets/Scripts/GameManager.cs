@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
 	public GameObject gmBall;
 	public UIManager gmUIManager;
 	public List<InputManager> gmInputs;
+	public List<Material> gmPlayerMats;
 
 	private GameManager() { }
 
@@ -110,16 +111,17 @@ public class GameManager : MonoBehaviour
 					}
 
 					Instance.gmPlayers[i].GetComponent<Actor>().whichplayer = i;
+					Instance.gmPlayers[i].GetComponent<Renderer>().material = Instance.gmPlayerMats[i];
 
-					if(PlayerGorilla == i)
+					if (PlayerGorilla == i)
 					{
-						
-						Instance.gmPlayers[i].GetComponent<Actor>().characterType = Instance.gmPlayers[i].AddComponent<Gorilla>();
+
+						Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Gorilla(i);
 					}
 					else
 					{
 						
-						Instance.gmPlayers[i].GetComponent<Actor>().characterType = Instance.gmPlayers[i].AddComponent<Monkey>();
+						Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);
 					}
 				}
 			}

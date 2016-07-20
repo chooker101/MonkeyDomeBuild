@@ -68,9 +68,9 @@ public class BallInfo : MonoBehaviour
         GameObject gorillaToSwitch = null;
         for(int i = 0; i < GameManager.Instance.TNOP; ++i)
         {
-            if (GameManager.Instance.gmPlayers[i].GetComponent<Gorilla>() != null)
+            if (GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Gorilla)
             {
-                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayers[i].GetComponent<Gorilla>();
+                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType;
                 if (longestTimeGorilla < gor.GetTimeBeingGorilla())
                 {
                     longestTimeGorilla = gor.GetTimeBeingGorilla();
@@ -80,9 +80,9 @@ public class BallInfo : MonoBehaviour
         }
         if (gorillaToSwitch != null)
         {
-            gorillaToSwitch.GetComponent<Gorilla>().Mutate();
+            gorillaToSwitch.GetComponent<Player>().characterType.Mutate();
         }
-        lastThrowMonkey.GetComponent<Monkey>().Mutate();
+        lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
         //PickRandomVictim();
         ResetPosition();
         timerUp = false;

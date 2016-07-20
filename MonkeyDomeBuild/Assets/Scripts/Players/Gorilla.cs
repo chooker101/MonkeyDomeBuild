@@ -7,9 +7,9 @@ public class Gorilla : Character
 	private Player cacheplayer;
 	private float timeBeingGorilla = 0f;
 
-	void Awake()
+	public Gorilla(int x)
 	{
-		myPlayer = this.gameObject.GetComponent<Actor>().whichplayer;
+		myPlayer = x;
 		moveForce = 100f;
 		jumpForce = 65f;
 		speedLimit = 12f;
@@ -25,24 +25,23 @@ public class Gorilla : Character
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
 	}
 
-	void Update()
+	public override void CHUpdate()
 	{
 		timeBeingGorilla += Time.deltaTime;
-		cacheplayer.CheckInputs();
-		cacheplayer.JumpCheck();
-		cacheplayer.Aim();
+		
 		CatchCheck();
 		StompCheck();
-		cacheplayer.mov = cacheplayer.GetComponent<Rigidbody>().velocity;
+		
 	}
-	void FixedUpdate()
+
+	public override void CHFixedUpdate()
 	{
-		cacheplayer.Movement();
+		
 	}
 
 	protected void CatchCheck()
 	{
-		if (GameManager.Instance.gmInputs[cacheplayer.whichplayer].mCatch && GameManager.Instance.gmBall != null)
+		if (GameManager.Instance.gmInputs[myPlayer].mCatch && GameManager.Instance.gmBall != null)
 		{
 			if (cacheplayer.ballInRange)
 			{
@@ -54,8 +53,11 @@ public class Gorilla : Character
 		}
 	}
 
-	public void Mutate()
+	public override void Mutate()
 	{
+		cacheplayer.characterType = new Monkey(myPlayer);
+		cacheplayer.GetComponent<Transform>().localScale = cacheplayer.GetComponent<Transform>().localScale / scaleSize;
+		/*
 		GameObject tempMonkey = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);
 
 		tempMonkey.GetComponent<Renderer>().material = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Renderer>().material;
@@ -74,6 +76,7 @@ public class Gorilla : Character
 			}
 		}
 		Destroy(gameObject);
+		*/
 	}
 
 	public override float GetTimeBeingGorilla()
