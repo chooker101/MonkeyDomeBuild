@@ -11,6 +11,7 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
 
+
 	public int whichplayer;
     
     public Vector3 mov;

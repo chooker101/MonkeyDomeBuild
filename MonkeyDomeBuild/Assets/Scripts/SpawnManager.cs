@@ -15,8 +15,9 @@ public class SpawnManager : MonoBehaviour
 
 	public Transform[] SpawnPoints;
 
-	// Use this for initialization
-	void Start ()
+
+    // Use this for initialization
+    void Start ()
 	{
 	
 	}
@@ -26,4 +27,5 @@ public class SpawnManager : MonoBehaviour
 	{
 	
 	}
+
 }
