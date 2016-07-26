@@ -7,6 +7,7 @@ public class TargetManager : MonoBehaviour {
     public float resetTime = 1;
     public float alarm;
     public bool inAlarm = false;
+    // GameObject targetBase;
 
     private BallInfo ballInfo;
     private int addScore;
@@ -25,6 +26,7 @@ public class TargetManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
         targetTier = 0;
 
         largeTargets = GameObject.FindGameObjectsWithTag("Large");
@@ -104,7 +106,6 @@ public class TargetManager : MonoBehaviour {
             ScoringManager.targetsHit++;
         }
     }
-
 
 
 }
