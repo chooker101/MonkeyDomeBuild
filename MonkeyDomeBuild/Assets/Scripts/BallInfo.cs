@@ -5,10 +5,11 @@ public class BallInfo : MonoBehaviour
 {
     [SerializeField]
     private GameObject lastThrowMonkey = null;
+    private GameObject holdingMonkey = null;
     private Rigidbody m_rigid;
     private Vector3 startPos = Vector3.up * 10;
     public bool timerUp = false;
-    private float timer = 1f;
+    private float timer = 8f;
     public float count = 0f;
     private PhysicMaterial ballMat;
     [SerializeField]
@@ -19,6 +20,7 @@ public class BallInfo : MonoBehaviour
         m_rigid = GetComponent<Rigidbody>();
         ballMat = GetComponent<SphereCollider>().material;
         bounciness = ballMat.bounciness;
+        timer = 8f;
         //PickRandomVictim();
     }
     void Update()
@@ -39,6 +41,13 @@ public class BallInfo : MonoBehaviour
             }
         }
     }
+    void LateUpdate()
+    {
+        if (holdingMonkey != null)
+        {
+            m_rigid.transform.position = Vector3.Lerp(m_rigid.transform.position, holdingMonkey.transform.position, 1f);
+        }
+    }
 	public void UpdateLastThrowMonkey(GameObject monkey)
     {
         lastThrowMonkey = monkey;
@@ -54,15 +63,15 @@ public class BallInfo : MonoBehaviour
     }
     public void Reset()
     {
+        holdingMonkey = null;
         count = 0f;
         timerUp = false;
         m_rigid.useGravity = true;
-        m_rigid.isKinematic = false;
-        transform.parent = null;
     }
 
     public void Change()
     {
+        if (lastThrowMonkey == null) return;
         float longestTimeGorilla = 0f;
         count = 0;
         GameObject gorillaToSwitch = null;
@@ -86,6 +95,14 @@ public class BallInfo : MonoBehaviour
         //PickRandomVictim();
         ResetPosition();
         timerUp = false;
+    }
+    public void BeingCatch(GameObject who)
+    {
+        if (holdingMonkey == null)
+        {
+            holdingMonkey = who;
+            m_rigid.useGravity = false;
+        }
     }
 	
 	/*

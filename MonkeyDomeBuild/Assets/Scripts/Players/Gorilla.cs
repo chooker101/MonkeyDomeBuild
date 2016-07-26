@@ -10,11 +10,11 @@ public class Gorilla : Character
 	public Gorilla(int x)
 	{
 		myPlayer = x;
-		moveForce = 100f;
-		jumpForce = 65f;
-		speedLimit = 12f;
+		moveForce = 200f;
+		jumpForce = 70f;
+		speedLimit = 14f;
 		throwForce = 40f;
-		downForce = 80f;
+		downForce = 60f;
 		tempDownForce = downForce;
 		downForceIncrement = 100f; // per second
 		maxDownForce = 200f;
