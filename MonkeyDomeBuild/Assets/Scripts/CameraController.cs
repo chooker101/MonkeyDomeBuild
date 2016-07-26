@@ -2,11 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+ * FIX CAMSIZE CHANGING
+ * MAKE PUBLIC SHAKER METHOD
+ */
+
 public class CameraController : MonoBehaviour
 {
 
+    private Transform movePos;
+    public float startShakeDur;
+    private float shakeDur;
+    public float shakeMag;
+    public float killShake;
+    public bool shaking = true;
+    Vector3 startPos;
+
     public GameObject ball;
     public float smoothing = 3.0f;
+    public float maxCamSize = 10f;
+    private float zoomSpeed;
 
     [SerializeField]
     private float buffer;
@@ -27,6 +42,7 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
         //CamSize = myCam.orthographicSize;
         MeanOfPositions();
@@ -35,6 +51,10 @@ public class CameraController : MonoBehaviour
 
         transform.position = meanPosition + offset;
 
+        if(movePos == null)
+        {
+            movePos = GetComponent<Transform>();
+        }
     }
 
     void LateUpdate()
@@ -43,6 +63,43 @@ public class CameraController : MonoBehaviour
 
         SetCamera();
 
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (shaking)
+                return;
+            shaking = true;
+            shakeDur = startShakeDur;
+        }
+
+        if (shaking)
+        {
+            Shaker();
+        }
+    }
+
+    public void Shaker()
+    {
+        startPos = movePos.localPosition;
+        float tempShakeMag;
+        if (myCam.orthographicSize < 18f)
+        {
+            tempShakeMag = shakeMag / 2;
+        } else
+        {
+            tempShakeMag = shakeMag;
+        }
+        if(shakeDur > 0)
+        {
+            movePos.localPosition = startPos + Random.insideUnitSphere * tempShakeMag;
+
+            shakeDur -= Time.deltaTime * killShake;
+        }
+        else
+        {
+            shakeDur = 0f;
+            movePos.localPosition = startPos;
+            shaking = false;
+        }
     }
 
     // find mean of positions
@@ -51,12 +108,12 @@ public class CameraController : MonoBehaviour
 
         positionSum = Vector3.zero;
 
-        for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; i++)
+        for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
         positionSum += ball.transform.position;
-        meanPosition = positionSum / (GameManager.Instance.gmPlayers.Capacity + 1);
+        meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + 1);
 
     }
 
@@ -67,7 +124,7 @@ public class CameraController : MonoBehaviour
         maxXDistance = 0f;
         maxYDistance = 0f;
         // get maxXDistance
-        for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; i++)
+        for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
         {
             // not including ball yet, fix to grab x, not vector3
             /*
@@ -122,7 +179,10 @@ public class CameraController : MonoBehaviour
         myLerp.z = currentPos.z;
         transform.position = myLerp;
         FindPanning();
+        
+        camSize = Mathf.Min(maxCamSize, camSize);
         myCam.orthographicSize = Mathf.Lerp(camSize, panningY, (Time.deltaTime*smoothing));
+        //myCam.orthographicSize = Mathf.SmoothDamp(myCam.orthographicSize, camSize, ref zoomSpeed, .2f);
         
         //myCam.orthographicSize = panningY;
 
