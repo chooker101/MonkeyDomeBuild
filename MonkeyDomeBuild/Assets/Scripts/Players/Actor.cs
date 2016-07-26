@@ -130,10 +130,6 @@ public class Actor : MonoBehaviour
             ballHolding = null;
             stat_throw++;
         }
-        if (haveBall && ballHolding != null)
-        {
-            ballHolding.transform.position = new Vector3(GetComponent<Rigidbody>().transform.position.x, GetComponent<Rigidbody>().transform.position.y, 0f);
-        }
     }
 
     public bool RayCast(int direction)

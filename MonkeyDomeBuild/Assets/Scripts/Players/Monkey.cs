@@ -51,11 +51,9 @@ public class Monkey : Character
 				cacheplayer.haveBall = true;
 				cacheplayer.ballHolding = GameManager.Instance.gmBall;
 				cacheplayer.ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(cacheplayer.gameObject);
-				Rigidbody ballRigid = cacheplayer.ballHolding.GetComponent<Rigidbody>();
-				ballRigid.useGravity = false;
-				ballRigid.isKinematic = true;
-				ballRigid.position = cacheplayer.transform.position;
-				cacheplayer.ballHolding.transform.SetParent(cacheplayer.transform);
+				BallInfo ball=cacheplayer.ballHolding.GetComponent<BallInfo>();
+                ball.BeingCatch(cacheplayer.gameObject);
+
 				cacheplayer.stat_ballGrab++;
 			}
 		}
