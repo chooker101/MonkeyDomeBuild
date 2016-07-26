@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
 					{
 
 						Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Gorilla(i);
+						Instance.gmPlayers[i].GetComponent<Transform>().localScale = Instance.gmPlayers[i].GetComponent<Actor>().characterType.gorillaSize;
 					}
 					else
 					{

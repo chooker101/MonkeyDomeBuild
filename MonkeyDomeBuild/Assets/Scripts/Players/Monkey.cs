@@ -71,7 +71,7 @@ public class Monkey : Character
 			cacheplayer.ballHolding = null;
 		}
 		cacheplayer.characterType = new Gorilla(myPlayer);
-		cacheplayer.GetComponent<Transform>().localScale = cacheplayer.GetComponent<Transform>().localScale * scaleSize;
+		cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
 		/*
 		GameObject tempGorilla = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);
 

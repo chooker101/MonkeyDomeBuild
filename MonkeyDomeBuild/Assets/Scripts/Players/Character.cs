@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Character
 {
-	public float scaleSize = 2;
+	public Vector3 gorillaSize = new Vector3(2.0f, 3.0f, 1.0f);
+	public Vector3 monkeySize = new Vector3(1.5f, 2.0f, 1.0f);
 	public float moveForce;
 	public float speedLimit;
 	public float jumpForce;

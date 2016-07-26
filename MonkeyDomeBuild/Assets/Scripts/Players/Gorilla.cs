@@ -56,7 +56,7 @@ public class Gorilla : Character
 	public override void Mutate()
 	{
 		cacheplayer.characterType = new Monkey(myPlayer);
-		cacheplayer.GetComponent<Transform>().localScale = cacheplayer.GetComponent<Transform>().localScale / scaleSize;
+		cacheplayer.GetComponent<Transform>().localScale = monkeySize;
 		/*
 		GameObject tempMonkey = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);
 
