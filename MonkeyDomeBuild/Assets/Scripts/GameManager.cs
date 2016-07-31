@@ -131,6 +131,6 @@ public class GameManager : MonoBehaviour
 
 	public int RandGor()
 	{
-		return Random.Range(0, 4);
+		return Random.Range(0, (int)TNOP);
 	}
 }

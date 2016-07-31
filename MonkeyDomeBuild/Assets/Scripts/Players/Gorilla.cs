@@ -47,7 +47,7 @@ public class Gorilla : Character
 			{
 				cacheplayer.ballHolding = GameManager.Instance.gmBall;
 				cacheplayer.ballHolding.GetComponent<Rigidbody>().position += Vector3.up * 2;
-				cacheplayer.ballHolding.GetComponent<BallInfo>().Change();
+				cacheplayer.ballHolding.GetComponent<BallInfo>().Change(myPlayer);
 				cacheplayer.stat_ballGrab++;
 			}
 		}
