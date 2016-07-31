@@ -335,6 +335,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetTime: 1
+  alarm: 0
+  inAlarm: 0
 --- !u!114 &11422562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -346,6 +349,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetTime: 1
+  alarm: 0
+  inAlarm: 0
 --- !u!114 &11493664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -357,6 +363,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetTime: 1
+  alarm: 0
+  inAlarm: 0
 --- !u!135 &13585242
 SphereCollider:
   m_ObjectHideFlags: 1
