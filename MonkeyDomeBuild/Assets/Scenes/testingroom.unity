@@ -89,6 +89,18 @@ NavMeshSettings:
 GameObject:
   m_PrefabParentObject: {fileID: 118004, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_PrefabInternal: {fileID: 1338663961}
+--- !u!135 &10904402
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 10904395}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.75
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &33648573 stripped
 Transform:
   m_PrefabParentObject: {fileID: 416880, guid: 15e1d9dd977c41740908cd16f0df401e, type: 2}
@@ -1392,11 +1404,10 @@ MonoBehaviour:
   shakeMag: 0.4
   killShake: 8
   shaking: 0
-  ball: {fileID: 10904395}
   smoothing: 3
   maxCamSize: 50
-  buffer: 1
-  offsetUp: 4
+  buffer: 2
+  offsetUp: 0
 --- !u!1 &1496253351
 GameObject:
   m_ObjectHideFlags: 0

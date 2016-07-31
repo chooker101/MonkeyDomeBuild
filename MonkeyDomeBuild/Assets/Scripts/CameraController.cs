@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour
     public bool shaking = true;
     Vector3 startPos;
 
-    public GameObject ball;
+    //private GameObject ball;
     public float smoothing = 3.0f;
     public float maxCamSize = 10f;
     private float zoomSpeed;
@@ -50,6 +50,8 @@ public class CameraController : MonoBehaviour
         offset = transform.position - meanPosition;
 
         transform.position = meanPosition + offset;
+
+        //ball = GameManager.Instance.gmBall;
 
         if(movePos == null)
         {
@@ -112,7 +114,10 @@ public class CameraController : MonoBehaviour
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
-        positionSum += ball.transform.position;
+        if (GameManager.Instance.gmBall.GetComponent<BallInfo>().isballnear == false)
+        {
+            positionSum += GameManager.Instance.gmBall.transform.position;
+        }
         meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + 1);
 
     }
@@ -141,13 +146,13 @@ public class CameraController : MonoBehaviour
             {
                 maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmPlayers[i].transform.position.y);
             }
-            if (maxXDistance < Mathf.Abs(meanPosition.x - ball.transform.position.x))
+            if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmBall.transform.position.x))
             {
-                maxXDistance = Mathf.Abs(meanPosition.x - ball.transform.position.x);
+                maxXDistance = Mathf.Abs(meanPosition.x - GameManager.Instance.gmBall.transform.position.x);
             }
-            if (maxYDistance < Mathf.Abs(meanPosition.y - ball.transform.position.y))
+            if (maxYDistance < Mathf.Abs(meanPosition.y - GameManager.Instance.gmBall.transform.position.y))
             {
-                maxYDistance = Mathf.Abs(meanPosition.y - ball.transform.position.y);
+                maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmBall.transform.position.y);
             }
         }
 

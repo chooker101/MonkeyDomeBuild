@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class InputManager : MonoBehaviour
+public class InputManager : ScriptableObject
 {
 	public InputManager(Vector2 ixy,bool icatch,bool ijump,bool iaimstomp)
 	{

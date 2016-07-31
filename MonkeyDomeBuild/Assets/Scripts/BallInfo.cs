@@ -6,6 +6,7 @@ public class BallInfo : MonoBehaviour
     [SerializeField]
     private GameObject lastThrowMonkey = null;
     private GameObject holdingMonkey = null;
+    public bool isballnear = false;
     private Rigidbody m_rigid;
     private Vector3 startPos = Vector3.up * 10;
     public bool timerUp = false;
@@ -25,10 +26,6 @@ public class BallInfo : MonoBehaviour
     }
     void Update()
     {
-        if (lastThrowMonkey == null)
-        {
-            //PickRandomVictim();
-        }
         if (timerUp)
         {
             if (count >= timer)
@@ -48,6 +45,7 @@ public class BallInfo : MonoBehaviour
             m_rigid.transform.position = Vector3.Lerp(m_rigid.transform.position, holdingMonkey.transform.position, 1f);
         }
     }
+
 	public void UpdateLastThrowMonkey(GameObject monkey)
     {
         lastThrowMonkey = monkey;
@@ -61,6 +59,7 @@ public class BallInfo : MonoBehaviour
     {
         m_rigid.position = startPos;
     }
+
     public void Reset()
     {
         holdingMonkey = null;
@@ -130,6 +129,21 @@ public class BallInfo : MonoBehaviour
         }
     }
 	
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.GetComponent<Player>() != null)
+        {
+            isballnear = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Player>() != null)
+        {
+            isballnear = false;
+        }
+    }
 
     public void PickRandomVictim()
     {
