@@ -69,9 +69,10 @@ public class BallInfo : MonoBehaviour
         m_rigid.useGravity = true;
     }
 
-    public void Change()
+    public void Change(int index)
     {
-        if (lastThrowMonkey == null) return;
+
+        if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID()) PickRandomVictim();
         float longestTimeGorilla = 0f;
         count = 0;
         GameObject gorillaToSwitch = null;
@@ -92,7 +93,31 @@ public class BallInfo : MonoBehaviour
             gorillaToSwitch.GetComponent<Player>().characterType.Mutate();
         }
         lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
-        //PickRandomVictim();
+        ResetPosition();
+        timerUp = false;
+    }
+    public void Change()
+    {
+        float longestTimeGorilla = 0f;
+        count = 0;
+        GameObject gorillaToSwitch = null;
+        for (int i = 0; i < GameManager.Instance.TNOP; ++i)
+        {
+            if (GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Gorilla)
+            {
+                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType;
+                if (longestTimeGorilla < gor.GetTimeBeingGorilla())
+                {
+                    longestTimeGorilla = gor.GetTimeBeingGorilla();
+                    gorillaToSwitch = GameManager.Instance.gmPlayers[i];
+                }
+            }
+        }
+        if (gorillaToSwitch != null)
+        {
+            gorillaToSwitch.GetComponent<Player>().characterType.Mutate();
+        }
+        lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
         ResetPosition();
         timerUp = false;
     }
@@ -105,18 +130,18 @@ public class BallInfo : MonoBehaviour
         }
     }
 	
-	/*
+
     public void PickRandomVictim()
     {
         int index = 0;
         Character victim = null;
         while (victim == null || victim is Gorilla)
         {
-            index = Random.Range(0, GameManager.Instance.gmPlayers.Capacity);
+            index = Random.Range(0, GameManager.Instance.gmPlayers.Count);
             victim = GameManager.Instance.gmPlayers[index].GetComponent<Player>().characterType;
         }
         lastThrowMonkey = GameManager.Instance.gmPlayers[index];
     }
-	*/
+
 	
 }
