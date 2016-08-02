@@ -156,6 +156,9 @@ public class BallInfo : MonoBehaviour
         }
         lastThrowMonkey = GameManager.Instance.gmPlayers[index];
     }
-
+    public float GetCurrentShotClockTime()
+    {
+        return count;
+    }
 	
 }

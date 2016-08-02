@@ -31,4 +31,5 @@ public class Character
 	public virtual float GetTimeBeingGorilla() { return 0.0f; }
 
 	public virtual void Mutate() { }
+
 }

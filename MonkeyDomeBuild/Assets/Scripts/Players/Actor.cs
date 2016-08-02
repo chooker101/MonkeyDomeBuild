@@ -29,6 +29,9 @@ public class Actor : MonoBehaviour
     public int stat_throw = 0;
     public int stat_ballGrab = 0;
 
+    public float maxminInc = 3f;
+    public float characterInc = 0f;
+
     public Character characterType;
 
     void Start()
@@ -58,7 +61,7 @@ public class Actor : MonoBehaviour
         Vector3 movement = new Vector3();
         if (!isClimbing)
         {
-            if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 && Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.speedLimit)
+            if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 && Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.speedLimit + characterInc)
             {
                 if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
                 {
@@ -70,14 +73,14 @@ public class Actor : MonoBehaviour
         {
             if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 || GameManager.Instance.gmInputs[whichplayer].mXY.y != 0)
             {
-                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.climbSpeedLimit)
+                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.climbSpeedLimit + characterInc)
                 {
                     if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
                     {
                         movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.climbForce;
                     }
                 }
-                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < characterType.climbSpeedLimit)
+                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < characterType.climbSpeedLimit + characterInc)
                 {
                     if ((GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 && !RayCast(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0 && !RayCast(-1)))
                     {
@@ -87,7 +90,6 @@ public class Actor : MonoBehaviour
 
             }
         }
-
 		GetComponent<Rigidbody>().AddForce(movement);
     }
     public void JumpCheck()
@@ -182,8 +184,30 @@ public class Actor : MonoBehaviour
         {
             canClimb = true;
         }
-    }
+        if (other.gameObject.CompareTag("Banana"))
+        {
+            ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
+            //if (proj == null) return;
+            if (proj.GetCanEffectCharacter())
+            {
+                proj.CollideWithCharacter();
+                ReactionToBanana(proj.GetIncAmount());
+                Destroy(other.gameObject);
+            }
+        }
+        if (other.gameObject.CompareTag("Poop"))
+        {
+            ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
+            //if (proj == null) return;
+            if (proj.GetCanEffectCharacter())
+            {
+                proj.CollideWithCharacter();
+                ReactionToPoop(proj.GetIncAmount());
+                Destroy(other.gameObject);
+            }
 
+        }
+    }
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Ball"))
@@ -197,10 +221,26 @@ public class Actor : MonoBehaviour
             canClimb = false;
             isClimbing = false;
         }
+
     }
 
     void OnTriggerStay(Collider other)
     {
         OnTriggerEnter(other);
+    }
+    public void ReactionToBanana(float incAmount)
+    {
+        if (characterInc < maxminInc)
+        ChangeInc(incAmount);
+    }
+    public void ReactionToPoop(float incAmount)
+    {
+        if (Mathf.Abs(characterInc) < maxminInc)
+        ChangeInc(-incAmount);
+    }
+    protected void ChangeInc(float inc)
+    {
+        characterInc += inc;
+        //Debug.Log(characterInc);
     }
 }

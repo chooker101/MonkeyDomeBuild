@@ -92,7 +92,7 @@ public class Turret : MonoBehaviour {
     }
     private void Fire()
     {
-        Debug.Log("fire");
+        //Debug.Log("fire");
         // work perfect if no drag
         // kinda work with very little drag like around 0.05
         if (target == null) return;

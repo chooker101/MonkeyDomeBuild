@@ -11,8 +11,8 @@ public class Gorilla : Character
 	{
 		myPlayer = x;
 		moveForce = 200f;
-		jumpForce = 70f;
-		speedLimit = 14f;
+		jumpForce = 90f;
+		speedLimit = 15f;
 		throwForce = 40f;
 		downForce = 60f;
 		tempDownForce = downForce;

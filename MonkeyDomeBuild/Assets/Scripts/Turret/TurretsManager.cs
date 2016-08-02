@@ -8,6 +8,9 @@ public class TurretsManager : MonoBehaviour
     private List<TargetQueue> targetQueues = new List<TargetQueue>();
     public GameObject banana;
     public GameObject poo;
+    public float tempShootTimeMin;
+    public float tempShootTimeMax;
+    private float tempShootTime;
     void Start()
     {
         GameObject[] tempTurrets = GameObject.FindGameObjectsWithTag("Turret");
@@ -15,9 +18,14 @@ public class TurretsManager : MonoBehaviour
         {
             turrets.Add(obj.GetComponent<Turret>());
         }
+        tempShootTimeMin = 3f;
+        tempShootTimeMax = 8f;
+        tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
+
     }
     void Update()
     {
+        TempTest();
         if (Input.GetKeyDown(KeyCode.U))
         {
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -71,5 +79,16 @@ public class TurretsManager : MonoBehaviour
                 break;
         }
 
+    }
+
+    void TempTest()
+    {
+        if (Time.time > tempShootTime)
+        {
+            tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            int whatToShoot = Random.Range(0, 1);
+            AddFireQueue(players[Random.Range(0, players.Length)], whatToShoot);
+        }
     }
 }
