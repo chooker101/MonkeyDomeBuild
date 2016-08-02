@@ -95,6 +95,7 @@ public class Player : Actor
 				GameManager.Instance.gmInputs[whichplayer].mJump = false;
             }
         }
+		/*1
         if (isClimbing)
         {
             if (GetComponent<Rigidbody>().drag != characterType.climbDrag)
@@ -109,7 +110,7 @@ public class Player : Actor
 				GetComponent<Rigidbody>().drag = characterType.normalDrag;
 				characterType.tempDownForce = characterType.downForce;
             }
-        }
+        }*/
     }
 
 }

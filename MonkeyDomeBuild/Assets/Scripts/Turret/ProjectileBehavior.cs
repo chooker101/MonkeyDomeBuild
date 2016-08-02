@@ -3,13 +3,13 @@ using System.Collections;
 
 public class ProjectileBehavior : MonoBehaviour
 {
-    private Rigidbody _rigid;
+    private Rigidbody2D _rigid;
     public bool canCollideWithFloor = false;
     private bool canEffectCharacter = true;
     public float characterInc;
     void Start()
     {
-        _rigid = GetComponent<Rigidbody>();
+        _rigid = GetComponent<Rigidbody2D>();
         characterInc = 0.5f;
     }
     void Update()
@@ -23,16 +23,16 @@ public class ProjectileBehavior : MonoBehaviour
         }
 
     }
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (canCollideWithFloor)
         {
             if (other.CompareTag("Floor"))
             {
                 canEffectCharacter = false;
-                Vector3 remainLoc = transform.position;
+				Vector2 remainLoc = transform.position;
                 _rigid.isKinematic = true;
-                _rigid.useGravity = false;
+                //_rigid.useGravity = false;
                 _rigid.transform.position = remainLoc;
                 _rigid.transform.localScale = new Vector3(1.5f, 0.5f, 1f);
                 remainLoc.y = other.transform.position.y + other.transform.localScale.y / 2;
@@ -40,10 +40,10 @@ public class ProjectileBehavior : MonoBehaviour
             else if (other.CompareTag("Wall"))
             {
                 canEffectCharacter = false;
-                Vector3 remainLoc = transform.position;
+				Vector2 remainLoc = transform.position;
                 float whichSideMultiplier = other.transform.position.x > transform.position.x ? -1f : 1f;
                 _rigid.isKinematic = true;
-                _rigid.useGravity = false;
+                //_rigid.useGravity = false;
                 _rigid.transform.position = remainLoc;
                 _rigid.transform.localScale = new Vector3(1.5f, 0.5f, 1f);
                 _rigid.transform.eulerAngles = new Vector3(0f, 0f, whichSideMultiplier * 90f);

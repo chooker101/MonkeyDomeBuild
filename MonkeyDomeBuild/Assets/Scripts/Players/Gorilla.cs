@@ -11,7 +11,7 @@ public class Gorilla : Character
 	{
 		myPlayer = x;
 		moveForce = 200f;
-		jumpForce = 90f;
+		jumpForce = 20f;
 		speedLimit = 15f;
 		throwForce = 40f;
 		downForce = 60f;
@@ -46,7 +46,7 @@ public class Gorilla : Character
 			if (cacheplayer.ballInRange)
 			{
 				cacheplayer.ballHolding = GameManager.Instance.gmBall;
-				cacheplayer.ballHolding.GetComponent<Rigidbody>().position += Vector3.up * 2;
+				cacheplayer.ballHolding.GetComponent<Rigidbody2D>().position += Vector2.up * 2;
 				cacheplayer.ballHolding.GetComponent<BallInfo>().Change(myPlayer);
 				cacheplayer.stat_ballGrab++;
 			}

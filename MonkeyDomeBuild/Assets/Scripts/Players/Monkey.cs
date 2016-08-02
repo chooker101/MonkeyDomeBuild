@@ -9,8 +9,8 @@ public class Monkey : Character
 	public Monkey(int x)
 	{
 		myPlayer = x;
-		moveForce = 200f;
-		jumpForce = 70f;
+		moveForce = 100f;
+		jumpForce = 15f;
 		speedLimit = 12f;
 		throwForce = 40f;
 		downForce = 60f;

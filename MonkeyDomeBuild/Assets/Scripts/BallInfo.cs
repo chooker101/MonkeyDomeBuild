@@ -7,19 +7,19 @@ public class BallInfo : MonoBehaviour
     private GameObject lastThrowMonkey = null;
     private GameObject holdingMonkey = null;
     public bool isballnear = false;
-    private Rigidbody m_rigid;
-    private Vector3 startPos = Vector3.up * 10;
+    private Rigidbody2D m_rigid;
+    private Vector2 startPos = Vector2.up * 10;
     public bool timerUp = false;
     private float timer = 8f;
     public float count = 0f;
-    private PhysicMaterial ballMat;
+    private PhysicsMaterial2D ballMat;
     [SerializeField]
     private float bounciness;
     
     void Start ()
     {
-        m_rigid = GetComponent<Rigidbody>();
-        ballMat = GetComponent<SphereCollider>().material;
+        m_rigid = GetComponent<Rigidbody2D>();
+        ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
         bounciness = ballMat.bounciness;
         timer = 8f;
         //PickRandomVictim();
@@ -42,7 +42,7 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey != null)
         {
-            m_rigid.transform.position = Vector3.Lerp(m_rigid.transform.position, holdingMonkey.transform.position, 1f);
+            m_rigid.transform.position = Vector2.Lerp(m_rigid.transform.position, holdingMonkey.transform.position, 1f);
         }
     }
 
@@ -65,7 +65,8 @@ public class BallInfo : MonoBehaviour
         holdingMonkey = null;
         count = 0f;
         timerUp = false;
-        m_rigid.useGravity = true;
+		m_rigid.isKinematic = false;
+        //m_rigid.useGravity = true;
     }
 
     public void Change(int index)
@@ -120,16 +121,17 @@ public class BallInfo : MonoBehaviour
         ResetPosition();
         timerUp = false;
     }
+
     public void BeingCatch(GameObject who)
     {
         if (holdingMonkey == null)
         {
             holdingMonkey = who;
-            m_rigid.useGravity = false;
+            m_rigid.isKinematic = true;
         }
     }
 	
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if(other.GetComponent<Player>() != null)
         {
@@ -137,7 +139,7 @@ public class BallInfo : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
         if (other.GetComponent<Player>() != null)
         {

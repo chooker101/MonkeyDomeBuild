@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     public float shakeMag;
     public float killShake;
     public bool shaking = true;
-    Vector3 startPos;
+	Vector3 startPos;
 
     //private GameObject ball;
     public float smoothing = 3.0f;
@@ -108,7 +108,7 @@ public class CameraController : MonoBehaviour
     void MeanOfPositions()
     {
 
-        positionSum = Vector3.zero;
+        positionSum = Vector2.zero;
 
         for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
         {
@@ -175,11 +175,11 @@ public class CameraController : MonoBehaviour
 
     void SetCamera()
     {
-        
-        Vector3 currentPos = transform.position;
+
+		Vector3 currentPos = transform.position;
         meanPosition.y += offsetUp;
 
-        Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime*smoothing));
+		Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime*smoothing));
 
         myLerp.z = currentPos.z;
         transform.position = myLerp;

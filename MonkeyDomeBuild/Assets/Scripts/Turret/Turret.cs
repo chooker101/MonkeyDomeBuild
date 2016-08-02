@@ -4,7 +4,7 @@ using System.Collections;
 public class Turret : MonoBehaviour {
 
     private GameObject stuffToShoot;
-    private Rigidbody projectile;
+    private Rigidbody2D projectile;
     private Transform myTransform;
     private Vector3 velocity;
     private Transform target;
@@ -40,7 +40,7 @@ public class Turret : MonoBehaviour {
         myTransform = transform;
         firingAngleRange[0] = 40f;
         firingAngleRange[1] = 70f;
-        fireLoc = Vector3.zero;
+        fireLoc = Vector2.zero;
         fireLoc.x = transform.position.x;
         m_rigid = GetComponent<Rigidbody>();
         maxFiringAngle = 70f;
@@ -98,9 +98,9 @@ public class Turret : MonoBehaviour {
         if (target == null) return;
 
         GameObject go = (GameObject)Instantiate(stuffToShoot, transform.position, transform.rotation);
-        projectile = go.GetComponent<Rigidbody>();
+        projectile = go.GetComponent<Rigidbody2D>();
         float drag = projectile.drag;
-        float target_Distance = Vector3.Distance(projectile.position, target.position);
+        float target_Distance = Vector2.Distance(projectile.position, target.position);
         target_Distance += Random.Range(-distanceFalloff, distanceFalloff);
         float firingAngle;
         firingAngle = GetFiringAngle();
@@ -113,11 +113,11 @@ public class Turret : MonoBehaviour {
         vy *= (1 + drag);
         if (transform.position.x > target.transform.position.x)
         {
-            velocity = new Vector3(-vx, vy);
+            velocity = new Vector2(-vx, vy);
         }
         else
         {
-            velocity = new Vector3(vx, vy);
+            velocity = new Vector2(vx, vy);
         }
         projectile.velocity = velocity;
         Destroy(go, projectileExistTime);
@@ -128,12 +128,12 @@ public class Turret : MonoBehaviour {
     {
         if (target.transform.position.y > m_rigid.position.y)
         {
-            Vector3 targetLoc = m_rigid.transform.position + Vector3.up * moveSpeed * Time.deltaTime;
+			Vector2 targetLoc = m_rigid.transform.position + Vector3.up * moveSpeed * Time.deltaTime;
             m_rigid.MovePosition(targetLoc);
         }
         else if(target.transform.position.y < m_rigid.position.y)
         {
-            Vector3 targetLoc = m_rigid.transform.position + Vector3.down * moveSpeed * Time.deltaTime;
+			Vector2 targetLoc = m_rigid.transform.position + Vector3.down * moveSpeed * Time.deltaTime;
             m_rigid.MovePosition(targetLoc);
         }
     }

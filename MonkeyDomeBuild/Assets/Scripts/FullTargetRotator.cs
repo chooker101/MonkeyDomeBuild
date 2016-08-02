@@ -9,7 +9,7 @@ public class FullTargetRotator : MonoBehaviour {
     public bool targetDown = false;
     public float angleChange = 0f;
 
-    public Vector3 rotateAxis;
+    public Vector2 rotateAxis;
 
 	// Use this for initialization
 	void Start () {

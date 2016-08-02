@@ -11,10 +11,9 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
 
-
 	public int whichplayer;
     
-    public Vector3 mov;
+    public Vector2 mov;
 
     public bool canJump = true;
     public int layerMask;
@@ -44,7 +43,7 @@ public class Actor : MonoBehaviour
 		CheckInputs();
 		JumpCheck();
 		Aim();
-		mov = GetComponent<Rigidbody>().velocity;
+		mov = GetComponent<Rigidbody2D>().velocity;
 		characterType.CHUpdate();
 	}
 
@@ -58,39 +57,56 @@ public class Actor : MonoBehaviour
 
 	public void Movement()
     {
-        Vector3 movement = new Vector3();
+
+		Vector2 movement = Vector2.zero;
         if (!isClimbing)
         {
-            if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 && Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.speedLimit + characterInc)
-            {
-                if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
-                {
-                    movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.moveForce;
-                }
-            }
+			if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) < characterType.speedLimit + characterInc)
+			{
+				if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0)
+				{
+					if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
+					{
+						movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.moveForce;
+					}
+				}
+			}
+			else
+			{
+				movement.x = characterType.speedLimit + characterInc;
+			}
         }
         else
         {
             if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 || GameManager.Instance.gmInputs[whichplayer].mXY.y != 0)
             {
-                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) < characterType.climbSpeedLimit + characterInc)
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) < characterType.climbSpeedLimit + characterInc)
                 {
                     if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
                     {
                         movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.climbForce;
                     }
                 }
-                if (Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < characterType.climbSpeedLimit + characterInc)
+				else
+				{
+					movement.x = characterType.climbSpeedLimit + characterInc;
+				}
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) < characterType.climbSpeedLimit + characterInc)
                 {
                     if ((GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 && !RayCast(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0 && !RayCast(-1)))
                     {
                         movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.climbForce;
                     }
                 }
+				else
+				{
+					movement.y = characterType.climbSpeedLimit + characterInc;
+				}
 
             }
         }
-		GetComponent<Rigidbody>().AddForce(movement);
+		GetComponent<Rigidbody2D>().AddForce(movement);
+		//GetComponent<Rigidbody>().velocity = movement;
     }
     public void JumpCheck()
     {
@@ -108,16 +124,16 @@ public class Actor : MonoBehaviour
             {
                 if (characterType.tempDownForce < characterType.maxDownForce)
                 {
-					characterType.tempDownForce += characterType.downForceIncrement * Time.deltaTime;
+					characterType.tempDownForce += characterType.downForceIncrement;
                 }
-				GetComponent<Rigidbody>().AddForce(new Vector3(0f, -characterType.tempDownForce));
+				//GetComponent<Rigidbody>().AddForce(new Vector3(0f, -characterType.tempDownForce));
             }
         }
         if (GameManager.Instance.gmInputs[whichplayer].mJump && canJump)
         {
             canJump = false;
-			GetComponent<Rigidbody>().AddForce(new Vector3(0, characterType.jumpForce, 0), ForceMode.Impulse);
-            stat_jump++; // Adds one to jump stat
+			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, characterType.jumpForce),ForceMode2D.Impulse);
+            stat_jump++; // Adds one to jump stat PUT IN STAT MANAGER
         }
     }
 
@@ -127,8 +143,8 @@ public class Actor : MonoBehaviour
         {
             haveBall = false;
             ballHolding.GetComponent<BallInfo>().Reset();
-            Rigidbody ballRigid = ballHolding.GetComponent<Rigidbody>();
-            ballRigid.AddForce(GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.throwForce, GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.throwForce, 0f, ForceMode.Impulse);
+			Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
+            ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.throwForce, GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.throwForce),ForceMode2D.Impulse);
             ballHolding = null;
             stat_throw++;
         }
@@ -136,7 +152,7 @@ public class Actor : MonoBehaviour
 
     public bool RayCast(int direction)
     {
-        bool hit = Physics.Raycast(GetComponent<Rigidbody>().position, direction * Vector3.up, transform.localScale.y / 2 + 0.07f, layerMask);
+        bool hit = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
         if (hit)
         {
             return true;
@@ -149,7 +165,7 @@ public class Actor : MonoBehaviour
 
     public bool RayCastSide(int leftOrRight)
     {
-        bool hit = Physics.Raycast(GetComponent<Rigidbody>().position, leftOrRight * Vector3.right, transform.localScale.x / 2 + 0.05f, layerMask);
+        bool hit = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
         if (hit)
         {
             return true;
@@ -162,7 +178,7 @@ public class Actor : MonoBehaviour
 
     public void Aim()
     {
-        Debug.DrawLine(GetComponent<Rigidbody>().position, new Vector3(GetComponent<Rigidbody>().position.x + GameManager.Instance.gmInputs[whichplayer].mXY.x * 2, GetComponent<Rigidbody>().position.y + GameManager.Instance.gmInputs[whichplayer].mXY.y * 2));
+        Debug.DrawLine(GetComponent<Rigidbody2D>().position, new Vector2(GetComponent<Rigidbody2D>().position.x + GameManager.Instance.gmInputs[whichplayer].mXY.x * 2, GetComponent<Rigidbody2D>().position.y + GameManager.Instance.gmInputs[whichplayer].mXY.y * 2));
 
     }
 
@@ -171,11 +187,11 @@ public class Actor : MonoBehaviour
         return haveBall;
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            if (!ballInRange && !other.transform.parent.GetComponent<Rigidbody>().isKinematic)
+            if (!ballInRange && !other.transform.parent.GetComponent<Rigidbody2D>().isKinematic)
             {
                 ballInRange = true;
             }
@@ -224,9 +240,9 @@ public class Actor : MonoBehaviour
 
     }
 
-    void OnTriggerStay(Collider other)
+    void OnTriggerStay2D(Collider2D other)
     {
-        OnTriggerEnter(other);
+        OnTriggerEnter2D(other);
     }
     public void ReactionToBanana(float incAmount)
     {
