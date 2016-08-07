@@ -29,7 +29,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 463084}
   - 58: {fileID: 5851362}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ballTrigger
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ CircleCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 118004}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: f4b86fbeee282cf46aff15dc2ee789ac, type: 2}
   m_IsTrigger: 0

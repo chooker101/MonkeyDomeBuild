@@ -11,7 +11,7 @@ public class Turret : MonoBehaviour {
     private Vector3 fireLoc;
     private Rigidbody m_rigid;
 
-    private float gravity = 9.8f;
+    private float gravity;
     private float projectileExistTime = 12f; // in sec
 
     private bool canFire = false;
@@ -37,6 +37,7 @@ public class Turret : MonoBehaviour {
 
     void Awake()
     {
+        gravity = -Physics2D.gravity.y;
         myTransform = transform;
         firingAngleRange[0] = 40f;
         firingAngleRange[1] = 70f;

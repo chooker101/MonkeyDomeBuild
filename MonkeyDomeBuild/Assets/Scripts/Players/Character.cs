@@ -5,7 +5,7 @@ public class Character
 {
 	public Vector3 gorillaSize = new Vector3(2.0f, 3.0f, 1.0f);
 	public Vector3 monkeySize = new Vector3(1.5f, 2.0f, 1.0f);
-	public float moveForce;
+	public float horizontalMoveForce;
 	public float speedLimit;
 	public float jumpForce;
 	public float throwForce;
@@ -13,9 +13,8 @@ public class Character
 	public float downForceIncrement;
 	public float tempDownForce;
 	public float climbSpeedLimit;
-	public float climbDrag;
-	public float normalDrag;
-	public float climbForce;
+	public float climbingHorizontalMoveSpeed;
+    public float climbingVerticalMoveSpeed;
 	public float maxDownForce;
 
 	public virtual void CHUpdate()

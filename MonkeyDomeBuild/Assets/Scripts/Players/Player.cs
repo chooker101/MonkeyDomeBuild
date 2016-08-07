@@ -90,6 +90,7 @@ public class Player : Actor
             }
             else if (canClimb && !isClimbing)
             {
+                if (!GetComponent<Rigidbody2D>().isKinematic) ChangeIsKinematic();
                 isClimbing = true;
                 canJump = true;
 				GameManager.Instance.gmInputs[whichplayer].mJump = false;

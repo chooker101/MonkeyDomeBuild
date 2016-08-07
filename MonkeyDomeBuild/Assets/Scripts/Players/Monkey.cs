@@ -9,18 +9,17 @@ public class Monkey : Character
 	public Monkey(int x)
 	{
 		myPlayer = x;
-		moveForce = 100f;
-		jumpForce = 15f;
-		speedLimit = 12f;
-		throwForce = 40f;
-		downForce = 60f;
+		horizontalMoveForce = 50f;
+		jumpForce = 22f;
+		speedLimit = 13f;
+		throwForce = 25f;
+		downForce = 80f;
 		tempDownForce = downForce;
-		downForceIncrement = 100f; // per second
+		downForceIncrement = 30f; // per second
 		maxDownForce = 200f;
-		climbForce = 200f; ;
-		climbSpeedLimit = speedLimit;
-		normalDrag = 8f;
-		climbDrag = 12f;
+		climbingHorizontalMoveSpeed = 10f;
+        climbingVerticalMoveSpeed = 10f;
+        climbSpeedLimit = speedLimit;
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
 	}
 

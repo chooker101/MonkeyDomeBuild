@@ -17,6 +17,7 @@ public class Actor : MonoBehaviour
 
     public bool canJump = true;
     public int layerMask;
+    public int layerMaskPlayer;
     public bool ballInRange = false;
     public GameObject ballHolding = null;
     public bool haveBall = false;
@@ -36,6 +37,7 @@ public class Actor : MonoBehaviour
     void Start()
     {
         layerMask = 1 << LayerMask.NameToLayer("Floor");
+        layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
 	}
 
 	void Update()
@@ -57,17 +59,22 @@ public class Actor : MonoBehaviour
 
 	public void Movement()
     {
-
 		Vector2 movement = Vector2.zero;
         if (!isClimbing)
         {
+            //if player is NOT climbing on vines
 			if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) < characterType.speedLimit + characterInc)
 			{
+                //if player is NOT trying to run into walls
 				if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0)
 				{
 					if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
 					{
-						movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.moveForce;
+                        float changeDirectionMultipiler = 1f;
+                        if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && GetComponent<Rigidbody2D>().velocity.x < 0) ||
+                            (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && GetComponent<Rigidbody2D>().velocity.x > 0))
+                            changeDirectionMultipiler = 1.2f;
+						movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.horizontalMoveForce * changeDirectionMultipiler;
 					}
 				}
 			}
@@ -75,43 +82,42 @@ public class Actor : MonoBehaviour
 			{
 				movement.x = characterType.speedLimit + characterInc;
 			}
+            //apply force on actor
+            GetComponent<Rigidbody2D>().AddForce(movement);
         }
         else
         {
+            //if player is climbing on vines
             if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 || GameManager.Instance.gmInputs[whichplayer].mXY.y != 0)
             {
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) < characterType.climbSpeedLimit + characterInc)
+                if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) ||
+                    (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
                 {
-                    if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
-                    {
-                        movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.climbForce;
-                    }
+                    //if player is NOT trying to run into walls
+                    //if player is NOT trying to run into a gorilla
+                    float dir = 1f;
+                    if (GameManager.Instance.gmInputs[whichplayer].mXY.x > 0) dir = 1f;
+                    else if (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0) dir = -1f;
+                    movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.climbingHorizontalMoveSpeed + characterInc * dir;
                 }
-				else
-				{
-					movement.x = characterType.climbSpeedLimit + characterInc;
-				}
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) < characterType.climbSpeedLimit + characterInc)
+                if ((GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 && !RayCast(1)) ||
+                    (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0 && !RayCast(-1)))
                 {
-                    if ((GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 && !RayCast(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0 && !RayCast(-1)))
-                    {
-                        movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.climbForce;
-                    }
+                    float dir = 1f;
+                    if (GameManager.Instance.gmInputs[whichplayer].mXY.x > 0) dir = 1f;
+                    else if (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0) dir = -1f;
+                    movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.climbingVerticalMoveSpeed + characterInc * dir;
                 }
-				else
-				{
-					movement.y = characterType.climbSpeedLimit + characterInc;
-				}
 
             }
+            GetComponent<Rigidbody2D>().velocity = movement;
         }
-		GetComponent<Rigidbody2D>().AddForce(movement);
-		//GetComponent<Rigidbody>().velocity = movement;
     }
     public void JumpCheck()
     {
         if (RayCast(-1))
         {
+            //if player is on ground or platform
             canJump = true;
             if (characterType.tempDownForce != characterType.downForce)
             {
@@ -120,11 +126,15 @@ public class Actor : MonoBehaviour
         }
         else
         {
+            //if player is not on ground
             if (!isClimbing)
             {
-                if (characterType.tempDownForce < characterType.maxDownForce)
+                //if player is not climbing
+                if (GetComponent<Rigidbody2D>().isKinematic) ChangeIsKinematic();
+                if (GetComponent<Rigidbody2D>().velocity.y < 0f && !RayCast(-1))
                 {
-					characterType.tempDownForce += characterType.downForceIncrement;
+                    //if player is free falling
+                    GetComponent<Rigidbody2D>().AddForce(Vector2.down * characterType.downForce * Time.deltaTime);
                 }
 				//GetComponent<Rigidbody>().AddForce(new Vector3(0f, -characterType.tempDownForce));
             }
@@ -132,7 +142,8 @@ public class Actor : MonoBehaviour
         if (GameManager.Instance.gmInputs[whichplayer].mJump && canJump)
         {
             canJump = false;
-			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, characterType.jumpForce),ForceMode2D.Impulse);
+            if (GetComponent<Rigidbody2D>().isKinematic && isClimbing) ChangeIsKinematic();
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, characterType.jumpForce),ForceMode2D.Impulse);
             stat_jump++; // Adds one to jump stat PUT IN STAT MANAGER
         }
     }
@@ -152,8 +163,9 @@ public class Actor : MonoBehaviour
 
     public bool RayCast(int direction)
     {
-        bool hit = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
-        if (hit)
+        RaycastHit2D hitInfo;
+        hitInfo = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
+        if (hitInfo.collider != null)
         {
             return true;
         }
@@ -162,9 +174,18 @@ public class Actor : MonoBehaviour
             return false;
         }
     }
+    public bool RayCastGorilla(int leftOrRight)
+    {
+        RaycastHit2D hitInfo;
+        hitInfo = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMaskPlayer);
+
+
+        return false;
+    }
 
     public bool RayCastSide(int leftOrRight)
     {
+        // right = 1    left = -1
         bool hit = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
         if (hit)
         {
@@ -224,7 +245,7 @@ public class Actor : MonoBehaviour
 
         }
     }
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Ball"))
         {
@@ -232,10 +253,11 @@ public class Actor : MonoBehaviour
             haveBall = false;
             ballHolding = null;
         }
-        if (other.gameObject.CompareTag("Vine") && canClimb)
+        if (other.gameObject.CompareTag("Vine"))
         {
             canClimb = false;
             isClimbing = false;
+            if (GetComponent<Rigidbody2D>().isKinematic) ChangeIsKinematic();
         }
 
     }
@@ -258,5 +280,9 @@ public class Actor : MonoBehaviour
     {
         characterInc += inc;
         //Debug.Log(characterInc);
+    }
+    protected void ChangeIsKinematic()
+    {
+        GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
     }
 }
