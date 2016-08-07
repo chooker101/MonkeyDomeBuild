@@ -14,7 +14,7 @@ public class Gorilla : Character
 		jumpForce = 25f;
 		speedLimit = 12f;
 		throwForce = 20f;
-		downForce = 80f;
+		downForce = 1000f;
 		tempDownForce = downForce;
 		downForceIncrement = 100f; // per second
 		maxDownForce = 200f;

@@ -32,6 +32,12 @@ public class Actor : MonoBehaviour
     public float maxminInc = 3f;
     public float characterInc = 0f;
 
+    public bool canCharge = false;
+    public float holdingCatchCount = 0f;
+    public float maxChargeCount = 10f;
+    public float chargePerSec = 10f;
+    public float chargeThrowRequireCount = 5f;
+
     public Character characterType;
 
     void Start()
@@ -104,17 +110,23 @@ public class Actor : MonoBehaviour
                     (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0 && !RayCast(-1)))
                 {
                     float dir = 1f;
-                    if (GameManager.Instance.gmInputs[whichplayer].mXY.x > 0) dir = 1f;
-                    else if (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0) dir = -1f;
+                    if (GameManager.Instance.gmInputs[whichplayer].mXY.y > 0) dir = 1f;
+                    else if (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0) dir = -1f;
                     movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.climbingVerticalMoveSpeed + characterInc * dir;
                 }
-
             }
             GetComponent<Rigidbody2D>().velocity = movement;
         }
     }
     public void JumpCheck()
     {
+        if (GameManager.Instance.gmInputs[whichplayer].mCatch) Debug.Log("catch button down");
+        if (GameManager.Instance.gmInputs[whichplayer].mChargeThrow)
+        {
+            
+            Debug.Log("catch button holding");
+        }
+
         if (RayCast(-1))
         {
             //if player is on ground or platform
@@ -147,9 +159,49 @@ public class Actor : MonoBehaviour
             stat_jump++; // Adds one to jump stat PUT IN STAT MANAGER
         }
     }
-
     public void ThrowCheck()
     {
+        if (canCharge)
+        {
+            if (GameManager.Instance.gmInputs[whichplayer].mChargeThrow && haveBall)
+            {
+                if (holdingCatchCount < maxChargeCount)
+                {
+                    holdingCatchCount += chargePerSec * Time.deltaTime;
+                }
+                else
+                {
+                    holdingCatchCount = maxChargeCount;
+                }
+            }
+            else
+            {
+                if (holdingCatchCount > 0f)
+                {
+                    float tempThrowForce = characterType.throwForce;
+                    if (holdingCatchCount > chargeThrowRequireCount)
+                    {
+                        tempThrowForce *= (1 + (holdingCatchCount / maxChargeCount / 2f));
+                    }
+                    haveBall = false;
+                    ballHolding.GetComponent<BallInfo>().Reset();
+                    Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
+                    ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[whichplayer].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[whichplayer].mXY.y * tempThrowForce), ForceMode2D.Impulse);
+                    ballHolding = null;
+                    stat_throw++;
+                    holdingCatchCount = 0f;
+                }
+            }
+        }
+        else
+        {
+            if (GameManager.Instance.gmInputs[whichplayer].mCatchRelease)
+            {
+                canCharge = true;
+            }
+        }
+
+        /*
         if (GameManager.Instance.gmInputs[whichplayer].mCatch && haveBall)
         {
             haveBall = false;
@@ -159,8 +211,8 @@ public class Actor : MonoBehaviour
             ballHolding = null;
             stat_throw++;
         }
+        */
     }
-
     public bool RayCast(int direction)
     {
         RaycastHit2D hitInfo;

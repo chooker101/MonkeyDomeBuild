@@ -12,8 +12,8 @@ public class Monkey : Character
 		horizontalMoveForce = 50f;
 		jumpForce = 22f;
 		speedLimit = 13f;
-		throwForce = 25f;
-		downForce = 80f;
+		throwForce = 30f;
+		downForce = 1000f;
 		tempDownForce = downForce;
 		downForceIncrement = 30f; // per second
 		maxDownForce = 200f;
@@ -47,6 +47,7 @@ public class Monkey : Character
 		{
 			if (!cacheplayer.haveBall && cacheplayer.ballInRange)
 			{
+                cacheplayer.canCharge = false;
 				cacheplayer.haveBall = true;
 				cacheplayer.ballHolding = GameManager.Instance.gmBall;
 				cacheplayer.ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(cacheplayer.gameObject);
