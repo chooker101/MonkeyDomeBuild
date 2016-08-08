@@ -78,7 +78,14 @@ public class CameraController : MonoBehaviour
             Shaker();
         }
     }
-
+    public void ScreenShake()
+    {
+        if (!shaking)
+        {
+            shakeDur = startShakeDur;
+            shaking = true;
+        }
+    }
     public void Shaker()
     {
         startPos = movePos.localPosition;

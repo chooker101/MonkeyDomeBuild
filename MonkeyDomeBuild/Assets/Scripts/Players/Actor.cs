@@ -14,6 +14,7 @@ public class Actor : MonoBehaviour
 	public int whichplayer;
     
     public Vector2 mov;
+    public CameraController cam;
 
     public bool canJump = true;
     public int layerMask;
@@ -42,6 +43,7 @@ public class Actor : MonoBehaviour
 
     void Start()
     {
+        cam = FindObjectOfType<CameraController>();
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
 	}

@@ -88,13 +88,14 @@ public class Gorilla : Character
 		{
 			for(int i = 0;i < GameManager.Instance.gmPlayers.Capacity; ++i)
 			{
-				Character p = GameManager.Instance.gmPlayers[i].GetComponent<Character>();
+                Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
 				if (p is Monkey)
 				{
 					//knock both player off vine for now
 					GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
 				}
 			}
+            cacheplayer.cam.ScreenShake();
 		}
 	}
 }
