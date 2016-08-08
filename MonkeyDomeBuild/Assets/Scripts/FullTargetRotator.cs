@@ -46,7 +46,7 @@ public class FullTargetRotator : MonoBehaviour {
         }
     }
 
-    void RotateTarget(bool dir)
+    public void RotateTarget(bool dir)
     {
         if (dir)
         {
