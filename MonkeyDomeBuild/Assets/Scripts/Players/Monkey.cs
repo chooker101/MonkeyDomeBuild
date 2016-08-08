@@ -38,22 +38,26 @@ public class Monkey : Character
 
 	public override void CHFixedUpdate()
 	{
-		
+        //Debug.DrawLine(cacheplayer.transform.position, GameManager.Instance.gmBall.transform.position);
 	}
 
 	protected void CatchCheck()
 	{
 		if (GameManager.Instance.gmInputs[myPlayer].mCatch && GameManager.Instance.gmBall != null)
 		{
-			if (!cacheplayer.haveBall && cacheplayer.ballInRange)
-			{
-                cacheplayer.canCharge = false;
-				cacheplayer.haveBall = true;
-				cacheplayer.ballHolding = GameManager.Instance.gmBall;
-				cacheplayer.ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(cacheplayer.gameObject);
-                cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
-				cacheplayer.stat_ballGrab++;
-			}
+            if (!Physics2D.Raycast(cacheplayer.transform.position, GameManager.Instance.gmBall.transform.position - cacheplayer.transform.position,
+                Vector3.Distance(cacheplayer.transform.position,GameManager.Instance.gmBall.transform.position), cacheplayer.layerMask))
+            {
+                if (!cacheplayer.haveBall && cacheplayer.ballInRange)
+                {
+                    cacheplayer.canCharge = false;
+                    cacheplayer.haveBall = true;
+                    cacheplayer.ballHolding = GameManager.Instance.gmBall;
+                    cacheplayer.ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(cacheplayer.gameObject);
+                    cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
+                    cacheplayer.stat_ballGrab++;
+                }
+            }
 		}
 	}
 
