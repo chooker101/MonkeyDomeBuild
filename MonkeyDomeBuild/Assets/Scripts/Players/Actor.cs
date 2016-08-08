@@ -120,13 +120,6 @@ public class Actor : MonoBehaviour
     }
     public void JumpCheck()
     {
-        if (GameManager.Instance.gmInputs[whichplayer].mCatch) Debug.Log("catch button down");
-        if (GameManager.Instance.gmInputs[whichplayer].mChargeThrow)
-        {
-            
-            Debug.Log("catch button holding");
-        }
-
         if (RayCast(-1))
         {
             //if player is on ground or platform
@@ -215,16 +208,24 @@ public class Actor : MonoBehaviour
     }
     public bool RayCast(int direction)
     {
-        RaycastHit2D hitInfo;
-        hitInfo = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
-        if (hitInfo.collider != null)
+        bool hit = false;
+        float falloffX = transform.localScale.x / 2 - 0.1f;
+        for(int i = 0; i < 3; i++)
         {
-            return true;
+            float falloff = transform.position.x;
+            if (i != 0) falloff += Mathf.Pow(-1, i) * falloffX;
+            RaycastHit2D hitInfo;
+            Vector2 checkPos = transform.position;
+            checkPos.x = falloff;
+            hitInfo = Physics2D.Raycast(checkPos, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
+            //Debug.DrawLine(checkPos, checkPos + Vector2.up*direction);
+            if (hitInfo.collider != null)
+            {
+                hit = true;
+
+            }
         }
-        else
-        {
-            return false;
-        }
+        return hit;
     }
     public bool RayCastGorilla(int leftOrRight)
     {
@@ -238,15 +239,24 @@ public class Actor : MonoBehaviour
     public bool RayCastSide(int leftOrRight)
     {
         // right = 1    left = -1
-        bool hit = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
-        if (hit)
+        bool hit = false;
+        float falloffY = transform.localScale.y / 2 - 0.02f;
+        for (int i = 0; i < 3; i++)
         {
-            return true;
+            float falloff = transform.position.y;
+            if (i != 0) falloff += Mathf.Pow(-1, i) * falloffY;
+            RaycastHit2D hitInfo;
+            Vector2 checkPos = transform.position;
+            checkPos.y = falloff;
+            hitInfo = Physics2D.Raycast(checkPos, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
+            //Debug.DrawLine(checkPos, checkPos + Vector2.right * leftOrRight);
+            if (hitInfo.collider != null)
+            {
+                hit = true;
+
+            }
         }
-        else
-        {
-            return false;
-        }
+        return hit;
     }
 
     public void Aim()

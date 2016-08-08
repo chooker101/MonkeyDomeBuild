@@ -63,15 +63,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AI.cs" />
-    <Compile Include="Assets\Scripts\AudienceManager.cs" />
-    <Compile Include="Assets\Scripts\BallInfo.cs" />
+    <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
     <Compile Include="Assets\Scripts\Banana.cs" />
-    <Compile Include="Assets\Scripts\ButtonManager.cs" />
-    <Compile Include="Assets\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Scripts\FullTargetRotator.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\InputManager.cs" />
-    <Compile Include="Assets\Scripts\MatchTime.cs" />
+    <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Managers\AudienceManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\ButtonManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\ScoringManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\Players\Actor.cs" />
     <Compile Include="Assets\Scripts\Players\Character.cs" />
     <Compile Include="Assets\Scripts\Players\Gorilla.cs" />
@@ -80,16 +82,14 @@
     <Compile Include="Assets\Scripts\Players\MonkeyAction.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />
     <Compile Include="Assets\Scripts\PrefabsRef.cs" />
-    <Compile Include="Assets\Scripts\ScoringManager.cs" />
-    <Compile Include="Assets\Scripts\ShotClock.cs" />
-    <Compile Include="Assets\Scripts\SpawnManager.cs" />
-    <Compile Include="Assets\Scripts\TargetEnable.cs" />
-    <Compile Include="Assets\Scripts\TargetManager.cs" />
+    <Compile Include="Assets\Scripts\Target\FullTargetRotator.cs" />
+    <Compile Include="Assets\Scripts\Target\TargetEnable.cs" />
     <Compile Include="Assets\Scripts\Turret\ProjectileBehavior.cs" />
     <Compile Include="Assets\Scripts\Turret\TargetQueue.cs" />
     <Compile Include="Assets\Scripts\Turret\Turret.cs" />
     <Compile Include="Assets\Scripts\Turret\TurretsManager.cs" />
-    <Compile Include="Assets\Scripts\UIManager.cs" />
+    <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
+    <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
