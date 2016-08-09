@@ -10,14 +10,18 @@ public class ShotClock : MonoBehaviour
     void Start()
     {
         shotClock = GetComponent<Text>();
+        ball = GameManager.Instance.gmBall;
     }
 
 
     void Update()
     {
-        float time = 8f - ball.GetComponent<BallInfo>().GetCurrentShotClockTime();
-        if (time < 0) time = 0f;
-        shotClock.text = Mathf.Round(time).ToString();
-        //Debug.Log(time);
+        if (ball != null)
+        {
+            float time = 8f - ball.GetComponent<BallInfo>().GetCurrentShotClockTime();
+            if (time < 0) time = 0f;
+            shotClock.text = Mathf.Round(time).ToString();
+            //Debug.Log(time);
+        }
     }
 }

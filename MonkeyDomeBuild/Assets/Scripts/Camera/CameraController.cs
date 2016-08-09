@@ -114,18 +114,21 @@ public class CameraController : MonoBehaviour
     // find mean of positions
     void MeanOfPositions()
     {
-
         positionSum = Vector2.zero;
-
+        int ballCount = 0;
         for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
-        if (GameManager.Instance.gmBall.GetComponent<BallInfo>().isballnear == false)
+        if (GameManager.Instance.gmBall != null)
         {
-            positionSum += GameManager.Instance.gmBall.transform.position;
+            if (GameManager.Instance.gmBall.GetComponent<BallInfo>().isballnear == false)
+            {
+                ballCount = 1;
+                positionSum += GameManager.Instance.gmBall.transform.position;
+            }
         }
-        meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + 1);
+        meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + ballCount);
 
     }
 
@@ -135,15 +138,15 @@ public class CameraController : MonoBehaviour
         camSize = myCam.orthographicSize;
         maxXDistance = 0f;
         maxYDistance = 0f;
-        // get maxXDistance
+        // get maxXDistance       
         for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
         {
             // not including ball yet, fix to grab x, not vector3
-            /*
+            
             if(maxXDistance < Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position))
             {
                 maxXDistance = Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position);
-            } */
+            } 
 
             if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmPlayers[i].transform.position.x))
             {
@@ -153,6 +156,9 @@ public class CameraController : MonoBehaviour
             {
                 maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmPlayers[i].transform.position.y);
             }
+        }
+        if (GameManager.Instance.gmBall != null)
+        {
             if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmBall.transform.position.x))
             {
                 maxXDistance = Mathf.Abs(meanPosition.x - GameManager.Instance.gmBall.transform.position.x);
@@ -185,6 +191,7 @@ public class CameraController : MonoBehaviour
 
 		Vector3 currentPos = transform.position;
         meanPosition.y += offsetUp;
+        meanPosition.y = Mathf.Max(meanPosition.y, 10f);
 
 		Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime*smoothing));
 
