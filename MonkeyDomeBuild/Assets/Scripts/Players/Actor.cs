@@ -314,12 +314,12 @@ public class Actor : MonoBehaviour
 			RaycastHit2D hitInfo;
 
 			Vector2 checkPos;
-			checkPos.x = (cache_tf.position.x - cachebox.offset.x) + (((cachebox.size.x /2) + 0.02f) * leftOrRight);
-			checkPos.y = (cache_tf.position.y - cachebox.offset.y) + ((cachebox.size.y / 2) + 0.02f);
+			checkPos.x = ((cache_tf.position.x - cachebox.offset.x) + (((cachebox.size.x /2) + 0.02f) * leftOrRight)) * cache_tf.localScale.x;
+			checkPos.y = ((cache_tf.position.y - cachebox.offset.y) + ((cachebox.size.y / 2) + 0.02f)) * cache_tf.localScale.y;
 
 			//Debug.Log("CeckPos" + (checkPos.x - cachebox.size.x));
 
-			hitInfo = Physics2D.Raycast(checkPos, Vector2.down, cachebox.size.y, layerMask);
+			hitInfo = Physics2D.Raycast(checkPos, Vector2.down, (cachebox.size.y + 0.02f) * cache_tf.localScale.y, layerMask);
 			if (hitInfo.collider != null)
 			{
 				hit = true;
