@@ -3,19 +3,12 @@ using System.Collections;
 
 public class Character
 {
-	public Vector3 gorillaSize = new Vector3(2.0f, 2f, 2f);
-	public Vector3 monkeySize = new Vector3(1f, 1f, 1.0f);
-	public float horizontalMoveForce;
-	public float speedLimit;
-	public float jumpForce;
+	public Vector3 gorillaSize = GameManager.Instance.gmMovementManager.gScale;
+	public Vector3 monkeySize = GameManager.Instance.gmMovementManager.mScale;
 	public float throwForce;
-	public float downForce;
-	public float downForceIncrement;
-	public float tempDownForce;
-	public float climbSpeedLimit;
-	public float climbingHorizontalMoveSpeed;
-    public float climbingVerticalMoveSpeed;
-	public float maxDownForce;
+	public float jumpforce;
+	public float movespeed;
+
 
 	public virtual void CHUpdate()
 	{

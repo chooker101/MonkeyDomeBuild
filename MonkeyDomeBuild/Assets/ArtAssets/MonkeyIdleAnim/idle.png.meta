@@ -1,9 +1,10 @@
 fileFormatVersion: 2
 guid: 0a48b8812d4cbaa41ba138989bdcd0eb
-timeCreated: 1470717246
+timeCreated: 1470771034
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: idle_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
@@ -49,7 +50,35 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: idle_0
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 499
+        width: 238
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 119, y: 50}
+        - {x: 117, y: 58}
+        - {x: 1, y: 122}
+        - {x: -47, y: 122}
+        - {x: -57, y: 121}
+        - {x: -94, y: 95}
+        - {x: -111, y: 62}
+        - {x: -119, y: 41}
+        - {x: -119, y: -25}
+        - {x: -117, y: -48}
+        - {x: -95, y: -84}
+        - {x: -69, y: -117}
+        - {x: -54, y: -122}
+        - {x: 73, y: -122}
+        - {x: 87, y: -98}
+        - {x: 87, y: -16}
+        - {x: 119, y: 15}
     outline: []
   spritePackingTag: 
   userData: 

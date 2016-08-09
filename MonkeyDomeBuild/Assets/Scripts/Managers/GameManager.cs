@@ -43,17 +43,21 @@ public class GameManager : MonoBehaviour
 	public ButtonManager gmButtonManager;
 	public GameObject gmPlayerPrefab;
 	public GameObject gmPlayerPrefabAI;
-	public GameObject gmBall;
+    public GameObject gmBall = null;
 	public UIManager gmUIManager;
 	public List<InputManager> gmInputs;
 	public List<Material> gmPlayerMats;
+	public MovementManager gmMovementManager;
 
 	private GameManager() { }
 
 	void Awake()
 	{
 		TNOP = NOP + NOB;
-		CreateInputs();
+        BallInfo tempInfo = FindObjectOfType<BallInfo>();
+        if (tempInfo != null)
+            gmBall = FindObjectOfType<BallInfo>().gameObject;
+        CreateInputs();
 		CreatePlayers();
 	}
 
@@ -66,7 +70,7 @@ public class GameManager : MonoBehaviour
 	{
 		for (int i = 0; i < (int)PN.Length; ++i)
 		{
-			Instance.gmInputs[i] = new InputManager(Vector2.zero, false, false, false);
+			Instance.gmInputs[i] = (InputManager)ScriptableObject.CreateInstance("InputManager");
 		}
 	}
 
@@ -130,7 +134,6 @@ public class GameManager : MonoBehaviour
 					}
 					else
 					{
-						
 						Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);
 					}
 				}

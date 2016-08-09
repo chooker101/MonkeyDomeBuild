@@ -10,17 +10,9 @@ public class Gorilla : Character
 	public Gorilla(int x)
 	{
 		myPlayer = x;
-		horizontalMoveForce = 50f;
-		jumpForce = 25f;
-		speedLimit = 12f;
-		throwForce = 20f;
-		downForce = 1000f;
-		tempDownForce = downForce;
-		downForceIncrement = 100f; // per second
-		maxDownForce = 200f;
-		climbingHorizontalMoveSpeed = 10f;
-        climbingVerticalMoveSpeed = 10f;
-        climbSpeedLimit = speedLimit;
+		throwForce = GameManager.Instance.gmMovementManager.gThrowForce;
+		jumpforce = GameManager.Instance.gmMovementManager.gJumpForce;
+		movespeed = GameManager.Instance.gmMovementManager.gSpeed;
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
 	}
 
