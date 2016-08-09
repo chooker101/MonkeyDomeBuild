@@ -8,7 +8,8 @@ public class UIManager : MonoBehaviour
     public Text p1Score;
     public Text p2Score;
     public Text p3Score;
-    public Text matchTime;
+    public Text matchTimeText;
+    public float matchTime;
     public Text debugLog;
     public Text shotClock;
 
@@ -20,6 +21,16 @@ public class UIManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+        if(matchTime > 0)
+        {
+            matchTime -= Time.deltaTime;
+        }
+        else if(matchTime <= 0)
+        {
+            matchTime = 0;
+            Application.LoadLevel("PregameRoom");
+        }
+
         p1Score.text =
             "00"
             ;
@@ -29,8 +40,8 @@ public class UIManager : MonoBehaviour
         p3Score.text =
             "c:"
             ;
-        matchTime.text = // time of the match left
-            "42:69"
+        matchTimeText.text = // time of the match left
+            matchTime.ToString("F2");
             ;
 
 
