@@ -61,7 +61,6 @@ GameObject:
   - 4: {fileID: 457162}
   - 33: {fileID: 3311092}
   - 23: {fileID: 2360770}
-  - 114: {fileID: 11404564}
   m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
@@ -79,6 +78,7 @@ GameObject:
   - 4: {fileID: 498246}
   - 114: {fileID: 11413260}
   - 114: {fileID: 11458344}
+  - 114: {fileID: 11444810}
   m_Layer: 11
   m_Name: GroundTarget
   m_TagString: Untagged
@@ -162,7 +162,6 @@ GameObject:
   - 4: {fileID: 416954}
   - 33: {fileID: 3334680}
   - 23: {fileID: 2301916}
-  - 114: {fileID: 11415642}
   m_Layer: 11
   m_Name: Sphere (3)
   m_TagString: Untagged
@@ -247,7 +246,6 @@ GameObject:
   - 4: {fileID: 415590}
   - 33: {fileID: 3320860}
   - 23: {fileID: 2302828}
-  - 114: {fileID: 11430816}
   m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
@@ -391,7 +389,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157896}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.27, y: 2.44, z: 0}
+  m_LocalPosition: {x: 12, y: 4.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 450326}
@@ -429,7 +427,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 153962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.501, z: 0}
+  m_LocalPosition: {x: 0, y: 1.501, z: -0.754}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 428648}
@@ -471,7 +469,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 117378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: -0.919}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 412076}
@@ -485,7 +483,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: -0.746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 405842}
@@ -883,21 +881,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11404564
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 121020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetTime: 1
-  lifeTime: 0
-  inAlarm: 0
-  targetAxis: 1
 --- !u!114 &11413260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -914,30 +897,15 @@ MonoBehaviour:
   targetDown: 0
   angleChange: 0
   rotateAxis: {x: 1, y: 0}
---- !u!114 &11415642
+--- !u!114 &11444810
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156810}
+  m_GameObject: {fileID: 122288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetTime: 1
-  lifeTime: 0
-  inAlarm: 0
-  targetAxis: 1
---- !u!114 &11430816
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 177448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 266b2c39582dcc348a11a336a68b1828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   resetTime: 1
@@ -955,10 +923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetTime: 1
-  lifeTime: 0
-  inAlarm: 0
-  targetAxis: 1
 --- !u!135 &13540110
 SphereCollider:
   m_ObjectHideFlags: 1
