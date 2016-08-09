@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 	{
 		for (int i = 0; i < (int)PN.Length; ++i)
 		{
-			Instance.gmInputs[i] = new InputManager(Vector2.zero, false, false, false);
+			Instance.gmInputs[i] = (InputManager)ScriptableObject.CreateInstance("InputManager");
 		}
 	}
 
