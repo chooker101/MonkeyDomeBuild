@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
             else if (matchTime <= 0)
             {
                 matchTime = 0;
-                //Application.LoadLevel("PregameRoom");
+                Application.LoadLevel("PregameRoom");
             }
         }
 
