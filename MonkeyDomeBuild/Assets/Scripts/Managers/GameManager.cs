@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 	public UIManager gmUIManager;
 	public List<InputManager> gmInputs;
 	public List<Material> gmPlayerMats;
+	public MovementManager gmMovementManager;
 
 	private GameManager() { }
 
@@ -133,7 +134,6 @@ public class GameManager : MonoBehaviour
 					}
 					else
 					{
-						
 						Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);
 					}
 				}
