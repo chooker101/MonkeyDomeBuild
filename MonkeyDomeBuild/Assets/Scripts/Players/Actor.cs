@@ -42,6 +42,7 @@ public class Actor : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
 	protected Rigidbody2D cache_rb;
+	protected Transform cache_tf;
 
     public Character characterType;
 
@@ -53,6 +54,7 @@ public class Actor : MonoBehaviour
 		cache_rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		cache_tf = GetComponent<Transform>();
 	}
 
 	void Update()
@@ -296,6 +298,7 @@ public class Actor : MonoBehaviour
 		// right = 1    left = -1
 		if (leftOrRight > 0.0f || leftOrRight < 0.0f)
 		{
+
 			if(leftOrRight > 0.0f)
 			{
 				leftOrRight = 1.0f;
@@ -304,21 +307,22 @@ public class Actor : MonoBehaviour
 			{
 				leftOrRight = -1.0f;
 			}
+
+			BoxCollider2D cachebox = GetComponent<BoxCollider2D>();
+
 			bool hit = false;
-			float falloffY = transform.localScale.y / 2 - 0.02f;
-			for (int i = 0; i < 3; i++)
+			RaycastHit2D hitInfo;
+
+			Vector2 checkPos;
+			checkPos.x = (cache_tf.position.x - cachebox.offset.x) + (((cachebox.size.x /2) + 0.02f) * leftOrRight);
+			checkPos.y = (cache_tf.position.y - cachebox.offset.y) + ((cachebox.size.y / 2) + 0.02f);
+
+			//Debug.Log("CeckPos" + (checkPos.x - cachebox.size.x));
+
+			hitInfo = Physics2D.Raycast(checkPos, Vector2.down, cachebox.size.y, layerMask);
+			if (hitInfo.collider != null)
 			{
-				float falloff = transform.position.y;
-				if (i != 0) falloff += Mathf.Pow(-1, i) * falloffY;
-				RaycastHit2D hitInfo;
-				Vector2 checkPos = transform.position;
-				checkPos.y = falloff;
-				hitInfo = Physics2D.Raycast(checkPos, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
-				Debug.DrawLine(checkPos, checkPos + Vector2.right * leftOrRight);
-				if (hitInfo.collider != null)
-				{
-					hit = true;
-				}
+				hit = true;
 			}
 			return hit;
 		}

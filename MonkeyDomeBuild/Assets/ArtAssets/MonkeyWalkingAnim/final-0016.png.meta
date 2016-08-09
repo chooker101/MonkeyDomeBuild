@@ -1,9 +1,11 @@
 fileFormatVersion: 2
 guid: b1e6e029e1aa548408d7c2a0c6ff2a3e
-timeCreated: 1470714414
+timeCreated: 1470774133
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: final-0016_0
+    21300002: final-0016_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +40,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
@@ -49,7 +51,45 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: final-0016_0
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 499
+        width: 257
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 103.5, y: 48.5}
+        - {x: 63.5, y: 56.5}
+        - {x: 36.5, y: 49.5}
+        - {x: 12.5, y: 42.5}
+        - {x: 42.5, y: 54.5}
+        - {x: 68.5, y: 57.5}
+        - {x: 85.5, y: 80.5}
+        - {x: 79.5, y: 107.5}
+        - {x: 68.5, y: 144.5}
+        - {x: -108.5, y: 144.5}
+        - {x: -123.5, y: 142.5}
+        - {x: -128.5, y: 110.5}
+        - {x: -128.5, y: -144.5}
+        - {x: 108.5, y: -144.5}
+        - {x: 128.5, y: -67.5}
+        - {x: 128.5, y: 13.5}
+    - name: final-0016_1
+      rect:
+        serializedVersion: 2
+        x: 1789
+        y: 547
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

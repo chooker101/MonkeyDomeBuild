@@ -45,9 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ApeSpinner.cs" />
-     <Compile Include="Assets\PreGameTimer.cs" />
      <Compile Include="Assets\Scripts\AI.cs" />
+     <Compile Include="Assets\Scripts\ApeSpinner.cs" />
      <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
      <Compile Include="Assets\Scripts\Banana.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
@@ -68,6 +67,7 @@
      <Compile Include="Assets\Scripts\Players\Monkey.cs" />
      <Compile Include="Assets\Scripts\Players\MonkeyAction.cs" />
      <Compile Include="Assets\Scripts\Players\Player.cs" />
+     <Compile Include="Assets\Scripts\PreGameTimer.cs" />
      <Compile Include="Assets\Scripts\PrefabsRef.cs" />
      <Compile Include="Assets\Scripts\Target\FullTargetRotator.cs" />
      <Compile Include="Assets\Scripts\Target\Target.cs" />

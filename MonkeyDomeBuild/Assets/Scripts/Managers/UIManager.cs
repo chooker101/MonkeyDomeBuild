@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
             else if (matchTime <= 0)
             {
                 matchTime = 0;
-                //Application.LoadLevel("PregameRoom");
+                Application.LoadLevel("PregameRoom");
             }
         }
 
@@ -58,8 +58,8 @@ public class UIManager : MonoBehaviour
             "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().movement + "\n\n" +
             "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_jump + "\n" +
             "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_ballGrab + "\n" +
-            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_throw + "\n\n" +
-            "Targets Hit: " + ScoringManager.targetsHit;
+            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_throw + "\n\n"
+            //"Targets Hit: " + ScoringManager.targetsHit;
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"
             ;
