@@ -76,7 +76,7 @@ public class Player : Actor
                 break;
         }
 		*/
-
+		/*
         if (GameManager.Instance.gmInputs[whichplayer].mJump)
         {
             if (isClimbing)
@@ -90,12 +90,12 @@ public class Player : Actor
             }
             else if (canClimb && !isClimbing)
             {
-                if (!GetComponent<Rigidbody2D>().isKinematic) ChangeIsKinematic();
+                //if (!GetComponent<Rigidbody2D>().isKinematic) ChangeIsKinematic();
                 isClimbing = true;
                 canJump = true;
 				GameManager.Instance.gmInputs[whichplayer].mJump = false;
             }
-        }
+        }*/
 		/*1
         if (isClimbing)
         {

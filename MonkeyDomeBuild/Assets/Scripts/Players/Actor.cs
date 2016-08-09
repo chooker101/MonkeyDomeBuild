@@ -12,12 +12,12 @@ public class Actor : MonoBehaviour
      */
 
 	public int whichplayer;
-    
-    public Vector2 mov;
-    public CameraController cam;
 
-    public bool canJump = true;
-    public int layerMask;
+	public Vector2 movement = Vector2.zero;
+	public CameraController cam;
+
+	//public bool canJump = true;
+	public int layerMask;
     public int layerMaskPlayer;
     public bool ballInRange = false;
     public GameObject ballHolding = null;
@@ -25,10 +25,9 @@ public class Actor : MonoBehaviour
 
     public bool isClimbing = false;
     public bool canClimb = false;
-    private bool isMoving = false;
-    private bool facingRight = true;
+	public bool isinair;
 
-    public int stat_jump = 0;
+	public int stat_jump = 0;
     public int stat_throw = 0;
     public int stat_ballGrab = 0;
 
@@ -42,6 +41,7 @@ public class Actor : MonoBehaviour
     public float chargeThrowRequireCount = 5f;
     public Animator animator;
     public SpriteRenderer spriteRenderer;
+	protected Rigidbody2D cache_rb;
 
     public Character characterType;
 
@@ -50,33 +50,78 @@ public class Actor : MonoBehaviour
         cam = FindObjectOfType<CameraController>();
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
+		cache_rb = GetComponent<Rigidbody2D>();
 	}
 
 	void Update()
 	{
 		CheckInputs();
-		JumpCheck();
+		//JumpCheck();
+		if (GameManager.Instance.gmInputs[whichplayer].mJump)
+		{
+			Jumping();
+		}
 		Aim();
-		mov = GetComponent<Rigidbody2D>().velocity;
 		characterType.CHUpdate();
-        AnimationControl();
 	}
 
 	void FixedUpdate()
 	{
-		Movement();
+		MovementVelocity();
+		AnimationControl();
+		//Movement();
 		characterType.CHFixedUpdate();
 	}
 
 	public virtual void CheckInputs() { }
 
+	void Jumping()
+	{
+		if (!isinair)
+		{
+			isinair = true;
+			cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+		}
+		else
+		{
+			if (isClimbing)
+			{
+				isClimbing = false;
+				cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+			}
+			else if(canClimb)
+			{
+				isClimbing = true;
+			}
+		}
+	}
+
+	void MovementVelocity()
+	{
+		movement = cache_rb.velocity;
+		if (!isClimbing)
+		{
+			if (!RayCastSide((int)GameManager.Instance.gmInputs[whichplayer].mXY.x))
+			{
+				movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
+			}
+		}
+		else
+		{
+			movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
+			movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.movespeed;
+		}
+		cache_rb.velocity = movement;
+	}
+
+	/*
 	public void Movement()
     {
-		Vector2 movement = Vector2.zero;
+		movement = Vector2.zero;
         if (!isClimbing)
         {
             //if player is NOT climbing on vines
-			if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) < characterType.speedLimit + characterInc)
+			if (Mathf.Abs(cache_rb.velocity.x) < characterType.speedLimit + characterInc)
 			{
                 //if player is NOT trying to run into walls
 				if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0)
@@ -84,8 +129,8 @@ public class Actor : MonoBehaviour
 					if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
 					{
                         float changeDirectionMultipiler = 1f;
-                        if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && GetComponent<Rigidbody2D>().velocity.x < 0) ||
-                            (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && GetComponent<Rigidbody2D>().velocity.x > 0))
+                        if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && cache_rb.velocity.x < 0) ||
+                            (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && cache_rb.velocity.x > 0))
                             changeDirectionMultipiler = 1.2f;
 						movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.horizontalMoveForce * changeDirectionMultipiler;
 					}
@@ -95,8 +140,8 @@ public class Actor : MonoBehaviour
 			{
 				movement.x = characterType.speedLimit + characterInc;
 			}
-            //apply force on actor
-            GetComponent<Rigidbody2D>().AddForce(movement);
+			//apply force on actor
+			cache_rb.AddForce(movement);
         }
         else
         {
@@ -122,9 +167,10 @@ public class Actor : MonoBehaviour
                     movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.climbingVerticalMoveSpeed + characterInc * dir;
                 }
             }
-            GetComponent<Rigidbody2D>().velocity = movement;
+			cache_rb.velocity = movement;
         }
-    }
+    }*/
+	/*
     public void JumpCheck()
     {
         if (RayCast(-1))
@@ -158,7 +204,8 @@ public class Actor : MonoBehaviour
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, characterType.jumpForce),ForceMode2D.Impulse);
             stat_jump++; // Adds one to jump stat PUT IN STAT MANAGER
         }
-    }
+    }*/
+
     public void ThrowCheck()
     {
         if (canCharge)
@@ -229,7 +276,6 @@ public class Actor : MonoBehaviour
             if (hitInfo.collider != null)
             {
                 hit = true;
-
             }
         }
         return hit;
@@ -243,33 +289,43 @@ public class Actor : MonoBehaviour
         return false;
     }
 
-    public bool RayCastSide(int leftOrRight)
+    public bool RayCastSide(float leftOrRight)
     {
-        // right = 1    left = -1
-        bool hit = false;
-        float falloffY = transform.localScale.y / 2 - 0.02f;
-        for (int i = 0; i < 3; i++)
-        {
-            float falloff = transform.position.y;
-            if (i != 0) falloff += Mathf.Pow(-1, i) * falloffY;
-            RaycastHit2D hitInfo;
-            Vector2 checkPos = transform.position;
-            checkPos.y = falloff;
-            hitInfo = Physics2D.Raycast(checkPos, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
-            Debug.DrawLine(checkPos, checkPos + Vector2.right * leftOrRight);
-            if (hitInfo.collider != null)
-            {
-                hit = true;
-
-            }
-        }
-        return hit;
+		// right = 1    left = -1
+		if (leftOrRight > 0.0f || leftOrRight < 0.0f)
+		{
+			if(leftOrRight > 0.0f)
+			{
+				leftOrRight = 1.0f;
+			}
+			else
+			{
+				leftOrRight = -1.0f;
+			}
+			bool hit = false;
+			float falloffY = transform.localScale.y / 2 - 0.02f;
+			for (int i = 0; i < 3; i++)
+			{
+				float falloff = transform.position.y;
+				if (i != 0) falloff += Mathf.Pow(-1, i) * falloffY;
+				RaycastHit2D hitInfo;
+				Vector2 checkPos = transform.position;
+				checkPos.y = falloff;
+				hitInfo = Physics2D.Raycast(checkPos, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
+				Debug.DrawLine(checkPos, checkPos + Vector2.right * leftOrRight);
+				if (hitInfo.collider != null)
+				{
+					hit = true;
+				}
+			}
+			return hit;
+		}
+		return false;
     }
 
     public void Aim()
     {
         Debug.DrawLine(GetComponent<Rigidbody2D>().position, new Vector2(GetComponent<Rigidbody2D>().position.x + GameManager.Instance.gmInputs[whichplayer].mXY.x * 2, GetComponent<Rigidbody2D>().position.y + GameManager.Instance.gmInputs[whichplayer].mXY.y * 2));
-
     }
 
     public bool IsHoldingBall()
@@ -277,83 +333,104 @@ public class Actor : MonoBehaviour
         return haveBall;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Ball"))
-        {
-            if (!ballInRange && !other.transform.parent.GetComponent<Rigidbody2D>().isKinematic)
-            {
-                ballInRange = true;
-            }
-        }
-        if (other.gameObject.CompareTag("Vine") && !canClimb)
-        {
-            canClimb = true;
-        }
-        if (other.gameObject.CompareTag("Banana"))
-        {
-            ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
-            //if (proj == null) return;
-            if (proj.GetCanEffectCharacter())
-            {
-                proj.CollideWithCharacter();
-                ReactionToBanana(proj.GetIncAmount());
-                Destroy(other.gameObject);
-            }
-        }
-        if (other.gameObject.CompareTag("Poop"))
-        {
-            ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
-            //if (proj == null) return;
-            if (proj.GetCanEffectCharacter())
-            {
-                proj.CollideWithCharacter();
-                ReactionToPoop(proj.GetIncAmount());
-                Destroy(other.gameObject);
-            }
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if (other.gameObject.CompareTag("Floor"))
+		{
+			isinair = false;
+		}
+	}
 
-        }
-    }
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Ball"))
-        {
-            ballInRange = false;
-            haveBall = false;
-            ballHolding = null;
-        }
-        if (other.gameObject.CompareTag("Vine"))
-        {
-            canClimb = false;
-            isClimbing = false;
-            if (GetComponent<Rigidbody2D>().isKinematic) ChangeIsKinematic();
-        }
+	void OnCollisionExit2D(Collision2D other)
+	{
+		if (other.gameObject.CompareTag("Floor"))
+		{
+			isinair = true;
+		}
+	}
 
-    }
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.gameObject.CompareTag("Vine") && !canClimb)
+		{
+			canClimb = true;
+		}
+		if (other.gameObject.CompareTag("Ball"))
+		{
+			if (!ballInRange && !other.transform.parent.GetComponent<Rigidbody2D>().isKinematic)
+			{
+				ballInRange = true;
+			}
+		}
+		if (other.gameObject.CompareTag("Banana"))
+		{
+			ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
+			//if (proj == null) return;
+			if (proj.GetCanEffectCharacter())
+			{
+				proj.CollideWithCharacter();
+				ReactionToBanana(proj.GetIncAmount());
+				Destroy(other.gameObject);
+			}
+		}
 
-    void OnTriggerStay2D(Collider2D other)
-    {
-        OnTriggerEnter2D(other);
-    }
+		if (other.gameObject.CompareTag("Poop"))
+		{
+			ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
+			//if (proj == null) return;
+			if (proj.GetCanEffectCharacter())
+			{
+				proj.CollideWithCharacter();
+				ReactionToPoop(proj.GetIncAmount());
+				Destroy(other.gameObject);
+			}
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D other)
+	{
+		if (other.gameObject.CompareTag("Ball"))
+		{
+			ballInRange = false;
+			haveBall = false;
+			ballHolding = null;
+		}
+		if (other.gameObject.CompareTag("Vine"))
+		{
+			canClimb = false;
+			isClimbing = false;
+		}
+	}
+
+	void OnTriggerStay2D(Collider2D other)
+	{
+		OnTriggerEnter2D(other);
+	}
+
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
         ChangeInc(incAmount);
     }
+
     public void ReactionToPoop(float incAmount)
     {
         if (Mathf.Abs(characterInc) < maxminInc)
         ChangeInc(-incAmount);
     }
+
     protected void ChangeInc(float inc)
     {
         characterInc += inc;
         //Debug.Log(characterInc);
     }
+
+	/*
     protected void ChangeIsKinematic()
     {
         GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
-    }
+    }*/
+
     protected void AnimationControl()
     {
         //Debug.Log(GetComponent<Rigidbody2D>().velocity.x);

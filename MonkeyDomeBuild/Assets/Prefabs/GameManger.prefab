@@ -96,6 +96,7 @@ GameObject:
   - 114: {fileID: 11436584}
   - 114: {fileID: 11404282}
   - 114: {fileID: 11458014}
+  - 114: {fileID: 11482762}
   m_Layer: 0
   m_Name: GameManger
   m_TagString: Untagged
@@ -112,6 +113,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.36, y: 6.04, z: 0}
   m_LocalScale: {x: 2, y: 3, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 1
@@ -124,6 +126,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.11, y: 23.89, z: 0}
   m_LocalScale: {x: 1.5, y: 2, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 2
@@ -136,6 +139,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 491628}
   - {fileID: 420436}
@@ -153,6 +157,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 35, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 4
@@ -165,6 +170,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -35, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 3
@@ -177,6 +183,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15.12, y: 6.34, z: 0}
   m_LocalScale: {x: 1.5, y: 2, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 0
@@ -355,6 +362,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 0b7e6724be6d50d489be68f2e13e6151, type: 2}
   - {fileID: 0}
   - {fileID: 0}
+  gmMovementManager: {fileID: 11482762}
 --- !u!114 &11458014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -421,6 +429,25 @@ MonoBehaviour:
   coolDownMin: 0
   coolDownMax: 0
   distanceFalloff: 0
+--- !u!114 &11482762
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72138211defbdf04097b0f95e881f5bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mScale: {x: 1, y: 1, z: 1}
+  mSpeed: 13
+  mJumpForce: 1500
+  mThrowForce: 35
+  gScale: {x: 2, y: 2, z: 2}
+  gSpeed: 13
+  gJumpForce: 1500
+  gThrowForce: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
