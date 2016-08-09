@@ -20,13 +20,12 @@ public class CameraController : MonoBehaviour
 
     //private GameObject ball;
     public float smoothing = 3.0f;
-    public float maxCamSize = 10f;
-    private float zoomSpeed;
+    private float maxCamSize = 30f;
+    private float minCamSize = 15f;
+    private float minCameraHeight = 12f;
 
-    [SerializeField]
-    private float buffer;
-    [SerializeField]
-    private float offsetUp;
+    private float buffer = 4f;
+    private float offsetUp = 0f;
 
     private Vector3 offset;
     private float maxXDistance;
@@ -115,34 +114,32 @@ public class CameraController : MonoBehaviour
     void MeanOfPositions()
     {
         positionSum = Vector2.zero;
-        int ballCount = 0;
         for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
+        meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count);
         if (GameManager.Instance.gmBall != null)
         {
             if (GameManager.Instance.gmBall.GetComponent<BallInfo>().isballnear == false)
             {
-                ballCount = 1;
-                positionSum += GameManager.Instance.gmBall.transform.position;
+                meanPosition = (meanPosition + GameManager.Instance.gmBall.transform.position) / 2;
             }
         }
-        meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + ballCount);
 
     }
 
     void FindPanning()
     {
+        //get average position of players
+        //then use it to get the average position of the ball and the players
         MeanOfPositions();
         camSize = myCam.orthographicSize;
         maxXDistance = 0f;
         maxYDistance = 0f;
         // get maxXDistance       
         for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
-        {
-            // not including ball yet, fix to grab x, not vector3
-            
+        {            
             if(maxXDistance < Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position))
             {
                 maxXDistance = Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position);
@@ -169,8 +166,6 @@ public class CameraController : MonoBehaviour
             }
         }
 
-
-
         //16:9ify the x into a y
         maxXDistance = maxXDistance * (myCam.aspect/2);
         if(maxXDistance > maxYDistance)
@@ -181,29 +176,24 @@ public class CameraController : MonoBehaviour
         {
             panningY = maxYDistance + buffer;
         }
-
-        //panningScale.Set(maxXDistance, panningY, 0.0f);
-
     }
 
     void SetCamera()
     {
-
+        //lerp to new camera size and position
 		Vector3 currentPos = transform.position;
         meanPosition.y += offsetUp;
-        meanPosition.y = Mathf.Max(meanPosition.y, 10f);
-
+        meanPosition.y = Mathf.Max(meanPosition.y, minCameraHeight);
 		Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime*smoothing));
 
         myLerp.z = currentPos.z;
         transform.position = myLerp;
         FindPanning();
         
-        camSize = Mathf.Min(maxCamSize, camSize);
-        myCam.orthographicSize = Mathf.Lerp(camSize, panningY, (Time.deltaTime*smoothing));
-        //myCam.orthographicSize = Mathf.SmoothDamp(myCam.orthographicSize, camSize, ref zoomSpeed, .2f);
-        
-        //myCam.orthographicSize = panningY;
+        panningY = Mathf.Max(minCamSize, panningY);
+        panningY = Mathf.Min(maxCamSize, panningY);
+
+        myCam.orthographicSize = Mathf.Lerp(myCam.orthographicSize, panningY, Time.deltaTime * smoothing);
 
 
     }
