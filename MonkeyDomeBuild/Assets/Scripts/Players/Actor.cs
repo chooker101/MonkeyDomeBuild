@@ -25,6 +25,8 @@ public class Actor : MonoBehaviour
 
     public bool isClimbing = false;
     public bool canClimb = false;
+    private bool isMoving = false;
+    private bool facingRight = true;
 
     public int stat_jump = 0;
     public int stat_throw = 0;
@@ -38,6 +40,8 @@ public class Actor : MonoBehaviour
     public float maxChargeCount = 10f;
     public float chargePerSec = 10f;
     public float chargeThrowRequireCount = 5f;
+    public Animator animator;
+    public SpriteRenderer spriteRenderer;
 
     public Character characterType;
 
@@ -55,6 +59,7 @@ public class Actor : MonoBehaviour
 		Aim();
 		mov = GetComponent<Rigidbody2D>().velocity;
 		characterType.CHUpdate();
+        AnimationControl();
 	}
 
 	void FixedUpdate()
@@ -220,7 +225,7 @@ public class Actor : MonoBehaviour
             Vector2 checkPos = transform.position;
             checkPos.x = falloff;
             hitInfo = Physics2D.Raycast(checkPos, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
-            //Debug.DrawLine(checkPos, checkPos + Vector2.up*direction);
+            Debug.DrawLine(checkPos, checkPos + Vector2.up*direction);
             if (hitInfo.collider != null)
             {
                 hit = true;
@@ -251,7 +256,7 @@ public class Actor : MonoBehaviour
             Vector2 checkPos = transform.position;
             checkPos.y = falloff;
             hitInfo = Physics2D.Raycast(checkPos, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMask);
-            //Debug.DrawLine(checkPos, checkPos + Vector2.right * leftOrRight);
+            Debug.DrawLine(checkPos, checkPos + Vector2.right * leftOrRight);
             if (hitInfo.collider != null)
             {
                 hit = true;
@@ -348,5 +353,25 @@ public class Actor : MonoBehaviour
     protected void ChangeIsKinematic()
     {
         GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
+    }
+    protected void AnimationControl()
+    {
+        //Debug.Log(GetComponent<Rigidbody2D>().velocity.x);
+        if (GetComponent<Rigidbody2D>().velocity.x > 0f)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (GetComponent<Rigidbody2D>().velocity.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > 1f || GameManager.Instance.gmInputs[whichplayer].mXY.x != 0)
+        {
+            animator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
+        }
     }
 }

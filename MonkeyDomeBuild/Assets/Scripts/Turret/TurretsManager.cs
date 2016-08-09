@@ -18,8 +18,8 @@ public class TurretsManager : MonoBehaviour
         {
             turrets.Add(obj.GetComponent<Turret>());
         }
-        tempShootTimeMin = 3f;
-        tempShootTimeMax = 8f;
+        tempShootTimeMin = 8f;
+        tempShootTimeMax = 10f;
         tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
 
     }
