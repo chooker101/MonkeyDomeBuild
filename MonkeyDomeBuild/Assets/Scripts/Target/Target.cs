@@ -59,7 +59,7 @@ public class Target : MonoBehaviour {
         if (other.CompareTag("Ball"))
         {
             isHit = true;
-            ScoringManager.targetsHit++;
+            //ScoringManager.targetsHit++;
             TargetSetter(-1);
         }
     }
