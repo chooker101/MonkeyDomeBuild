@@ -45,7 +45,6 @@ public class Monkey : Character
                     cacheplayer.canCharge = false;
                     cacheplayer.haveBall = true;
                     cacheplayer.ballHolding = GameManager.Instance.gmBall;
-                    cacheplayer.ballHolding.GetComponent<BallInfo>().UpdateLastThrowMonkey(cacheplayer.gameObject);
                     cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
                     cacheplayer.stat_ballGrab++;
                 }

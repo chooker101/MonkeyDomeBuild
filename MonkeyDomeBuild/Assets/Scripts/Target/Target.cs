@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class Target : MonoBehaviour {
-
     private bool isHit;
     //private int targetTier;
     private FullTargetRotator targetActivator;
@@ -11,7 +10,9 @@ public class Target : MonoBehaviour {
     private Target gameTarget;
     private bool stayTier;
     private TargetManager targetManager;
-    private bool targetActive = false;
+    public bool targetActive = false;
+
+    private GameObject targetHead;
 
     public float resetTime = 1;
     public float lifeTime;
@@ -27,10 +28,14 @@ public class Target : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        targetManager = GetComponentInParent<TargetManager>();
+        //activateCounter = 0;
+        targetManager = FindObjectOfType<TargetManager>();
         targetParent = transform.parent.gameObject;
-        targetActivator = GetComponent<FullTargetRotator>();
+       // targetActivator = GetComponent<FullTargetRotator>();
         targetChild = transform.parent.FindChild("Target").gameObject;
+
+        targetHead = transform.FindChild("Large").gameObject;
+
         //targetTier = 0;
 
         isHit = false;
@@ -39,10 +44,10 @@ public class Target : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            ActivateTarget();
-        }
+        //if (Input.GetKeyDown(KeyCode.L))
+        //{
+        //    ActivateTarget();
+        //}
         if (!inAlarm)
         {
             TargetTime();
@@ -59,10 +64,46 @@ public class Target : MonoBehaviour {
         if (other.CompareTag("Ball"))
         {
             isHit = true;
-            ScoringManager.targetsHit++;
+            //ScoringManager.targetsHit++;
             TargetSetter(-1);
         }
     }
+
+
+    public void SetTargetHeads(int targetTier)
+    {
+        // apply stats
+        switch (targetTier)
+        {
+            case 0:
+                targetHead.SetActive(false);
+                targetHead = transform.FindChild("Large").gameObject;
+                targetHead.SetActive(true);
+                break;
+            case 1:
+                targetHead.SetActive(false);
+                targetHead = transform.FindChild("Medium").gameObject;
+                targetHead.SetActive(true);
+                break;
+            case 2:
+                targetHead.SetActive(false);
+                targetHead = transform.FindChild("Small").gameObject;
+                targetHead.SetActive(true);
+                break;
+            case 3:
+                targetHead.SetActive(false);
+                targetHead = transform.FindChild("Tiny").gameObject;
+                targetHead.SetActive(true);
+                break;
+            default:
+                targetHead.SetActive(false);
+                targetHead = transform.FindChild("Large").gameObject;
+                targetHead.SetActive(true);
+                break;
+        }
+    }
+
+
     public void TargetSetter(float rotDir)
     {
         // to active target, use TargetSetter(1), to deactivate target, use TargetSetter(-1)
@@ -84,6 +125,7 @@ public class Target : MonoBehaviour {
                 break;
         }
         targetParent.transform.RotateAround(targetChild.transform.position, rotAt, -90f * rotDir);
+        Debug.Log(gameObject.name);
     }
 
     public void TargetTime()
@@ -114,17 +156,8 @@ public class Target : MonoBehaviour {
         }
     }
 
-    public void ActivateTarget()
-    {
-        targetActive = true;
-        Debug.Log("Activated");
-        TargetSetter(1f);
-        TargetTime();
-    }
-
     public void MoveTargets()
     {
 
     }
-
 }

@@ -190,7 +190,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 420344}
   - 114: {fileID: 11429416}
-  - 114: {fileID: 11422888}
   - 114: {fileID: 11425444}
   m_Layer: 11
   m_Name: GroundTarget
@@ -881,17 +880,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11422888
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 170100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11425444
 MonoBehaviour:
   m_ObjectHideFlags: 1
