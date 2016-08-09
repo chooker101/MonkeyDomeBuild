@@ -15,22 +15,22 @@ public class TargetManager : MonoBehaviour {
     private bool[] targetsHitInSequence = new bool[5];
     private bool advanceTier;
     private bool stayTier;
+    private bool rallyOn;
+    private int[] activateTimes = new int[5] { 0, 3, 6, 8, 10 };
+    private int activateCounter;
 
-    //private GameObject[] largeTargets;
-    private GameObject targetParent;
-    private GameObject targetHead;
-    private Target gameTargets;
+    private Target[] gameTargets;
     private float startLifeTime;
 
     // Use this for initialization
     void Start () {
+        activateCounter = 0;
+        rallyOn = false;
 
-        gameTargets = FindObjectOfType<Target>();
+        gameTargets = FindObjectsOfType<Target>();
 
-        
-        targetParent = transform.parent.gameObject;
         targetTier = 0;
-        targetHead = transform.FindChild("Large").gameObject;
+
         isHit = false;
 
         ballInfo = GetComponent<BallInfo>();
@@ -44,33 +44,27 @@ public class TargetManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        //Debug.Log(targetHead.name);
-        //Debug.Log(targetTier);
-        //Debug.Log(targetParent.gameObject.name);
-
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            gameTargets.TargetSetter(1f);
-        }
-        else if (Input.GetKeyDown(KeyCode.U))
-        {
-            gameTargets.TargetSetter(-1f);
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             targetTier = Random.Range(0, 4);
-            SetTargetHeads();
+            foreach(Target t in gameTargets)
+            {
+                t.SetTargetHeads(targetTier);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log("M");
+            advanceTier = CheckRally();
+            Rally();
         }
 
-        //advanceTier = CheckRally();
-
-        //Rally();
     }
 
 
     void RallySetter()
     {
+        Debug.Log("rally setter, clear targetshitinsequence");
         // this method is used to clear the targetsHitInSequence array
         for (int i = 0;i < targetsHitInSequence.Length; i++)
         {
@@ -80,6 +74,7 @@ public class TargetManager : MonoBehaviour {
     }
 
     public float SetLifeTime()
+        // needed by Target script, don't merge into SetTargetHeads
     {
         switch (targetTier)
         {
@@ -102,19 +97,25 @@ public class TargetManager : MonoBehaviour {
 
     void StartRally()
     {
+        Debug.Log("start rally, raise tagets");
         // call this method at the start of each rally. will activate target and deactivate if hit
         isHit = false;
-        gameTargets.TargetSetter(1);
-        //gameTargets.TargetTime();
-        if (isHit == true)
+        ActivateTarget();
+        foreach (Target t in gameTargets)
         {
-            //TargetSetter(-1); do this with reference to target
+            // make a sequence of targets, not all at the same time!
+            if (isHit == true)
+            {
+                t.TargetSetter(-1f);
+                Debug.Log("isHit true, lower targets");
+            }
         }
 
     }
 
     bool CheckRally()
     {
+        Debug.Log("Check Rally");
         // checks if enough targets in one rally are hit to upgrade tier
         int hitSum = 0;
         foreach(bool b in targetsHitInSequence)
@@ -125,6 +126,7 @@ public class TargetManager : MonoBehaviour {
             } 
             if (hitSum >= 3)
             {
+                Debug.Log("Hitsum: " + hitSum);
                 return true;
             }
             }
@@ -132,77 +134,92 @@ public class TargetManager : MonoBehaviour {
         {
             stayTier = true;
         }
+        Debug.Log("Hitsum: " + hitSum);
         return false;
     }
     void UpdateTierStatus()
     {
+        Debug.Log("update tier status");
         // updates tier status at end of a rally
-
-        if (advanceTier)
+        foreach (Target t in gameTargets)
         {
-            if (targetTier < 4)
+            if (advanceTier)
             {
-                targetTier++;
-                SetTargetHeads();
+                if (targetTier < 4)
+                {
+                    targetTier++;
+                    t.SetTargetHeads(targetTier);
+                }
+            }
+            else if (!stayTier)
+            {
+                t.SetTargetHeads(targetTier);
             }
         }
-        else if (!stayTier)
-        {
-            SetTargetHeads();
-        }
-        ResetTargets();
+        Debug.Log("tier status: "+ targetTier);
+        rallyOn = false;
+        //ResetTargetPositions();
     }
 
-    void ResetTargets()
+    void ResetTargetPositions()
     {
         // put them back where they started
-        gameTargets.TargetSetter(-1);
-    }
-
-    void SetTargetHeads()
-    {
-        // apply stats
-        switch (targetTier)
+        foreach (Target t in gameTargets)
         {
-            case 0:
-                targetHead.SetActive(false);
-                targetHead = transform.FindChild("Large").gameObject;
-                targetHead.SetActive(true);
-                break;
-            case 1:
-                targetHead.SetActive(false);
-                targetHead = transform.FindChild("Medium").gameObject;
-                targetHead.SetActive(true);
-                break;
-            case 2:
-                targetHead.SetActive(false);
-                targetHead = transform.FindChild("Small").gameObject;
-                targetHead.SetActive(true);
-                break;
-            case 3:
-                targetHead.SetActive(false);
-                targetHead = transform.FindChild("Tiny").gameObject;
-                targetHead.SetActive(true);
-                break;
-            default:
-                targetHead.SetActive(false);
-                targetHead = transform.FindChild("Large").gameObject;
-                targetHead.SetActive(true);
-                break;
+            t.TargetSetter(-1f);
         }
-    }
-
-    void DowngradeTargets()
-    {
-        // apply stats
     }
 
 
     void Rally()
     {
+        rallyOn = true;
         RallySetter();
         StartRally();
         UpdateTierStatus();
+    }
+
+    void BetweenRallies()
+    {
+        // timer until next rally
+    }
+
+    IEnumerator ActiveWaiter(Target t)
+    {
+        yield return new WaitForSeconds(activateTimes[activateCounter]);
+        t.targetActive = true;
+        Debug.Log("Activated");
+        t.TargetSetter(1f);
+        t.TargetTime();
+    }
+
+    public void ActivateTarget()
+    {
+        int j;
+        int i = 0;
+        // shuffle gameTargets array here!
+        while(i < activateTimes.Length)
+        {
+            j = Random.Range(0, activateTimes.Length);
+            Debug.Log("x: " + activateTimes[i] + " y: " + activateTimes[j]);
+            if (i == j)
+            {
+                j = (j + 1) % activateTimes.Length;
+            }
+            activateTimes[i] ^= activateTimes[j];
+            activateTimes[j] = activateTimes[i] ^ activateTimes[j];
+            activateTimes[i] ^= activateTimes[j];
+            Debug.Log("x: " + activateTimes[i] + " y: " + activateTimes[j]);
+            i++;
+        }
+
+        foreach (Target t in gameTargets)
+        {
+            StartCoroutine(ActiveWaiter(t));
+            Debug.Log(activateCounter);
+            activateCounter++;
+        }
+        activateCounter = 0;
     }
 
 }
