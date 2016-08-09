@@ -6,6 +6,7 @@ public class BallInfo : MonoBehaviour
     [SerializeField]
     private GameObject lastThrowMonkey = null;
     private GameObject holdingMonkey = null;
+    private ScoringManager scoreManager = null;
     public bool isballnear = false;
     private Rigidbody2D m_rigid;
     private Vector2 startPos = Vector2.up * 10;
@@ -15,11 +16,22 @@ public class BallInfo : MonoBehaviour
     private PhysicsMaterial2D ballMat;
     [SerializeField]
     private float bounciness;
+
+    public float distanceTravel = 0f;
+    public float travelTime = 0f;
+    public float minCalcDistanceVelocity = 10f;
+    public float vel = 0f;
+
+    public float DistanceTravel
+    {
+        get { return distanceTravel; }
+    }
     
     void Start ()
     {
         m_rigid = GetComponent<Rigidbody2D>();
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
+        scoreManager = FindObjectOfType<ScoringManager>();
         bounciness = ballMat.bounciness;
         timer = 8f;
         //PickRandomVictim();
@@ -37,6 +49,8 @@ public class BallInfo : MonoBehaviour
                 count += Time.deltaTime;
             }
         }
+        UpdateTravelDistance();
+        vel = m_rigid.velocity.magnitude;
     }
     void LateUpdate()
     {
@@ -128,6 +142,12 @@ public class BallInfo : MonoBehaviour
         {
             holdingMonkey = who;
             m_rigid.isKinematic = true;
+            if (scoreManager != null)
+            {
+                scoreManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime);
+            }
+            ResetScoringStats();
+            UpdateLastThrowMonkey(who);
         }
     }
 	
@@ -161,6 +181,22 @@ public class BallInfo : MonoBehaviour
     public float GetCurrentShotClockTime()
     {
         return count;
+    }
+    void UpdateTravelDistance()
+    {
+        if (holdingMonkey == null && lastThrowMonkey != null)
+        {
+            if(m_rigid.velocity.magnitude > minCalcDistanceVelocity)
+            {
+                distanceTravel += m_rigid.velocity.magnitude * Time.deltaTime;
+            }
+            travelTime += Time.deltaTime;
+        }
+    }
+    void ResetScoringStats()
+    {
+        distanceTravel = 0f;
+        travelTime = 0f;
     }
 	
 }
