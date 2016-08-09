@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public Text p2Score;
     public Text p3Score;
     public Text matchTimeText;
+    public bool noTime;
     public float matchTime;
     public Text debugLog;
     public Text shotClock;
@@ -21,14 +22,17 @@ public class UIManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-        if(matchTime > 0)
+        if (noTime == false)
         {
-            matchTime -= Time.deltaTime;
-        }
-        else if(matchTime <= 0)
-        {
-            matchTime = 0;
-            //Application.LoadLevel("PregameRoom");
+            if (matchTime > 0)
+            {
+                matchTime -= Time.deltaTime;
+            }
+            else if (matchTime <= 0)
+            {
+                matchTime = 0;
+                //Application.LoadLevel("PregameRoom");
+            }
         }
 
         p1Score.text =
@@ -40,12 +44,16 @@ public class UIManager : MonoBehaviour
         p3Score.text =
             "c:"
             ;
-        matchTimeText.text = // time of the match left
-            matchTime.ToString("F2");
-            ;
 
+        if (noTime == false)
+        {
+            matchTimeText.text = // time of the match left
+       matchTime.ToString("F2");
+        }
+        else
+            matchTimeText.text = "∞";
 
-        debugLog.text = // Displays all debug info
+            debugLog.text = // Displays all debug info
             "PLAYER 1 STATS: \n" +
             "Move Force: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().characterType.horizontalMoveForce + "\n" +
             "Speed Limit: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().characterType.speedLimit + "\n" +
