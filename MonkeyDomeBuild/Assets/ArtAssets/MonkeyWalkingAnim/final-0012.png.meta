@@ -1,9 +1,10 @@
 fileFormatVersion: 2
 guid: 999c6df241dfe434bb60aa3384a2a5ef
-timeCreated: 1470714413
+timeCreated: 1470770980
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: final-0012_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
@@ -49,7 +50,30 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: final-0012_0
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 503
+        width: 255
+        height: 293
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 99.5, y: -126.5}
+        - {x: 127.5, y: -78.5}
+        - {x: 127.5, y: 14.5}
+        - {x: 74.5, y: 83.5}
+        - {x: 28.5, y: 146.5}
+        - {x: -99.5, y: 146.5}
+        - {x: -127.5, y: 131.5}
+        - {x: -127.5, y: -146.5}
+        - {x: 2.5, y: -146.5}
+        - {x: -5.5, y: -98.5}
+        - {x: 28.5, y: -146.5}
+        - {x: 68.5, y: -146.5}
     outline: []
   spritePackingTag: 
   userData: 

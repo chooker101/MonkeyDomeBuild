@@ -44,8 +44,8 @@ public class TargetManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Debug.Log(targetHead.name);
-        Debug.Log(targetTier);
+        //Debug.Log(targetHead.name);
+        //Debug.Log(targetTier);
         //Debug.Log(targetParent.gameObject.name);
 
 
