@@ -20,10 +20,10 @@ public class CameraController : MonoBehaviour
 
     //private GameObject ball;
     public float smoothing = 3.0f;
-    private float maxCamSize = 30f;
-    private float minCamSize = 15f;
+    private float maxCamSize = 25f;
+    private float minCamSize = 18f;
     private float minCameraHeight = 12f;
-
+    private float maxDistanceFromZero = 4f;
     private float buffer = 4f;
     private float offsetUp = 0f;
 
@@ -121,9 +121,10 @@ public class CameraController : MonoBehaviour
         meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count);
         if (GameManager.Instance.gmBall != null)
         {
+            meanPosition = (meanPosition + GameManager.Instance.gmBall.transform.position) / 2;
             if (GameManager.Instance.gmBall.GetComponent<BallInfo>().isballnear == false)
             {
-                meanPosition = (meanPosition + GameManager.Instance.gmBall.transform.position) / 2;
+
             }
         }
 
@@ -184,6 +185,14 @@ public class CameraController : MonoBehaviour
 		Vector3 currentPos = transform.position;
         meanPosition.y += offsetUp;
         meanPosition.y = Mathf.Max(meanPosition.y, minCameraHeight);
+        if (meanPosition.x > 0)
+        {
+            meanPosition.x = Mathf.Min(meanPosition.x, maxDistanceFromZero);
+        }
+        else
+        {
+            meanPosition.x = Mathf.Max(meanPosition.x, -maxDistanceFromZero);
+        }
 		Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime*smoothing));
 
         myLerp.z = currentPos.z;
