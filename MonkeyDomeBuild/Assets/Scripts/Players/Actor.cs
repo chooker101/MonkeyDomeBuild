@@ -108,9 +108,24 @@ public class Actor : MonoBehaviour
 		movement = cache_rb.velocity;
 		if (!isClimbing)
 		{
-			if (!RayCastSide((int)GameManager.Instance.gmInputs[whichplayer].mXY.x))
+			if (!RayCastSide(GameManager.Instance.gmInputs[whichplayer].mXY.x))
 			{
-				movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
+                if(characterType is Gorilla)
+                {
+                    Gorilla gorilla = characterType as Gorilla;
+                    if (gorilla.IsCharging)
+                    {
+                        movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed / 2;
+                    }
+                    else
+                    {
+                        movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
+                    }
+                }
+                else
+                {
+                    movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
+                }
 			}
 		}
 		else
@@ -315,14 +330,18 @@ public class Actor : MonoBehaviour
 
 			bool hit = false;
 			RaycastHit2D hitInfo;
-
-			Vector2 checkPos;
-			checkPos.x = ((cache_tf.position.x - cachebox.offset.x) + (((cachebox.size.x /2) + 0.02f) * leftOrRight)) * cache_tf.localScale.x;
-			checkPos.y = ((cache_tf.position.y - cachebox.offset.y) + ((cachebox.size.y / 2) + 0.02f)) * cache_tf.localScale.y;
-
-			//Debug.Log("CeckPos" + (checkPos.x - cachebox.size.x));
-
-			hitInfo = Physics2D.Raycast(checkPos, Vector2.down, (cachebox.size.y + 0.02f) * cache_tf.localScale.y, layerMask);
+            Vector2 checkPosStart;
+            //checkPos.x = ((cache_tf.position.x - cachebox.offset.x) + (((cachebox.size.x /2) + 0.02f) * leftOrRight)) * cache_tf.localScale.x;
+            //checkPos.y = ((cache_tf.position.y - cachebox.offset.y) + ((cachebox.size.y / 2) + 0.02f)) * cache_tf.localScale.y;
+            //Debug.Log("CeckPos" + (checkPos.x - cachebox.size.x));
+            checkPosStart.x = transform.position.x + (cachebox.size.x / 2 + 0.1f) * leftOrRight * transform.localScale.x;
+            checkPosStart.y = transform.position.y - (cachebox.size.y / 2 - cachebox.offset.y) * transform.localScale.y;
+            Vector2 scale = new Vector2(transform.localScale.x, transform.localScale.y);
+            Vector2 tempV = checkPosStart;
+            tempV.y += (cachebox.size.y * transform.localScale.y) + 0.1f;
+            Debug.DrawLine(checkPosStart, tempV);
+            hitInfo = Physics2D.Raycast(checkPosStart, Vector2.up, (cachebox.size.y * transform.localScale.y) + 0.1f, layerMask);
+			//hitInfo = Physics2D.Raycast(checkPos, Vector2.down, (cachebox.size.y + 0.02f) * cache_tf.localScale.y, layerMask);
 			if (hitInfo.collider != null)
 			{
 				hit = true;

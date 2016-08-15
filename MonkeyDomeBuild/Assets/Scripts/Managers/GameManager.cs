@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
         Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_catch/throw");
         Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
         Instance.gmInputs[(int)PN.P1].mAimStomp = Input.GetButtonDown("p1_aim/stomp");
+        Instance.gmInputs[(int)PN.P1].mChargeStomp = Input.GetButton("p1_aim/stomp");
         Instance.gmInputs[(int)PN.P2].mXY.x = Input.GetAxis("p2_joy_x");
 		Instance.gmInputs[(int)PN.P2].mXY.y = -Input.GetAxis("p2_joy_y");
 		Instance.gmInputs[(int)PN.P2].mJump = Input.GetButtonDown("p2_jump");
@@ -90,6 +91,7 @@ public class GameManager : MonoBehaviour
         Instance.gmInputs[(int)PN.P2].mChargeThrow = Input.GetButton("p2_catch/throw");
         Instance.gmInputs[(int)PN.P2].mCatchRelease = Input.GetButtonUp("p2_catch/throw");
         Instance.gmInputs[(int)PN.P2].mAimStomp = Input.GetButtonDown("p2_aim/stomp");
+        Instance.gmInputs[(int)PN.P2].mChargeStomp = Input.GetButton("p2_aim/stomp");
         Instance.gmInputs[(int)PN.P3].mXY.x = Input.GetAxis("p3_joy_x");
 		Instance.gmInputs[(int)PN.P3].mXY.y = -Input.GetAxis("p3_joy_y");
 		Instance.gmInputs[(int)PN.P3].mJump = Input.GetButtonDown("p3_jump");
@@ -97,6 +99,7 @@ public class GameManager : MonoBehaviour
         Instance.gmInputs[(int)PN.P3].mChargeThrow = Input.GetButton("p3_catch/throw");
         Instance.gmInputs[(int)PN.P3].mCatchRelease = Input.GetButtonUp("p3_catch/throw");
         Instance.gmInputs[(int)PN.P3].mAimStomp = Input.GetButtonDown("p3_aim/stomp");
+        Instance.gmInputs[(int)PN.P3].mChargeStomp = Input.GetButton("p3_aim/stomp");
     }
 
 	public void CreatePlayers()

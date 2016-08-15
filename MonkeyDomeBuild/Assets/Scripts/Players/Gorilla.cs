@@ -6,6 +6,11 @@ public class Gorilla : Character
 	private int myPlayer;
 	private Player cacheplayer;
 	private float timeBeingGorilla = 0f;
+    private float chargeCount = 0f;
+    private float chargeCompleteTime = 3f;
+    private bool canStomp = false;
+    private bool isCharging = false;
+    private GorillaCharge chargeUI;
 
 	public Gorilla(int x)
 	{
@@ -14,6 +19,9 @@ public class Gorilla : Character
 		jumpforce = GameManager.Instance.gmMovementManager.gJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.gSpeed;
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
+        chargeUI = cacheplayer.gameObject.GetComponentInChildren<Canvas>().gameObject.GetComponent<GorillaCharge>();
+        if (chargeUI != null)
+            chargeUI.MaxChargeTime = chargeCompleteTime;
 	}
 
 	public override void CHUpdate()
@@ -43,7 +51,6 @@ public class Gorilla : Character
 			}
 		}
 	}
-
 	public override void Mutate()
 	{
 		cacheplayer.characterType = new Monkey(myPlayer);
@@ -69,14 +76,17 @@ public class Gorilla : Character
 		Destroy(gameObject);
 		*/
 	}
-
 	public override float GetTimeBeingGorilla()
 	{
 		return timeBeingGorilla;
 	}
+    public bool IsCharging
+    {
+        get { return isCharging; }
+    }
 	protected void StompCheck()
 	{
-		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp)
+		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canStomp && !cacheplayer.IsInAir)
 		{
 			for(int i = 0;i < GameManager.Instance.gmPlayers.Capacity; ++i)
 			{
@@ -87,7 +97,30 @@ public class Gorilla : Character
 					GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
 				}
 			}
+            canStomp = false;
             cacheplayer.cam.ScreenShake();
 		}
+        else if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp && !canStomp)
+        {
+            isCharging = true;
+            if (chargeCount >= chargeCompleteTime)
+            {
+                canStomp = true;
+                isCharging = false;
+            }
+            else
+            {
+                chargeCount += Time.deltaTime;
+                if (chargeUI != null)
+                    chargeUI.ChargeCount = chargeCount;
+            }
+        }
+        else
+        {
+            isCharging = false;
+            chargeCount = 0;
+            if (chargeUI != null)
+                chargeUI.ChargeCount = chargeCount;
+        }
 	}
 }

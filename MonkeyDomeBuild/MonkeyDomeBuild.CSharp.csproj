@@ -78,9 +78,11 @@
     <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\Players\Actor.cs" />
+    <Compile Include="Assets\Scripts\Players\CallForBallReset.cs" />
     <Compile Include="Assets\Scripts\Players\Character.cs" />
     <Compile Include="Assets\Scripts\Players\Gorilla.cs" />
     <Compile Include="Assets\Scripts\Players\GorillaAction.cs" />
+    <Compile Include="Assets\Scripts\Players\GorillaCharge.cs" />
     <Compile Include="Assets\Scripts\Players\Monkey.cs" />
     <Compile Include="Assets\Scripts\Players\MonkeyAction.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />

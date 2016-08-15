@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Monkey : Character
 {
 	private int myPlayer;
 	private Player cacheplayer;
-
+    private CallForBallReset callForBall;
 	public Monkey(int x)
 	{
 		myPlayer = x;
@@ -13,6 +14,8 @@ public class Monkey : Character
 		jumpforce = GameManager.Instance.gmMovementManager.mJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.mSpeed;
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
+        callForBall = cacheplayer.gameObject.GetComponentInChildren<Canvas>().gameObject.GetComponent<CallForBallReset>();
+        //callForBallImg.SetActive(false);
 	}
 
 	
@@ -25,6 +28,7 @@ public class Monkey : Character
 		else
 		{
 			CatchCheck();
+            CallForBall();
 		}
 	}
 
@@ -32,7 +36,13 @@ public class Monkey : Character
 	{
         //Debug.DrawLine(cacheplayer.transform.position, GameManager.Instance.gmBall.transform.position);
 	}
-
+    protected void CallForBall()
+    {
+        if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && !callForBall.CallForBallActive && !cacheplayer.IsHoldingBall())
+        {
+            callForBall.CallForBall();
+        }
+    }
 	protected void CatchCheck()
 	{
 		if (GameManager.Instance.gmInputs[myPlayer].mCatch && GameManager.Instance.gmBall != null)
