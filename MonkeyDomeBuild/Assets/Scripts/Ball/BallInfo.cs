@@ -7,13 +7,15 @@ public class BallInfo : MonoBehaviour
     private GameObject lastThrowMonkey = null;
     private GameObject holdingMonkey = null;
     private ScoringManager scoreManager = null;
-    public bool isballnear = false;
+    private PhysicsMaterial2D ballMat;
     private Rigidbody2D m_rigid;
     private Vector2 startPos = Vector2.up * 10;
+    public bool isballnear = false;
     public bool timerUp = false;
     private float timer = 8f;
     public float count = 0f;
-    private PhysicsMaterial2D ballMat;
+    private bool perfectCatch = false;
+    public float perfectCatchDistance;
     [SerializeField]
     private float bounciness;
 
@@ -21,6 +23,9 @@ public class BallInfo : MonoBehaviour
     public float travelTime = 0f;
     public float minCalcDistanceVelocity = 10f;
     public float vel = 0f;
+    public int numberOfBounce = 0;
+
+    public GameObject testMonkey;
 
     public float DistanceTravel
     {
@@ -29,6 +34,7 @@ public class BallInfo : MonoBehaviour
     
     void Start ()
     {
+        perfectCatchDistance = 1f;
         m_rigid = GetComponent<Rigidbody2D>();
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
         scoreManager = FindObjectOfType<ScoringManager>();
@@ -38,6 +44,9 @@ public class BallInfo : MonoBehaviour
     }
     void Update()
     {
+        Debug.DrawLine(transform.position, transform.position + Vector3.right * perfectCatchDistance);
+        if (testMonkey != null)
+        Debug.Log(Vector3.Distance(transform.position, testMonkey.transform.position));
         if (timerUp)
         {
             if (count >= timer)
@@ -59,7 +68,6 @@ public class BallInfo : MonoBehaviour
             m_rigid.transform.position = Vector2.Lerp(m_rigid.transform.position, holdingMonkey.transform.position, 1f);
         }
     }
-
 	public void UpdateLastThrowMonkey(GameObject monkey)
     {
         lastThrowMonkey = monkey;
@@ -82,10 +90,8 @@ public class BallInfo : MonoBehaviour
 		m_rigid.isKinematic = false;
         //m_rigid.useGravity = true;
     }
-
     public void Change(int index)
     {
-
         if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID()) PickRandomVictim();
         float longestTimeGorilla = 0f;
         count = 0;
@@ -142,12 +148,16 @@ public class BallInfo : MonoBehaviour
         {
             holdingMonkey = who;
             m_rigid.isKinematic = true;
+            if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)
+                perfectCatch = true;
             if (scoreManager != null)
             {
-                scoreManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime);
+                scoreManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
             }
             ResetScoringStats();
             UpdateLastThrowMonkey(who);
+            perfectCatch = false;
+            numberOfBounce = 0;
         }
     }
 	
@@ -197,6 +207,20 @@ public class BallInfo : MonoBehaviour
     {
         distanceTravel = 0f;
         travelTime = 0f;
+    }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (lastThrowMonkey != null)
+        {
+            if (other.gameObject.CompareTag("Floor") || other.gameObject.CompareTag("Ceiling") || other.gameObject.CompareTag("Wall"))
+            {
+                numberOfBounce++;
+            }
+        }
+    }
+    void BounceCount()
+    {
+
     }
 	
 }

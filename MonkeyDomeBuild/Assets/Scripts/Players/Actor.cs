@@ -78,7 +78,10 @@ public class Actor : MonoBehaviour
 	}
 
 	public virtual void CheckInputs() { }
-
+    public bool IsInAir
+    {
+        get { return isinair; }
+    }
 	void Jumping()
 	{
 		if (!isinair)
