@@ -32,7 +32,7 @@ public class PreGameTimer : MonoBehaviour
     {
         if(gameState == "pregame")
         {
-            if (!spinnerSpawned)
+            if (!spinnerSpawned && pregameTimer <= 10)
             {
                 newSpinner = (GameObject)Instantiate(spinner,spinner.transform.position,spinner.transform.rotation);
                 spinnerSpawned = true;
