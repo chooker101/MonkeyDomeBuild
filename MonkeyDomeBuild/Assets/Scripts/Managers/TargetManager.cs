@@ -58,7 +58,6 @@ public class TargetManager : MonoBehaviour {
             advanceTier = CheckRally();
             Rally();
         }
-
     }
 
 
@@ -148,12 +147,12 @@ public class TargetManager : MonoBehaviour {
                 if (targetTier < 4)
                 {
                     targetTier++;
-                    t.SetTargetHeads(targetTier);
+                    //t.SetTargetHeads(targetTier);
                 }
             }
             else if (!stayTier)
             {
-                t.SetTargetHeads(targetTier);
+                //t.SetTargetHeads(targetTier);
             }
         }
         Debug.Log("tier status: "+ targetTier);
@@ -166,7 +165,8 @@ public class TargetManager : MonoBehaviour {
         // put them back where they started
         foreach (Target t in gameTargets)
         {
-            t.TargetSetter(-1f);
+            //t.TargetSetter(-1f);
+			//t.DisableCollider ();
         }
     }
 
@@ -176,7 +176,7 @@ public class TargetManager : MonoBehaviour {
         rallyOn = true;
         RallySetter();
         StartRally();
-        UpdateTierStatus();
+        //UpdateTierStatus();
     }
 
     void BetweenRallies()
@@ -188,10 +188,12 @@ public class TargetManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(activateTimes[activateCounter]);
         t.targetActive = true;
+		t.SetTargetHeads (targetTier);
         Debug.Log("Activated");
         t.TargetSetter(1f);
         t.TargetTime();
     }
+
 
     public void ActivateTarget()
     {
@@ -221,5 +223,9 @@ public class TargetManager : MonoBehaviour {
         }
         activateCounter = 0;
     }
+
+
+    
+
 
 }
