@@ -13,6 +13,7 @@ public class Target : MonoBehaviour {
     public bool targetActive = false;
 
     private GameObject targetHead;
+	private Collider2D myCollider;
 
     public float resetTime = 1;
     public float lifeTime;
@@ -28,7 +29,10 @@ public class Target : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		DisableCollider();
+		isHit = false;
         //activateCounter = 0;
+		myCollider = GetComponentInChildren<Collider2D>();
         targetManager = FindObjectOfType<TargetManager>();
         targetParent = transform.parent.gameObject;
        // targetActivator = GetComponent<FullTargetRotator>();
@@ -59,48 +63,68 @@ public class Target : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
+		Debug.Log ("I am hit");
         if (other.CompareTag("Ball"))
         {
-            isHit = true;
             //ScoringManager.targetsHit++;
             TargetSetter(-1);
+			DisableCollider ();
+			isHit = true;
+			inAlarm = false;
         }
     }
 
+	public void DisableCollider(){
+		GetComponentInChildren<Collider2D> ().enabled = false;
+		//myCollider.enabled = false;
+	}
+
+	public void EnableCollider(){
+		GetComponentInChildren<Collider2D> ().enabled = true;
+	}
 
     public void SetTargetHeads(int targetTier)
     {
+		//Collider2D myCollider = targetHead.GetComponentInChildren<Collider2D> ();
+		//Debug.Log (myCollider.gameObject.name);
+		myCollider.enabled = true;
         // apply stats
         switch (targetTier)
         {
-            case 0:
-                targetHead.SetActive(false);
-                targetHead = transform.FindChild("Large").gameObject;
-                targetHead.SetActive(true);
+		case 0:
+			targetHead.SetActive (false);
+			targetHead = transform.FindChild ("Large").gameObject;
+			targetHead.SetActive (true);
+			isHit = false;
                 break;
             case 1:
                 targetHead.SetActive(false);
                 targetHead = transform.FindChild("Medium").gameObject;
                 targetHead.SetActive(true);
+			isHit = false;
                 break;
             case 2:
                 targetHead.SetActive(false);
                 targetHead = transform.FindChild("Small").gameObject;
                 targetHead.SetActive(true);
+			isHit = false;
                 break;
             case 3:
                 targetHead.SetActive(false);
                 targetHead = transform.FindChild("Tiny").gameObject;
                 targetHead.SetActive(true);
+			isHit = false;
                 break;
             default:
                 targetHead.SetActive(false);
                 targetHead = transform.FindChild("Large").gameObject;
                 targetHead.SetActive(true);
+			isHit = false;
                 break;
         }
+		targetHead.GetComponent<TargetHead> ().myCollider.enabled = true;
     }
 
 
@@ -131,10 +155,10 @@ public class Target : MonoBehaviour {
     public void TargetTime()
     {
         // starts lifeTime alarm
-
-        lifeTime = targetManager.SetLifeTime();
-        inAlarm = true;
-        
+		if (isHit == false) {
+			lifeTime = targetManager.SetLifeTime ();
+			inAlarm = true;
+		}
        
     }
 
