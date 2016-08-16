@@ -12,7 +12,8 @@ public class TargetManager : MonoBehaviour {
 
     private bool isHit;
     private int targetTier;
-    private bool[] targetsHitInSequence = new bool[5];
+	public bool[] targetsHitInSequence = new bool[5];
+	public int sequenceIndex = 0;
     private bool advanceTier;
     private bool stayTier;
     private bool rallyOn;
@@ -24,6 +25,8 @@ public class TargetManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		//sequenceIndex = 0;
+		advanceTier = false;
         activateCounter = 0;
         rallyOn = false;
 
@@ -46,7 +49,7 @@ public class TargetManager : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.J))
         {
-            targetTier = Random.Range(0, 4);
+            //targetTier = Random.Range(0, 4);
             foreach(Target t in gameTargets)
             {
                 t.SetTargetHeads(targetTier);
@@ -96,6 +99,7 @@ public class TargetManager : MonoBehaviour {
 
     void StartRally()
     {
+		UpdateTierStatus ();
         Debug.Log("start rally, raise tagets");
         // call this method at the start of each rally. will activate target and deactivate if hit
         isHit = false;
@@ -154,6 +158,7 @@ public class TargetManager : MonoBehaviour {
             {
                 //t.SetTargetHeads(targetTier);
             }
+			sequenceIndex = 0;
         }
         Debug.Log("tier status: "+ targetTier);
         rallyOn = false;
@@ -188,7 +193,7 @@ public class TargetManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(activateTimes[activateCounter]);
         t.targetActive = true;
-		t.SetTargetHeads (targetTier);
+		t.SetTargetHeads(targetTier);
         Debug.Log("Activated");
         t.TargetSetter(1f);
         t.TargetTime();
@@ -223,8 +228,7 @@ public class TargetManager : MonoBehaviour {
         }
         activateCounter = 0;
     }
-
-
+		
     
 
 

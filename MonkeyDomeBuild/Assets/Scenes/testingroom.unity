@@ -738,6 +738,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cde7460516624ab4b7cf2aa37b8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetsHitInSequence: 0000000000
+  sequenceIndex: 0
 --- !u!4 &818570714
 Transform:
   m_ObjectHideFlags: 0
@@ -1041,6 +1043,14 @@ Prefab:
     - target: {fileID: 436046, guid: e116b4c0f9f8f4e47bcee6c4457abfb3, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 163274, guid: e116b4c0f9f8f4e47bcee6c4457abfb3, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 137156, guid: e116b4c0f9f8f4e47bcee6c4457abfb3, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e116b4c0f9f8f4e47bcee6c4457abfb3, type: 2}

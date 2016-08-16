@@ -70,9 +70,11 @@ public class Target : MonoBehaviour {
         {
             //ScoringManager.targetsHit++;
             TargetSetter(-1);
-			DisableCollider ();
+			DisableCollider();
 			isHit = true;
 			inAlarm = false;
+			targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
+			targetManager.sequenceIndex++;
         }
     }
 
@@ -175,6 +177,7 @@ public class Target : MonoBehaviour {
                 lifeTime = targetManager.SetLifeTime();
                 inAlarm = false;
                 targetActive = false;
+				DisableCollider ();
 
             }
         }
