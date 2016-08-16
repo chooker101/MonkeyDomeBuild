@@ -6,7 +6,6 @@ public class BallInfo : MonoBehaviour
     [SerializeField]
     private GameObject lastThrowMonkey = null;
     private GameObject holdingMonkey = null;
-    private ScoringManager scoreManager = null;
     private PhysicsMaterial2D ballMat;
     private Rigidbody2D m_rigid;
     private Vector2 startPos = Vector2.up * 10;
@@ -37,7 +36,6 @@ public class BallInfo : MonoBehaviour
         perfectCatchDistance = 1f;
         m_rigid = GetComponent<Rigidbody2D>();
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
-        scoreManager = FindObjectOfType<ScoringManager>();
         bounciness = ballMat.bounciness;
         timer = 8f;
         //PickRandomVictim();
@@ -150,10 +148,7 @@ public class BallInfo : MonoBehaviour
             m_rigid.isKinematic = true;
             if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)
                 perfectCatch = true;
-            if (scoreManager != null)
-            {
-                scoreManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
-            }
+            ScoringManager.Instance.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
             ResetScoringStats();
             UpdateLastThrowMonkey(who);
             perfectCatch = false;

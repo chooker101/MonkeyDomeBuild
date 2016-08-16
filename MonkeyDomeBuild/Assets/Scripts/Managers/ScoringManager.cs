@@ -13,6 +13,18 @@ public enum WhichPlayer
 
 public class ScoringManager : MonoBehaviour
 {
+    public static ScoringManager mInstance;
+    public static ScoringManager Instance
+    {
+        get
+        {
+            if (mInstance == null)
+            {
+                mInstance = FindObjectOfType<ScoringManager>();
+            }
+            return mInstance;
+        }
+    }
     //keep track of ball & players position
     public int p1Score;
     public int p2Score;
@@ -35,6 +47,9 @@ public class ScoringManager : MonoBehaviour
     private int longThrowScore = 5;
     private int bounceScore = 3;
     private int catchInAirScore = 3;
+    private int gorillaInterceptScore = 25;
+    private int monkeyGettingInterceptScore = -10;
+    private int innocentMonkeyScore = -5;
 
 
     void Start()
@@ -78,7 +93,15 @@ public class ScoringManager : MonoBehaviour
     }
     void AddScore(WhichPlayer player,int score)
     {
-        playerScores[player] += score;
+        if (playerScores[player] + score > 0)
+        {
+            playerScores[player] += score;
+        }
+        else if (playerScores[player] + score < 0)
+        {
+            playerScores[player] = 0;
+        }
+
     }
     public void PassingScore(GameObject thrower, GameObject catcher, float distanceTravel,float travelTime,bool perfectCatch, int numberOfBounce)
     {
@@ -90,6 +113,7 @@ public class ScoringManager : MonoBehaviour
 
             }
         }
+        //temporary move out of condition for testing purposes
         if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
         {
             AddScore(CheckWhichPlayer(thrower.GetComponent<Actor>().whichplayer), passScore);
@@ -116,6 +140,25 @@ public class ScoringManager : MonoBehaviour
         {
             AddScore(CheckWhichPlayer(catcher.GetComponent<Actor>().whichplayer), catchInAirScore);
             Debug.Log("catch in air");
+        }
+    }
+    public void SwitchingScore(GameObject gorilla, GameObject ball)
+    {
+        //make it subtract scrore from other monkeys
+        AddScore(CheckWhichPlayer(gorilla.GetComponent<Actor>().whichplayer), gorillaInterceptScore);
+        for(int i = 0; i < GameManager.Instance.TNOP; i++)
+        {
+            if (GameManager.Instance.gmPlayers[i].GetInstanceID() != gorilla.GetInstanceID())
+            {
+                if (GameManager.Instance.gmPlayers[i].GetInstanceID() == ball.GetComponent<BallInfo>().GetLastThrowMonkey().GetInstanceID())
+                {
+                    AddScore(CheckWhichPlayer(i), monkeyGettingInterceptScore);
+                }
+                else
+                {
+                    AddScore(CheckWhichPlayer(i), innocentMonkeyScore);
+                }
+            }
         }
     }
 

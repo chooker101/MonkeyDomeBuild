@@ -48,6 +48,7 @@ public class Gorilla : Character
 				cacheplayer.ballHolding.GetComponent<Rigidbody2D>().position += Vector2.up * 2;
 				cacheplayer.ballHolding.GetComponent<BallInfo>().Change(myPlayer);
 				cacheplayer.stat_ballGrab++;
+                ScoringManager.Instance.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], GameManager.Instance.gmBall);
 			}
 		}
 	}
@@ -55,6 +56,7 @@ public class Gorilla : Character
 	{
 		cacheplayer.characterType = new Monkey(myPlayer);
 		cacheplayer.GetComponent<Transform>().localScale = monkeySize;
+
 		/*
 		GameObject tempMonkey = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);
 
