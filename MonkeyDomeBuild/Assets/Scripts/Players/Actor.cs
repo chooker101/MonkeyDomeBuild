@@ -256,6 +256,7 @@ public class Actor : MonoBehaviour
                     ballHolding.GetComponent<BallInfo>().Reset();
                     Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
                     ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[whichplayer].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[whichplayer].mXY.y * tempThrowForce), ForceMode2D.Impulse);
+                    ballHolding.GetComponent<BallInfo>().playerThrewLast = whichplayer;
                     ballHolding = null;
                     stat_throw++;
                     holdingCatchCount = 0f;

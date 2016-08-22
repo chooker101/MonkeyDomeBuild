@@ -6,6 +6,7 @@ public class BallInfo : MonoBehaviour
     [SerializeField]
     private GameObject lastThrowMonkey = null;
     private GameObject holdingMonkey = null;
+    public int playerThrewLast = -1;
     private PhysicsMaterial2D ballMat;
     private Rigidbody2D m_rigid;
     private Vector2 startPos = Vector2.up * 10;
@@ -25,6 +26,7 @@ public class BallInfo : MonoBehaviour
     public int numberOfBounce = 0;
 
     public GameObject testMonkey;
+    public Material mySpriteColour;
 
     public float DistanceTravel
     {
@@ -83,6 +85,7 @@ public class BallInfo : MonoBehaviour
     public void Reset()
     {
         holdingMonkey = null;
+        playerThrewLast = -1;
         count = 0f;
         timerUp = false;
 		m_rigid.isKinematic = false;
@@ -217,5 +220,4 @@ public class BallInfo : MonoBehaviour
     {
 
     }
-	
 }
