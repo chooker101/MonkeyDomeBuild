@@ -16,7 +16,6 @@ public class BallInfo : MonoBehaviour
     public float count = 0f;
     private bool perfectCatch = false;
     public float perfectCatchDistance;
-    [SerializeField]
     private float bounciness;
 
     public float distanceTravel = 0f;
@@ -24,6 +23,7 @@ public class BallInfo : MonoBehaviour
     public float minCalcDistanceVelocity = 10f;
     public float vel = 0f;
     public int numberOfBounce = 0;
+    private bool canBeCatch = true;
 
     public GameObject testMonkey;
     public Material mySpriteColour;
@@ -31,6 +31,14 @@ public class BallInfo : MonoBehaviour
     public float DistanceTravel
     {
         get { return distanceTravel; }
+    }
+    public bool CanBeCatch
+    {
+        get { return canBeCatch; }
+    }
+    public GameObject HoldingMonkey
+    {
+        get { return holdingMonkey; }
     }
     
     void Start ()
@@ -84,6 +92,7 @@ public class BallInfo : MonoBehaviour
 
     public void Reset()
     {
+        canBeCatch = true;
         holdingMonkey = null;
         playerThrewLast = -1;
         count = 0f;
@@ -147,6 +156,7 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey == null)
         {
+            canBeCatch = false;
             holdingMonkey = who;
             m_rigid.isKinematic = true;
             if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)

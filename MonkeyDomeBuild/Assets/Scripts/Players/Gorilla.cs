@@ -40,18 +40,25 @@ public class Gorilla : Character
 
 	protected void CatchCheck()
 	{
-		if (GameManager.Instance.gmInputs[myPlayer].mCatch && GameManager.Instance.gmBall != null)
-		{
-			if (cacheplayer.ballInRange)
-			{
-				cacheplayer.ballHolding = GameManager.Instance.gmBall;
-				cacheplayer.ballHolding.GetComponent<Rigidbody2D>().position += Vector2.up * 2;
-				cacheplayer.ballHolding.GetComponent<BallInfo>().Change(myPlayer);
-				cacheplayer.stat_ballGrab++;
-                ScoringManager.Instance.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], GameManager.Instance.gmBall);
-			}
-		}
-	}
+        if (GameManager.Instance.gmInputs[myPlayer].mCatch && cacheplayer.ballCanCatch != null)
+        {
+            if (!Physics2D.Raycast(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
+                Vector3.Distance(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
+            {
+                if (cacheplayer.ballInRange)
+                {
+                    if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().HoldingMonkey != null)
+                    {
+                        ScoringManager.Instance.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().HoldingMonkey);
+                    }
+                    cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
+                    cacheplayer.stat_ballGrab++;
+                    ScoringManager.Instance.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
+                }
+            }
+
+        }
+    }
 	public override void Mutate()
 	{
 		cacheplayer.characterType = new Monkey(myPlayer);

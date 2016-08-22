@@ -45,18 +45,21 @@ public class Monkey : Character
     }
 	protected void CatchCheck()
 	{
-		if (GameManager.Instance.gmInputs[myPlayer].mCatch && GameManager.Instance.gmBall != null)
+		if (GameManager.Instance.gmInputs[myPlayer].mCatch && cacheplayer.ballCanCatch != null)
 		{
-            if (!Physics2D.Raycast(cacheplayer.transform.position, GameManager.Instance.gmBall.transform.position - cacheplayer.transform.position,
-                Vector3.Distance(cacheplayer.transform.position,GameManager.Instance.gmBall.transform.position), cacheplayer.layerMask))
+            if (cacheplayer.ballCanCatch.CanBeCatch)
             {
-                if (!cacheplayer.haveBall && cacheplayer.ballInRange)
+                if (!Physics2D.Raycast(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
+                    Vector3.Distance(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
                 {
-                    cacheplayer.canCharge = false;
-                    cacheplayer.haveBall = true;
-                    cacheplayer.ballHolding = GameManager.Instance.gmBall;
-                    cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
-                    cacheplayer.stat_ballGrab++;
+                    if (!cacheplayer.haveBall && cacheplayer.ballInRange)
+                    {
+                        cacheplayer.canCharge = false;
+                        cacheplayer.haveBall = true;
+                        cacheplayer.ballHolding = cacheplayer.ballCanCatch.gameObject;
+                        cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
+                        cacheplayer.stat_ballGrab++;
+                    }
                 }
             }
 		}

@@ -49,6 +49,8 @@ public class Actor : MonoBehaviour
     private GameObject monkeyCrown;
     private ScoringManager score;
 
+    public BallInfo ballCanCatch;
+
     void Start()
     {
         cam = FindObjectOfType<CameraController>();
@@ -59,7 +61,7 @@ public class Actor : MonoBehaviour
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
 
-        monkeyCrown = transform.Find("Crown").gameObject;
+        //monkeyCrown = transform.Find("Crown").gameObject;
         score = FindObjectOfType<ScoringManager>();
 	}
 
@@ -73,7 +75,7 @@ public class Actor : MonoBehaviour
 		}
 		Aim();
 		characterType.CHUpdate();
-        checkLeader();
+        //checkLeader();
 	}
 
 	void FixedUpdate()
@@ -393,9 +395,10 @@ public class Actor : MonoBehaviour
 		}
 		if (other.gameObject.CompareTag("Ball"))
 		{
-			if (!ballInRange && !other.transform.parent.GetComponent<Rigidbody2D>().isKinematic)
+			if (!ballInRange)
 			{
-				ballInRange = true;
+                ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
+                ballInRange = true;
 			}
 		}
 		if (other.gameObject.CompareTag("Banana"))
@@ -428,9 +431,15 @@ public class Actor : MonoBehaviour
 		if (other.gameObject.CompareTag("Ball"))
 		{
 			ballInRange = false;
-			haveBall = false;
-			ballHolding = null;
-		}
+            if (ballHolding != null)
+            {
+                if (other.gameObject.GetComponentInParent<BallInfo>() == ballHolding.GetComponent<BallInfo>())
+                {
+                    ballHolding = null;
+                    haveBall = false;
+                }
+            }
+        }
 		if (other.gameObject.CompareTag("Vine"))
 		{
 			canClimb = false;
