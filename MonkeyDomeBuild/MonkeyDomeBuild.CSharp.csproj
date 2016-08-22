@@ -62,7 +62,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ColourChanger.cs" />
     <Compile Include="Assets\Scripts\AI.cs" />
     <Compile Include="Assets\Scripts\ApeSpinner.cs" />
     <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
@@ -93,6 +92,7 @@
     <Compile Include="Assets\Scripts\Target\Target.cs" />
     <Compile Include="Assets\Scripts\Target\TargetEnable.cs" />
     <Compile Include="Assets\Scripts\Target\TargetHead.cs" />
+    <Compile Include="Assets\Scripts\Turret\ColourChanger.cs" />
     <Compile Include="Assets\Scripts\Turret\ProjectileBehavior.cs" />
     <Compile Include="Assets\Scripts\Turret\TargetQueue.cs" />
     <Compile Include="Assets\Scripts\Turret\Turret.cs" />

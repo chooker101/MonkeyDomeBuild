@@ -46,6 +46,9 @@ public class Actor : MonoBehaviour
 
     public Character characterType;
 
+    private GameObject monkeyCrown;
+    private ScoringManager score;
+
     void Start()
     {
         cam = FindObjectOfType<CameraController>();
@@ -55,6 +58,9 @@ public class Actor : MonoBehaviour
 		animator = GetComponent<Animator>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
+
+        monkeyCrown = transform.Find("Crown").gameObject;
+        score = FindObjectOfType<ScoringManager>();
 	}
 
 	void Update()
@@ -67,6 +73,7 @@ public class Actor : MonoBehaviour
 		}
 		Aim();
 		characterType.CHUpdate();
+        checkLeader();
 	}
 
 	void FixedUpdate()
@@ -459,6 +466,40 @@ public class Actor : MonoBehaviour
     {
         GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
     }*/
+
+    void checkLeader()
+    {
+        if (score.GetComponent<ScoringManager>().p1Score == score.GetComponent<ScoringManager>().p2Score && score.GetComponent<ScoringManager>().p2Score == score.GetComponent<ScoringManager>().p3Score)
+        {
+            monkeyCrown.SetActive(false);
+        }
+        else if(
+                    (
+                    whichplayer == 0 && 
+                    score.GetComponent<ScoringManager>().p1Score >= score.GetComponent<ScoringManager>().p2Score && 
+                    score.GetComponent<ScoringManager>().p1Score >= score.GetComponent<ScoringManager>().p3Score
+                    ) 
+                    ||
+                    (
+                    whichplayer == 1 &&
+                    score.GetComponent<ScoringManager>().p2Score >= score.GetComponent<ScoringManager>().p1Score &&
+                    score.GetComponent<ScoringManager>().p2Score >= score.GetComponent<ScoringManager>().p3Score
+                    ) 
+                    ||
+                    (
+                    whichplayer == 2 &&
+                    score.GetComponent<ScoringManager>().p3Score >= score.GetComponent<ScoringManager>().p1Score &&
+                    score.GetComponent<ScoringManager>().p3Score >= score.GetComponent<ScoringManager>().p2Score
+                    )
+                )
+        {
+            monkeyCrown.SetActive(true);
+        }
+        else
+        {
+            monkeyCrown.SetActive(false);
+        }
+    }
 
     protected void AnimationControl()
     {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,9 +15,13 @@ public class UIManager : MonoBehaviour
     public Text debugLog;
     public Text shotClock;
 
+    private GameObject gameManager;
+
     // Use this for initialization
     void Start () {
-	    
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+
+
 	}
 	
 	// Update is called once per frame
@@ -31,19 +36,19 @@ public class UIManager : MonoBehaviour
             else if (matchTime <= 0)
             {
                 matchTime = 0;
-                Application.LoadLevel("PregameRoom");
+                SceneManager.LoadScene("PregameRoom");
             }
         }
 
         p1Score.text =
-            "00"
+            gameManager.GetComponent<ScoringManager>().p1Score.ToString();
             ;
         p2Score.text =
-            ":D"
-            ;
+            gameManager.GetComponent<ScoringManager>().p2Score.ToString();
+        ;
         p3Score.text =
-            "c:"
-            ;
+            gameManager.GetComponent<ScoringManager>().p3Score.ToString();
+        ;
 
         if (noTime == false)
         {
