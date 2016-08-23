@@ -20,6 +20,7 @@ public class Gorilla : Character
 		chargespeed = GameManager.Instance.gmMovementManager.gChargeSpeed;
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
         chargeUI = cacheplayer.gameObject.GetComponentInChildren<Canvas>().gameObject.GetComponent<GorillaCharge>();
+        chargespeed = movespeed / 2;
         if (chargeUI != null)
             chargeUI.MaxChargeTime = chargeCompleteTime;
 	}
@@ -105,11 +106,10 @@ public class Gorilla : Character
 			}
             cacheplayer.cam.ScreenShake();
             */
-            cacheplayer.GorillaDash();
-            canStomp = false;
             if (Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.x) > 0 || Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.y) > 0)
             {
-
+                cacheplayer.GorillaDash();
+                canStomp = false;
             }
 		}
         else if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp && !canStomp)

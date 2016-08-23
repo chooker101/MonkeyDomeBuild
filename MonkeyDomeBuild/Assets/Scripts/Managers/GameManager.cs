@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> gmBalls; // 0 IS ALWAYS MAIN BALL GMBALL
 	public UIManager gmUIManager;
 	public List<InputManager> gmInputs;
-	public List<Material> gmPlayerMats;
+	//public List<Material> gmPlayerMats;
 	public MovementManager gmMovementManager;
 	public ScoringManager gmScoringManager;
 
@@ -144,8 +144,13 @@ public class GameManager : MonoBehaviour
                         --NOB;
 					}
 
+<<<<<<< HEAD
 					Instance.gmPlayers[i].GetComponent<Actor>().playerIndex = i;
 					Instance.gmPlayers[i].GetComponent<Renderer>().material = Instance.gmPlayerMats[i];
+=======
+					Instance.gmPlayers[i].GetComponent<Actor>().whichplayer = i;
+					//Instance.gmPlayers[i].GetComponent<Renderer>().material = Instance.gmPlayerMats[i];
+>>>>>>> 0a3f0edced1bd59db1ce741ad9cc4ceaf6e5166b
 
 					if (PlayerGorilla == i)
 					{

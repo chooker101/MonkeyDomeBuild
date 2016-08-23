@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Actor : MonoBehaviour
 {
@@ -49,9 +50,17 @@ public class Actor : MonoBehaviour
 
     public Character characterType;
 
-	protected GameObject monkeyCrown;
+    private RecordKeeper recordKeeper;
+    private GameObject monkeyCrown;
+    private ScoringManager score;
+
 
     public BallInfo ballCanCatch;
+
+    bool isDashing = false;
+    float dashingCount = 0;
+    float dashingTime = 0.5f;
+    float dashForce = 30f;
 
     void Start()
     {
@@ -62,6 +71,11 @@ public class Actor : MonoBehaviour
 		animator = GetComponent<Animator>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
+
+        recordKeeper = FindObjectOfType<RecordKeeper>();
+        monkeyCrown = transform.Find("Crown").gameObject;
+        score = FindObjectOfType<ScoringManager>();
+        monkeyCrown.SetActive(false);
 	}
 
 	void Update()
@@ -74,17 +88,17 @@ public class Actor : MonoBehaviour
 		}
 		Aim();
 		characterType.CHUpdate();
-        //checkLeader();
-    }
+        CheckLeader();
+        UpdateColour();
+	}
 
     void FixedUpdate()
-    {
-        MovementVelocity();
-        AnimationControl();
-        //Movement();
-        characterType.CHFixedUpdate();
-    }
-
+	{
+		MovementVelocity();
+		AnimationControl();
+		//Movement();
+		characterType.CHFixedUpdate();
+	}
 
 	public virtual void CheckInputs() { }
 
@@ -107,12 +121,17 @@ public class Actor : MonoBehaviour
 			if (isClimbing)
 			{
 				isClimbing = false;
-				cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+                if (GetComponent<Rigidbody2D>().isKinematic)
+                    GetComponent<Rigidbody2D>().isKinematic = false;
+
+                cache_rb.AddForce(Vector2.up * characterType.jumpforce);
 			}
 			else if(canClimb)
 			{
 				isClimbing = true;
-			}
+                if (!GetComponent<Rigidbody2D>().isKinematic)
+                    GetComponent<Rigidbody2D>().isKinematic = true;
+            }
 		}
 	}
 
@@ -123,21 +142,35 @@ public class Actor : MonoBehaviour
 		{
 			if (!RayCastSide(virtualinput.x))
 			{
-                if(characterType is Gorilla && characterType.isCharging)
+                if (!isDashing)
                 {
-					movement.x = virtualinput.x * characterType.chargespeed;
+                    if (characterType is Gorilla && characterType.isCharging)
+                    {
+                        movement.x = virtualinput.x * characterType.chargespeed;
+                    }
+                    else
+                    {
+                        movement.x = virtualinput.x * characterType.movespeed;
+                    }
                 }
                 else
                 {
-                    movement.x = virtualinput.x * characterType.movespeed;
+                    if (dashingCount >= dashingTime)
+                    {
+                        dashingCount = 0;
+                        isDashing = false;
+                    }
+                    else
+                    {
+                        dashingCount += Time.deltaTime;
+                    }
                 }
-
 			}
 		}
 		else
 		{
-			movement.x = virtualinput.x * characterType.movespeed;
-			movement.y = virtualinput.y * characterType.movespeed;
+            movement.x = virtualinput.x * characterType.movespeed;
+            movement.y = virtualinput.y * characterType.movespeed;
 		}
 		cache_rb.velocity = movement;
 	}
@@ -371,9 +404,22 @@ public class Actor : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Floor"))
+        if (other.gameObject.CompareTag("Floor")|| other.gameObject.CompareTag("Wall"))
         {
             isinair = false;
+            if (isDashing)
+            {
+                for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; ++i)
+                {
+                    Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
+                    if (p is Monkey)
+                    {
+                        //knock both player off vine for now
+                        GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
+                    }
+                }
+                cam.ScreenShake();
+            }
         }
     }
 
@@ -442,6 +488,8 @@ public class Actor : MonoBehaviour
         {
             canClimb = false;
             isClimbing = false;
+            if (GetComponent<Rigidbody2D>().isKinematic)
+                GetComponent<Rigidbody2D>().isKinematic = false;
         }
     }
 
@@ -474,14 +522,13 @@ public class Actor : MonoBehaviour
         GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
     }*/
 
-    void checkLeader()
+    void CheckLeader()
     {
-        /*if (score.GetComponent<ScoringManager>().p1Score == score.GetComponent<ScoringManager>().p2Score && score.GetComponent<ScoringManager>().p2Score == score.GetComponent<ScoringManager>().p3Score)
+        if (GameManager.Instance.gmScoringManager.p1Score == GameManager.Instance.gmScoringManager.p2Score && GameManager.Instance.gmScoringManager.p2Score == GameManager.Instance.gmScoringManager.p3Score)
         {
             monkeyCrown.SetActive(false);
         }
-*/
-		if(
+		else if(
                     (
                     playerIndex == 0 && 
                     GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p2Score &&
@@ -509,6 +556,20 @@ public class Actor : MonoBehaviour
         }
     }
 
+    private void UpdateColour()
+    {
+        if (recordKeeper != null)
+        {
+            for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
+            {
+                if (whichplayer == i)
+                {
+                    GetComponent<SpriteRenderer>().material = recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i];
+                }
+            }
+        }
+    }
+
     protected void AnimationControl()
     {
         //Debug.Log(GetComponent<Rigidbody2D>().velocity.x);
@@ -531,18 +592,24 @@ public class Actor : MonoBehaviour
     }
     public void GorillaDash()
     {
+        isDashing = true;
         Vector2 dashDir = Vector2.zero;
+<<<<<<< HEAD
         dashDir.y = 0.4f;
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) > 0)
         {
             dashDir.x = GameManager.Instance.gmInputs[playerIndex].mXY.x > 0 ? 1f : -1f;
+=======
+        if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.x) > 0)
+        {
+            //dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 0.5f : -1.2f;
+>>>>>>> 0a3f0edced1bd59db1ce741ad9cc4ceaf6e5166b
         }
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) > 0)
         {
             dashDir.y = GameManager.Instance.gmInputs[playerIndex].mXY.y > 0 ? 1f : -1f;
         }
-        dashDir *= 100f;
-        Debug.Log(dashDir);
+        dashDir *= dashForce;
         GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
     }
 }

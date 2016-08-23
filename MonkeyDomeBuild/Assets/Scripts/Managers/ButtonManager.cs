@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour {
 
@@ -18,7 +19,7 @@ public class ButtonManager : MonoBehaviour {
 
     public void StartButton()
     {
-        Application.LoadLevel("test01");
+        SceneManager.LoadScene("test01");
     }
 
     public void QuitButton()

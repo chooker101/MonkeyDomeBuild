@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PreGameTimer : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class PreGameTimer : MonoBehaviour
             {
                 pregameTimer = 0;
                 gameState = "game";
-                Application.LoadLevel("testingroom");
+                SceneManager.LoadScene("testingroom");
                 Destroy(newSpinner, 1f);
             }
 
