@@ -45,34 +45,36 @@ public class ColourChanger : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        objectHit = other.GetComponentInParent<BallInfo>().gameObject;
 
-        if (objectHit.gameObject.tag == "Ball" && objectHit != null)
+        if (other.CompareTag("Ball") )
         {
+            objectHit = other.GetComponentInParent<BallInfo>().gameObject;
             Debug.Log("Colour Target: Ball found");
-
-            materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
-
-            if (objectHit.GetComponent<BallInfo>().playerThrewLast == playerTargetNumber) // If the player who threw the ball is the one for this target
+            if(objectHit != null)
             {
-                Debug.Log("Colour Target: This is my player");
+                materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
 
-                for(int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
+                if (objectHit.GetComponent<BallInfo>().playerThrewLast == playerTargetNumber) // If the player who threw the ball is the one for this target
                 {
-                    Debug.Log("Colour Target: Looking for player: " + i.ToString());
+                    Debug.Log("Colour Target: This is my player");
 
-                    if (i == myPlayer.GetComponent<Player>().whichplayer)
+                    for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
                     {
-                        recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i] = materialToApply;
+                        Debug.Log("Colour Target: Looking for player: " + i.ToString());
 
-                        Debug.Log("Colour logged into RecordKeeper" + i.ToString());
-                        break;
+                        if (i == myPlayer.GetComponent<Player>().whichplayer)
+                        {
+                            recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i] = materialToApply;
+
+                            Debug.Log("Colour logged into RecordKeeper" + i.ToString());
+                            break;
+                        }
                     }
                 }
-            }
-            else
-            {
-                Debug.Log("Colour Target: Not my player!");
+                else
+                {
+                    Debug.Log("Colour Target: Not my player!");
+                }
             }
         }
     }
