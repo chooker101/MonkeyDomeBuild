@@ -53,6 +53,11 @@ public class Actor : MonoBehaviour
 
     public BallInfo ballCanCatch;
 
+    bool isDashing = false;
+    float dashingCount = 0;
+    float dashingTime = 0.5f;
+    float dashForce = 30f;
+
     void Start()
     {
         cam = FindObjectOfType<CameraController>();
@@ -123,21 +128,35 @@ public class Actor : MonoBehaviour
 		{
 			if (!RayCastSide(virtualinput.x))
 			{
-                if(characterType is Gorilla && characterType.isCharging)
+                if (!isDashing)
                 {
-					movement.x = virtualinput.x * characterType.chargespeed;
+                    if (characterType is Gorilla && characterType.isCharging)
+                    {
+                        movement.x = virtualinput.x * characterType.chargespeed;
+                    }
+                    else
+                    {
+                        movement.x = virtualinput.x * characterType.movespeed;
+                    }
                 }
                 else
                 {
-                    movement.x = virtualinput.x * characterType.movespeed;
+                    if (dashingCount >= dashingTime)
+                    {
+                        dashingCount = 0;
+                        isDashing = false;
+                    }
+                    else
+                    {
+                        dashingCount += Time.deltaTime;
+                    }
                 }
-
 			}
 		}
 		else
 		{
-			movement.x = virtualinput.x * characterType.movespeed;
-			movement.y = virtualinput.y * characterType.movespeed;
+            movement.x = virtualinput.x * characterType.movespeed;
+            movement.y = virtualinput.y * characterType.movespeed;
 		}
 		cache_rb.velocity = movement;
 	}
@@ -371,9 +390,22 @@ public class Actor : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Floor"))
+        if (other.gameObject.CompareTag("Floor")|| other.gameObject.CompareTag("Wall"))
         {
             isinair = false;
+            if (isDashing)
+            {
+                for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; ++i)
+                {
+                    Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
+                    if (p is Monkey)
+                    {
+                        //knock both player off vine for now
+                        GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
+                    }
+                }
+                cam.ScreenShake();
+            }
         }
     }
 
@@ -531,18 +563,17 @@ public class Actor : MonoBehaviour
     }
     public void GorillaDash()
     {
+        isDashing = true;
         Vector2 dashDir = Vector2.zero;
-        dashDir.y = 0.4f;
         if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.x) > 0)
         {
-            dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 1f : -1f;
+            //dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 0.5f : -1.2f;
         }
         if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.y) > 0)
         {
             dashDir.y = GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 ? 1f : -1f;
         }
-        dashDir *= 100f;
-        Debug.Log(dashDir);
+        dashDir *= dashForce;
         GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
     }
 }
