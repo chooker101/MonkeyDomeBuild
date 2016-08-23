@@ -95,8 +95,9 @@ public class Gorilla : Character
     }
 	protected void StompCheck()
 	{
-		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canStomp && !cacheplayer.IsInAir)
+		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canStomp)
 		{
+            /*
 			for(int i = 0;i < GameManager.Instance.gmPlayers.Capacity; ++i)
 			{
                 Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
@@ -106,8 +107,14 @@ public class Gorilla : Character
 					GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
 				}
 			}
-            canStomp = false;
             cacheplayer.cam.ScreenShake();
+            */
+            cacheplayer.GorillaDash();
+            canStomp = false;
+            if (Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.x) > 0 || Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.y) > 0)
+            {
+
+            }
 		}
         else if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp && !canStomp)
         {

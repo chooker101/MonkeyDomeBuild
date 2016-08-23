@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 public class Actor : MonoBehaviour
 {
-	/*
+    /*
      * We need this class to:
      * - keep track of how many players are playing
      * - handle players' stats
      * - provide a key to accessing each player's stats 
      */
 
-	public int whichplayer;
+    public int whichplayer;
 
-	public Vector2 movement = Vector2.zero;
-	public CameraController cam;
+    public Vector2 movement = Vector2.zero;
+    public CameraController cam;
 
-	//public bool canJump = true;
-	public int layerMask;
+    //public bool canJump = true;
+    public int layerMask;
     public int layerMaskPlayer;
     public bool ballInRange = false;
     public GameObject ballHolding = null;
@@ -25,9 +25,9 @@ public class Actor : MonoBehaviour
 
     public bool isClimbing = false;
     public bool canClimb = false;
-	public bool isinair;
+    public bool isinair;
 
-	public int stat_jump = 0;
+    public int stat_jump = 0;
     public int stat_throw = 0;
     public int stat_ballGrab = 0;
 
@@ -41,8 +41,8 @@ public class Actor : MonoBehaviour
     public float chargeThrowRequireCount = 5f;
     public Animator animator;
     public SpriteRenderer spriteRenderer;
-	protected Rigidbody2D cache_rb;
-	protected Transform cache_tf;
+    protected Rigidbody2D cache_rb;
+    protected Transform cache_tf;
 
     public Character characterType;
 
@@ -56,70 +56,70 @@ public class Actor : MonoBehaviour
         cam = FindObjectOfType<CameraController>();
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
-		cache_rb = GetComponent<Rigidbody2D>();
-		animator = GetComponent<Animator>();
-		spriteRenderer = GetComponent<SpriteRenderer>();
-		cache_tf = GetComponent<Transform>();
+        cache_rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        cache_tf = GetComponent<Transform>();
 
         //monkeyCrown = transform.Find("Crown").gameObject;
         score = FindObjectOfType<ScoringManager>();
-	}
+    }
 
-	void Update()
-	{
-		CheckInputs();
-		//JumpCheck();
-		if (GameManager.Instance.gmInputs[whichplayer].mJump)
-		{
-			Jumping();
-		}
-		Aim();
-		characterType.CHUpdate();
+    void Update()
+    {
+        CheckInputs();
+        //JumpCheck();
+        if (GameManager.Instance.gmInputs[whichplayer].mJump)
+        {
+            Jumping();
+        }
+        Aim();
+        characterType.CHUpdate();
         //checkLeader();
-	}
+    }
 
-	void FixedUpdate()
-	{
-		MovementVelocity();
-		AnimationControl();
-		//Movement();
-		characterType.CHFixedUpdate();
-	}
+    void FixedUpdate()
+    {
+        MovementVelocity();
+        AnimationControl();
+        //Movement();
+        characterType.CHFixedUpdate();
+    }
 
-	public virtual void CheckInputs() { }
+    public virtual void CheckInputs() { }
     public bool IsInAir
     {
         get { return isinair; }
     }
-	void Jumping()
-	{
-		if (!isinair)
-		{
-			isinair = true;
-			cache_rb.AddForce(Vector2.up * characterType.jumpforce);
-		}
-		else
-		{
-			if (isClimbing)
-			{
-				isClimbing = false;
-				cache_rb.AddForce(Vector2.up * characterType.jumpforce);
-			}
-			else if(canClimb)
-			{
-				isClimbing = true;
-			}
-		}
-	}
+    void Jumping()
+    {
+        if (!isinair)
+        {
+            isinair = true;
+            cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+        }
+        else
+        {
+            if (isClimbing)
+            {
+                isClimbing = false;
+                cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+            }
+            else if (canClimb)
+            {
+                isClimbing = true;
+            }
+        }
+    }
 
-	void MovementVelocity()
-	{
-		movement = cache_rb.velocity;
-		if (!isClimbing)
-		{
-			if (!RayCastSide(GameManager.Instance.gmInputs[whichplayer].mXY.x))
-			{
-                if(characterType is Gorilla)
+    void MovementVelocity()
+    {
+        movement = cache_rb.velocity;
+        if (!isClimbing)
+        {
+            if (!RayCastSide(GameManager.Instance.gmInputs[whichplayer].mXY.x))
+            {
+                if (characterType is Gorilla)
                 {
                     Gorilla gorilla = characterType as Gorilla;
                     if (gorilla.IsCharging)
@@ -135,17 +135,17 @@ public class Actor : MonoBehaviour
                 {
                     movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
                 }
-			}
-		}
-		else
-		{
-			movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
-			movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.movespeed;
-		}
-		cache_rb.velocity = movement;
-	}
+            }
+        }
+        else
+        {
+            movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
+            movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.movespeed;
+        }
+        cache_rb.velocity = movement;
+    }
 
-	/*
+    /*
 	public void Movement()
     {
 		movement = Vector2.zero;
@@ -201,7 +201,7 @@ public class Actor : MonoBehaviour
 			cache_rb.velocity = movement;
         }
     }*/
-	/*
+    /*
     public void JumpCheck()
     {
         if (RayCast(-1))
@@ -296,7 +296,7 @@ public class Actor : MonoBehaviour
     {
         bool hit = false;
         float falloffX = transform.localScale.x / 2 - 0.1f;
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             float falloff = transform.position.x;
             if (i != 0) falloff += Mathf.Pow(-1, i) * falloffX;
@@ -304,7 +304,7 @@ public class Actor : MonoBehaviour
             Vector2 checkPos = transform.position;
             checkPos.x = falloff;
             hitInfo = Physics2D.Raycast(checkPos, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
-            Debug.DrawLine(checkPos, checkPos + Vector2.up*direction);
+            Debug.DrawLine(checkPos, checkPos + Vector2.up * direction);
             if (hitInfo.collider != null)
             {
                 hit = true;
@@ -323,23 +323,23 @@ public class Actor : MonoBehaviour
 
     public bool RayCastSide(float leftOrRight)
     {
-		// right = 1    left = -1
-		if (leftOrRight > 0.0f || leftOrRight < 0.0f)
-		{
+        // right = 1    left = -1
+        if (leftOrRight > 0.0f || leftOrRight < 0.0f)
+        {
 
-			if(leftOrRight > 0.0f)
-			{
-				leftOrRight = 1.0f;
-			}
-			else
-			{
-				leftOrRight = -1.0f;
-			}
+            if (leftOrRight > 0.0f)
+            {
+                leftOrRight = 1.0f;
+            }
+            else
+            {
+                leftOrRight = -1.0f;
+            }
 
-			BoxCollider2D cachebox = GetComponent<BoxCollider2D>();
+            BoxCollider2D cachebox = GetComponent<BoxCollider2D>();
 
-			bool hit = false;
-			RaycastHit2D hitInfo;
+            bool hit = false;
+            RaycastHit2D hitInfo;
             Vector2 checkPosStart;
             //checkPos.x = ((cache_tf.position.x - cachebox.offset.x) + (((cachebox.size.x /2) + 0.02f) * leftOrRight)) * cache_tf.localScale.x;
             //checkPos.y = ((cache_tf.position.y - cachebox.offset.y) + ((cachebox.size.y / 2) + 0.02f)) * cache_tf.localScale.y;
@@ -351,14 +351,14 @@ public class Actor : MonoBehaviour
             tempV.y += (cachebox.size.y * transform.localScale.y) + 0.1f;
             Debug.DrawLine(checkPosStart, tempV);
             hitInfo = Physics2D.Raycast(checkPosStart, Vector2.up, (cachebox.size.y * transform.localScale.y) + 0.1f, layerMask);
-			//hitInfo = Physics2D.Raycast(checkPos, Vector2.down, (cachebox.size.y + 0.02f) * cache_tf.localScale.y, layerMask);
-			if (hitInfo.collider != null)
-			{
-				hit = true;
-			}
-			return hit;
-		}
-		return false;
+            //hitInfo = Physics2D.Raycast(checkPos, Vector2.down, (cachebox.size.y + 0.02f) * cache_tf.localScale.y, layerMask);
+            if (hitInfo.collider != null)
+            {
+                hit = true;
+            }
+            return hit;
+        }
+        return false;
     }
 
     public void Aim()
@@ -371,66 +371,66 @@ public class Actor : MonoBehaviour
         return haveBall;
     }
 
-	void OnCollisionEnter2D(Collision2D other)
-	{
-		if (other.gameObject.CompareTag("Floor"))
-		{
-			isinair = false;
-		}
-	}
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            isinair = false;
+        }
+    }
 
-	void OnCollisionExit2D(Collision2D other)
-	{
-		if (other.gameObject.CompareTag("Floor"))
-		{
-			isinair = true;
-		}
-	}
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            isinair = true;
+        }
+    }
 
-	void OnTriggerEnter2D(Collider2D other)
-	{
-		if (other.gameObject.CompareTag("Vine") && !canClimb)
-		{
-			canClimb = true;
-		}
-		if (other.gameObject.CompareTag("Ball"))
-		{
-			if (!ballInRange)
-			{
-                ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Vine") && !canClimb)
+        {
+            canClimb = true;
+        }
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
+            if (!ballInRange)
+            {
                 ballInRange = true;
-			}
-		}
-		if (other.gameObject.CompareTag("Banana"))
-		{
-			ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
-			//if (proj == null) return;
-			if (proj.GetCanEffectCharacter())
-			{
-				proj.CollideWithCharacter();
-				ReactionToBanana(proj.GetIncAmount());
-				Destroy(other.gameObject);
-			}
-		}
+            }
+        }
+        if (other.gameObject.CompareTag("Banana"))
+        {
+            ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
+            //if (proj == null) return;
+            if (proj.GetCanEffectCharacter())
+            {
+                proj.CollideWithCharacter();
+                ReactionToBanana(proj.GetIncAmount());
+                Destroy(other.gameObject);
+            }
+        }
 
-		if (other.gameObject.CompareTag("Poop"))
-		{
-			ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
-			//if (proj == null) return;
-			if (proj.GetCanEffectCharacter())
-			{
-				proj.CollideWithCharacter();
-				ReactionToPoop(proj.GetIncAmount());
-				Destroy(other.gameObject);
-			}
-		}
-	}
+        if (other.gameObject.CompareTag("Poop"))
+        {
+            ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
+            //if (proj == null) return;
+            if (proj.GetCanEffectCharacter())
+            {
+                proj.CollideWithCharacter();
+                ReactionToPoop(proj.GetIncAmount());
+                Destroy(other.gameObject);
+            }
+        }
+    }
 
-	void OnTriggerExit2D(Collider2D other)
-	{
-		if (other.gameObject.CompareTag("Ball"))
-		{
-			ballInRange = false;
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            ballInRange = false;
             if (ballHolding != null)
             {
                 if (other.gameObject.GetComponentInParent<BallInfo>() == ballHolding.GetComponent<BallInfo>())
@@ -440,28 +440,28 @@ public class Actor : MonoBehaviour
                 }
             }
         }
-		if (other.gameObject.CompareTag("Vine"))
-		{
-			canClimb = false;
-			isClimbing = false;
-		}
-	}
+        if (other.gameObject.CompareTag("Vine"))
+        {
+            canClimb = false;
+            isClimbing = false;
+        }
+    }
 
-	void OnTriggerStay2D(Collider2D other)
-	{
-		OnTriggerEnter2D(other);
-	}
+    void OnTriggerStay2D(Collider2D other)
+    {
+        OnTriggerEnter2D(other);
+    }
 
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
-        ChangeInc(incAmount);
+            ChangeInc(incAmount);
     }
 
     public void ReactionToPoop(float incAmount)
     {
         if (Mathf.Abs(characterInc) < maxminInc)
-        ChangeInc(-incAmount);
+            ChangeInc(-incAmount);
     }
 
     protected void ChangeInc(float inc)
@@ -470,7 +470,7 @@ public class Actor : MonoBehaviour
         //Debug.Log(characterInc);
     }
 
-	/*
+    /*
     protected void ChangeIsKinematic()
     {
         GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
@@ -482,18 +482,18 @@ public class Actor : MonoBehaviour
         {
             monkeyCrown.SetActive(false);
         }
-        else if(
+        else if (
                     (
-                    whichplayer == 0 && 
-                    score.GetComponent<ScoringManager>().p1Score >= score.GetComponent<ScoringManager>().p2Score && 
+                    whichplayer == 0 &&
+                    score.GetComponent<ScoringManager>().p1Score >= score.GetComponent<ScoringManager>().p2Score &&
                     score.GetComponent<ScoringManager>().p1Score >= score.GetComponent<ScoringManager>().p3Score
-                    ) 
+                    )
                     ||
                     (
                     whichplayer == 1 &&
                     score.GetComponent<ScoringManager>().p2Score >= score.GetComponent<ScoringManager>().p1Score &&
                     score.GetComponent<ScoringManager>().p2Score >= score.GetComponent<ScoringManager>().p3Score
-                    ) 
+                    )
                     ||
                     (
                     whichplayer == 2 &&
@@ -529,5 +529,21 @@ public class Actor : MonoBehaviour
         {
             animator.SetBool("IsWalking", false);
         }
+    }
+    public void GorillaDash()
+    {
+        Vector2 dashDir = Vector2.zero;
+        dashDir.y = 0.4f;
+        if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.x) > 0)
+        {
+            dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 1f : -1f;
+        }
+        if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.y) > 0)
+        {
+            dashDir.y = GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 ? 1f : -1f;
+        }
+        dashDir *= 100f;
+        Debug.Log(dashDir);
+        GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
     }
 }
