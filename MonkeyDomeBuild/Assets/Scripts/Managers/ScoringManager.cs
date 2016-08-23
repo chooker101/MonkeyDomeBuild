@@ -72,6 +72,7 @@ public class ScoringManager : MonoBehaviour
         p4Score = playerScores[WhichPlayer.Player4];
         p5Score = playerScores[WhichPlayer.Player5];
     }
+
     WhichPlayer CheckWhichPlayer(int playerIndex)
     {
         WhichPlayer tempPlayer = WhichPlayer.Player1;
@@ -95,6 +96,7 @@ public class ScoringManager : MonoBehaviour
         }
         return tempPlayer;
     }
+
     void AddScore(int playerIndex,int score)
     {
         WhichPlayer p = CheckWhichPlayer(playerIndex);
@@ -108,6 +110,7 @@ public class ScoringManager : MonoBehaviour
         }
 
     }
+
     public void PassingScore(GameObject thrower, GameObject catcher, float distanceTravel,float travelTime,bool perfectCatch, int numberOfBounce)
     {
         //Debug.Log(thrower.name + catcher.name + distanceTravel.ToString());
@@ -147,6 +150,7 @@ public class ScoringManager : MonoBehaviour
             Debug.Log("catch in air");
         }
     }
+
     public void SwitchingScore(GameObject gorilla, GameObject ball)
     {
         //subtract scrore from other monkeys
@@ -185,6 +189,7 @@ public class ScoringManager : MonoBehaviour
         }
         AddScore(gorilla.GetComponent<Actor>().whichplayer, switchScore);
     }
+
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey)
     {
         int interceptScore = 0;

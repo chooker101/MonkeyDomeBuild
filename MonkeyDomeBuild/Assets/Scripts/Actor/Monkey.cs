@@ -13,6 +13,7 @@ public class Monkey : Character
 		throwForce = GameManager.Instance.gmMovementManager.mThrowForce;
 		jumpforce = GameManager.Instance.gmMovementManager.mJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.mSpeed;
+		chargespeed = 0.0f;
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
         callForBall = cacheplayer.gameObject.GetComponentInChildren<Canvas>().gameObject.GetComponent<CallForBallReset>();
         //callForBallImg.SetActive(false);

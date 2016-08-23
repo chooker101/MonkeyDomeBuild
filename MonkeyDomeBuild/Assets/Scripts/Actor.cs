@@ -14,6 +14,7 @@ public class Actor : MonoBehaviour
 	public int whichplayer;
 
 	public Vector2 movement = Vector2.zero;
+	protected Vector2 virtualinput = Vector2.zero;
 	public CameraController cam;
 
 	//public bool canJump = true;
@@ -46,8 +47,7 @@ public class Actor : MonoBehaviour
 
     public Character characterType;
 
-    private GameObject monkeyCrown;
-    private ScoringManager score;
+	protected GameObject monkeyCrown;
 
     public BallInfo ballCanCatch;
 
@@ -60,9 +60,6 @@ public class Actor : MonoBehaviour
 		animator = GetComponent<Animator>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
-
-        //monkeyCrown = transform.Find("Crown").gameObject;
-        score = FindObjectOfType<ScoringManager>();
 	}
 
 	void Update()
@@ -87,10 +84,12 @@ public class Actor : MonoBehaviour
 	}
 
 	public virtual void CheckInputs() { }
+
     public bool IsInAir
     {
         get { return isinair; }
     }
+
 	void Jumping()
 	{
 		if (!isinair)
@@ -117,30 +116,22 @@ public class Actor : MonoBehaviour
 		movement = cache_rb.velocity;
 		if (!isClimbing)
 		{
-			if (!RayCastSide(GameManager.Instance.gmInputs[whichplayer].mXY.x))
+			if (!RayCastSide(virtualinput.x))
 			{
-                if(characterType is Gorilla)
+                if(characterType is Gorilla && characterType.isCharging)
                 {
-                    Gorilla gorilla = characterType as Gorilla;
-                    if (gorilla.IsCharging)
-                    {
-                        movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed / 2;
-                    }
-                    else
-                    {
-                        movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
-                    }
+					movement.x = virtualinput.x * characterType.chargespeed;
                 }
                 else
                 {
-                    movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
+                    movement.x = virtualinput.x * characterType.movespeed;
                 }
 			}
 		}
 		else
 		{
-			movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.movespeed;
-			movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.movespeed;
+			movement.x = virtualinput.x * characterType.movespeed;
+			movement.y = virtualinput.y * characterType.movespeed;
 		}
 		cache_rb.velocity = movement;
 	}
@@ -478,27 +469,28 @@ public class Actor : MonoBehaviour
 
     void checkLeader()
     {
-        if (score.GetComponent<ScoringManager>().p1Score == score.GetComponent<ScoringManager>().p2Score && score.GetComponent<ScoringManager>().p2Score == score.GetComponent<ScoringManager>().p3Score)
+        /*if (score.GetComponent<ScoringManager>().p1Score == score.GetComponent<ScoringManager>().p2Score && score.GetComponent<ScoringManager>().p2Score == score.GetComponent<ScoringManager>().p3Score)
         {
             monkeyCrown.SetActive(false);
         }
-        else if(
+        else*/
+		if(
                     (
                     whichplayer == 0 && 
-                    score.GetComponent<ScoringManager>().p1Score >= score.GetComponent<ScoringManager>().p2Score && 
-                    score.GetComponent<ScoringManager>().p1Score >= score.GetComponent<ScoringManager>().p3Score
+                    GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p2Score &&
+					GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p3Score
                     ) 
                     ||
                     (
                     whichplayer == 1 &&
-                    score.GetComponent<ScoringManager>().p2Score >= score.GetComponent<ScoringManager>().p1Score &&
-                    score.GetComponent<ScoringManager>().p2Score >= score.GetComponent<ScoringManager>().p3Score
+					GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p1Score &&
+					GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p3Score
                     ) 
                     ||
                     (
                     whichplayer == 2 &&
-                    score.GetComponent<ScoringManager>().p3Score >= score.GetComponent<ScoringManager>().p1Score &&
-                    score.GetComponent<ScoringManager>().p3Score >= score.GetComponent<ScoringManager>().p2Score
+					GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p1Score &&
+					GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p2Score
                     )
                 )
         {

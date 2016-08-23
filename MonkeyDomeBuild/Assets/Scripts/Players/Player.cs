@@ -6,7 +6,7 @@ public class Player : Actor
 {
     public override void CheckInputs()
     {
-
+		virtualinput = GameManager.Instance.gmInputs[whichplayer].mXY;
 		/*
         switch (whichPlayer)
         {
@@ -112,7 +112,7 @@ public class Player : Actor
 				characterType.tempDownForce = characterType.downForce;
             }
         }*/
-    }
+	}
 
 }
 
