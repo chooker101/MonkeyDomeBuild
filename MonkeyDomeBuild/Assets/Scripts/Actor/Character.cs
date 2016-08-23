@@ -5,9 +5,11 @@ public class Character
 {
 	public Vector3 gorillaSize = GameManager.Instance.gmMovementManager.gScale;
 	public Vector3 monkeySize = GameManager.Instance.gmMovementManager.mScale;
+	public bool isCharging = false;
 	public float throwForce;
 	public float jumpforce;
 	public float movespeed;
+	public float chargespeed;
 
 
 	public virtual void CHUpdate()

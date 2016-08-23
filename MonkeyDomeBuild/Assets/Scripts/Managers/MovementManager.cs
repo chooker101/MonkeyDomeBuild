@@ -11,4 +11,5 @@ public class MovementManager : MonoBehaviour
 	public float gSpeed;
 	public float gJumpForce;
 	public float gThrowForce;
+	public float gChargeSpeed;
 }
