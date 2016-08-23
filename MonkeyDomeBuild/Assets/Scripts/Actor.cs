@@ -112,12 +112,17 @@ public class Actor : MonoBehaviour
 			if (isClimbing)
 			{
 				isClimbing = false;
-				cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+                if (GetComponent<Rigidbody2D>().isKinematic)
+                    GetComponent<Rigidbody2D>().isKinematic = false;
+
+                cache_rb.AddForce(Vector2.up * characterType.jumpforce);
 			}
 			else if(canClimb)
 			{
 				isClimbing = true;
-			}
+                if (!GetComponent<Rigidbody2D>().isKinematic)
+                    GetComponent<Rigidbody2D>().isKinematic = true;
+            }
 		}
 	}
 
@@ -474,6 +479,8 @@ public class Actor : MonoBehaviour
         {
             canClimb = false;
             isClimbing = false;
+            if (GetComponent<Rigidbody2D>().isKinematic)
+                GetComponent<Rigidbody2D>().isKinematic = false;
         }
     }
 
