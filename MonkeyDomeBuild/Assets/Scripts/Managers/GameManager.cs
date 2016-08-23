@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     public GameObject gmBall = null;
 	public UIManager gmUIManager;
 	public List<InputManager> gmInputs;
-	public List<Material> gmPlayerMats;
+	//public List<Material> gmPlayerMats;
 	public MovementManager gmMovementManager;
 
 	private GameManager() { }
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
 					}
 
 					Instance.gmPlayers[i].GetComponent<Actor>().whichplayer = i;
-					Instance.gmPlayers[i].GetComponent<Renderer>().material = Instance.gmPlayerMats[i];
+					//Instance.gmPlayers[i].GetComponent<Renderer>().material = Instance.gmPlayerMats[i];
 
 					if (PlayerGorilla == i)
 					{

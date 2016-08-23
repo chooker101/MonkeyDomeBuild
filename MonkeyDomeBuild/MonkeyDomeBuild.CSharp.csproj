@@ -58,19 +58,12 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AI.cs" />
-    <Compile Include="Assets\Scripts\ApeSpinner.cs" />
     <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
     <Compile Include="Assets\Scripts\Banana.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
@@ -80,6 +73,7 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\RecordKeeper.cs" />
     <Compile Include="Assets\Scripts\Managers\ScoringManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
@@ -95,15 +89,16 @@
     <Compile Include="Assets\Scripts\Players\Player.cs" />
     <Compile Include="Assets\Scripts\PreGameTimer.cs" />
     <Compile Include="Assets\Scripts\PrefabsRef.cs" />
+    <Compile Include="Assets\Scripts\Target\ColourChanger.cs" />
     <Compile Include="Assets\Scripts\Target\FullTargetRotator.cs" />
     <Compile Include="Assets\Scripts\Target\Target.cs" />
     <Compile Include="Assets\Scripts\Target\TargetEnable.cs" />
     <Compile Include="Assets\Scripts\Target\TargetHead.cs" />
-    <Compile Include="Assets\Scripts\Turret\ColourChanger.cs" />
     <Compile Include="Assets\Scripts\Turret\ProjectileBehavior.cs" />
     <Compile Include="Assets\Scripts\Turret\TargetQueue.cs" />
     <Compile Include="Assets\Scripts\Turret\Turret.cs" />
     <Compile Include="Assets\Scripts\Turret\TurretsManager.cs" />
+    <Compile Include="Assets\Scripts\UI\ApeSpinner.cs" />
     <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
     <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
   </ItemGroup>

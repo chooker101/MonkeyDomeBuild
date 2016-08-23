@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Actor : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class Actor : MonoBehaviour
 
     public Character characterType;
 
+    private RecordKeeper recordKeeper;
     private GameObject monkeyCrown;
     private ScoringManager score;
 
@@ -61,7 +63,8 @@ public class Actor : MonoBehaviour
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
 
-        //monkeyCrown = transform.Find("Crown").gameObject;
+        recordKeeper = FindObjectOfType<RecordKeeper>();
+        monkeyCrown = transform.Find("Crown").gameObject;
         score = FindObjectOfType<ScoringManager>();
 	}
 
@@ -75,10 +78,11 @@ public class Actor : MonoBehaviour
 		}
 		Aim();
 		characterType.CHUpdate();
-        //checkLeader();
+        CheckLeader();
+        UpdateColour();
 	}
 
-	void FixedUpdate()
+    void FixedUpdate()
 	{
 		MovementVelocity();
 		AnimationControl();
@@ -476,7 +480,7 @@ public class Actor : MonoBehaviour
         GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
     }*/
 
-    void checkLeader()
+    void CheckLeader()
     {
         if (score.GetComponent<ScoringManager>().p1Score == score.GetComponent<ScoringManager>().p2Score && score.GetComponent<ScoringManager>().p2Score == score.GetComponent<ScoringManager>().p3Score)
         {
@@ -507,6 +511,17 @@ public class Actor : MonoBehaviour
         else
         {
             monkeyCrown.SetActive(false);
+        }
+    }
+
+    private void UpdateColour()
+    {
+        for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
+        {
+            if(whichplayer == i)
+            {
+                GetComponent<SpriteRenderer>().material = recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i];
+            }
         }
     }
 
