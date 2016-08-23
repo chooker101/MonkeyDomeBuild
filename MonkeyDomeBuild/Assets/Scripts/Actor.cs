@@ -75,7 +75,7 @@ public class Actor : MonoBehaviour
         recordKeeper = FindObjectOfType<RecordKeeper>();
         monkeyCrown = transform.Find("Crown").gameObject;
         score = FindObjectOfType<ScoringManager>();
-
+        monkeyCrown.SetActive(false);
 	}
 
 	void Update()
@@ -524,12 +524,11 @@ public class Actor : MonoBehaviour
 
     void CheckLeader()
     {
-        /*if (score.GetComponent<ScoringManager>().p1Score == score.GetComponent<ScoringManager>().p2Score && score.GetComponent<ScoringManager>().p2Score == score.GetComponent<ScoringManager>().p3Score)
+        if (GameManager.Instance.gmScoringManager.p1Score == GameManager.Instance.gmScoringManager.p2Score && GameManager.Instance.gmScoringManager.p2Score == GameManager.Instance.gmScoringManager.p3Score)
         {
             monkeyCrown.SetActive(false);
         }
-*/
-		if(
+		else if(
                     (
                     whichplayer == 0 && 
                     GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p2Score &&
@@ -559,11 +558,14 @@ public class Actor : MonoBehaviour
 
     private void UpdateColour()
     {
-        for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
+        if (recordKeeper != null)
         {
-            if(whichplayer == i)
+            for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
             {
-                GetComponent<SpriteRenderer>().material = recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i];
+                if (whichplayer == i)
+                {
+                    GetComponent<SpriteRenderer>().material = recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i];
+                }
             }
         }
     }
