@@ -119,10 +119,10 @@ public class CameraController : MonoBehaviour
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
         meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count);
-        if (GameManager.Instance.gmBall != null)
+        if (GameManager.Instance.gmBalls[0] != null)
         {
-            meanPosition = (meanPosition + GameManager.Instance.gmBall.transform.position) / 2;
-            if (GameManager.Instance.gmBall.GetComponent<BallInfo>().isballnear == false)
+            meanPosition = (meanPosition + GameManager.Instance.gmBalls[0].transform.position) / 2;
+            if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().isballnear == false)
             {
 
             }
@@ -155,15 +155,15 @@ public class CameraController : MonoBehaviour
                 maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmPlayers[i].transform.position.y);
             }
         }
-        if (GameManager.Instance.gmBall != null)
+        if (GameManager.Instance.gmBalls[0] != null)
         {
-            if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmBall.transform.position.x))
+            if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmBalls[0].transform.position.x))
             {
-                maxXDistance = Mathf.Abs(meanPosition.x - GameManager.Instance.gmBall.transform.position.x);
+                maxXDistance = Mathf.Abs(meanPosition.x - GameManager.Instance.gmBalls[0].transform.position.x);
             }
-            if (maxYDistance < Mathf.Abs(meanPosition.y - GameManager.Instance.gmBall.transform.position.y))
+            if (maxYDistance < Mathf.Abs(meanPosition.y - GameManager.Instance.gmBalls[0].transform.position.y))
             {
-                maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmBall.transform.position.y);
+                maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmBalls[0].transform.position.y);
             }
         }
 

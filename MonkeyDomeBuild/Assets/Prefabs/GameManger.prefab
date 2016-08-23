@@ -355,11 +355,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  gmPlayerScripts: []
   gmSpawnManager: {fileID: 11404282}
   gmButtonManager: {fileID: 0}
   gmPlayerPrefab: {fileID: 106386, guid: b2a9f252c215e8c48904586552452670, type: 2}
   gmPlayerPrefabAI: {fileID: 0}
-  gmBall: {fileID: 0}
+  gmBalls:
+  - {fileID: 0}
   gmUIManager: {fileID: 0}
   gmInputs:
   - {fileID: 0}
@@ -374,6 +376,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   gmMovementManager: {fileID: 11482762}
+  gmScoringManager: {fileID: 11433906}
 --- !u!114 &11458014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -459,6 +462,7 @@ MonoBehaviour:
   gSpeed: 13
   gJumpForce: 1500
   gThrowForce: 0
+  gChargeSpeed: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

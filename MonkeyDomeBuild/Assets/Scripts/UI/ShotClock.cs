@@ -6,19 +6,17 @@ using System;
 public class ShotClock : MonoBehaviour
 {
     Text shotClock = null;
-    public GameObject ball;
     void Start()
     {
-        shotClock = GetComponent<Text>();
-        ball = GameManager.Instance.gmBall;
+        shotClock = GetComponent<Text>();      
     }
 
 
     void Update()
     {
-        if (ball != null)
+        if (GameManager.Instance.gmBalls[0] != null)
         {
-            float time = 8f - ball.GetComponent<BallInfo>().GetCurrentShotClockTime();
+            float time = 8f - GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetCurrentShotClockTime();
             if (time < 0) time = 0f;
             shotClock.text = Mathf.Round(time).ToString();
             //Debug.Log(time);

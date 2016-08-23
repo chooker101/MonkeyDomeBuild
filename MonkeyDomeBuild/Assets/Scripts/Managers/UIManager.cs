@@ -14,13 +14,12 @@ public class UIManager : MonoBehaviour
     public float matchTime;
     public Text debugLog;
     public Text shotClock;
-
-    private GameObject gameManager;
+    public float startMatchTime;
 
     // Use this for initialization
-    void Start () {
-        gameManager = GameObject.FindGameObjectWithTag("GameManager");
-
+    void Start ()
+    {
+        matchTime = startMatchTime;
 
 	}
 	
@@ -41,13 +40,13 @@ public class UIManager : MonoBehaviour
         }
 
         p1Score.text =
-            gameManager.GetComponent<ScoringManager>().p1Score.ToString();
+            GameManager.Instance.gmScoringManager.p1Score.ToString();
             ;
         p2Score.text =
-            gameManager.GetComponent<ScoringManager>().p2Score.ToString();
+            GameManager.Instance.gmScoringManager.p2Score.ToString();
         ;
         p3Score.text =
-            gameManager.GetComponent<ScoringManager>().p3Score.ToString();
+            GameManager.Instance.gmScoringManager.p3Score.ToString();
         ;
 
         if (noTime == false)

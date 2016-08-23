@@ -124,11 +124,11 @@ public class ScoringManager : MonoBehaviour
         //temporary move out of condition for testing purposes
         if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
         {
-            AddScore(thrower.GetComponent<Actor>().whichplayer, passScore);
+            AddScore(thrower.GetComponent<Actor>().playerIndex, passScore);
             if(perfectCatch)
-                AddScore(catcher.GetComponent<Actor>().whichplayer, perfectCatchScore);
+                AddScore(catcher.GetComponent<Actor>().playerIndex, perfectCatchScore);
             else
-                AddScore(catcher.GetComponent<Actor>().whichplayer, catchScore);
+                AddScore(catcher.GetComponent<Actor>().playerIndex, catchScore);
             if (perfectCatch)
                 Debug.Log("perfect catch");
             else
@@ -136,17 +136,17 @@ public class ScoringManager : MonoBehaviour
         }
         if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
         {
-            AddScore(thrower.GetComponent<Actor>().whichplayer, longThrowScore);
+            AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
             Debug.Log("long throw");
         }
         if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
         {
-            AddScore(thrower.GetComponent<Actor>().whichplayer, bounceScore);
+            AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
             Debug.Log("bounce");
         }
         if (catcher.GetComponent<Actor>().IsInAir)
         {
-            AddScore(catcher.GetComponent<Actor>().whichplayer, catchInAirScore);
+            AddScore(catcher.GetComponent<Actor>().playerIndex, catchInAirScore);
             Debug.Log("catch in air");
         }
     }
@@ -187,13 +187,13 @@ public class ScoringManager : MonoBehaviour
                 }
             }
         }
-        AddScore(gorilla.GetComponent<Actor>().whichplayer, switchScore);
+        AddScore(gorilla.GetComponent<Actor>().playerIndex, switchScore);
     }
 
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey)
     {
         int interceptScore = 0;
-        int monkeyIndex = monkey.GetComponent<Actor>().whichplayer;
+        int monkeyIndex = monkey.GetComponent<Actor>().playerIndex;
         if (playerScores[CheckWhichPlayer(monkeyIndex)] < Mathf.Abs(gorillaInterceptScore))
         {
             interceptScore += playerScores[CheckWhichPlayer(monkeyIndex)];
@@ -204,7 +204,7 @@ public class ScoringManager : MonoBehaviour
             interceptScore += Mathf.Abs(gorillaInterceptScore);
             AddScore(monkeyIndex, -gorillaInterceptScore);
         }
-        AddScore(gorilla.GetComponent<Actor>().whichplayer, interceptScore);
+        AddScore(gorilla.GetComponent<Actor>().playerIndex, interceptScore);
     }
 
 }

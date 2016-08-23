@@ -63,7 +63,7 @@ public class BallInfo : MonoBehaviour
             }
             else
             {
-                count += Time.deltaTime;
+                count += Time.fixedDeltaTime;
             }
         }
         UpdateTravelDistance();
@@ -171,15 +171,17 @@ public class BallInfo : MonoBehaviour
 	
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.GetComponent<Player>() != null)
+        
+        if(other.gameObject.tag == "Player")
         {
-            isballnear = true;
+             isballnear = true;
         }
+
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.GetComponent<Player>() != null)
+        if (other.gameObject.tag == "Player")
         {
             isballnear = false;
         }

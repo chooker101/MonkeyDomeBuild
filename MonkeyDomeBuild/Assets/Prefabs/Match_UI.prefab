@@ -399,10 +399,11 @@ MonoBehaviour:
   p2Score: {fileID: 11463930}
   p3Score: {fileID: 11440798}
   matchTimeText: {fileID: 11449650}
-  noTime: 0
+  noTime: 1
   matchTime: 60
   debugLog: {fileID: 11464862}
   shotClock: {fileID: 0}
+  startMatchTime: 60
 --- !u!114 &11438360
 MonoBehaviour:
   m_ObjectHideFlags: 1

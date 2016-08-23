@@ -11,8 +11,8 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
 
-    public int whichplayer;
-
+    public int playerIndex;
+    public bool isPlayer;
 
 	public Vector2 movement = Vector2.zero;
 	protected Vector2 virtualinput = Vector2.zero;
@@ -68,7 +68,7 @@ public class Actor : MonoBehaviour
 	{
 		CheckInputs();
 		//JumpCheck();
-		if (GameManager.Instance.gmInputs[whichplayer].mJump)
+		if (GameManager.Instance.gmInputs[playerIndex].mJump)
 		{
 			Jumping();
 		}
@@ -239,7 +239,7 @@ public class Actor : MonoBehaviour
     {
         if (canCharge)
         {
-            if (GameManager.Instance.gmInputs[whichplayer].mChargeThrow && haveBall)
+            if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall)
             {
                 if (holdingCatchCount < maxChargeCount)
                 {
@@ -262,8 +262,8 @@ public class Actor : MonoBehaviour
                     haveBall = false;
                     ballHolding.GetComponent<BallInfo>().Reset();
                     Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
-                    ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[whichplayer].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[whichplayer].mXY.y * tempThrowForce), ForceMode2D.Impulse);
-                    ballHolding.GetComponent<BallInfo>().playerThrewLast = whichplayer;
+                    ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[playerIndex].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[playerIndex].mXY.y * tempThrowForce), ForceMode2D.Impulse);
+                    ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
                     ballHolding = null;
                     stat_throw++;
                     holdingCatchCount = 0f;
@@ -272,7 +272,7 @@ public class Actor : MonoBehaviour
         }
         else
         {
-            if (GameManager.Instance.gmInputs[whichplayer].mCatchRelease)
+            if (GameManager.Instance.gmInputs[playerIndex].mCatchRelease)
             {
                 canCharge = true;
             }
@@ -361,7 +361,7 @@ public class Actor : MonoBehaviour
 
     public void Aim()
     {
-        Debug.DrawLine(GetComponent<Rigidbody2D>().position, new Vector2(GetComponent<Rigidbody2D>().position.x + GameManager.Instance.gmInputs[whichplayer].mXY.x * 2, GetComponent<Rigidbody2D>().position.y + GameManager.Instance.gmInputs[whichplayer].mXY.y * 2));
+        Debug.DrawLine(GetComponent<Rigidbody2D>().position, new Vector2(GetComponent<Rigidbody2D>().position.x + GameManager.Instance.gmInputs[playerIndex].mXY.x * 2, GetComponent<Rigidbody2D>().position.y + GameManager.Instance.gmInputs[playerIndex].mXY.y * 2));
     }
 
     public bool IsHoldingBall()
@@ -483,19 +483,19 @@ public class Actor : MonoBehaviour
 */
 		if(
                     (
-                    whichplayer == 0 && 
+                    playerIndex == 0 && 
                     GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p2Score &&
 					GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p3Score
                     ) 
                     ||
                     (
-                    whichplayer == 1 &&
+                    playerIndex == 1 &&
 					GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p1Score &&
 					GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p3Score
                     ) 
                     ||
                     (
-                    whichplayer == 2 &&
+                    playerIndex == 2 &&
 					GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p1Score &&
 					GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p2Score
                     )
@@ -512,15 +512,15 @@ public class Actor : MonoBehaviour
     protected void AnimationControl()
     {
         //Debug.Log(GetComponent<Rigidbody2D>().velocity.x);
-        if (GetComponent<Rigidbody2D>().velocity.x > 0f)
+        if (cache_rb.velocity.x > 0f)
         {
             spriteRenderer.flipX = false;
         }
-        else if (GetComponent<Rigidbody2D>().velocity.x < 0)
+        else if (cache_rb.velocity.x < 0)
         {
             spriteRenderer.flipX = true;
         }
-        if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > 1f || GameManager.Instance.gmInputs[whichplayer].mXY.x != 0)
+        if (Mathf.Abs(cache_rb.velocity.x) > 1f || GameManager.Instance.gmInputs[playerIndex].mXY.x != 0)
         {
             animator.SetBool("IsWalking", true);
         }
@@ -533,13 +533,13 @@ public class Actor : MonoBehaviour
     {
         Vector2 dashDir = Vector2.zero;
         dashDir.y = 0.4f;
-        if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.x) > 0)
+        if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) > 0)
         {
-            dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 1f : -1f;
+            dashDir.x = GameManager.Instance.gmInputs[playerIndex].mXY.x > 0 ? 1f : -1f;
         }
-        if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.y) > 0)
+        if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) > 0)
         {
-            dashDir.y = GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 ? 1f : -1f;
+            dashDir.y = GameManager.Instance.gmInputs[playerIndex].mXY.y > 0 ? 1f : -1f;
         }
         dashDir *= 100f;
         Debug.Log(dashDir);
