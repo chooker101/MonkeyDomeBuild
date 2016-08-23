@@ -9,7 +9,6 @@ public class Gorilla : Character
     private float chargeCount = 0f;
     private float chargeCompleteTime = 3f;
     private bool canStomp = false;
-    private bool isCharging = false;
     private GorillaCharge chargeUI;
 
 	public Gorilla(int x)
@@ -18,6 +17,7 @@ public class Gorilla : Character
 		throwForce = GameManager.Instance.gmMovementManager.gThrowForce;
 		jumpforce = GameManager.Instance.gmMovementManager.gJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.gSpeed;
+		chargespeed = GameManager.Instance.gmMovementManager.gChargeSpeed;
 		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
         chargeUI = cacheplayer.gameObject.GetComponentInChildren<Canvas>().gameObject.GetComponent<GorillaCharge>();
         if (chargeUI != null)
@@ -89,10 +89,6 @@ public class Gorilla : Character
 	{
 		return timeBeingGorilla;
 	}
-    public bool IsCharging
-    {
-        get { return isCharging; }
-    }
 	protected void StompCheck()
 	{
 		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canStomp)

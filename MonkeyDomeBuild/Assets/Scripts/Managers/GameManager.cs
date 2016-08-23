@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
 	public List<InputManager> gmInputs;
 	public List<Material> gmPlayerMats;
 	public MovementManager gmMovementManager;
+	public ScoringManager gmScoringManager;
 
 	private GameManager() { }
 

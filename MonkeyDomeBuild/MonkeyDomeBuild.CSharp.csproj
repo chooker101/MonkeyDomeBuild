@@ -58,18 +58,16 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\AI.cs" />
+    <Compile Include="Assets\Scripts\AI\AI.cs" />
+    <Compile Include="Assets\Scripts\Actor.cs" />
+    <Compile Include="Assets\Scripts\Actor\Character.cs" />
+    <Compile Include="Assets\Scripts\Actor\Gorilla.cs" />
+    <Compile Include="Assets\Scripts\Actor\Monkey.cs" />
     <Compile Include="Assets\Scripts\ApeSpinner.cs" />
     <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
     <Compile Include="Assets\Scripts\Banana.cs" />
@@ -84,13 +82,9 @@
     <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
-    <Compile Include="Assets\Scripts\Players\Actor.cs" />
     <Compile Include="Assets\Scripts\Players\CallForBallReset.cs" />
-    <Compile Include="Assets\Scripts\Players\Character.cs" />
-    <Compile Include="Assets\Scripts\Players\Gorilla.cs" />
     <Compile Include="Assets\Scripts\Players\GorillaAction.cs" />
     <Compile Include="Assets\Scripts\Players\GorillaCharge.cs" />
-    <Compile Include="Assets\Scripts\Players\Monkey.cs" />
     <Compile Include="Assets\Scripts\Players\MonkeyAction.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />
     <Compile Include="Assets\Scripts\PreGameTimer.cs" />
