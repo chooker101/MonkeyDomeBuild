@@ -13,16 +13,19 @@ public class ApeSpinner : MonoBehaviour
     public float spinnerDecay;
 
     Transform pivot;
-    float angle;
-    float spinnerSpeed;
-    int playerChosen;
+    private float angle;
+    private float spinnerSpeed;
+    private int playerChosen;
+    private RecordKeeper rk_keeper;
 
     // Use this for initialization
     void Start()
     {
         pivot = spinnerPivot.GetComponent<Transform>();
         spinnerSpeed = Random.Range(spinnerSpeedMin, spinnerSpeedMax);
-        //spinnerSpeed = spinnerSpeedMax;
+
+        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
+        rk_keeper.playerGorilla = -1;
     }
 
     // Update is called once per frame
@@ -46,14 +49,16 @@ public class ApeSpinner : MonoBehaviour
                 playerChosen = 1;
             }
             playerChosenText.text = "PLAYER: " + playerChosen.ToString();
+
+            pivot.transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
+            Debug.Log("Pointer Pivot z: " + pivot.transform.eulerAngles.z.ToString());
+            Debug.Log("Chosen Monkey: " + playerChosen.ToString());
         }
         else if(spinnerSpeed <= 0)
         {
             spinnerSpeed = 0;
-        }
 
-        pivot.transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
-        Debug.Log("Pointer Pivot z: " + pivot.transform.eulerAngles.z.ToString());
-        Debug.Log("Chosen Monkey: " + playerChosen.ToString());
+            rk_keeper.playerGorilla = playerChosen;
+        }
     }
 }

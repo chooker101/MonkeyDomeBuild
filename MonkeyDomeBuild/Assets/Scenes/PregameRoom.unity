@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 968262714}
-  pregameTimer: 30
+  pregameTimer: 10
   trophyRoomTimer: 10
   spinner: {fileID: 142782, guid: 65256354e45a9984ebacb9f7189b219b, type: 2}
 --- !u!1 &137879507
@@ -1214,6 +1214,14 @@ Prefab:
     - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
       propertyPath: TNOP
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 197046, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+      propertyPath: NOB
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}

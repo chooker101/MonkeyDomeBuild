@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 	public MovementManager gmMovementManager;
 	public ScoringManager gmScoringManager;
 
+    private RecordKeeper rk_keeper;
 	private GameManager() { }
 
 	void Awake()
@@ -63,6 +64,11 @@ public class GameManager : MonoBehaviour
         CreateInputs();
 		CreatePlayers();
 	}
+
+    void Start()
+    {
+        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
+    }
 
 	void Update()
 	{
@@ -122,11 +128,15 @@ public class GameManager : MonoBehaviour
 		{
 			if (TNOP > 0)
 			{
-				if (RandomGorilla)
-				{
-					PlayerGorilla = RandGor();
-				}
-				for (int i = 0; i < TNOP; ++i)
+                if(rk_keeper != null && rk_keeper.playerGorilla >= 0) // Get gorilla from Record keeper first if possible.
+                {
+                    PlayerGorilla = rk_keeper.playerGorilla;
+                }
+                else if (RandomGorilla)
+                {
+                    PlayerGorilla = RandGor();
+                }
+                for (int i = 0; i < TNOP; ++i)
 				{
 					Transform temp = Instance.gmSpawnManager.SpawnPoints[i];
 					if (NOP > 0)

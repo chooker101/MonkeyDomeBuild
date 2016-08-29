@@ -13,11 +13,14 @@ public class PreGameTimer : MonoBehaviour
     GameObject newSpinner;
     static string gameState = "null";
 
-    bool spinnerSpawned = false;
+    private bool spinnerSpawned = false;
+    private RecordKeeper rk_keeper;
 
     // Use this for initialization
     void Start()
     {
+        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
+
         if(gameState == "null")
         {
             gameState = "pregame";
@@ -62,8 +65,20 @@ public class PreGameTimer : MonoBehaviour
             {
                 trophyRoomTimer = 0;
                 gameState = "pregame";
+
+                for(int i = 0; i<rk_keeper.scoreEndPlayers.Length; i++)
+                {
+                    rk_keeper.scoreEndPlayers[i] = 0;
+                }
             }
-            timerText.text = "Trophy Room\n" + trophyRoomTimer.ToString("F2");
+            timerText.text =
+                (
+                    "Trophy Room\n" + trophyRoomTimer.ToString("F2") + 
+                    "FINAL SCORES:\n" +
+                    "P1 - " + rk_keeper.scoreEndPlayers[0] + 
+                    "\nP2 - " + rk_keeper.scoreEndPlayers[1] + 
+                    "\nP3 - " + rk_keeper.scoreEndPlayers[2]
+                );
         }
     }
     public static void ChangeGameState(string state)
