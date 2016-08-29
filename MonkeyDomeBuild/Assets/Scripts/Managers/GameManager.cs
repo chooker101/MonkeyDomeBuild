@@ -143,14 +143,9 @@ public class GameManager : MonoBehaviour
                         Instance.gmPlayerScripts[i].isPlayer = false;
                         --NOB;
 					}
-
-<<<<<<< HEAD
+                    
 					Instance.gmPlayers[i].GetComponent<Actor>().playerIndex = i;
-					Instance.gmPlayers[i].GetComponent<Renderer>().material = Instance.gmPlayerMats[i];
-=======
-					Instance.gmPlayers[i].GetComponent<Actor>().whichplayer = i;
 					//Instance.gmPlayers[i].GetComponent<Renderer>().material = Instance.gmPlayerMats[i];
->>>>>>> 0a3f0edced1bd59db1ce741ad9cc4ceaf6e5166b
 
 					if (PlayerGorilla == i)
 					{

@@ -25,7 +25,7 @@ public class ColourChanger : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
         for (int i = 0; i < players.Length; i++)
         {
-            if (players[i].GetComponent<Player>().whichplayer == playerTargetNumber) // Finds the player object that this target correponds to
+            if (players[i].GetComponent<Player>().playerIndex == playerTargetNumber) // Finds the player object that this target correponds to
             {
                 myPlayer = players[i];
                 return;
@@ -62,7 +62,7 @@ public class ColourChanger : MonoBehaviour
                     {
                         Debug.Log("Colour Target: Looking for player: " + i.ToString());
 
-                        if (i == myPlayer.GetComponent<Player>().whichplayer)
+                        if (i == myPlayer.GetComponent<Player>().playerIndex)
                         {
                             recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i] = materialToApply;
 

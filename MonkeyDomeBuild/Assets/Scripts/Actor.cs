@@ -562,7 +562,7 @@ public class Actor : MonoBehaviour
         {
             for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
             {
-                if (whichplayer == i)
+                if (playerIndex == i)
                 {
                     GetComponent<SpriteRenderer>().material = recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i];
                 }
@@ -594,16 +594,11 @@ public class Actor : MonoBehaviour
     {
         isDashing = true;
         Vector2 dashDir = Vector2.zero;
-<<<<<<< HEAD
         dashDir.y = 0.4f;
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) > 0)
         {
             dashDir.x = GameManager.Instance.gmInputs[playerIndex].mXY.x > 0 ? 1f : -1f;
-=======
-        if (Mathf.Abs(GameManager.Instance.gmInputs[whichplayer].mXY.x) > 0)
-        {
             //dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 0.5f : -1.2f;
->>>>>>> 0a3f0edced1bd59db1ce741ad9cc4ceaf6e5166b
         }
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) > 0)
         {
