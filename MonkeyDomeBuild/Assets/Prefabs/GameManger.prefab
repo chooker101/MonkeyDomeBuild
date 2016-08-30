@@ -98,6 +98,7 @@ GameObject:
   - 114: {fileID: 11458014}
   - 114: {fileID: 11482762}
   - 114: {fileID: 11433906}
+  - 114: {fileID: 11402142}
   m_Layer: 0
   m_Name: GameManger
   m_TagString: GameManager
@@ -114,6 +115,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.36, y: 6.04, z: 0}
   m_LocalScale: {x: 2, y: 3, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 1
@@ -126,6 +128,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.11, y: 23.89, z: 0}
   m_LocalScale: {x: 1.5, y: 2, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 2
@@ -138,6 +141,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 491628}
   - {fileID: 420436}
@@ -155,6 +159,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 35, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 4
@@ -167,6 +172,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -35, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 3
@@ -179,6 +185,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15.12, y: 6.34, z: 0}
   m_LocalScale: {x: 1.5, y: 2, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
   m_RootOrder: 0
@@ -302,6 +309,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11402142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22c8f2b32926b17409d648ed14078b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colourPlayers: []
+  scoreEndPlayers: 
+  playerGorilla: -1
+  defaultColour: {fileID: 0}
 --- !u!114 &11404282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -313,12 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54dd057461ed534c8535c76d3462e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPoints:
-  - {fileID: 491628}
-  - {fileID: 443696}
-  - {fileID: 420436}
-  - {fileID: 0}
-  - {fileID: 0}
+  SpawnPoints: []
 --- !u!114 &11433906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -346,31 +363,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b46fa5a3563d0946ba3e29872cf547a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TNOP: 0
-  NOP: 3
-  NOB: 0
+  TotalNumberofPlayers: 0
+  NumberOfPlayersToBuild: 1
+  NumberOfBotsToBuild: 0
   RandomGorilla: 1
   PlayerGorilla: 0
-  gmPlayers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  gmPlayers: []
   gmPlayerScripts: []
-  gmSpawnManager: {fileID: 11404282}
+  gmSpawnManager: {fileID: 0}
   gmButtonManager: {fileID: 0}
-  gmPlayerPrefab: {fileID: 106386, guid: b2a9f252c215e8c48904586552452670, type: 2}
+  gmPlayerPrefab: {fileID: 0}
   gmPlayerPrefabAI: {fileID: 0}
-  gmBalls:
-  - {fileID: 0}
+  gmBalls: []
   gmUIManager: {fileID: 0}
-  gmInputs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  gmInputs: []
+  gmPlayerMaterials: []
+  gmRecordKeeper: {fileID: 0}
   gmMovementManager: {fileID: 11482762}
   gmScoringManager: {fileID: 11433906}
+  gmTargetManager: {fileID: 0}
 --- !u!114 &11458014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -383,8 +394,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turrets: []
-  banana: {fileID: 197018, guid: a36b07fdfde93eb43aa7e13454708bdc, type: 2}
-  poo: {fileID: 122670, guid: 0cd9fd5086abeb34ca61e43b33a54d8d, type: 2}
+  banana: {fileID: 0}
+  poo: {fileID: 0}
   tempShootTimeMin: 0
   tempShootTimeMax: 0
 --- !u!114 &11462282
@@ -448,13 +459,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72138211defbdf04097b0f95e881f5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mScale: {x: 1, y: 1, z: 1}
-  mSpeed: 13
-  mJumpForce: 1500
-  mThrowForce: 35
-  gScale: {x: 1.5, y: 1.5, z: 1.5}
-  gSpeed: 13
-  gJumpForce: 1500
+  mScale: {x: 0, y: 0, z: 0}
+  mSpeed: 0
+  mJumpForce: 0
+  mThrowForce: 0
+  gScale: {x: 0, y: 0, z: 0}
+  gSpeed: 0
+  gJumpForce: 0
   gThrowForce: 0
   gChargeSpeed: 0
 --- !u!1001 &100100000

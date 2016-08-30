@@ -25,8 +25,6 @@ public class UIManager : MonoBehaviour
     void Start ()
     {
         matchTime = startMatchTime;
-
-        tm_stats = FindObjectOfType<TargetManager>();
 	}
 	
 	// Update is called once per frame
@@ -82,8 +80,8 @@ public class UIManager : MonoBehaviour
     }
     void TargetsUI()
     {
-        targetTierUI.text = tm_stats.targetTier.ToString();
-        targetsInSequenceUI.text = tm_stats.hitSum.ToString();
+        targetTierUI.text = GameManager.Instance.gmTargetManager.targetTier.ToString();
+        targetsInSequenceUI.text = GameManager.Instance.gmTargetManager.hitSum.ToString();
     }
 
 }
