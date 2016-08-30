@@ -23,12 +23,24 @@ public class TargetManager : MonoBehaviour
     private int[] activateTimes = new int[5] { 0, 3, 6, 8, 10 };
     private int activateCounter;
 
+	[SerializeField]
     private Target[] gameTargets;
     // TODO: make a get for targets       ****************
     private float startLifeTime;
 
+	public Target GetTargetAtIndex(int i)
+	{
+		return gameTargets[i];
+	}
+
+	public int GetTargetArrayLength()
+	{
+		return gameTargets.Length;
+	}
+
     // Use this for initialization
-    void Start () {
+    void Start ()
+	{
 		//sequenceIndex = 0;
 		advanceTier = false;
         activateCounter = 0;
@@ -49,7 +61,8 @@ public class TargetManager : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 
         if (Input.GetKeyDown(KeyCode.J))
         {

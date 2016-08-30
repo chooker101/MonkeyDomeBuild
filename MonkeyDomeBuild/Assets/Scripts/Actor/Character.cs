@@ -10,6 +10,8 @@ public class Character
 	public float jumpforce;
 	public float movespeed;
 	public float chargespeed;
+	protected int myPlayer;
+	protected Player cacheplayer;
 
 
 	public virtual void CHUpdate()

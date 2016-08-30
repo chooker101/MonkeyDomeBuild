@@ -7,11 +7,13 @@ public class ProjectileBehavior : MonoBehaviour
     public bool canCollideWithFloor = false;
     private bool canEffectCharacter = true;
     public float characterInc;
+
     void Start()
     {
         _rigid = GetComponent<Rigidbody2D>();
         characterInc = 0.5f;
     }
+
     void Update()
     {
         if (!canCollideWithFloor)
@@ -23,6 +25,7 @@ public class ProjectileBehavior : MonoBehaviour
         }
 
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (canCollideWithFloor)
@@ -51,14 +54,17 @@ public class ProjectileBehavior : MonoBehaviour
             }
         }
     }
+
     public float GetIncAmount()
     {
         return characterInc;
     }
+
     public void CollideWithCharacter()
     {
         canEffectCharacter = false;
     }
+
     public bool GetCanEffectCharacter()
     {
         return canEffectCharacter;
