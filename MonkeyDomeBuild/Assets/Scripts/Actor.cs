@@ -116,16 +116,16 @@ public class Actor : MonoBehaviour
 			if (isClimbing)
 			{
 				isClimbing = false;
-                if (GetComponent<Rigidbody2D>().isKinematic)
-                    GetComponent<Rigidbody2D>().isKinematic = false;
+                if (cache_rb.gravityScale == 0)
+                    cache_rb.gravityScale = 2;
 
                 cache_rb.AddForce(Vector2.up * characterType.jumpforce);
 			}
 			else if(canClimb)
 			{
 				isClimbing = true;
-                if (!GetComponent<Rigidbody2D>().isKinematic)
-                    GetComponent<Rigidbody2D>().isKinematic = true;
+                if (cache_rb.gravityScale != 0)
+                    cache_rb.gravityScale = 0;
             }
 		}
 	}
@@ -370,8 +370,8 @@ public class Actor : MonoBehaviour
         {
             canClimb = false;
             isClimbing = false;
-            if (GetComponent<Rigidbody2D>().isKinematic)
-                GetComponent<Rigidbody2D>().isKinematic = false;
+            if (cache_rb.gravityScale == 0)
+                cache_rb.gravityScale = 2;
         }
     }
 

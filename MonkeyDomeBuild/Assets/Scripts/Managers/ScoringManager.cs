@@ -180,6 +180,7 @@ public class ScoringManager : MonoBehaviour
 
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey)
     {
+        Debug.Log("intercetp");
         int interceptScore = 0;
         int monkeyIndex = monkey.GetComponent<Actor>().playerIndex;
         if (playerScores[CheckWhichPlayer(monkeyIndex)] < Mathf.Abs(gorillaInterceptScore))
