@@ -58,7 +58,7 @@ public class ApeSpinner : MonoBehaviour
         {
             spinnerSpeed = 0;
 
-            rk_keeper.playerGorilla = playerChosen;
+            rk_keeper.playerGorilla = playerChosen-1;
         }
     }
 }
