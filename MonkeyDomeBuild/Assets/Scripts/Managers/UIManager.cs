@@ -27,9 +27,9 @@ public class UIManager : MonoBehaviour
     void Start ()
     {
         matchTime = startMatchTime;
-        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-        sm_score = FindObjectOfType<GameManager>().GetComponent<ScoringManager>();
-        tm_stats = FindObjectOfType<TargetManager>().GetComponent<TargetManager>();
+        rk_keeper = FindObjectOfType<RecordKeeper>();
+        sm_score = FindObjectOfType<ScoringManager>();
+        tm_stats = FindObjectOfType<TargetManager>();
 	}
 	
 	// Update is called once per frame
