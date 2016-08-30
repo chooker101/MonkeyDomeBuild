@@ -17,7 +17,7 @@ public class TargetManager : MonoBehaviour
     public int targetTier;
 	public bool[] targetsHitInSequence = new bool[5];
 	public int sequenceIndex = 0;
-    private bool advanceTier;
+    public bool advanceTier;
     //private bool stayTier;
     //private bool rallyOn;
     private int[] activateTimes = new int[5] { 0, 3, 6, 8, 10 };
@@ -54,15 +54,18 @@ public class TargetManager : MonoBehaviour
 
         //ballInfo = GetComponent<BallInfo>();
 
-        for (int i = 0; i < targetsHitInSequence.Length; i++)
-        {
-            targetsHitInSequence[i] = false;
-        }
-	}
+        RallySetter();
+
+    }
 	
+
+
 	// Update is called once per frame
 	void Update ()
 	{
+
+
+        // advanceTier = CheckRally(); // only increase hitsum when hit
 
         if (Input.GetKeyDown(KeyCode.J))
         {
@@ -75,9 +78,12 @@ public class TargetManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.M))
         {
             Debug.Log("M");
-            advanceTier = CheckRally();
+            //advanceTier = CheckRally();
             Rally();
         }
+
+        Debug.Log("target tier: " + targetTier);
+        Debug.Log("hitsum: " + hitSum);
     }
 
 
@@ -89,6 +95,7 @@ public class TargetManager : MonoBehaviour
         {
             targetsHitInSequence[i] = false;
         }
+        hitSum = 0;
         
     }
 
@@ -133,26 +140,21 @@ public class TargetManager : MonoBehaviour
 
     }
 
-    bool CheckRally()
+    public bool CheckRally()
     {
         Debug.Log("Check Rally");
         // checks if enough targets in one rally are hit to upgrade tier
-        foreach(bool b in targetsHitInSequence)
-        {
-            if (b)
-            {
-                hitSum++;
-            } 
             if (hitSum >= 3)
             {
                 Debug.Log("Hitsum: " + hitSum);
                 return true;
             }
-        }
-        if (hitSum > 0 && hitSum < 3)
+        if (targetTier > 1 && hitSum < 3)
         {
-            //stayTier = true;
+            targetTier--;
         }
+
+
         Debug.Log("Hitsum: " + hitSum);
         return false;
     }
@@ -161,18 +163,17 @@ public class TargetManager : MonoBehaviour
         Debug.Log("update tier status");
 
         // updates tier status at end of a rally
-        for (int i = 0;i < gameTargets.Length; ++i)
+
+        if (advanceTier)
         {
-            if (advanceTier)
+            if (targetTier < 4)
             {
-                if (targetTier < 4)
-                {
-                    targetTier++;
-                }
+                targetTier++;
+                advanceTier = false;
             }
-			sequenceIndex = 0;
         }
 
+        sequenceIndex = 0;
         Debug.Log("tier status: "+ targetTier);
         //rallyOn = false;
         //ResetTargetPositions();

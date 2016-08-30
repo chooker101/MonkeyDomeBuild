@@ -76,6 +76,9 @@ public class Target : MonoBehaviour
 			inAlarm = false;
 			targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
 			targetManager.sequenceIndex++;
+
+            targetManager.hitSum++;
+            targetManager.advanceTier = targetManager.CheckRally();
         }
     }
 
