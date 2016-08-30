@@ -14,7 +14,7 @@ public class RecordKeeper : MonoBehaviour
     {
         DontDestroyOnLoad(this);
         
-        for(int i = 0; i<colourPlayers.Length; i++)
+        for(int i = 0; i < colourPlayers.Length; i++)
         {
             colourPlayers[i] = defaultColour;
         }

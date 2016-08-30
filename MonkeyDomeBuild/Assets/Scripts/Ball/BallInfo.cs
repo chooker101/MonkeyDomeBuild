@@ -5,8 +5,8 @@ public class BallInfo : MonoBehaviour
 {
     [SerializeField]
     private GameObject lastThrowMonkey = null;
-    private GameObject holdingMonkey = null;
-    public int playerThrewLast = -1;
+	private GameObject holdingMonkey = null;
+	public int playerThrewLast = -1;
     private PhysicsMaterial2D ballMat;
     private Rigidbody2D m_rigid;
     private Vector2 startPos = Vector2.up * 10;
@@ -21,27 +21,39 @@ public class BallInfo : MonoBehaviour
     public float distanceTravel = 0f;
     public float travelTime = 0f;
     public float minCalcDistanceVelocity = 10f;
-    public float vel = 0f;
+    public float magnitudeOfVelocity = 0f;
     public int numberOfBounce = 0;
     private bool canBeCatch = true;
 
     public GameObject testMonkey;
     public Material mySpriteColour;
 
-    public float DistanceTravel
+    public float GetDistanceTravel()
     {
-        get { return distanceTravel; }
+        return distanceTravel;
     }
-    public bool CanBeCatch
+
+    public bool GetCanBeCatch()
     {
-        get { return canBeCatch; }
+        return canBeCatch;
     }
-    public GameObject HoldingMonkey
+
+    public GameObject GetHoldingMonkey()
     {
-        get { return holdingMonkey; }
+		return holdingMonkey;
     }
-    
-    void Start ()
+
+	public GameObject GetLastThrowMonkey()
+	{
+		return lastThrowMonkey;
+	}
+
+	public float GetCurrentShotClockTime()
+	{
+		return count;
+	}
+
+	void Start ()
     {
         perfectCatchDistance = 1f;
         m_rigid = GetComponent<Rigidbody2D>();
@@ -53,8 +65,10 @@ public class BallInfo : MonoBehaviour
     void Update()
     {
         Debug.DrawLine(transform.position, transform.position + Vector3.right * perfectCatchDistance);
-        if (testMonkey != null)
-        Debug.Log(Vector3.Distance(transform.position, testMonkey.transform.position));
+		if (testMonkey != null)
+		{
+			Debug.Log(Vector3.Distance(transform.position, testMonkey.transform.position));
+		}
         if (timerUp)
         {
             if (count >= timer)
@@ -67,8 +81,9 @@ public class BallInfo : MonoBehaviour
             }
         }
         UpdateTravelDistance();
-        vel = m_rigid.velocity.magnitude;
+        magnitudeOfVelocity = m_rigid.velocity.magnitude;
     }
+
     void LateUpdate()
     {
         if (holdingMonkey != null)
@@ -76,15 +91,13 @@ public class BallInfo : MonoBehaviour
             m_rigid.transform.position = Vector2.Lerp(m_rigid.transform.position, holdingMonkey.transform.position, 1f);
         }
     }
+
 	public void UpdateLastThrowMonkey(GameObject monkey)
     {
         lastThrowMonkey = monkey;
         timerUp = true;
     }
-    public GameObject GetLastThrowMonkey()
-    {
-        return lastThrowMonkey;
-    }
+
     public void ResetPosition()
     {
         m_rigid.position = startPos;
@@ -100,6 +113,7 @@ public class BallInfo : MonoBehaviour
 		m_rigid.isKinematic = false;
         //m_rigid.useGravity = true;
     }
+
     public void Change(int index)
     {
         if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID()) PickRandomVictim();
@@ -108,9 +122,9 @@ public class BallInfo : MonoBehaviour
         GameObject gorillaToSwitch = null;
         for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
         {
-            if (GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Gorilla)
+            if (GameManager.Instance.gmPlayerScripts[i].characterType is Gorilla)
             {
-                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType;
+                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayerScripts[i].characterType;
                 if (longestTimeGorilla < gor.GetTimeBeingGorilla())
                 {
                     longestTimeGorilla = gor.GetTimeBeingGorilla();
@@ -126,6 +140,7 @@ public class BallInfo : MonoBehaviour
         ResetPosition();
         timerUp = false;
     }
+
     public void Change()
     {
         float longestTimeGorilla = 0f;
@@ -133,9 +148,9 @@ public class BallInfo : MonoBehaviour
         GameObject gorillaToSwitch = null;
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
         {
-            if (GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Gorilla)
+            if (GameManager.Instance.gmPlayerScripts[i].characterType is Gorilla)
             {
-                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType;
+                Gorilla gor = (Gorilla)GameManager.Instance.gmPlayerScripts[i].characterType;
                 if (longestTimeGorilla < gor.GetTimeBeingGorilla())
                 {
                     longestTimeGorilla = gor.GetTimeBeingGorilla();
@@ -198,10 +213,8 @@ public class BallInfo : MonoBehaviour
         }
         lastThrowMonkey = GameManager.Instance.gmPlayers[index];
     }
-    public float GetCurrentShotClockTime()
-    {
-        return count;
-    }
+
+    
     void UpdateTravelDistance()
     {
         if (holdingMonkey == null && lastThrowMonkey != null)
@@ -213,11 +226,13 @@ public class BallInfo : MonoBehaviour
             travelTime += Time.deltaTime;
         }
     }
-    void ResetScoringStats()
-    {
-        distanceTravel = 0f;
-        travelTime = 0f;
-    }
+
+	void ResetScoringStats()
+	{
+		distanceTravel = 0f;
+		travelTime = 0f;
+	}
+
     void OnCollisionEnter2D(Collision2D other)
     {
         if (lastThrowMonkey != null)
@@ -227,9 +242,5 @@ public class BallInfo : MonoBehaviour
                 numberOfBounce++;
             }
         }
-    }
-    void BounceCount()
-    {
-
     }
 }

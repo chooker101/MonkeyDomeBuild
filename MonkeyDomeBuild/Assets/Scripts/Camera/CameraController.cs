@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
     private float camSize;
 
     public bool considerTargets = false;
-    private List<GameObject> targets = new List<GameObject>();
+    //private List<GameObject> targets = new List<GameObject>();
 
     // Use this for initialization
     void Start()
@@ -116,13 +116,13 @@ public class CameraController : MonoBehaviour
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
-        if (considerTargets && targets.Count > 0)
+        if (considerTargets && GameManager.Instance.gmTargetManager.GetTargetArrayLength() > 0)
         {
-            for(int i = 0; i < targets.Count; i++)
+            for(int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
             {
-                positionSum += targets[i].transform.position;
+                positionSum += GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position;
             }
-            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targets.Count);
+            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + GameManager.Instance.gmTargetManager.GetTargetArrayLength());
         }
         else
         {

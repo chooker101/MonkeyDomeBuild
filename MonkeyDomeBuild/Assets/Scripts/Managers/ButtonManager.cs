@@ -9,7 +9,8 @@ public class ButtonManager : MonoBehaviour
     //private Button myButton;
 
 	// Use this for initialization
-	void Awake () {
+	void Awake ()
+	{
         //myButton = GetComponent<Button>();
 	}
 	

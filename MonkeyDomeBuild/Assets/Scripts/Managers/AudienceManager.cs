@@ -11,17 +11,20 @@ using System.Collections.Generic;
  * - store information for trophy rewards at end of match
  */
 
-public class AudienceManager : MonoBehaviour {
+public class AudienceManager : MonoBehaviour
+{
 
-    public static int[] audienceApproval = new int[3];
+    public static int[] audienceApproval;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+	{
 
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 	
 	}
 }

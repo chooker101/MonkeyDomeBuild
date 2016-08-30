@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class Monkey : Character
 {
-	private int myPlayer;
-	private Player cacheplayer;
     private CallForBallReset callForBall;
 	public Monkey(int x)
 	{
@@ -48,7 +46,7 @@ public class Monkey : Character
 	{
 		if (GameManager.Instance.gmInputs[myPlayer].mCatch && cacheplayer.ballCanCatch != null)
 		{
-            if (cacheplayer.ballCanCatch.CanBeCatch)
+            if (cacheplayer.ballCanCatch.GetCanBeCatch())
             {
                 if (!Physics2D.Raycast(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
                     Vector3.Distance(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))

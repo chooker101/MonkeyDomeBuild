@@ -11,6 +11,7 @@ public class TurretsManager : MonoBehaviour
     public float tempShootTimeMin;
     public float tempShootTimeMax;
     private float tempShootTime;
+
     void Start()
     {
         GameObject[] tempTurrets = GameObject.FindGameObjectsWithTag("Turret");
@@ -23,18 +24,18 @@ public class TurretsManager : MonoBehaviour
         tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
 
     }
+
     void Update()
     {
         TempTest();
         if (Input.GetKeyDown(KeyCode.U))
         {
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            AddFireQueue(players[Random.Range(0,players.Length)], 0);
+            //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0,(int)GameManager.Instance.TotalNumberofPlayers)], 0);
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            AddFireQueue(players[Random.Range(0, players.Length)], 1);
+            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofPlayers)], 1);
         }
         //Debug.Log(targetQueues.Count);
         if (targetQueues.Count > 0)
@@ -86,9 +87,9 @@ public class TurretsManager : MonoBehaviour
         if (Time.time > tempShootTime)
         {
             tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             int whatToShoot = Random.Range(0, 1);
-            AddFireQueue(players[Random.Range(0, players.Length)], whatToShoot);
+            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofPlayers)], whatToShoot);
         }
     }
 }

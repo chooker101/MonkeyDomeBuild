@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
 	{
+		DontDestroyOnLoad(this);
 		TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
         /*BallInfo tempInfo = FindObjectOfType<BallInfo>();
         if (tempInfo != null)
