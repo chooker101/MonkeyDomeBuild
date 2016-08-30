@@ -403,6 +403,10 @@ Prefab:
       propertyPath: mySpriteColour
       value: 
       objectReference: {fileID: 2100000, guid: 105db3878981e0f40bfda4eb1d7fde19, type: 2}
+    - target: {fileID: 194516, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+      propertyPath: m_TagString
+      value: BallTrigger
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
@@ -524,6 +528,10 @@ Prefab:
     - target: {fileID: 431482, guid: 56b8c93455bbdb246b7e8389f9f13e29, type: 2}
       propertyPath: m_RootOrder
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445296, guid: 56b8c93455bbdb246b7e8389f9f13e29, type: 2}
+      propertyPath: playerTargetNumber
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 56b8c93455bbdb246b7e8389f9f13e29, type: 2}
@@ -758,6 +766,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21ff7f2198309f84a946800a86350a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balls: []
+  ballsInfo: []
 --- !u!1001 &817831057
 Prefab:
   m_ObjectHideFlags: 0
@@ -801,14 +811,6 @@ Prefab:
       propertyPath: m_Name
       value: Ball (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 2316426, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 0ec2d8ce471de814f9bc56f12c4df903, type: 2}
-    - target: {fileID: 11493290, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
-      propertyPath: mySpriteColour
-      value: 
-      objectReference: {fileID: 2100000, guid: 2dd9dc57c277839438e29676fa98e017, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
@@ -1116,6 +1118,10 @@ Prefab:
       propertyPath: mySpriteColour
       value: 
       objectReference: {fileID: 2100000, guid: 7b1ea6048aa266645904ffcfb432f831, type: 2}
+    - target: {fileID: 194516, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+      propertyPath: m_TagString
+      value: BallTrigger
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
@@ -1170,6 +1176,10 @@ Prefab:
       propertyPath: mySpriteColour
       value: 
       objectReference: {fileID: 2100000, guid: f6294e974ec7af04689598f199a1ea47, type: 2}
+    - target: {fileID: 194516, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+      propertyPath: m_TagString
+      value: BallTrigger
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
@@ -1211,22 +1221,6 @@ Prefab:
     - target: {fileID: 456864, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
       propertyPath: m_RootOrder
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 197046, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: m_Name
-      value: GameManger
-      objectReference: {fileID: 0}
-    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: TNOP
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 197046, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: NOB
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
@@ -1404,6 +1398,10 @@ Prefab:
       propertyPath: mySpriteColour
       value: 
       objectReference: {fileID: 2100000, guid: 42c5a2666136abd4196fbccb37cbfffd, type: 2}
+    - target: {fileID: 194516, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+      propertyPath: m_TagString
+      value: BallTrigger
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0

@@ -50,7 +50,7 @@ public class Actor : MonoBehaviour
     public Character characterType;
 
     private GameObject monkeyCrown;
-
+    private RecordKeeper rk_keeper;
 
     public BallInfo ballCanCatch;
 
@@ -71,6 +71,8 @@ public class Actor : MonoBehaviour
 
         monkeyCrown = transform.Find("Crown").gameObject;
         monkeyCrown.SetActive(false);
+
+        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
 	}
 
 	void Update()
@@ -319,7 +321,7 @@ public class Actor : MonoBehaviour
         {
             canClimb = true;
         }
-        if (other.gameObject.CompareTag("Ball"))
+        if (other.gameObject.CompareTag("BallTrigger"))
         {
             ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
             if (!ballInRange)
@@ -354,7 +356,7 @@ public class Actor : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Ball"))
+        if (other.gameObject.CompareTag("BallTrigger"))
         {
             ballInRange = false;
             if (ballHolding != null)
@@ -433,17 +435,17 @@ public class Actor : MonoBehaviour
 
     private void UpdateColour()
     {
-		/*
-        if (recordKeeper != null)
+		
+        if (rk_keeper != null)
         {
-            for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
+            for (int i = 0; i < rk_keeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
             {
                 if (playerIndex == i)
                 {
-                    GetComponent<SpriteRenderer>().material = recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i];
+                    GetComponent<SpriteRenderer>().material = rk_keeper.GetComponent<RecordKeeper>().colourPlayers[i];
                 }
             }
-        }*/
+        }
     }
 
     protected void AnimationControl()

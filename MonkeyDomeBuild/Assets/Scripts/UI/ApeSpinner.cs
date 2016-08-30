@@ -16,7 +16,7 @@ public class ApeSpinner : MonoBehaviour
     private float angle;
     private float spinnerSpeed;
     private int playerChosen;
-    private RecordKeeper rk_keeper;
+    //private RecordKeeper rk_keeper;
 
     // Use this for initialization
     void Start()
@@ -24,8 +24,8 @@ public class ApeSpinner : MonoBehaviour
         pivot = spinnerPivot.GetComponent<Transform>();
         spinnerSpeed = Random.Range(spinnerSpeedMin, spinnerSpeedMax);
 
-        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-        rk_keeper.playerGorilla = -1;
+        //rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
+        //rk_keeper.playerGorilla = -1;
     }
 
     // Update is called once per frame
@@ -58,7 +58,7 @@ public class ApeSpinner : MonoBehaviour
         {
             spinnerSpeed = 0;
 
-            rk_keeper.playerGorilla = playerChosen-1;
+            GameManager.Instance.gmRecordKeeper.playerGorilla = playerChosen-1;
         }
     }
 }

@@ -50,7 +50,7 @@ public class ColourChanger : MonoBehaviour
                         {
 							GameManager.Instance.gmRecordKeeper.colourPlayers[i] = materialToApply;
 
-                            Debug.Log("Colour logged into RecordKeeper" + i.ToString());
+                            Debug.Log("Colour logged into RecordKeeper: " + i.ToString());
                             break;
                         }
                     }

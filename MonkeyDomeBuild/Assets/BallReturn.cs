@@ -3,14 +3,13 @@ using System.Collections;
 
 public class BallReturn : MonoBehaviour
 {
-    private RecordKeeper rk_keeper;
-    private GameObject[] balls;
+    public GameObject[] balls;
+    public BallInfo[] ballsInfo;
 
     // Use this for initialization
     void Start()
     {
-        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-        balls = GameObject.FindGameObjectsWithTag("ball");
+        balls = GameObject.FindGameObjectsWithTag("Ball");
     }
 
     // Update is called once per frame
@@ -24,9 +23,12 @@ public class BallReturn : MonoBehaviour
         // Checks the record keeper for what colour the player is, and if the player has the same sprite material as the ball, disables the ball.
         for (int i = 0; i < balls.Length; i++)
         {
-            for(int o = 0; o < rk_keeper.colourPlayers.Length; o++)
+            for(int o = 0; o < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; o++)
             {
-                if (balls[i].GetComponent<BallInfo>().mySpriteColour == rk_keeper.colourPlayers[o])
+                Material ball = balls[i].GetComponent<BallInfo>().mySpriteColour;
+                Material player = GameManager.Instance.gmRecordKeeper.colourPlayers[o];
+
+                if (ball == player)
                 {
                     balls[i].SetActive(false);
                     break;
