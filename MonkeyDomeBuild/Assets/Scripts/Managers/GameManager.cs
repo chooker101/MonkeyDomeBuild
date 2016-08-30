@@ -47,7 +47,6 @@ public class GameManager : MonoBehaviour
     public List<GameObject> gmBalls; // 0 IS ALWAYS MAIN BALL GMBALL
 	public UIManager gmUIManager;
 	public List<InputManager> gmInputs;
-	public List<Material> gmPlayerMaterials;
 	public RecordKeeper gmRecordKeeper;
 	public MovementManager gmMovementManager;
 	public ScoringManager gmScoringManager;
@@ -136,6 +135,7 @@ public class GameManager : MonoBehaviour
                 {
                     PlayerGorilla = RandGor();
                 }
+
                 for (int i = 0; i < TotalNumberofPlayers; ++i)
 				{
 					Transform temp = Instance.gmSpawnManager.SpawnPoints[i];

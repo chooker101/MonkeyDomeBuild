@@ -39,9 +39,9 @@ public class UIManager : MonoBehaviour
             else if (matchTime <= 0)
             {
                 matchTime = 0;
-                //GameManager.Instance.gmRecordKeeper.scoreEndPlayers[0] = GameManager.Instance.gmScoringManager.p1Score;
-				//GameManager.Instance.gmRecordKeeper.scoreEndPlayers[1] = GameManager.Instance.gmScoringManager.p2Score;
-				//GameManager.Instance.gmRecordKeeper.scoreEndPlayers[2] = GameManager.Instance.gmScoringManager.p3Score;
+                GameManager.Instance.gmRecordKeeper.scoreEndPlayers[0] = GameManager.Instance.gmScoringManager.p1Score;
+				GameManager.Instance.gmRecordKeeper.scoreEndPlayers[1] = GameManager.Instance.gmScoringManager.p2Score;
+				GameManager.Instance.gmRecordKeeper.scoreEndPlayers[2] = GameManager.Instance.gmScoringManager.p3Score;
                 SceneManager.LoadScene("PregameRoom");
             }
         }

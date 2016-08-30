@@ -118,7 +118,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &443696
 Transform:
   m_ObjectHideFlags: 1
@@ -131,7 +131,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 456864}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!4 &456864
 Transform:
   m_ObjectHideFlags: 1
@@ -144,8 +144,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 491628}
-  - {fileID: 420436}
   - {fileID: 443696}
+  - {fileID: 420436}
   - {fileID: 477278}
   - {fileID: 474542}
   m_Father: {fileID: 0}
@@ -320,10 +320,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22c8f2b32926b17409d648ed14078b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colourPlayers: []
-  scoreEndPlayers: 
-  playerGorilla: -1
-  defaultColour: {fileID: 0}
+  colourPlayers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  scoreEndPlayers: 0000000000000000000000000000000000000000
+  playerGorilla: 2
+  defaultColour: {fileID: 2100000, guid: bb3dda135a96b0642ab2b06c6547223a, type: 2}
 --- !u!114 &11404282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -335,7 +340,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54dd057461ed534c8535c76d3462e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPoints: []
+  SpawnPoints:
+  - {fileID: 491628}
+  - {fileID: 443696}
+  - {fileID: 420436}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &11433906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -364,21 +374,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalNumberofPlayers: 0
-  NumberOfPlayersToBuild: 1
+  NumberOfPlayersToBuild: 3
   NumberOfBotsToBuild: 0
   RandomGorilla: 1
   PlayerGorilla: 0
-  gmPlayers: []
-  gmPlayerScripts: []
-  gmSpawnManager: {fileID: 0}
+  gmPlayers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gmPlayerScripts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gmSpawnManager: {fileID: 11404282}
   gmButtonManager: {fileID: 0}
-  gmPlayerPrefab: {fileID: 0}
+  gmPlayerPrefab: {fileID: 106386, guid: b2a9f252c215e8c48904586552452670, type: 2}
   gmPlayerPrefabAI: {fileID: 0}
-  gmBalls: []
+  gmBalls:
+  - {fileID: 0}
   gmUIManager: {fileID: 0}
-  gmInputs: []
-  gmPlayerMaterials: []
-  gmRecordKeeper: {fileID: 0}
+  gmInputs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gmRecordKeeper: {fileID: 11402142}
   gmMovementManager: {fileID: 11482762}
   gmScoringManager: {fileID: 11433906}
   gmTargetManager: {fileID: 0}
@@ -394,10 +419,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turrets: []
-  banana: {fileID: 0}
-  poo: {fileID: 0}
-  tempShootTimeMin: 0
-  tempShootTimeMax: 0
+  banana: {fileID: 197018, guid: a36b07fdfde93eb43aa7e13454708bdc, type: 2}
+  poo: {fileID: 122670, guid: 0cd9fd5086abeb34ca61e43b33a54d8d, type: 2}
+  tempShootTimeMin: 1
+  tempShootTimeMax: 1
 --- !u!114 &11462282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -459,15 +484,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72138211defbdf04097b0f95e881f5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mScale: {x: 0, y: 0, z: 0}
-  mSpeed: 0
-  mJumpForce: 0
-  mThrowForce: 0
-  gScale: {x: 0, y: 0, z: 0}
-  gSpeed: 0
-  gJumpForce: 0
-  gThrowForce: 0
-  gChargeSpeed: 0
+  mScale: {x: 1, y: 1, z: 1}
+  mSpeed: 12
+  mJumpForce: 1500
+  mThrowForce: 10
+  gScale: {x: 1.5, y: 1.5, z: 1.5}
+  gSpeed: 10
+  gJumpForce: 1500
+  gThrowForce: 10
+  gChargeSpeed: 12
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
