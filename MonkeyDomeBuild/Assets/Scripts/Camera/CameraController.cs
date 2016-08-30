@@ -133,7 +133,6 @@ public class CameraController : MonoBehaviour
         {
             meanPosition = (meanPosition + GameManager.Instance.gmBalls[0].transform.position) / 2;
         }
-
     }
 
     void FindPanning()
