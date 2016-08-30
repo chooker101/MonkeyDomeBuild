@@ -17,10 +17,16 @@ public class UIManager : MonoBehaviour
     public float startMatchTime;
 
 
+    public Text targetTierUI;
+    public Text targetsInSequenceUI;
+
+
     // Use this for initialization
     void Start ()
     {
         matchTime = startMatchTime;
+
+        tm_stats = FindObjectOfType<TargetManager>();
 	}
 	
 	// Update is called once per frame
@@ -70,5 +76,14 @@ public class UIManager : MonoBehaviour
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"
             ;
+
+        TargetsUI();
+
     }
+    void TargetsUI()
+    {
+        targetTierUI.text = tm_stats.targetTier.ToString();
+        targetsInSequenceUI.text = tm_stats.hitSum.ToString();
+    }
+
 }
