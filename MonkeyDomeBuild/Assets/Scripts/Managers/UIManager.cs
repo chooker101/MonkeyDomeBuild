@@ -16,8 +16,12 @@ public class UIManager : MonoBehaviour
     public Text shotClock;
     public float startMatchTime;
 
+    public Text targetTierUI;
+    public Text targetsInSequenceUI;
+
     private RecordKeeper rk_keeper;
     private ScoringManager sm_score;
+    private TargetManager tm_stats;
 
     // Use this for initialization
     void Start ()
@@ -25,6 +29,7 @@ public class UIManager : MonoBehaviour
         matchTime = startMatchTime;
         rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
         sm_score = FindObjectOfType<GameManager>().GetComponent<ScoringManager>();
+        tm_stats = FindObjectOfType<TargetManager>().GetComponent<TargetManager>();
 	}
 	
 	// Update is called once per frame
@@ -74,5 +79,14 @@ public class UIManager : MonoBehaviour
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"
             ;
+
+        TargetsUI();
+
     }
+    void TargetsUI()
+    {
+        targetTierUI.text = tm_stats.targetTier.ToString();
+        targetsInSequenceUI.text = tm_stats.hitSum.ToString();
+    }
+
 }

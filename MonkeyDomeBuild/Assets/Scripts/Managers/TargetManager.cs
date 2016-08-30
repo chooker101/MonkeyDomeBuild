@@ -11,7 +11,10 @@ public class TargetManager : MonoBehaviour {
     private int addScore;
 
     private bool isHit;
-    private int targetTier;
+    // TODO: get this as well             ************
+
+    public int hitSum = 0;
+    public int targetTier;
 	public bool[] targetsHitInSequence = new bool[5];
 	public int sequenceIndex = 0;
     private bool advanceTier;
@@ -21,6 +24,7 @@ public class TargetManager : MonoBehaviour {
     private int activateCounter;
 
     private Target[] gameTargets;
+    // TODO: make a get for targets       ****************
     private float startLifeTime;
 
     // Use this for initialization
@@ -120,7 +124,6 @@ public class TargetManager : MonoBehaviour {
     {
         Debug.Log("Check Rally");
         // checks if enough targets in one rally are hit to upgrade tier
-        int hitSum = 0;
         foreach(bool b in targetsHitInSequence)
         {
             if (b)
