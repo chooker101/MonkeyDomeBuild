@@ -16,7 +16,7 @@ public class BallInfo : MonoBehaviour
     public float count = 0f;
     private bool perfectCatch = false;
     public float perfectCatchDistance;
-    private float bounciness;
+    //private float bounciness;
 
     public float distanceTravel = 0f;
     public float travelTime = 0f;
@@ -46,7 +46,7 @@ public class BallInfo : MonoBehaviour
         perfectCatchDistance = 1f;
         m_rigid = GetComponent<Rigidbody2D>();
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
-        bounciness = ballMat.bounciness;
+        //bounciness = ballMat.bounciness;
         timer = 8f;
         //PickRandomVictim();
     }
@@ -106,7 +106,7 @@ public class BallInfo : MonoBehaviour
         float longestTimeGorilla = 0f;
         count = 0;
         GameObject gorillaToSwitch = null;
-        for(int i = 0; i < GameManager.Instance.TNOP; ++i)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
         {
             if (GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Gorilla)
             {
@@ -131,7 +131,7 @@ public class BallInfo : MonoBehaviour
         float longestTimeGorilla = 0f;
         count = 0;
         GameObject gorillaToSwitch = null;
-        for (int i = 0; i < GameManager.Instance.TNOP; ++i)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
         {
             if (GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Gorilla)
             {
@@ -161,7 +161,7 @@ public class BallInfo : MonoBehaviour
             m_rigid.isKinematic = true;
             if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)
                 perfectCatch = true;
-            ScoringManager.Instance.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
+			GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
             ResetScoringStats();
             UpdateLastThrowMonkey(who);
             perfectCatch = false;
@@ -194,7 +194,7 @@ public class BallInfo : MonoBehaviour
         while (victim == null || victim is Gorilla)
         {
             index = Random.Range(0, GameManager.Instance.gmPlayers.Count);
-            victim = GameManager.Instance.gmPlayers[index].GetComponent<Player>().characterType;
+            victim = GameManager.Instance.gmPlayerScripts[index].characterType;
         }
         lastThrowMonkey = GameManager.Instance.gmPlayers[index];
     }

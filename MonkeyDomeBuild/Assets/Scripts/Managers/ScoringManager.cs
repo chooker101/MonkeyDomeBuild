@@ -13,18 +13,6 @@ public enum WhichPlayer
 
 public class ScoringManager : MonoBehaviour
 {
-    private static ScoringManager mInstance;
-    public static ScoringManager Instance
-    {
-        get
-        {
-            if (mInstance == null)
-            {
-                mInstance = FindObjectOfType<ScoringManager>();
-            }
-            return mInstance;
-        }
-    }
     //keep track of ball & players position
     public int p1Score;
     public int p2Score;
@@ -32,7 +20,7 @@ public class ScoringManager : MonoBehaviour
     public int p4Score;
     public int p5Score;
 
-    private BallInfo _ball = null;
+    //private BallInfo _ball = null;
     public static Dictionary<WhichPlayer, int> playerScores = new Dictionary<WhichPlayer, int>();
 
     private float minDistanceTravel = 30f;
@@ -56,7 +44,7 @@ public class ScoringManager : MonoBehaviour
 
     void Start()
     {
-        _ball = FindObjectOfType<BallInfo>();
+        //_ball = FindObjectOfType<BallInfo>();
         playerScores.Add(WhichPlayer.Player1, 0);
         playerScores.Add(WhichPlayer.Player2, 0);
         playerScores.Add(WhichPlayer.Player3, 0);
@@ -155,7 +143,7 @@ public class ScoringManager : MonoBehaviour
     {
         //subtract scrore from other monkeys
         int switchScore = 0;
-        for(int i = 0; i < GameManager.Instance.TNOP; i++)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
             if (GameManager.Instance.gmPlayers[i].GetInstanceID() != gorilla.GetInstanceID())
             {

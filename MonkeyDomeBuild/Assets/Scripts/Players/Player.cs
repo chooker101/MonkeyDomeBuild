@@ -6,7 +6,6 @@ public class Player : Actor
 {
     public override void CheckInputs()
     {
-		virtualinput = GameManager.Instance.gmInputs[playerIndex].mXY;
 		/*
         switch (whichPlayer)
         {

@@ -50,11 +50,11 @@ public class Gorilla : Character
                 {
                     if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().HoldingMonkey != null)
                     {
-                        ScoringManager.Instance.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().HoldingMonkey);
+                        GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().HoldingMonkey);
                     }
                     cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
                     cacheplayer.stat_ballGrab++;
-                    ScoringManager.Instance.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
+					GameManager.Instance.gmScoringManager.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
                 }
             }
 

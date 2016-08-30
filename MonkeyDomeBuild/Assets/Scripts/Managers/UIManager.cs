@@ -16,15 +16,11 @@ public class UIManager : MonoBehaviour
     public Text shotClock;
     public float startMatchTime;
 
-    private RecordKeeper rk_keeper;
-    private ScoringManager sm_score;
 
     // Use this for initialization
     void Start ()
     {
         matchTime = startMatchTime;
-        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-        sm_score = FindObjectOfType<GameManager>().GetComponent<ScoringManager>();
 	}
 	
 	// Update is called once per frame
@@ -34,14 +30,14 @@ public class UIManager : MonoBehaviour
         {
             if (matchTime > 0)
             {
-                matchTime -= Time.deltaTime;
+                matchTime -= Time.fixedDeltaTime;
             }
             else if (matchTime <= 0)
             {
                 matchTime = 0;
-                rk_keeper.scoreEndPlayers[0] = sm_score.p1Score;
-                rk_keeper.scoreEndPlayers[1] = sm_score.p2Score;
-                rk_keeper.scoreEndPlayers[2] = sm_score.p3Score;
+                //GameManager.Instance.gmRecordKeeper.scoreEndPlayers[0] = GameManager.Instance.gmScoringManager.p1Score;
+				//GameManager.Instance.gmRecordKeeper.scoreEndPlayers[1] = GameManager.Instance.gmScoringManager.p2Score;
+				//GameManager.Instance.gmRecordKeeper.scoreEndPlayers[2] = GameManager.Instance.gmScoringManager.p3Score;
                 SceneManager.LoadScene("PregameRoom");
             }
         }
