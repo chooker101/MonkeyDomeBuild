@@ -6,15 +6,16 @@ public class RecordKeeper : MonoBehaviour
     public Material[] colourPlayers;
     public int[] scoreEndPlayers;
     public int playerGorilla = -1;
-
     public Material defaultColour;
+
+    private bool gorillaSmashed = false;
 
     // Use this for initialization
     void Start()
     {
         DontDestroyOnLoad(this);
         
-        for(int i = 0; i<colourPlayers.Length; i++)
+        for(int i = 0; i < colourPlayers.Length; i++)
         {
             colourPlayers[i] = defaultColour;
         }

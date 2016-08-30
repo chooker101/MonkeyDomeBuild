@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\BallReturn.cs" />
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actor.cs" />
     <Compile Include="Assets\Scripts\Actor\Character.cs" />
@@ -84,16 +85,12 @@
     <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\Players\CallForBallReset.cs" />
-    <Compile Include="Assets\Scripts\Players\GorillaAction.cs" />
     <Compile Include="Assets\Scripts\Players\GorillaCharge.cs" />
-    <Compile Include="Assets\Scripts\Players\MonkeyAction.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />
     <Compile Include="Assets\Scripts\PreGameTimer.cs" />
-    <Compile Include="Assets\Scripts\PrefabsRef.cs" />
     <Compile Include="Assets\Scripts\Target\ColourChanger.cs" />
     <Compile Include="Assets\Scripts\Target\FullTargetRotator.cs" />
     <Compile Include="Assets\Scripts\Target\Target.cs" />
-    <Compile Include="Assets\Scripts\Target\TargetEnable.cs" />
     <Compile Include="Assets\Scripts\Target\TargetHead.cs" />
     <Compile Include="Assets\Scripts\Turret\ProjectileBehavior.cs" />
     <Compile Include="Assets\Scripts\Turret\TargetQueue.cs" />

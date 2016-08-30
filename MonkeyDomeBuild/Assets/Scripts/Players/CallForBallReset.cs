@@ -10,10 +10,12 @@ public class CallForBallReset : MonoBehaviour
     {
         callForBall.SetActive(false);
     }
+
     void OnEnable()
     {
         resetCount = resetTime;
     }
+
     void Update()
     {
         if (callForBall.activeSelf)
@@ -28,6 +30,7 @@ public class CallForBallReset : MonoBehaviour
             }
         }
     }
+
     public void CallForBall()
     {
         if (!callForBall.activeSelf)
@@ -36,6 +39,7 @@ public class CallForBallReset : MonoBehaviour
             resetCount = resetTime;
         }
     }
+
     public bool CallForBallActive
     {
         get { return callForBall.activeSelf; }

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Target : MonoBehaviour {
+public class Target : MonoBehaviour
+{
     private bool isHit;
     //private int targetTier;
     private FullTargetRotator targetActivator;
@@ -81,12 +82,14 @@ public class Target : MonoBehaviour {
         }
     }
 
-	public void DisableCollider(){
+	public void DisableCollider()
+	{
 		GetComponentInChildren<Collider2D> ().enabled = false;
 		//myCollider.enabled = false;
 	}
 
-	public void EnableCollider(){
+	public void EnableCollider()
+	{
 		GetComponentInChildren<Collider2D> ().enabled = true;
 	}
 

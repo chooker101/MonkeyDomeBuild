@@ -17,10 +17,6 @@ public class ColourChanger : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-		// Find Sphere collider for target within children
-		//targetCollider = GetComponent<CircleCollider2D>();
-		//recordKeeper = FindObjectOfType<RecordKeeper>();
-
 		// Fills a list with all current players
 		myPlayer = GameManager.Instance.gmPlayers[playerTargetNumber];
     }

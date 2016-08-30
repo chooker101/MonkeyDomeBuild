@@ -250,7 +250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3972ede853467ca46ba418f4071d0a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whichplayer: 0
+  playerIndex: 0
+  isPlayer: 0
   movement: {x: 0, y: 0}
   cam: {fileID: 0}
   layerMask: 256

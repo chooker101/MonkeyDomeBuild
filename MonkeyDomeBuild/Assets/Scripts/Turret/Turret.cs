@@ -53,10 +53,7 @@ public class Turret : MonoBehaviour {
         falloff = 0.5f;
         moveSpeed = 10f;
     }
-    void Start()
-    {
 
-    }
     void Update()
     {
         if (canFire)
@@ -83,6 +80,7 @@ public class Turret : MonoBehaviour {
         currentMinFiringAngle = minAng;
         currentMaxFiringAngle = maxAng;
     }
+
     public void OpenFire(TargetQueue targetQueue)
     {
         canFire = true;
@@ -91,6 +89,7 @@ public class Turret : MonoBehaviour {
         target = targetQueue.GetTarget().transform;
         stuffToShoot = targetQueue.GetWhatToFire();
     }
+
     private void Fire()
     {
         //Debug.Log("fire");
@@ -125,6 +124,7 @@ public class Turret : MonoBehaviour {
         isAvailable = false;
         timeForNext = Time.time + Random.Range(coolDownMin,coolDownMax);
     }
+
     private void MoveToFireLocation()
     {
         if (target.transform.position.y > m_rigid.position.y)
@@ -138,6 +138,7 @@ public class Turret : MonoBehaviour {
             m_rigid.MovePosition(targetLoc);
         }
     }
+
     private bool CheckIfReadyToFire()
     {
         if (Mathf.Abs(m_rigid.transform.position.y - target.transform.position.y) < falloff)
@@ -146,10 +147,12 @@ public class Turret : MonoBehaviour {
         }
         return false;
     }
+
     public bool IsAvailable()
     {
         return isAvailable;
     }
+
     private float GetFiringAngle()
     {
         float minAng = firingAngleRange[0] - m_rigid.transform.position.y * angleRatio;

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FullTargetRotator : MonoBehaviour {
+public class FullTargetRotator : MonoBehaviour
+{
 
     public float rotateSpeed;
 
@@ -12,12 +13,14 @@ public class FullTargetRotator : MonoBehaviour {
     public Vector2 rotateAxis;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
         
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
         if (Input.GetKeyDown(KeyCode.O))
         {
             targetDown = true;
@@ -57,7 +60,6 @@ public class FullTargetRotator : MonoBehaviour {
             this.gameObject.transform.RotateAround(targetBase.transform.position, rotateAxis,  (rotateSpeed * Time.deltaTime));
             angleChange -= (rotateSpeed * Time.deltaTime);
         }
-
-        
+		
     }
 }
