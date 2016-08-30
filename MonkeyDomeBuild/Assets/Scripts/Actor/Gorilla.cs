@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Gorilla : Character
 {
-	private int myPlayer;
-	private Player cacheplayer;
 	private float timeBeingGorilla = 0f;
     private float chargeCount = 0f;
     private float chargeCompleteTime = 3f;
@@ -48,13 +46,13 @@ public class Gorilla : Character
             {
                 if (cacheplayer.ballInRange)
                 {
-                    if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().HoldingMonkey != null)
+                    if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null)
                     {
-                        ScoringManager.Instance.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().HoldingMonkey);
+                        GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey());
                     }
                     cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
                     cacheplayer.stat_ballGrab++;
-                    ScoringManager.Instance.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
+					GameManager.Instance.gmScoringManager.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
                 }
             }
 

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 
 
-public class TargetManager : MonoBehaviour {
+public class TargetManager : MonoBehaviour
+{
 
-
-    private BallInfo ballInfo;
+    //private BallInfo ballInfo;
     private int addScore;
 
     private bool isHit;
@@ -18,21 +18,33 @@ public class TargetManager : MonoBehaviour {
 	public bool[] targetsHitInSequence = new bool[5];
 	public int sequenceIndex = 0;
     private bool advanceTier;
-    private bool stayTier;
-    private bool rallyOn;
+    //private bool stayTier;
+    //private bool rallyOn;
     private int[] activateTimes = new int[5] { 0, 3, 6, 8, 10 };
     private int activateCounter;
 
+	[SerializeField]
     private Target[] gameTargets;
     // TODO: make a get for targets       ****************
     private float startLifeTime;
 
+	public Target GetTargetAtIndex(int i)
+	{
+		return gameTargets[i];
+	}
+
+	public int GetTargetArrayLength()
+	{
+		return gameTargets.Length;
+	}
+
     // Use this for initialization
-    void Start () {
+    void Start ()
+	{
 		//sequenceIndex = 0;
 		advanceTier = false;
         activateCounter = 0;
-        rallyOn = false;
+        //rallyOn = false;
 
         gameTargets = FindObjectsOfType<Target>();
 
@@ -40,7 +52,7 @@ public class TargetManager : MonoBehaviour {
 
         isHit = false;
 
-        ballInfo = GetComponent<BallInfo>();
+        //ballInfo = GetComponent<BallInfo>();
 
         for (int i = 0; i < targetsHitInSequence.Length; i++)
         {
@@ -49,7 +61,8 @@ public class TargetManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 
         if (Input.GetKeyDown(KeyCode.J))
         {
@@ -135,10 +148,10 @@ public class TargetManager : MonoBehaviour {
                 Debug.Log("Hitsum: " + hitSum);
                 return true;
             }
-            }
+        }
         if (hitSum > 0 && hitSum < 3)
         {
-            stayTier = true;
+            //stayTier = true;
         }
         Debug.Log("Hitsum: " + hitSum);
         return false;
@@ -146,42 +159,34 @@ public class TargetManager : MonoBehaviour {
     void UpdateTierStatus()
     {
         Debug.Log("update tier status");
+
         // updates tier status at end of a rally
-        foreach (Target t in gameTargets)
+        for (int i = 0;i < gameTargets.Length; ++i)
         {
             if (advanceTier)
             {
                 if (targetTier < 4)
                 {
                     targetTier++;
-                    //t.SetTargetHeads(targetTier);
                 }
-            }
-            else if (!stayTier)
-            {
-                //t.SetTargetHeads(targetTier);
             }
 			sequenceIndex = 0;
         }
+
         Debug.Log("tier status: "+ targetTier);
-        rallyOn = false;
+        //rallyOn = false;
         //ResetTargetPositions();
     }
 
     void ResetTargetPositions()
     {
         // put them back where they started
-        foreach (Target t in gameTargets)
-        {
-            //t.TargetSetter(-1f);
-			//t.DisableCollider ();
-        }
     }
 
 
     void Rally()
     {
-        rallyOn = true;
+        //rallyOn = true;
         RallySetter();
         StartRally();
         //UpdateTierStatus();

@@ -11,15 +11,15 @@ public class TargetQueue
         this.target = target;
         this.whatToFire = whatToFire;
     }
+
     public GameObject GetTarget()
     {
         return target;
     }
+
     public GameObject GetWhatToFire()
     {
         return whatToFire;
     }
-
-
 
 }

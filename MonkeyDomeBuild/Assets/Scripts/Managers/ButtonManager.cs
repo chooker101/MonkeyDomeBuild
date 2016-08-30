@@ -3,13 +3,15 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class ButtonManager : MonoBehaviour {
+public class ButtonManager : MonoBehaviour
+{
 
-    private Button myButton;
+    //private Button myButton;
 
 	// Use this for initialization
-	void Awake () {
-        myButton = GetComponent<Button>();
+	void Awake ()
+	{
+        //myButton = GetComponent<Button>();
 	}
 	
 	// Update is called once per frame

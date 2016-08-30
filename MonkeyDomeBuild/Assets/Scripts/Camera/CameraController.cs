@@ -31,14 +31,14 @@ public class CameraController : MonoBehaviour
     private float maxXDistance;
     private float maxYDistance;
     private float panningY;
-    private Vector3 panningScale = Vector3.zero;
+    //private Vector3 panningScale = Vector3.zero;
     private Vector3 positionSum = Vector3.zero;
     private Vector3 meanPosition = Vector3.zero;
     private Camera myCam;
     private float camSize;
 
     public bool considerTargets = false;
-    private List<GameObject> targets = new List<GameObject>();
+    //private List<GameObject> targets = new List<GameObject>();
 
     // Use this for initialization
     void Start()
@@ -112,28 +112,27 @@ public class CameraController : MonoBehaviour
     void MeanOfPositions()
     {
         positionSum = Vector2.zero;
-        for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
-        if (considerTargets && targets.Count > 0)
+        if (considerTargets && GameManager.Instance.gmTargetManager.GetTargetArrayLength() > 0)
         {
-            for(int i = 0; i < targets.Count; i++)
+            for(int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
             {
-                positionSum += targets[i].transform.position;
+                positionSum += GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position;
             }
-            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targets.Count);
+            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + GameManager.Instance.gmTargetManager.GetTargetArrayLength());
         }
         else
         {
-            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count);
+            meanPosition = positionSum / (GameManager.Instance.TotalNumberofPlayers);
         }
 
         if (GameManager.Instance.gmBalls[0] != null)
         {
             meanPosition = (meanPosition + GameManager.Instance.gmBalls[0].transform.position) / 2;
         }
-
     }
 
     void FindPanning()
@@ -145,7 +144,7 @@ public class CameraController : MonoBehaviour
         maxXDistance = 0f;
         maxYDistance = 0f;
         // get maxXDistance       
-        for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {            
             if(maxXDistance < Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position))
             {

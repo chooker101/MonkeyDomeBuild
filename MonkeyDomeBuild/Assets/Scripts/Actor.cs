@@ -16,7 +16,6 @@ public class Actor : MonoBehaviour
     public bool isPlayer;
 
 	public Vector2 movement = Vector2.zero;
-	protected Vector2 virtualinput = Vector2.zero;
 	public CameraController cam;
 
 
@@ -50,9 +49,7 @@ public class Actor : MonoBehaviour
 
     public Character characterType;
 
-    private RecordKeeper recordKeeper;
     private GameObject monkeyCrown;
-    private ScoringManager score;
 
 
     public BallInfo ballCanCatch;
@@ -72,9 +69,7 @@ public class Actor : MonoBehaviour
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
 
-        recordKeeper = FindObjectOfType<RecordKeeper>();
         monkeyCrown = transform.Find("Crown").gameObject;
-        score = FindObjectOfType<ScoringManager>();
         monkeyCrown.SetActive(false);
 	}
 
@@ -140,17 +135,17 @@ public class Actor : MonoBehaviour
 		movement = cache_rb.velocity;
 		if (!isClimbing)
 		{
-			if (!RayCastSide(virtualinput.x))
+			if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
 			{
                 if (!isDashing)
                 {
                     if (characterType is Gorilla && characterType.isCharging)
                     {
-                        movement.x = virtualinput.x * characterType.chargespeed;
+                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * characterType.chargespeed;
                     }
                     else
                     {
-                        movement.x = virtualinput.x * characterType.movespeed;
+                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * characterType.movespeed;
                     }
                 }
                 else
@@ -162,111 +157,18 @@ public class Actor : MonoBehaviour
                     }
                     else
                     {
-                        dashingCount += Time.deltaTime;
+                        dashingCount += Time.fixedDeltaTime;
                     }
                 }
 			}
 		}
 		else
 		{
-            movement.x = virtualinput.x * characterType.movespeed;
-            movement.y = virtualinput.y * characterType.movespeed;
+            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * characterType.movespeed;
+            movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * characterType.movespeed;
 		}
 		cache_rb.velocity = movement;
 	}
-
-	/*
-
-	public void Movement()
-    {
-		movement = Vector2.zero;
-        if (!isClimbing)
-        {
-            //if player is NOT climbing on vines
-			if (Mathf.Abs(cache_rb.velocity.x) < characterType.speedLimit + characterInc)
-			{
-                //if player is NOT trying to run into walls
-				if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0)
-				{
-					if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) || (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
-					{
-                        float changeDirectionMultipiler = 1f;
-                        if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && cache_rb.velocity.x < 0) ||
-                            (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && cache_rb.velocity.x > 0))
-                            changeDirectionMultipiler = 1.2f;
-						movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.horizontalMoveForce * changeDirectionMultipiler;
-					}
-				}
-			}
-			else
-			{
-				movement.x = characterType.speedLimit + characterInc;
-			}
-			//apply force on actor
-			cache_rb.AddForce(movement);
-        }
-        else
-        {
-            //if player is climbing on vines
-            if (GameManager.Instance.gmInputs[whichplayer].mXY.x != 0 || GameManager.Instance.gmInputs[whichplayer].mXY.y != 0)
-            {
-                if ((GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 && !RayCastSide(1)) ||
-                    (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0 && !RayCastSide(-1)))
-                {
-                    //if player is NOT trying to run into walls
-                    //if player is NOT trying to run into a gorilla
-                    float dir = 1f;
-                    if (GameManager.Instance.gmInputs[whichplayer].mXY.x > 0) dir = 1f;
-                    else if (GameManager.Instance.gmInputs[whichplayer].mXY.x < 0) dir = -1f;
-                    movement.x = GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.climbingHorizontalMoveSpeed + characterInc * dir;
-                }
-                if ((GameManager.Instance.gmInputs[whichplayer].mXY.y > 0 && !RayCast(1)) ||
-                    (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0 && !RayCast(-1)))
-                {
-                    float dir = 1f;
-                    if (GameManager.Instance.gmInputs[whichplayer].mXY.y > 0) dir = 1f;
-                    else if (GameManager.Instance.gmInputs[whichplayer].mXY.y < 0) dir = -1f;
-                    movement.y = GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.climbingVerticalMoveSpeed + characterInc * dir;
-                }
-            }
-			cache_rb.velocity = movement;
-        }
-    }*/
-    /*
-    public void JumpCheck()
-    {
-        if (RayCast(-1))
-        {
-            //if player is on ground or platform
-            canJump = true;
-            if (characterType.tempDownForce != characterType.downForce)
-            {
-				characterType.tempDownForce = characterType.downForce;
-            }
-        }
-        else
-        {
-            //if player is not on ground
-            if (!isClimbing)
-            {
-                //if player is not climbing
-                if (GetComponent<Rigidbody2D>().isKinematic) ChangeIsKinematic();
-                if (GetComponent<Rigidbody2D>().velocity.y < 0f && !RayCast(-1))
-                {
-                    //if player is free falling
-                    GetComponent<Rigidbody2D>().AddForce(Vector2.down * characterType.downForce * Time.deltaTime);
-                }
-				//GetComponent<Rigidbody>().AddForce(new Vector3(0f, -characterType.tempDownForce));
-            }
-        }
-        if (GameManager.Instance.gmInputs[whichplayer].mJump && canJump)
-        {
-            canJump = false;
-            if (GetComponent<Rigidbody2D>().isKinematic && isClimbing) ChangeIsKinematic();
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, characterType.jumpForce),ForceMode2D.Impulse);
-            stat_jump++; // Adds one to jump stat PUT IN STAT MANAGER
-        }
-    }*/
 
     public void ThrowCheck()
     {
@@ -310,18 +212,6 @@ public class Actor : MonoBehaviour
                 canCharge = true;
             }
         }
-
-        /*
-        if (GameManager.Instance.gmInputs[whichplayer].mCatch && haveBall)
-        {
-            haveBall = false;
-            ballHolding.GetComponent<BallInfo>().Reset();
-			Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
-            ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[whichplayer].mXY.x * characterType.throwForce, GameManager.Instance.gmInputs[whichplayer].mXY.y * characterType.throwForce),ForceMode2D.Impulse);
-            ballHolding = null;
-            stat_throw++;
-        }
-        */
     }
     public bool RayCast(int direction)
     {
@@ -342,14 +232,6 @@ public class Actor : MonoBehaviour
             }
         }
         return hit;
-    }
-    public bool RayCastGorilla(int leftOrRight)
-    {
-        RaycastHit2D hitInfo;
-        hitInfo = Physics2D.Raycast(GetComponent<Rigidbody2D>().position, leftOrRight * Vector2.right, transform.localScale.x / 2 + 0.05f, layerMaskPlayer);
-
-
-        return false;
     }
 
     public bool RayCastSide(float leftOrRight)
@@ -377,7 +259,7 @@ public class Actor : MonoBehaviour
             //Debug.Log("CeckPos" + (checkPos.x - cachebox.size.x));
             checkPosStart.x = transform.position.x + (cachebox.size.x / 2 + 0.1f) * leftOrRight * transform.localScale.x;
             checkPosStart.y = transform.position.y - (cachebox.size.y / 2 - cachebox.offset.y) * transform.localScale.y;
-            Vector2 scale = new Vector2(transform.localScale.x, transform.localScale.y);
+            //Vector2 scale = new Vector2(transform.localScale.x, transform.localScale.y);
             Vector2 tempV = checkPosStart;
             tempV.y += (cachebox.size.y * transform.localScale.y) + 0.1f;
             Debug.DrawLine(checkPosStart, tempV);
@@ -501,26 +383,19 @@ public class Actor : MonoBehaviour
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
-            ChangeInc(incAmount);
+            IncrementCharacterInc(incAmount);
     }
 
     public void ReactionToPoop(float incAmount)
     {
         if (Mathf.Abs(characterInc) < maxminInc)
-            ChangeInc(-incAmount);
+            IncrementCharacterInc(-incAmount);
     }
 
-    protected void ChangeInc(float inc)
+    protected void IncrementCharacterInc(float inc)
     {
         characterInc += inc;
-        //Debug.Log(characterInc);
     }
-
-    /*
-    protected void ChangeIsKinematic()
-    {
-        GetComponent<Rigidbody2D>().isKinematic = !GetComponent<Rigidbody2D>().isKinematic;
-    }*/
 
     void CheckLeader()
     {
@@ -558,6 +433,7 @@ public class Actor : MonoBehaviour
 
     private void UpdateColour()
     {
+		/*
         if (recordKeeper != null)
         {
             for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
@@ -567,7 +443,7 @@ public class Actor : MonoBehaviour
                     GetComponent<SpriteRenderer>().material = recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i];
                 }
             }
-        }
+        }*/
     }
 
     protected void AnimationControl()

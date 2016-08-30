@@ -16,20 +16,15 @@ public class UIManager : MonoBehaviour
     public Text shotClock;
     public float startMatchTime;
 
+
     public Text targetTierUI;
     public Text targetsInSequenceUI;
 
-    private RecordKeeper rk_keeper;
-    private ScoringManager sm_score;
-    private TargetManager tm_stats;
 
     // Use this for initialization
     void Start ()
     {
         matchTime = startMatchTime;
-        rk_keeper = FindObjectOfType<RecordKeeper>();
-        sm_score = FindObjectOfType<ScoringManager>();
-        tm_stats = FindObjectOfType<TargetManager>();
 	}
 	
 	// Update is called once per frame
@@ -39,14 +34,14 @@ public class UIManager : MonoBehaviour
         {
             if (matchTime > 0)
             {
-                matchTime -= Time.deltaTime;
+                matchTime -= Time.fixedDeltaTime;
             }
             else if (matchTime <= 0)
             {
                 matchTime = 0;
-                rk_keeper.scoreEndPlayers[0] = sm_score.p1Score;
-                rk_keeper.scoreEndPlayers[1] = sm_score.p2Score;
-                rk_keeper.scoreEndPlayers[2] = sm_score.p3Score;
+                GameManager.Instance.gmRecordKeeper.scoreEndPlayers[0] = GameManager.Instance.gmScoringManager.p1Score;
+				GameManager.Instance.gmRecordKeeper.scoreEndPlayers[1] = GameManager.Instance.gmScoringManager.p2Score;
+				GameManager.Instance.gmRecordKeeper.scoreEndPlayers[2] = GameManager.Instance.gmScoringManager.p3Score;
                 SceneManager.LoadScene("PregameRoom");
             }
         }
@@ -85,8 +80,8 @@ public class UIManager : MonoBehaviour
     }
     void TargetsUI()
     {
-        targetTierUI.text = tm_stats.targetTier.ToString();
-        targetsInSequenceUI.text = tm_stats.hitSum.ToString();
+        targetTierUI.text = GameManager.Instance.gmTargetManager.targetTier.ToString();
+        targetsInSequenceUI.text = GameManager.Instance.gmTargetManager.hitSum.ToString();
     }
 
 }

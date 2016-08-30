@@ -7,9 +7,9 @@ public class ColourChanger : MonoBehaviour
 
     public int playerTargetNumber = -1;
     
-    private RecordKeeper recordKeeper;
-    private CircleCollider2D targetCollider;
-    private GameObject[] players;
+    //private RecordKeeper recordKeeper;
+    //private CircleCollider2D targetCollider;
+    
     private GameObject myPlayer = null;
     private GameObject objectHit = null;
     private Material materialToApply;
@@ -17,24 +17,8 @@ public class ColourChanger : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // Find Sphere collider for target within children
-        targetCollider = GetComponent<CircleCollider2D>();
-        recordKeeper = FindObjectOfType<RecordKeeper>();
-
-        // Fills a list with all current players
-        players = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < players.Length; i++)
-        {
-            if (players[i].GetComponent<Player>().playerIndex == playerTargetNumber) // Finds the player object that this target correponds to
-            {
-                myPlayer = players[i];
-                return;
-            }
-            else
-            {
-                myPlayer = null;
-            }
-        }
+		// Fills a list with all current players
+		myPlayer = GameManager.Instance.gmPlayers[playerTargetNumber];
     }
 
     // Update is called once per frame
@@ -58,13 +42,13 @@ public class ColourChanger : MonoBehaviour
                 {
                     Debug.Log("Colour Target: This is my player");
 
-                    for (int i = 0; i < recordKeeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
+                    for (int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; i++)
                     {
                         Debug.Log("Colour Target: Looking for player: " + i.ToString());
 
                         if (i == myPlayer.GetComponent<Player>().playerIndex)
                         {
-                            recordKeeper.GetComponent<RecordKeeper>().colourPlayers[i] = materialToApply;
+							GameManager.Instance.gmRecordKeeper.colourPlayers[i] = materialToApply;
 
                             Debug.Log("Colour logged into RecordKeeper" + i.ToString());
                             break;

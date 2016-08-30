@@ -14,18 +14,4 @@ public class SpawnManager : MonoBehaviour
 	}
 
 	public Transform[] SpawnPoints;
-
-
-    // Use this for initialization
-    void Start ()
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
-
 }
