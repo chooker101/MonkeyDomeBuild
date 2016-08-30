@@ -37,6 +37,8 @@ public class CameraController : MonoBehaviour
     private Camera myCam;
     private float camSize;
 
+    public bool considerTargets = false;
+    private List<GameObject> targets = new List<GameObject>();
 
     // Use this for initialization
     void Start()
@@ -60,10 +62,7 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-
-
         SetCamera();
-
         if (Input.GetKeyDown(KeyCode.K))
         {
             if (shaking)
@@ -109,7 +108,6 @@ public class CameraController : MonoBehaviour
             shaking = false;
         }
     }
-
     // find mean of positions
     void MeanOfPositions()
     {
@@ -118,14 +116,22 @@ public class CameraController : MonoBehaviour
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
-        meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count);
+        if (considerTargets && targets.Count > 0)
+        {
+            for(int i = 0; i < targets.Count; i++)
+            {
+                positionSum += targets[i].transform.position;
+            }
+            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targets.Count);
+        }
+        else
+        {
+            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count);
+        }
+
         if (GameManager.Instance.gmBalls[0] != null)
         {
             meanPosition = (meanPosition + GameManager.Instance.gmBalls[0].transform.position) / 2;
-            if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().isballnear == false)
-            {
-
-            }
         }
 
     }
