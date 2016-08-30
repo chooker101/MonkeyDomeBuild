@@ -14,17 +14,19 @@ using System.Collections.Generic;
 public class AudienceManager : MonoBehaviour
 {
 
-    public static int[] audienceApproval;
 
-    // Use this for initialization
-    void Start ()
-	{
+    void Start()
+    {
 
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
+    }
+
+    void Update()
+    {
+        UpdateAudienceMood();
+    }
+    void UpdateAudienceMood()
+    {
+
+    }
+
 }
