@@ -6,8 +6,9 @@ public class RecordKeeper : MonoBehaviour
     public Material[] colourPlayers;
     public int[] scoreEndPlayers;
     public int playerGorilla = -1;
-
     public Material defaultColour;
+
+    private bool gorillaSmashed = false;
 
     // Use this for initialization
     void Start()

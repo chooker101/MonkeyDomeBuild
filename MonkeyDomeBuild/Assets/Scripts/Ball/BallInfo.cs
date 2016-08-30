@@ -49,6 +49,7 @@ public class BallInfo : MonoBehaviour
         bounciness = ballMat.bounciness;
         timer = 8f;
         //PickRandomVictim();
+
     }
     void Update()
     {
@@ -232,4 +233,6 @@ public class BallInfo : MonoBehaviour
     {
 
     }
+
+    
 }
