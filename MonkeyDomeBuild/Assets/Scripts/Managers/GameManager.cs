@@ -120,6 +120,34 @@ public class GameManager : MonoBehaviour
 				Instance.gmInputs[(int)PN.P3].mChargeStomp = Input.GetButton("p3_aim/stomp");
 			}
 		}
+        if (Instance.gmPlayerScripts[(int)PN.P4] != null)
+        {
+            if (Instance.gmPlayerScripts[(int)PN.P4].isPlayer)
+            {
+                Instance.gmInputs[(int)PN.P4].mXY.x = Input.GetAxis("p4_joy_x");
+                Instance.gmInputs[(int)PN.P4].mXY.y = -Input.GetAxis("p4_joy_y");
+                Instance.gmInputs[(int)PN.P4].mJump = Input.GetButtonDown("p4_jump");
+                Instance.gmInputs[(int)PN.P4].mCatch = Input.GetButtonDown("p4_catch/throw");
+                Instance.gmInputs[(int)PN.P4].mChargeThrow = Input.GetButton("p4_catch/throw");
+                Instance.gmInputs[(int)PN.P4].mCatchRelease = Input.GetButtonUp("p4_catch/throw");
+                Instance.gmInputs[(int)PN.P4].mAimStomp = Input.GetButtonDown("p4_aim/stomp");
+                Instance.gmInputs[(int)PN.P4].mChargeStomp = Input.GetButton("p4_aim/stomp");
+            }
+        }
+        if (Instance.gmPlayerScripts[(int)PN.P5] != null)
+        {
+            if (Instance.gmPlayerScripts[(int)PN.P5].isPlayer)
+            {
+                Instance.gmInputs[(int)PN.P5].mXY.x = Input.GetAxis("p5_joy_x");
+                Instance.gmInputs[(int)PN.P5].mXY.y = -Input.GetAxis("p5_joy_y");
+                Instance.gmInputs[(int)PN.P5].mJump = Input.GetButtonDown("p5_jump");
+                Instance.gmInputs[(int)PN.P5].mCatch = Input.GetButtonDown("p5_catch/throw");
+                Instance.gmInputs[(int)PN.P5].mChargeThrow = Input.GetButton("p5_catch/throw");
+                Instance.gmInputs[(int)PN.P5].mCatchRelease = Input.GetButtonUp("p5_catch/throw");
+                Instance.gmInputs[(int)PN.P5].mAimStomp = Input.GetButtonDown("p5_aim/stomp");
+                Instance.gmInputs[(int)PN.P5].mChargeStomp = Input.GetButton("p5_aim/stomp");
+            }
+        }
     }
 
 	public void CreatePlayers()

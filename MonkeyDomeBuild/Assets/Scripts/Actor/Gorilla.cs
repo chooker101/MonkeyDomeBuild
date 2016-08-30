@@ -5,7 +5,7 @@ public class Gorilla : Character
 {
 	private float timeBeingGorilla = 0f;
     private float chargeCount = 0f;
-    private float chargeCompleteTime = 3f;
+    private float chargeCompleteTime = 1f;
     private bool canStomp = false;
     private GorillaCharge chargeUI;
 

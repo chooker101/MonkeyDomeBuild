@@ -346,8 +346,12 @@ Prefab:
       value: 
       objectReference: {fileID: 818570713}
     - target: {fileID: 11482762, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: mThrowForce
-      value: 30
+      propertyPath: gSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11482762, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+      propertyPath: gChargeSpeed
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
@@ -758,6 +762,7 @@ MonoBehaviour:
   targetTier: 0
   targetsHitInSequence: 0000000000
   sequenceIndex: 0
+  gameTargets: []
 --- !u!4 &818570714
 Transform:
   m_ObjectHideFlags: 0
