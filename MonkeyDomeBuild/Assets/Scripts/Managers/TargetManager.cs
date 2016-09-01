@@ -26,23 +26,6 @@ public class TargetManager : MonoBehaviour
     private bool isHit;
     private bool rallyOn;
 
-    public bool HitGetter(Target[] targets)
-    {
-        bool hitCheck = false;
-        for(int i = 0; i < targets.Length; i++)
-        {
-            if (targets[i].isHit == true)
-            {
-                hitCheck = true;
-            }
-            else
-            {
-                hitCheck = false;
-            }
-        }
-        return hitCheck;
-    }
-
     public Target[] TargetGetter()
     {
         return gameTargets;

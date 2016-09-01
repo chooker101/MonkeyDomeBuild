@@ -165,6 +165,7 @@ public class Target : MonoBehaviour
                 inAlarm = false;
                 targetActive = false;
                 DisableCollider();
+                isHit = true;
             }
         }
     }
