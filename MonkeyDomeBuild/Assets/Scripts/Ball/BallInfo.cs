@@ -65,7 +65,7 @@ public class BallInfo : MonoBehaviour
     }
     void Update()
     {
-        Debug.DrawLine(transform.position, transform.position + Vector3.right * perfectCatchDistance);
+        //Debug.DrawLine(transform.position, transform.position + Vector3.right * perfectCatchDistance);
 		if (testMonkey != null)
 		{
 			Debug.Log(Vector3.Distance(transform.position, testMonkey.transform.position));
@@ -109,10 +109,13 @@ public class BallInfo : MonoBehaviour
         canBeCatch = true;
         holdingMonkey = null;
         playerThrewLast = -1;
-        count = 0f;
         timerUp = false;
 		m_rigid.isKinematic = false;
         //m_rigid.useGravity = true;
+    }
+    protected void ResetShotCount()
+    {
+        count = 0f;
     }
 
     public void Change(int index)
@@ -172,6 +175,8 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey == null)
         {
+            if (who != lastThrowMonkey)
+                ResetShotCount();
             canBeCatch = false;
             holdingMonkey = who;
             m_rigid.isKinematic = true;
@@ -210,7 +215,8 @@ public class BallInfo : MonoBehaviour
         while (victim == null || victim is Gorilla)
         {
             index = Random.Range(0, GameManager.Instance.gmPlayers.Count);
-            victim = GameManager.Instance.gmPlayerScripts[index].characterType;
+            if(GameManager.Instance.gmPlayerScripts[index]!=null)
+                victim = GameManager.Instance.gmPlayerScripts[index].characterType;
         }
         lastThrowMonkey = GameManager.Instance.gmPlayers[index];
     }

@@ -17,7 +17,8 @@ public class TurretsManager : MonoBehaviour
         GameObject[] tempTurrets = GameObject.FindGameObjectsWithTag("Turret");
         foreach(GameObject obj in tempTurrets)
         {
-            turrets.Add(obj.GetComponent<Turret>());
+            if(obj.activeInHierarchy)
+                turrets.Add(obj.GetComponent<Turret>());
         }
         tempShootTimeMin = 8f;
         tempShootTimeMax = 10f;
@@ -27,7 +28,7 @@ public class TurretsManager : MonoBehaviour
 
     void Update()
     {
-        TempTest();
+
         if (Input.GetKeyDown(KeyCode.U))
         {
             //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -38,6 +39,7 @@ public class TurretsManager : MonoBehaviour
             AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofPlayers)], 1);
         }
         //Debug.Log(targetQueues.Count);
+        TempTest();
         if (targetQueues.Count > 0)
         {
             int availableTurretIndex = 99;

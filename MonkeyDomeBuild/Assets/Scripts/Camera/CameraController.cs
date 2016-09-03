@@ -38,11 +38,11 @@ public class CameraController : MonoBehaviour
     private float camSize;
 
     public bool considerTargets = false;
-    //private List<GameObject> targets = new List<GameObject>();
 
     // Use this for initialization
     void Start()
     {
+        considerTargets = true;
         shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
         //CamSize = myCam.orthographicSize;
@@ -116,13 +116,19 @@ public class CameraController : MonoBehaviour
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
+
         if (considerTargets && GameManager.Instance.gmTargetManager.GetTargetArrayLength() > 0)
         {
-            for(int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
+            int targetCount = 0;
+            for (int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
             {
-                positionSum += GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position;
+                if (!GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).isHit)
+                {
+                    positionSum += GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position;
+                    targetCount++;
+                }
             }
-            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + GameManager.Instance.gmTargetManager.GetTargetArrayLength());
+            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targetCount);
         }
         else
         {
@@ -145,12 +151,13 @@ public class CameraController : MonoBehaviour
         maxYDistance = 0f;
         // get maxXDistance       
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
-        {            
+        {
+            /*   
             if(maxXDistance < Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position))
             {
                 maxXDistance = Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position);
-            } 
-
+            }
+            */
             if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmPlayers[i].transform.position.x))
             {
                 maxXDistance = Mathf.Abs(meanPosition.x - GameManager.Instance.gmPlayers[i].transform.position.x);
@@ -159,6 +166,24 @@ public class CameraController : MonoBehaviour
             {
                 maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmPlayers[i].transform.position.y);
             }
+        }
+        if (considerTargets)
+        {
+            for (int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
+            {
+                if (!GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).isHit)
+                {
+                    if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position.x))
+                    {
+                        maxXDistance = Mathf.Abs(meanPosition.x - GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position.x);
+                    }
+                    if (maxYDistance < Mathf.Abs(meanPosition.y - GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position.y))
+                    {
+                        maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position.y);
+                    }
+                }
+            }
+
         }
         if (GameManager.Instance.gmBalls[0] != null)
         {

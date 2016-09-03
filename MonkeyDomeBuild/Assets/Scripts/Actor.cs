@@ -54,11 +54,19 @@ public class Actor : MonoBehaviour
 
     public BallInfo ballCanCatch;
 
+    private bool beingSmack = false;
+
     bool isDashing = false;
     float dashingCount = 0;
-    float dashingTime = 0.5f;
-    float dashForce = 30f;
-
+    float dashingTime = 0.6f;
+    float dashForce = 40f;
+    float smackImpulse = 20f;
+    float disableInputTime = 1f;
+    public bool disableInput
+    {
+        get { return beingSmack; }
+        set { beingSmack = value; }
+    }
     void Start()
     {
         cam = FindObjectOfType<CameraController>();
@@ -104,8 +112,6 @@ public class Actor : MonoBehaviour
     {
         get { return isinair; }
     }
-
-
 	void Jumping()
 	{
 		if (!isinair)
@@ -131,11 +137,10 @@ public class Actor : MonoBehaviour
             }
 		}
 	}
-
 	void MovementVelocity()
 	{
-		movement = cache_rb.velocity;
-		if (!isClimbing)
+        movement = cache_rb.velocity;
+        if (!isClimbing)
 		{
 			if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
 			{
@@ -169,9 +174,13 @@ public class Actor : MonoBehaviour
             movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * characterType.movespeed;
             movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * characterType.movespeed;
 		}
-		cache_rb.velocity = movement;
-	}
+        if(!beingSmack)
+        {
+            cache_rb.velocity = movement;
+        }
 
+
+	}
     public void ThrowCheck()
     {
         if (canCharge)
@@ -196,12 +205,9 @@ public class Actor : MonoBehaviour
                     {
                         tempThrowForce *= (1 + (holdingCatchCount / maxChargeCount / 2f));
                     }
-                    haveBall = false;
-                    ballHolding.GetComponent<BallInfo>().Reset();
                     Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
+                    ReleaseBall();
                     ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[playerIndex].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[playerIndex].mXY.y * tempThrowForce), ForceMode2D.Impulse);
-                    ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
-                    ballHolding = null;
                     stat_throw++;
                     holdingCatchCount = 0f;
                 }
@@ -214,6 +220,13 @@ public class Actor : MonoBehaviour
                 canCharge = true;
             }
         }
+    }
+    public void ReleaseBall()
+    {
+        haveBall = false;
+        ballHolding.GetComponent<BallInfo>().Reset();
+        ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
+        ballHolding = null;
     }
     public bool RayCast(int direction)
     {
@@ -235,7 +248,6 @@ public class Actor : MonoBehaviour
         }
         return hit;
     }
-
     public bool RayCastSide(float leftOrRight)
     {
         // right = 1    left = -1
@@ -275,44 +287,112 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
-
     public void Aim()
     {
         Debug.DrawLine(GetComponent<Rigidbody2D>().position, new Vector2(GetComponent<Rigidbody2D>().position.x + GameManager.Instance.gmInputs[playerIndex].mXY.x * 2, GetComponent<Rigidbody2D>().position.y + GameManager.Instance.gmInputs[playerIndex].mXY.y * 2));
     }
-
-    public bool IsHoldingBall()
+    public bool IsHoldingBall
     {
-        return haveBall;
+        get
+        {
+            return haveBall;
+        }
     }
-
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Floor")|| other.gameObject.CompareTag("Wall"))
+        if (other.gameObject.CompareTag("Floor"))
         {
             isinair = false;
             if (isDashing)
             {
+                dashingCount = 0;
+                isDashing = false;
                 for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; ++i)
                 {
-                    Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
-                    if (p is Monkey)
+                    if (GameManager.Instance.gmPlayers[i] != null)
                     {
-                        //knock both player off vine for now
-                        GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
+                        Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
+                        if (p is Monkey)
+                        {
+                            //knock both player off vine for now
+                            if(GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing ||
+                                !GameManager.Instance.gmPlayers[i].GetComponent<Player>().IsInAir)
+                            {
+                                GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
+                                if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
+                                {
+                                    GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput();
+                                    GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ReleaseBall();
+                                }
+                            }
+                        }
                     }
                 }
                 cam.ScreenShake();
             }
         }
+        if (characterType is Gorilla)
+        {
+            if (other.collider.CompareTag("Player"))
+            {
+                if (other.collider.GetComponent<Actor>().characterType is Monkey)
+                {
+                    KnockOffMonkey(other.collider.gameObject);
+                }
+            }
+        }
     }
-
+    void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            isinair = false;
+        }
+        if (characterType is Gorilla)
+        {
+            if (other.collider.CompareTag("Player"))
+            {
+                OnCollisionEnter2D(other);
+            }
+        }
+    }
     void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Floor"))
         {
             isinair = true;
         }
+    }
+    protected void KnockOffMonkey(GameObject monkey)
+    {
+        monkey.GetComponent<Actor>().disableInput = true;
+        monkey.GetComponent<Actor>().InvokeEnableInput();
+        Vector2 dir = -1*(transform.position - monkey.transform.position).normalized;
+        if (!isinair)
+        {
+            dir.y = 0.3f;
+        }
+        else if(isinair)
+        {
+            if (!monkey.GetComponent<Actor>().IsInAir)
+            {
+                dir.y = 1f;
+            }
+        }
+        monkey.GetComponent<Rigidbody2D>().AddForce(dir * smackImpulse, ForceMode2D.Impulse);
+    }
+    public void TempDisableInput()
+    {
+        disableInput = true;
+        InvokeEnableInput();
+    }
+    public void InvokeEnableInput()
+    {
+        Invoke("ResetBeingSmack", disableInputTime);
+    }
+    protected void ResetBeingSmack()
+    {
+        beingSmack = false;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -432,7 +512,6 @@ public class Actor : MonoBehaviour
             monkeyCrown.SetActive(false);
         }
     }
-
     private void UpdateColour()
     {
 		
@@ -472,7 +551,7 @@ public class Actor : MonoBehaviour
     {
         isDashing = true;
         Vector2 dashDir = Vector2.zero;
-        dashDir.y = 0.4f;
+        dashDir.y = 1f;
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) > 0)
         {
             dashDir.x = GameManager.Instance.gmInputs[playerIndex].mXY.x > 0 ? 1f : -1f;
@@ -482,6 +561,7 @@ public class Actor : MonoBehaviour
         {
             dashDir.y = GameManager.Instance.gmInputs[playerIndex].mXY.y > 0 ? 1f : -1f;
         }
+        dashDir.x *= 0.5f;
         dashDir *= dashForce;
         GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
     }

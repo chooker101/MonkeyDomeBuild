@@ -11,16 +11,17 @@ public class BananaSpawner : MonoBehaviour
     List<int> playerBananaSpawned = new List<int>();
     List<float> bananaSpawnCount = new List<float>();
     float bananaSpawnTime = 0.3f;
-    float bananaSideForce = 2f;
+    float bananaSideForce = 1f;
 
     List<GameObject> pooledBananas = new List<GameObject>();
     int bananaPoolAmount = 500;
 
     void Start()
     {
-        playerScores.Add(0);
-        playerScores.Add(0);
-        playerScores.Add(0);
+        for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
+        {
+            playerScores.Add(0);
+        }
         for(int i = 0; i < playerScores.Count; i++)
         {
             playerBananaSpawned.Add(0);
@@ -40,6 +41,7 @@ public class BananaSpawner : MonoBehaviour
         {
             playerScores[Random.Range(0, playerScores.Count)] += 5;
         }
+        UpdateScores();
         SpawnBanana();
     }
     void SpawnBanana()
@@ -70,6 +72,13 @@ public class BananaSpawner : MonoBehaviour
                     bananaSpawnCount[i] += Time.deltaTime;
                 }
             }
+        }
+    }
+    void UpdateScores()
+    {
+        for(int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
+        {
+            playerScores[i] = GameManager.Instance.gmScoringManager.GetScore(i);
         }
     }
 }

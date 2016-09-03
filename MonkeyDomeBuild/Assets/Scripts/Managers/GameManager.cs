@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
 				Instance.gmInputs[(int)PN.P2].mCatchRelease = Input.GetButtonUp("p2_catch/throw");
 				Instance.gmInputs[(int)PN.P2].mAimStomp = Input.GetButtonDown("p2_aim/stomp");
 				Instance.gmInputs[(int)PN.P2].mChargeStomp = Input.GetButton("p2_aim/stomp");
-			}
+            }
 		}
 
 		if (Instance.gmPlayerScripts[(int)PN.P3] != null)

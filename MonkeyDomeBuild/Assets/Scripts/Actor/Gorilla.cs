@@ -6,7 +6,7 @@ public class Gorilla : Character
 	private float timeBeingGorilla = 0f;
     private float chargeCount = 0f;
     private float chargeCompleteTime = 1f;
-    private bool canStomp = false;
+    private bool canDash = false;
     private GorillaCharge chargeUI;
 
 	public Gorilla(int x)
@@ -90,7 +90,7 @@ public class Gorilla : Character
 	}
 	protected void StompCheck()
 	{
-		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canStomp)
+		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canDash)
 		{
             /*
 			for(int i = 0;i < GameManager.Instance.gmPlayers.Capacity; ++i)
@@ -106,16 +106,17 @@ public class Gorilla : Character
             */
             if (Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.x) > 0 || Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.y) > 0)
             {
-                cacheplayer.GorillaDash();
-                canStomp = false;
+
             }
-		}
-        else if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp && !canStomp)
+            cacheplayer.GorillaDash();
+            canDash = false;
+        }
+        else if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp && !canDash)
         {
             isCharging = true;
             if (chargeCount >= chargeCompleteTime)
             {
-                canStomp = true;
+                canDash = true;
                 isCharging = false;
             }
             else
@@ -133,4 +134,5 @@ public class Gorilla : Character
                 chargeUI.ChargeCount = chargeCount;
         }
 	}
+
 }

@@ -60,7 +60,17 @@ public class ScoringManager : MonoBehaviour
         p4Score = playerScores[WhichPlayer.Player4];
         p5Score = playerScores[WhichPlayer.Player5];
     }
-
+    public int GetScore(int playerIndex)
+    {
+        if (playerIndex < GameManager.Instance.gmPlayers.Count)
+        {
+            return playerScores[CheckWhichPlayer(playerIndex)];
+        }
+        else
+        {
+            return 0;
+        }
+    }
     WhichPlayer CheckWhichPlayer(int playerIndex)
     {
         WhichPlayer tempPlayer = WhichPlayer.Player1;
@@ -84,7 +94,6 @@ public class ScoringManager : MonoBehaviour
         }
         return tempPlayer;
     }
-
     void AddScore(int playerIndex,int score)
     {
         WhichPlayer p = CheckWhichPlayer(playerIndex);
@@ -98,7 +107,6 @@ public class ScoringManager : MonoBehaviour
         }
 
     }
-
     public void PassingScore(GameObject thrower, GameObject catcher, float distanceTravel,float travelTime,bool perfectCatch, int numberOfBounce)
     {
         //Debug.Log(thrower.name + catcher.name + distanceTravel.ToString());
@@ -108,34 +116,35 @@ public class ScoringManager : MonoBehaviour
             {
 
             }
-        }
-        //temporary move out of condition for testing purposes
-        if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
-        {
-            AddScore(thrower.GetComponent<Actor>().playerIndex, passScore);
-            if(perfectCatch)
-                AddScore(catcher.GetComponent<Actor>().playerIndex, perfectCatchScore);
-            else
-                AddScore(catcher.GetComponent<Actor>().playerIndex, catchScore);
-            if (perfectCatch)
-                Debug.Log("perfect catch");
-            else
-                Debug.Log("catch");
-        }
-        if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
-        {
-            AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
-            Debug.Log("long throw");
-        }
-        if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
-        {
-            AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
-            Debug.Log("bounce");
-        }
-        if (catcher.GetComponent<Actor>().IsInAir)
-        {
-            AddScore(catcher.GetComponent<Actor>().playerIndex, catchInAirScore);
-            Debug.Log("catch in air");
+            if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
+            {
+                AddScore(thrower.GetComponent<Actor>().playerIndex, passScore);
+                if (perfectCatch)
+                    AddScore(catcher.GetComponent<Actor>().playerIndex, perfectCatchScore);
+                else
+                    AddScore(catcher.GetComponent<Actor>().playerIndex, catchScore);
+                /*
+                if (perfectCatch)
+                    Debug.Log("perfect catch");
+                else
+                    Debug.Log("catch");
+                */
+            }
+            if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
+            {
+                AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
+                //Debug.Log("long throw");
+            }
+            if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
+            {
+                AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
+                //Debug.Log("bounce");
+            }
+            if (catcher.GetComponent<Actor>().IsInAir)
+            {
+                AddScore(catcher.GetComponent<Actor>().playerIndex, catchInAirScore);
+                //Debug.Log("catch in air");
+            }
         }
     }
 
@@ -180,7 +189,7 @@ public class ScoringManager : MonoBehaviour
 
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey)
     {
-        Debug.Log("intercetp");
+        //Debug.Log("intercetp");
         int interceptScore = 0;
         int monkeyIndex = monkey.GetComponent<Actor>().playerIndex;
         if (playerScores[CheckWhichPlayer(monkeyIndex)] < Mathf.Abs(gorillaInterceptScore))
