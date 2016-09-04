@@ -61,7 +61,7 @@ public class Actor : MonoBehaviour
     float dashingTime = 0.6f;
     float dashForce = 40f;
     float smackImpulse = 20f;
-    float disableInputTime = 1f;
+    float disableInputTime = .5f;
     public bool disableInput
     {
         get { return beingSmack; }
@@ -367,6 +367,10 @@ public class Actor : MonoBehaviour
     {
         monkey.GetComponent<Actor>().disableInput = true;
         monkey.GetComponent<Actor>().InvokeEnableInput();
+		if (monkey.GetComponent<Actor> ().IsHoldingBall) 
+		{
+			monkey.GetComponent<Actor> ().ReleaseBall ();
+		}
         Vector2 dir = -1*(transform.position - monkey.transform.position).normalized;
         if (!isinair)
         {

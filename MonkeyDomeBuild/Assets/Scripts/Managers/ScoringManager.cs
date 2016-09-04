@@ -114,36 +114,35 @@ public class ScoringManager : MonoBehaviour
         {
             if (thrower.GetInstanceID() != catcher.GetInstanceID())
             {
-
-            }
-            if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
-            {
-                AddScore(thrower.GetComponent<Actor>().playerIndex, passScore);
-                if (perfectCatch)
-                    AddScore(catcher.GetComponent<Actor>().playerIndex, perfectCatchScore);
-                else
-                    AddScore(catcher.GetComponent<Actor>().playerIndex, catchScore);
-                /*
+				if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
+				{
+					AddScore(thrower.GetComponent<Actor>().playerIndex, passScore);
+					if (perfectCatch)
+						AddScore(catcher.GetComponent<Actor>().playerIndex, perfectCatchScore);
+					else
+						AddScore(catcher.GetComponent<Actor>().playerIndex, catchScore);
+					/*
                 if (perfectCatch)
                     Debug.Log("perfect catch");
                 else
                     Debug.Log("catch");
                 */
-            }
-            if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
-            {
-                AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
-                //Debug.Log("long throw");
-            }
-            if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
-            {
-                AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
-                //Debug.Log("bounce");
-            }
-            if (catcher.GetComponent<Actor>().IsInAir)
-            {
-                AddScore(catcher.GetComponent<Actor>().playerIndex, catchInAirScore);
-                //Debug.Log("catch in air");
+				}
+				if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
+				{
+					AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
+					//Debug.Log("long throw");
+				}
+				if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
+				{
+					AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
+					//Debug.Log("bounce");
+				}
+				if (catcher.GetComponent<Actor>().IsInAir)
+				{
+					AddScore(catcher.GetComponent<Actor>().playerIndex, catchInAirScore);
+					//Debug.Log("catch in air");
+				}
             }
         }
     }

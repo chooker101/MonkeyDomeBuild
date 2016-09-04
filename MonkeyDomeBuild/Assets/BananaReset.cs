@@ -9,6 +9,7 @@ public class BananaReset : MonoBehaviour
     {
         if (transform.position.y < resetY)
         {
+			GetComponent<Rigidbody> ().velocity = Vector3.zero;
             gameObject.SetActive(false);
         }
     }

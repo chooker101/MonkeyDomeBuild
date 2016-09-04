@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 	public MovementManager gmMovementManager;
 	public ScoringManager gmScoringManager;
 	public TargetManager gmTargetManager;
+	public bool noGorilla = false;
 
 	private GameManager() { }
 
@@ -187,9 +188,14 @@ public class GameManager : MonoBehaviour
 
 					if (PlayerGorilla == i)
 					{
-
-						Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Gorilla(i);
-						Instance.gmPlayers[i].GetComponent<Transform>().localScale = Instance.gmPlayers[i].GetComponent<Actor>().characterType.gorillaSize;
+						if (!noGorilla)
+						{
+							Instance.gmPlayers [i].GetComponent<Actor> ().characterType = new Gorilla (i);
+							Instance.gmPlayers [i].GetComponent<Transform> ().localScale = Instance.gmPlayers [i].GetComponent<Actor> ().characterType.gorillaSize;
+						} else 
+						{
+							Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);
+						}
 					}
 					else
 					{
