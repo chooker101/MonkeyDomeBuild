@@ -24,7 +24,18 @@ public class TargetManager : MonoBehaviour
     private int activateCounter;
     private int addScore;
     private bool isHit;
-    private bool rallyOn;
+
+    public bool rallyOn;
+	public int activeTargets;
+
+	public int ActiveTargets{
+		get {
+			return activeTargets;
+		} 
+		set {
+			activeTargets = value;
+		}
+	}
 
     public Target[] TargetGetter()
     {
@@ -51,13 +62,18 @@ public class TargetManager : MonoBehaviour
         isHit = false;
         //ballInfo = GetComponent<BallInfo>();
         RallySetter();
-
-        // put Rally() here when timer between them works
         Rally();
     }
 
+
     void Update()
     {
+		if (rallyOn && activeTargets == 0) {
+			Invoke("StartRallyDelay",5f);
+			rallyOn = false;
+		}
+
+
         if (Input.GetKeyDown(KeyCode.J))
         {
             foreach (Target t in gameTargets)
@@ -71,6 +87,9 @@ public class TargetManager : MonoBehaviour
         }
     }
 
+	protected void StartRallyDelay(){
+		Rally ();
+	}
 
     void RallySetter()
     {
@@ -79,7 +98,7 @@ public class TargetManager : MonoBehaviour
         {
             targetsHitInSequence[i] = false;
         }
-        hitSum = 0;
+        //hitSum = 0;
     }
 
     public float SetLifeTime()
@@ -106,16 +125,19 @@ public class TargetManager : MonoBehaviour
     void StartRally()
     {
         UpdateTierStatus();
+		foreach (Target t in gameTargets) {
+			t.SetTargetHeads (targetTier);
+		}
         // call this method at the start of each rally. will activate target and deactivate if hit
-        isHit = false;
+        //isHit = false;
         ActivateTarget();
-        foreach (Target t in gameTargets)
+       /* foreach (Target t in gameTargets)
         {
             if (isHit == true)
             {
                 t.TargetSetter(-1f);
             }
-        }
+        }*/
     }
 
     public bool CheckRally()
@@ -125,25 +147,28 @@ public class TargetManager : MonoBehaviour
         {
             return true;
         }
-
-        if (targetTier > 0 && hitSum < 3)
-        {
-            targetTier--;
-        }
+			
         return false;
     }
 
     void UpdateTierStatus()
     {
         // updates tier status at end of a rally
-        if (advanceTier)
-        {
-            if (targetTier < 4)
-            {
-                targetTier++;
-                advanceTier = false;
-            }
-        }
+		if (hitSum>=3) 
+		{
+			if (targetTier < 4) {
+				targetTier++;
+				//advanceTier = false;
+			}
+		}
+		else 
+		{
+			if (targetTier > 0 && hitSum < 3) 
+			{
+				targetTier--;
+			}
+		}
+		hitSum = 0;
         sequenceIndex = 0;
     }
 
@@ -157,7 +182,9 @@ public class TargetManager : MonoBehaviour
     {
         rallyOn = true;
         RallySetter();
+		//advanceTier = CheckRally();
         StartRally();
+
     }
 
     void BetweenRallies()
@@ -167,9 +194,10 @@ public class TargetManager : MonoBehaviour
 
     IEnumerator ActiveWaiter(Target t)
     {
+		//activeTargets++;
         yield return new WaitForSeconds(activateTimes[activateCounter]);
         t.targetActive = true;
-        t.SetTargetHeads(targetTier);
+        //t.SetTargetHeads(targetTier);
         t.TargetSetter(1f);
         t.TargetTime();
     }
@@ -198,9 +226,10 @@ public class TargetManager : MonoBehaviour
         }
         foreach (Target t in gameTargets)
         {
+			activeTargets++;
             StartCoroutine(ActiveWaiter(t));
             activateCounter++;
-            if (activateCounter == 5)
+            if (activateCounter == 6)
             {
                 Rally();
             }

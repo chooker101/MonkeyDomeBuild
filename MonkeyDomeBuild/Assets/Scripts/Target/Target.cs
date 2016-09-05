@@ -59,14 +59,22 @@ public class Target : MonoBehaviour
         {
             TargetSetter(-1);
             DisableCollider();
-            isHit = true;
+           // isHit = true;
             inAlarm = false;
             targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
             targetManager.sequenceIndex++;
             targetManager.hitSum++;
-            targetManager.advanceTier = targetManager.CheckRally();
+            //targetManager.advanceTier = targetManager.CheckRally();
+			ResetTarget ();
         }
     }
+
+	public void ResetTarget(){
+		if (!isHit) {
+			isHit = true;
+			targetManager.ActiveTargets -= 1;
+		}
+	}
 
     public void DisableCollider()
     {
@@ -80,35 +88,49 @@ public class Target : MonoBehaviour
 
     public void SetTargetHeads(int targetTier)
     {
-        myCollider.enabled = true;
+		if (myCollider != null) 
+		{
+			myCollider.enabled = true;
+		}
+
+		if (targetHead != null) 
+		{
+			//targetHead.SetActive(false);
+		}
+
         switch (targetTier)
         {
             case 0:
-                targetHead.SetActive(false);
+			if(targetHead!=null)
+				targetHead.SetActive(false);
                 targetHead = transform.FindChild("Large").gameObject;
                 targetHead.SetActive(true);
                 isHit = false;
                 break;
             case 1:
-                targetHead.SetActive(false);
+			if(targetHead!=null)
+				targetHead.SetActive(false);
                 targetHead = transform.FindChild("Medium").gameObject;
                 targetHead.SetActive(true);
                 isHit = false;
                 break;
             case 2:
-                targetHead.SetActive(false);
+			if(targetHead!=null)
+				targetHead.SetActive(false);
                 targetHead = transform.FindChild("Small").gameObject;
                 targetHead.SetActive(true);
                 isHit = false;
                 break;
             case 3:
-                targetHead.SetActive(false);
+			if(targetHead!=null)
+				targetHead.SetActive(false);
                 targetHead = transform.FindChild("Tiny").gameObject;
                 targetHead.SetActive(true);
                 isHit = false;
                 break;
             default:
-                targetHead.SetActive(false);
+			if(targetHead!=null)
+				targetHead.SetActive(false);
                 targetHead = transform.FindChild("Large").gameObject;
                 targetHead.SetActive(true);
                 isHit = false;
@@ -165,7 +187,7 @@ public class Target : MonoBehaviour
                 inAlarm = false;
                 targetActive = false;
                 DisableCollider();
-                isHit = true;
+				ResetTarget();
             }
         }
     }
