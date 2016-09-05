@@ -6,10 +6,12 @@ public class BallReturn : MonoBehaviour
     public GameObject[] balls;
     public BallInfo[] ballsInfo;
 
+    private bool[] wasActive;
     // Use this for initialization
     void Start()
     {
         balls = GameObject.FindGameObjectsWithTag("Ball");
+        wasActive = new bool[balls.Length];
     }
 
     // Update is called once per frame
@@ -23,6 +25,7 @@ public class BallReturn : MonoBehaviour
         // Checks the record keeper for what colour the player is, and if the player has the same sprite material as the ball, disables the ball.
         for (int i = 0; i < balls.Length; i++)
         {
+            wasActive[i] = balls[i].activeSelf;
             for(int o = 0; o < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; o++)
             {
                 Material ball = balls[i].GetComponent<BallInfo>().mySpriteColour;
@@ -35,8 +38,14 @@ public class BallReturn : MonoBehaviour
                 }
                 else
                 {
-                    gameObject.SetActive(true);
+                    balls[i].SetActive(true);
+
                 }
+
+            }
+            if (!wasActive[i] && balls[i].activeSelf)
+            {
+                balls[i].GetComponent<Transform>().position = transform.position;
             }
         }
     }

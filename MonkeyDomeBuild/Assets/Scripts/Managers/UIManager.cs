@@ -42,6 +42,15 @@ public class UIManager : MonoBehaviour
                 GameManager.Instance.gmRecordKeeper.scoreEndPlayers[0] = GameManager.Instance.gmScoringManager.p1Score;
 				GameManager.Instance.gmRecordKeeper.scoreEndPlayers[1] = GameManager.Instance.gmScoringManager.p2Score;
 				GameManager.Instance.gmRecordKeeper.scoreEndPlayers[2] = GameManager.Instance.gmScoringManager.p3Score;
+
+                for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+                {
+                    if(GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType.GetType().ToString() == "Gorilla")
+                    {
+                        GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType.Mutate();
+                        GameManager.Instance.gmRecordKeeper.playerGorilla = -1;
+                    }
+                }
                 SceneManager.LoadScene("PregameRoom");
             }
         }

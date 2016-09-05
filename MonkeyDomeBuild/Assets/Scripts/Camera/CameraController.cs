@@ -38,11 +38,12 @@ public class CameraController : MonoBehaviour
     private float camSize;
 
     public bool considerTargets = false;
+    private bool targetsExist = false;
 
     // Use this for initialization
     void Start()
     {
-        considerTargets = true;
+        considerTargets = false;
         shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
         //CamSize = myCam.orthographicSize;
@@ -116,8 +117,24 @@ public class CameraController : MonoBehaviour
         {
             positionSum += GameManager.Instance.gmPlayers[i].transform.position;
         }
-
-        if (considerTargets && GameManager.Instance.gmTargetManager.GetTargetArrayLength() > 0)
+        
+        // Checks to see if there is a target manager associated and if there are targets to look for
+        if(GameManager.Instance.gmTargetManager != null)
+        {
+            if(GameManager.Instance.gmTargetManager.GetTargetArrayLength() > 0)
+            {
+                targetsExist = true;
+            }
+            else
+            {
+                targetsExist = false;
+            }
+        }
+        else
+        {
+            targetsExist = false;
+        }
+        if (considerTargets && targetsExist)
         {
             int targetCount = 0;
             for (int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)

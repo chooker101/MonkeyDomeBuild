@@ -16,6 +16,7 @@ public class ApeSpinner : MonoBehaviour
     private float angle;
     private float spinnerSpeed;
     private int playerChosen;
+    public bool setGorilla = false;
     //private RecordKeeper rk_keeper;
 
     // Use this for initialization
@@ -54,11 +55,14 @@ public class ApeSpinner : MonoBehaviour
             Debug.Log("Pointer Pivot z: " + pivot.transform.eulerAngles.z.ToString());
             Debug.Log("Chosen Monkey: " + playerChosen.ToString());
         }
-        else if(spinnerSpeed <= 0)
+        else if(spinnerSpeed <= 0 && !setGorilla)
         {
+            setGorilla = true;
             spinnerSpeed = 0;
 
             GameManager.Instance.gmRecordKeeper.playerGorilla = playerChosen-1;
+            GameManager.Instance.gmPlayers[playerChosen - 1].GetComponent<Player>().characterType.Mutate();
+            Debug.Log("ApeSpinner: Mutated player into Gorilla");
         }
     }
 }

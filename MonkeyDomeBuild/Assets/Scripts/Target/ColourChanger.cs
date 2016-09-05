@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class ColourChanger : MonoBehaviour
 {
 
     public int playerTargetNumber = -1;
-    
+    public Text targetText;
+
     //private RecordKeeper recordKeeper;
     //private CircleCollider2D targetCollider;
     
     private GameObject myPlayer = null;
     private GameObject objectHit = null;
     private Material materialToApply;
+    public bool isHit = false;
 
     // Use this for initialization
     void Start()
@@ -24,7 +27,14 @@ public class ColourChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(isHit)
+        {
+            targetText.text = "READY!";
+        }
+        else
+        {
+            targetText.text = "PLAYER NOT READY";
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -41,11 +51,10 @@ public class ColourChanger : MonoBehaviour
                 if (objectHit.GetComponent<BallInfo>().playerThrewLast == playerTargetNumber) // If the player who threw the ball is the one for this target
                 {
                     Debug.Log("Colour Target: This is my player");
+                    isHit = true;
 
                     for (int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; i++)
                     {
-                        Debug.Log("Colour Target: Looking for player: " + i.ToString());
-
                         if (i == myPlayer.GetComponent<Player>().playerIndex)
                         {
 							GameManager.Instance.gmRecordKeeper.colourPlayers[i] = materialToApply;

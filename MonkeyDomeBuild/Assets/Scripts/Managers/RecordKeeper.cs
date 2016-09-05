@@ -13,7 +13,7 @@ public class RecordKeeper : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
         
         for(int i = 0; i < colourPlayers.Length; i++)
         {

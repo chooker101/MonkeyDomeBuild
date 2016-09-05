@@ -80,7 +80,7 @@ public class Actor : MonoBehaviour
         monkeyCrown = transform.Find("Crown").gameObject;
         monkeyCrown.SetActive(false);
 
-        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
+        //rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
 	}
 
 	void Update()
@@ -514,15 +514,11 @@ public class Actor : MonoBehaviour
     }
     private void UpdateColour()
     {
-		
-        if (rk_keeper != null)
+        for (int i = 0; i < GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
         {
-            for (int i = 0; i < rk_keeper.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
+            if (playerIndex == i)
             {
-                if (playerIndex == i)
-                {
-                    GetComponent<SpriteRenderer>().material = rk_keeper.GetComponent<RecordKeeper>().colourPlayers[i];
-                }
+                GetComponent<SpriteRenderer>().material = GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers[i];
             }
         }
     }
@@ -564,5 +560,13 @@ public class Actor : MonoBehaviour
         dashDir.x *= 0.5f;
         dashDir *= dashForce;
         GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
+
+        PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
+        Debug.Log("Actor: Gorilla Dashed");
+        if (preGameTimer != null)
+        {
+            preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
+            Debug.Log("Actor: gorillaSmash = true");
+        }
     }
 }

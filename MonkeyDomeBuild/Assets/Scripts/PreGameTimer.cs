@@ -7,6 +7,7 @@ public class PreGameTimer : MonoBehaviour
 {
 
     public Text timerText;
+    public Text gorillaSmashText;
     public float pregameTimer;
     public float trophyRoomTimer;
     public GameObject spinner;
@@ -14,13 +15,12 @@ public class PreGameTimer : MonoBehaviour
     static string gameState = "null";
 
     private bool spinnerSpawned = false;
-    private RecordKeeper rk_keeper;
+    public bool gorillaSmashed = false;
+    private GameObject[] colourTargets;
 
     // Use this for initialization
     void Start()
     {
-        rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-
         if(gameState == "null")
         {
             gameState = "pregame";
@@ -29,6 +29,7 @@ public class PreGameTimer : MonoBehaviour
         {
             gameState = "trophyroom";
         }
+        colourTargets = GameObject.FindGameObjectsWithTag("ColourTarget");
     }
 
     // Update is called once per frame
@@ -36,16 +37,29 @@ public class PreGameTimer : MonoBehaviour
     {
         if(gameState == "pregame")
         {
-            if (!spinnerSpawned && pregameTimer <= 10)
+            // spawns a spinner that chooses a player to be a gorilla once all targets are hit.
+            if (!spinnerSpawned && pregameTimer <= 10 || AllTargetsHit()) 
             {
                 newSpinner = (GameObject)Instantiate(spinner,spinner.transform.position,spinner.transform.rotation);
                 spinnerSpawned = true;
             }
-            if (pregameTimer > 0)
+            if (spinnerSpawned && newSpinner != null)
+            {
+                if (newSpinner.GetComponent<ApeSpinner>().setGorilla)
+                {
+                    gorillaSmashText.text = "Gorilla Smash!";
+                }
+                else
+                {
+                    gorillaSmashText.text = "";
+                }
+            }
+
+            if (pregameTimer > 0 && !gorillaSmashed)
             {
                 pregameTimer -= Time.deltaTime;
             }
-            else if (pregameTimer <= 0)
+            else if (pregameTimer <= 0 || gorillaSmashed)
             {
                 pregameTimer = 0;
                 gameState = "game";
@@ -66,23 +80,40 @@ public class PreGameTimer : MonoBehaviour
                 trophyRoomTimer = 0;
                 gameState = "pregame";
 
-                for(int i = 0; i<rk_keeper.scoreEndPlayers.Length; i++)
+                for(int i = 0; i< GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers.Length; i++)
                 {
-                    rk_keeper.scoreEndPlayers[i] = 0;
+                    GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[i] = 0;
+                    GameManager.Instance.gmScoringManager.p1Score = 0;
+                    GameManager.Instance.gmScoringManager.p2Score = 0;
+                    GameManager.Instance.gmScoringManager.p3Score = 0;
                 }
             }
             timerText.text =
                 (
                     "Trophy Room\n" + trophyRoomTimer.ToString("F2") + 
-                    "FINAL SCORES:\n" +
-                    "P1 - " + rk_keeper.scoreEndPlayers[0] + 
-                    "\nP2 - " + rk_keeper.scoreEndPlayers[1] + 
-                    "\nP3 - " + rk_keeper.scoreEndPlayers[2]
+                    "\nFINAL SCORES:\n" +
+                    "P1 - " + GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[0] + 
+                    "\nP2 - " + GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[1] + 
+                    "\nP3 - " + GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[2]
                 );
         }
     }
+
     public static void ChangeGameState(string state)
     {
         gameState = state;
+    }
+
+    private bool AllTargetsHit()
+    {
+        for(int i = 0; i < colourTargets.Length; i++)
+        {
+            // Checks to see if any targets aren't hit. Is any aren't, returns false. 
+            if (!colourTargets[i].GetComponent<ColourChanger>().isHit)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
