@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class BallInfo : MonoBehaviour
 {
@@ -78,7 +79,10 @@ public class BallInfo : MonoBehaviour
             }
             else
             {
-                count += Time.fixedDeltaTime;
+                if(SceneManager.GetActiveScene().name != "PregameRoom")
+                {
+                    count += Time.fixedDeltaTime;
+                }
             }
         }
         UpdateTravelDistance();
@@ -182,7 +186,10 @@ public class BallInfo : MonoBehaviour
             m_rigid.isKinematic = true;
             if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)
                 perfectCatch = true;
-			GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
+            if(SceneManager.GetActiveScene().name != "PregameRoom")
+            {
+                GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
+            }
             ResetScoringStats();
             UpdateLastThrowMonkey(who);
             perfectCatch = false;

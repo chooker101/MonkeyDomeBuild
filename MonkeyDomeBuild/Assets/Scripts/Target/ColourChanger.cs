@@ -7,6 +7,7 @@ public class ColourChanger : MonoBehaviour
 {
 
     public int playerTargetNumber = -1;
+    private int playerTargetNumberRegular = 0;
     public Text targetText;
 
     //private RecordKeeper recordKeeper;
@@ -22,6 +23,7 @@ public class ColourChanger : MonoBehaviour
     {
 		// Fills a list with all current players
 		myPlayer = GameManager.Instance.gmPlayers[playerTargetNumber];
+        playerTargetNumberRegular = playerTargetNumber + 1;
     }
 
     // Update is called once per frame
@@ -29,11 +31,11 @@ public class ColourChanger : MonoBehaviour
     {
         if(isHit)
         {
-            targetText.text = "READY!";
+            targetText.text = "P" + playerTargetNumberRegular.ToString() + " READY!";
         }
         else
         {
-            targetText.text = "PLAYER NOT READY";
+            targetText.text = "P" + playerTargetNumberRegular.ToString() + " NOT READY";
         }
     }
 

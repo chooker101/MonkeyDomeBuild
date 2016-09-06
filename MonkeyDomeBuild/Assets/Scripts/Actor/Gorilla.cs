@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Gorilla : Character
 {
@@ -46,13 +47,17 @@ public class Gorilla : Character
             {
                 if (cacheplayer.ballInRange)
                 {
-                    if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null)
+                    // Checks to see if the current scene isn't the pre-game room
+                    if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
                     {
                         GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey());
                     }
                     cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
                     cacheplayer.stat_ballGrab++;
-					GameManager.Instance.gmScoringManager.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
+                    if (SceneManager.GetActiveScene().name != "PregameRoom")
+                    {
+                        GameManager.Instance.gmScoringManager.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
+                    }
                 }
             }
 
