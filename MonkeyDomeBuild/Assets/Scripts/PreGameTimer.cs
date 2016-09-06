@@ -8,9 +8,11 @@ public class PreGameTimer : MonoBehaviour
 
     public Text timerText;
     public Text gorillaSmashText;
-    public float pregameTimer;
+    //public float pregameTimer;
     public float trophyRoomTimer;
     public GameObject spinner;
+    public Material resetMaterial;
+
     GameObject newSpinner;
     static string gameState = "null";
 
@@ -35,14 +37,16 @@ public class PreGameTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // PREGAME ROOM
         if(gameState == "pregame")
         {
             // spawns a spinner that chooses a player to be a gorilla once all targets are hit.
-            if (!spinnerSpawned && pregameTimer <= 10 || AllTargetsHit()) 
+            if (!spinnerSpawned && AllTargetsHit()) 
             {
                 newSpinner = (GameObject)Instantiate(spinner,spinner.transform.position,spinner.transform.rotation);
                 spinnerSpawned = true;
             }
+            // Sets the Gorilla Smash text once the gorilla has been chosen
             if (spinnerSpawned && newSpinner != null)
             {
                 if (newSpinner.GetComponent<ApeSpinner>().setGorilla)
@@ -55,20 +59,25 @@ public class PreGameTimer : MonoBehaviour
                 }
             }
 
+            /*
             if (pregameTimer > 0 && !gorillaSmashed)
             {
                 pregameTimer -= Time.deltaTime;
-            }
-            else if (pregameTimer <= 0 || gorillaSmashed)
+            }*/
+            if(newSpinner != null)
             {
-                pregameTimer = 0;
-                gameState = "game";
-                SceneManager.LoadScene("testingroom");
-                Destroy(newSpinner, 1f);
+                if (newSpinner.GetComponent<ApeSpinner>().setGorilla && gorillaSmashed)
+                {
+                    //pregameTimer = 0;
+                    gameState = "game";
+                    SceneManager.LoadScene("testingroom");
+                    Destroy(newSpinner, 1f);
+                }
             }
 
-            timerText.text = "Pre-game Room\n" + pregameTimer.ToString("F2");
+            timerText.text = "Pre-game Room\n"; //+ pregameTimer.ToString("F2");
         }
+        // TROPHY ROOM
         else if(gameState == "trophyroom")
         {
             if (trophyRoomTimer > 0)
@@ -86,6 +95,11 @@ public class PreGameTimer : MonoBehaviour
                     GameManager.Instance.gmScoringManager.p1Score = 0;
                     GameManager.Instance.gmScoringManager.p2Score = 0;
                     GameManager.Instance.gmScoringManager.p3Score = 0;
+
+                }
+                for(int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; i++)
+                {
+                    GameManager.Instance.gmRecordKeeper.colourPlayers[i] = resetMaterial;
                 }
             }
             timerText.text =
