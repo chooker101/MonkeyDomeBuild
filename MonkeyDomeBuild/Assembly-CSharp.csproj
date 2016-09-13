@@ -45,15 +45,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AudioManager.cs" />
-     <Compile Include="Assets\BallReturn.cs" />
      <Compile Include="Assets\BananaReset.cs" />
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actor.cs" />
      <Compile Include="Assets\Scripts\Actor\Character.cs" />
      <Compile Include="Assets\Scripts\Actor\Gorilla.cs" />
      <Compile Include="Assets\Scripts\Actor\Monkey.cs" />
+     <Compile Include="Assets\Scripts\Audio\AudioMain.cs" />
+     <Compile Include="Assets\Scripts\Audio\AudioPregame.cs" />
      <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
+     <Compile Include="Assets\Scripts\Ball\BallReturn.cs" />
+     <Compile Include="Assets\Scripts\Ball\TrophyInfo.cs" />
      <Compile Include="Assets\Scripts\Banana.cs" />
      <Compile Include="Assets\Scripts\BananaSpawner.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
@@ -63,15 +65,17 @@
      <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
      <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
      <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\PreGameTimer.cs" />
      <Compile Include="Assets\Scripts\Managers\RecordKeeper.cs" />
      <Compile Include="Assets\Scripts\Managers\ScoringManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\ShotClockManager.cs" />
      <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\TrophyManager.cs" />
      <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
      <Compile Include="Assets\Scripts\Players\CallForBallReset.cs" />
      <Compile Include="Assets\Scripts\Players\GorillaCharge.cs" />
      <Compile Include="Assets\Scripts\Players\Player.cs" />
-     <Compile Include="Assets\Scripts\PreGameTimer.cs" />
      <Compile Include="Assets\Scripts\Target\ColourChanger.cs" />
      <Compile Include="Assets\Scripts\Target\FullTargetRotator.cs" />
      <Compile Include="Assets\Scripts\Target\Target.cs" />
