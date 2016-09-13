@@ -20,6 +20,11 @@ public class UIManager : MonoBehaviour
     public Text targetTierUI;
     public Text targetsInSequenceUI;
 
+	void Awake()
+	{
+		if (FindObjectOfType<UIManager>() != GameManager.Instance.gmUIManager)
+			GameManager.Instance.gmUIManager = FindObjectOfType<UIManager>();
+	}
 
     // Use this for initialization
     void Start ()
@@ -28,7 +33,7 @@ public class UIManager : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void LateUpdate ()
 	{
         if (noTime == false)
         {

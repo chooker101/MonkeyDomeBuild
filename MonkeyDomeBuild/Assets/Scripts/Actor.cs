@@ -16,7 +16,7 @@ public class Actor : MonoBehaviour
     public bool isPlayer;
 
 	public Vector2 movement = Vector2.zero;
-	public CameraController cam;
+	//public CameraController cam;
 
 
     //public bool canJump = true;
@@ -50,7 +50,6 @@ public class Actor : MonoBehaviour
     public Character characterType;
 
     private GameObject monkeyCrown;
-    private RecordKeeper rk_keeper;
 
     public BallInfo ballCanCatch;
 
@@ -69,7 +68,8 @@ public class Actor : MonoBehaviour
     }
     void Start()
     {
-        cam = FindObjectOfType<CameraController>();
+		DontDestroyOnLoad(this.gameObject);
+
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
 		cache_rb = GetComponent<Rigidbody2D>();
@@ -336,7 +336,7 @@ public class Actor : MonoBehaviour
                         }
                     }
                 }
-                cam.ScreenShake();
+                FindObjectOfType<CameraController>().ScreenShake();
             }
         }
         if (characterType is Gorilla)

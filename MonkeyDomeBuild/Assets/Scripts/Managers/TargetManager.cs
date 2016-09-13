@@ -59,6 +59,12 @@ public class TargetManager : MonoBehaviour
         }
     }
 
+	void Awake()
+	{
+		if (FindObjectOfType<TargetManager>() != GameManager.Instance.gmTargetManager)
+			GameManager.Instance.gmTargetManager = FindObjectOfType<TargetManager>();
+	}
+
     void Start()
     {
         rallyOn = false;

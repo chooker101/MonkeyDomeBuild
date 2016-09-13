@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
 	public List<GameObject> gmPlayers;
     public List<Actor> gmPlayerScripts;
 	public SpawnManager gmSpawnManager;
+	public GameObject gmSpawnObject;
 	public ButtonManager gmButtonManager;
 	public GameObject gmPlayerPrefab;
 	public GameObject gmPlayerPrefabAI;
@@ -57,14 +58,19 @@ public class GameManager : MonoBehaviour
 
 	private GameManager() { }
 
-	void Awake()
+	void Start()
 	{
-		DontDestroyOnLoad(this);
+		if (s_Instance != this)
+		{
+			Destroy(this.gameObject);
+		}
+		else
+		{
+			DontDestroyOnLoad(this.gameObject);
+		}
 		TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
-        /*BallInfo tempInfo = FindObjectOfType<BallInfo>();
-        if (tempInfo != null)
-            gmBall = FindObjectOfType<BallInfo>().gameObject;*/
-        CreateInputs();
+
+		CreateInputs();
 		CreatePlayers();
 	}
 
@@ -155,10 +161,8 @@ public class GameManager : MonoBehaviour
 
 	public void CreatePlayers()
 	{
-		if (Instance.gmPlayers.Contains(null))
+		if (TotalNumberofPlayers > 0)
 		{
-			if (TotalNumberofPlayers > 0)
-			{
                 if(Instance.gmRecordKeeper != null && Instance.gmRecordKeeper.playerGorilla >= 0) // Get gorilla from Record keeper first if possible.
                 {
                     PlayerGorilla = Instance.gmRecordKeeper.playerGorilla;
@@ -175,19 +179,25 @@ public class GameManager : MonoBehaviour
 					Transform temp = Instance.gmSpawnManager.SpawnPoints[i];
 					if (NumberOfPlayersToBuild > 0)
 					{
-						Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
-                        Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<Player>();
-                        Instance.gmPlayerScripts[i].isPlayer = true;
-                        --NumberOfPlayersToBuild;
+						if (Instance.gmPlayers[i] == null)
+						{
+							Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
+							Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<Player>();
+							Instance.gmPlayerScripts[i].isPlayer = true;
+						}
+					    --NumberOfPlayersToBuild;
 					}
 					else if (NumberOfBotsToBuild > 0)
 					{
-						Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
-                        Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<AI>();
-                        Instance.gmPlayerScripts[i].isPlayer = false;
-                        --NumberOfBotsToBuild;
-					}
-                    
+						if (Instance.gmPlayers[i] == null)
+						{
+							Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
+							Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<AI>();
+							Instance.gmPlayerScripts[i].isPlayer = false;
+						}
+					--NumberOfBotsToBuild;
+				}
+					   
 					Instance.gmPlayers[i].GetComponent<Actor>().playerIndex = i;
 
 					if (PlayerGorilla == i)
@@ -206,8 +216,8 @@ public class GameManager : MonoBehaviour
 						Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);
 					}
 				}
-			}
 		}
+		
 	}
 
 	public int RandGor()
