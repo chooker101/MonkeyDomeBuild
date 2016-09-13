@@ -12,9 +12,16 @@ public class Target : MonoBehaviour
     private bool stayTier;
     private TargetManager targetManager;
     public bool targetActive = false;
+    public GameObject targetHeadL;
+    public GameObject targetHeadM;
+    public GameObject targetHeadS;
+    public GameObject targetHeadT;
 
     private GameObject targetHead;
     private Collider2D myCollider;
+
+    private Vector3 targetRot;
+    private bool canEnableTargetHeadCollider = false;
 
     public float resetTime = 1;
     public float lifeTime;
@@ -31,12 +38,29 @@ public class Target : MonoBehaviour
     void Start()
     {
         DisableCollider();
-        myCollider = GetComponentInChildren<Collider2D>();
+        //myCollider = GetComponentInChildren<Collider2D>();
         targetManager = FindObjectOfType<TargetManager>();
-        targetParent = transform.parent.gameObject;
-        targetChild = transform.parent.FindChild("Target").gameObject;
-        targetHead = transform.FindChild("Large").gameObject;
-        isHit = false;
+        //targetChild = transform.parent.FindChild("Target").gameObject;
+        targetHead = targetHeadL;
+        isHit = true;
+
+        targetRot = Vector3.zero;
+        switch (targetAxis)
+        {
+            case TargetAxis.OnGround:
+                targetRot = new Vector3(90f,0,0);
+                break;
+            case TargetAxis.OnLeftSide:
+                targetRot = new Vector3(0, 270f, 270f);
+                break;
+            case TargetAxis.OnRightSide:
+                targetRot = new Vector3(0, 90f, 90);
+                break;
+            case TargetAxis.OnTop:
+                targetRot = new Vector3(270f, 0, 180f);
+                break;
+        }
+        transform.localEulerAngles = targetRot;
 
     }
 
@@ -51,15 +75,30 @@ public class Target : MonoBehaviour
         {
             UpdateTargetTime();
         }
+        if (Vector3.Distance(transform.localEulerAngles, targetRot) > 0.01f)
+        {
+            transform.localRotation = Quaternion.LerpUnclamped(transform.localRotation, Quaternion.Euler(targetRot), Time.deltaTime * 10f);
+        }
+        if(Vector3.Distance(transform.localEulerAngles, targetRot) > 0.2f)
+        {
+            if (canEnableTargetHeadCollider)
+            {
+                canEnableTargetHeadCollider = false;
+                targetHead.GetComponent<CircleCollider2D>().enabled = true;
+            }
+        }
+
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ball"))
         {
-            if (other.GetComponentInParent<BallInfo>().IsBall)
+            if (other.GetComponent<BallInfo>().IsBall)
             {
-                TargetSetter(-1);
+                //TargetSetter(-1);
+                Reset();
                 DisableCollider();
                 // isHit = true;
                 inAlarm = false;
@@ -76,98 +115,103 @@ public class Target : MonoBehaviour
         }
     }
 
-	public void ResetTarget(){
-		if (!isHit) {
-			isHit = true;
-			targetManager.ActiveTargets -= 1;
-		}
-	}
+    public void ResetTarget()
+    {
+        if (!isHit)
+        {
+            isHit = true;
+            targetManager.ActiveTargets -= 1;
+        }
+    }
 
     public void DisableCollider()
     {
-        GetComponentInChildren<Collider2D>().enabled = false;
+        //GetComponentInChildren<Collider2D>().enabled = false;
+        Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = false;
+        }
     }
 
-    public void EnableCollider()
+    /*public void EnableCollider()
     {
         GetComponentInChildren<Collider2D>().enabled = true;
-    }
+    }*/
 
     public void SetTargetHeads(int targetTier)
     {
-		if (myCollider != null) 
-		{
-			myCollider.enabled = true;
-		}
+        if (myCollider != null)
+        {
+            //myCollider.enabled = true;
+        }
 
-		if (targetHead != null) 
-		{
-			//targetHead.SetActive(false);
-		}
+        if (targetHead != null)
+        {
+            //targetHead.SetActive(false);
+        }
 
         switch (targetTier)
         {
             case 0:
-			if(targetHead!=null)
-				targetHead.SetActive(false);
-                targetHead = transform.FindChild("Large").gameObject;
+                if (targetHead != null)
+                    targetHead.SetActive(false);
+                targetHead = targetHeadL;
                 targetHead.SetActive(true);
+                //targetHead.GetComponent<Collider2D>().enabled = true;
                 isHit = false;
                 break;
             case 1:
-			if(targetHead!=null)
-				targetHead.SetActive(false);
-                targetHead = transform.FindChild("Medium").gameObject;
+                if (targetHead != null)
+                    targetHead.SetActive(false);
+                targetHead = targetHeadM;
                 targetHead.SetActive(true);
                 isHit = false;
                 break;
             case 2:
-			if(targetHead!=null)
-				targetHead.SetActive(false);
-                targetHead = transform.FindChild("Small").gameObject;
+                if (targetHead != null)
+                    targetHead.SetActive(false);
+                targetHead = targetHeadS;
                 targetHead.SetActive(true);
                 isHit = false;
                 break;
             case 3:
-			if(targetHead!=null)
-				targetHead.SetActive(false);
-                targetHead = transform.FindChild("Tiny").gameObject;
+                if (targetHead != null)
+                    targetHead.SetActive(false);
+                targetHead = targetHeadT;
                 targetHead.SetActive(true);
                 isHit = false;
                 break;
             default:
-			if(targetHead!=null)
-				targetHead.SetActive(false);
-                targetHead = transform.FindChild("Large").gameObject;
-                targetHead.SetActive(true);
-                isHit = false;
-                break;
+                goto case 0;
         }
-        targetHead.GetComponent<TargetHead>().myCollider.enabled = true;
+        canEnableTargetHeadCollider = true;
+        //targetHead.GetComponent<CircleCollider2D>().enabled = true;
     }
 
 
-    public void TargetSetter(float rotDir)
+    public void TargetSetter()
     {
         // to active target, use TargetSetter(1), to deactivate target, use TargetSetter(-1)
         // set target axis in editor for each target
-        Vector3 rotAt = Vector3.zero;
+        targetRot = Vector3.zero;
         switch (targetAxis)
         {
             case TargetAxis.OnGround:
-                rotAt = Vector3.right;
+                targetRot = new Vector3(0, 0, 0);
                 break;
             case TargetAxis.OnLeftSide:
-                rotAt = Vector3.down;
+                targetRot = new Vector3(0, 0, 270f);
                 break;
             case TargetAxis.OnRightSide:
-                rotAt = Vector3.up;
+                targetRot = new Vector3(0, 0, 90);
                 break;
             case TargetAxis.OnTop:
-                rotAt = Vector3.left;
+                targetRot = new Vector3(0, 0, 180f);
                 break;
         }
-        targetParent.transform.RotateAround(targetChild.transform.position, rotAt, -90f * rotDir);
+        //transform.localEulerAngles = targetRot;
+        SetTargetHeads(targetManager.TargetTier);
     }
 
     public void TargetTime()
@@ -188,17 +232,37 @@ public class Target : MonoBehaviour
             if (lifeTime <= 0)
             {
                 // deactive alarm, reset lifeTime
-                TargetSetter(-1f);
+                //TargetSetter(-1f);
+                Reset();
                 stayTier = false;
                 lifeTime = targetManager.SetLifeTime();
                 inAlarm = false;
                 targetActive = false;
                 DisableCollider();
-				ResetTarget();
+                ResetTarget();
             }
         }
     }
-
+    void Reset()
+    {
+        switch (targetAxis)
+        {
+            case TargetAxis.OnGround:
+                targetRot = new Vector3(90f, 0, 0);
+                break;
+            case TargetAxis.OnLeftSide:
+                targetRot = new Vector3(0, 270f, 270f);
+                break;
+            case TargetAxis.OnRightSide:
+                targetRot = new Vector3(0, 90f, 90f);
+                break;
+            case TargetAxis.OnTop:
+                targetRot = new Vector3(270f, 0, 180f);
+                break;
+        }
+        canEnableTargetHeadCollider = false;
+        //transform.localEulerAngles = targetRot;
+    }
     public void MoveTargets()
     {
 
