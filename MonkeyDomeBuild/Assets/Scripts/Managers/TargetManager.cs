@@ -26,16 +26,19 @@ public class TargetManager : MonoBehaviour
     private bool isHit;
 
     public bool rallyOn;
-	public int activeTargets;
+    public int activeTargets;
 
-	public int ActiveTargets{
-		get {
-			return activeTargets;
-		} 
-		set {
-			activeTargets = value;
-		}
-	}
+    public int ActiveTargets
+    {
+        get
+        {
+            return activeTargets;
+        }
+        set
+        {
+            activeTargets = value;
+        }
+    }
 
     public Target[] TargetGetter()
     {
@@ -75,10 +78,12 @@ public class TargetManager : MonoBehaviour
 
     void Update()
     {
-		if (rallyOn && activeTargets == 0) {
-			Invoke("StartRallyDelay",5f);
-			rallyOn = false;
-		}
+        if (rallyOn && activeTargets == 0)
+        {
+            StopAllCoroutines();
+            Invoke("StartRallyDelay", 5f);
+            rallyOn = false;
+        }
 
 
         if (Input.GetKeyDown(KeyCode.J))
@@ -94,9 +99,10 @@ public class TargetManager : MonoBehaviour
         }
     }
 
-	protected void StartRallyDelay(){
-		Rally ();
-	}
+    protected void StartRallyDelay()
+    {
+        Rally();
+    }
 
     void RallySetter()
     {
@@ -132,19 +138,20 @@ public class TargetManager : MonoBehaviour
     void StartRally()
     {
         UpdateTierStatus();
-		foreach (Target t in gameTargets) {
-			t.SetTargetHeads (targetTier);
-		}
+        foreach (Target t in gameTargets)
+        {
+            //t.SetTargetHeads(targetTier);
+        }
         // call this method at the start of each rally. will activate target and deactivate if hit
         //isHit = false;
         ActivateTarget();
-       /* foreach (Target t in gameTargets)
-        {
-            if (isHit == true)
-            {
-                t.TargetSetter(-1f);
-            }
-        }*/
+        /* foreach (Target t in gameTargets)
+         {
+             if (isHit == true)
+             {
+                 t.TargetSetter(-1f);
+             }
+         }*/
     }
 
     public bool CheckRally()
@@ -154,28 +161,29 @@ public class TargetManager : MonoBehaviour
         {
             return true;
         }
-			
+
         return false;
     }
 
     void UpdateTierStatus()
     {
         // updates tier status at end of a rally
-		if (hitSum>=3) 
-		{
-			if (targetTier < 4) {
-				targetTier++;
-				//advanceTier = false;
-			}
-		}
-		else 
-		{
-			if (targetTier > 0 && hitSum < 3) 
-			{
-				targetTier--;
-			}
-		}
-		hitSum = 0;
+        if (hitSum >= 3)
+        {
+            if (targetTier < 4)
+            {
+                targetTier++;
+                //advanceTier = false;
+            }
+        }
+        else
+        {
+            if (targetTier > 0 && hitSum < 3)
+            {
+                targetTier--;
+            }
+        }
+        hitSum = 0;
         sequenceIndex = 0;
     }
 
@@ -189,7 +197,7 @@ public class TargetManager : MonoBehaviour
     {
         rallyOn = true;
         RallySetter();
-		//advanceTier = CheckRally();
+        //advanceTier = CheckRally();
         StartRally();
 
     }
@@ -201,11 +209,11 @@ public class TargetManager : MonoBehaviour
 
     IEnumerator ActiveWaiter(Target t)
     {
-		//activeTargets++;
+        //activeTargets++;
         yield return new WaitForSeconds(activateTimes[activateCounter]);
         t.targetActive = true;
         //t.SetTargetHeads(targetTier);
-        t.TargetSetter(1f);
+        t.TargetSetter();
         t.TargetTime();
     }
 
@@ -233,7 +241,7 @@ public class TargetManager : MonoBehaviour
         }
         foreach (Target t in gameTargets)
         {
-			activeTargets++;
+            activeTargets++;
             StartCoroutine(ActiveWaiter(t));
             activateCounter++;
             if (activateCounter == 6)

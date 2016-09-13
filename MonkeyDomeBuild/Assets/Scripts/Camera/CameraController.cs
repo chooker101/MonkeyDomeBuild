@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        considerTargets = false;
+        considerTargets = true;
         shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
         //CamSize = myCam.orthographicSize;
