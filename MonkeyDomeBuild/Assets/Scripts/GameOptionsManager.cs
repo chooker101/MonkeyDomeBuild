@@ -73,7 +73,7 @@ public class GameOptionsManager : MonoBehaviour {
 
     public void LowerMatchClock()
     {
-        if (Matchtime.startMatchTime <= 1f)
+        if (tempMatchTime <= 1f)
         { Matchtime.noTime = true; tempMatchTime = 0f; }
         else
         tempMatchTime -= 1f;
@@ -86,7 +86,8 @@ public class GameOptionsManager : MonoBehaviour {
 
     public void LowerShotClock()
     {
-        tempShotClock -= 1;
+        if (tempShotClock > 3f)
+            tempShotClock -= 1;
     }
 
     public void AddPlayers()
@@ -97,7 +98,7 @@ public class GameOptionsManager : MonoBehaviour {
 
     public void LowerPlayers()
     {
-        if (GameManager.TotalNumberofPlayers > 0)
+        if (tempPlayers > 1)
             tempPlayers -= 1;
     }
 

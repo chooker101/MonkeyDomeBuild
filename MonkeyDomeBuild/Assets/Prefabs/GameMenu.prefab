@@ -1306,12 +1306,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae29389dea378048acd3b87d5549a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MatchtimeManager: {fileID: 0}
+  GameoptionsChanged: 0
+  Matchtime: {fileID: 0}
   matchtimeText: {fileID: 11419072}
-  ShotclockManager: {fileID: 0}
+  tempMatchTime: 0
+  Shotclock: {fileID: 0}
   ShottimeText: {fileID: 11455692}
+  tempShotClock: 0
   GameManager: {fileID: 0}
   numPlayersText: {fileID: 11414130}
+  tempPlayers: 0
 --- !u!114 &11474384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1446,7 +1450,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -1662,7 +1666,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &22404968
 RectTransform:
