@@ -1,21 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+public enum ThrowableType
+{
+    Ball = 0,
+    Trophy = 1
+}
 
 public class BallInfo : MonoBehaviour
 {
+    protected ThrowableType type = ThrowableType.Ball;
     [SerializeField]
-    private GameObject lastThrowMonkey = null;
-	private GameObject holdingMonkey = null;
+    protected GameObject lastThrowMonkey = null;
+    protected GameObject holdingMonkey = null;
 	public int playerThrewLast = -1;
-    private PhysicsMaterial2D ballMat;
-    private Rigidbody2D m_rigid;
-    private Vector2 startPos = Vector2.up * 10;
+    protected PhysicsMaterial2D ballMat;
+    protected Rigidbody2D m_rigid;
+    protected Vector2 startPos = Vector2.up * 10;
     public bool isballnear = false;
     public bool timerUp = false;
-    private float timer = 8f;
-    public float count = 0f;
-    private bool perfectCatch = false;
+    //private float timer = 8f;
+    //public float count = 0f;
+    protected bool perfectCatch = false;
     public float perfectCatchDistance;
     //private float bounciness;
 
@@ -24,68 +30,76 @@ public class BallInfo : MonoBehaviour
     public float minCalcDistanceVelocity = 10f;
     public float magnitudeOfVelocity = 0f;
     public int numberOfBounce = 0;
-    private bool canBeCatch = true;
+    protected bool canBeCatch = true;
 
-    public GameObject testMonkey;
+    //public GameObject testMonkey;
     public Material mySpriteColour;
 
     public float GetDistanceTravel()
     {
         return distanceTravel;
     }
-
     public bool GetCanBeCatch()
     {
         return canBeCatch;
     }
-
     public GameObject GetHoldingMonkey()
     {
 		return holdingMonkey;
     }
-
 	public GameObject GetLastThrowMonkey()
 	{
 		return lastThrowMonkey;
 	}
-
-	public float GetCurrentShotClockTime()
+    public bool IsBall
+    {
+        get
+        {
+            if (type == ThrowableType.Ball)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+    /*public float GetCurrentShotClockTime()
 	{
 		return count;
-	}
-
-	void Start ()
+	}*/
+    void Start ()
     {
+        //Debug.Log("BallInfo Start being called");
         perfectCatchDistance = 1f;
         m_rigid = GetComponent<Rigidbody2D>();
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
+        type = ThrowableType.Ball;
         //bounciness = ballMat.bounciness;
-        timer = 8f;
+        //timer = 8f;
         //PickRandomVictim();
-
     }
     void Update()
     {
         //Debug.DrawLine(transform.position, transform.position + Vector3.right * perfectCatchDistance);
-		if (testMonkey != null)
-		{
-			Debug.Log(Vector3.Distance(transform.position, testMonkey.transform.position));
-		}
-        if (timerUp)
+        //Debug.Log("run" + gameObject.name);
+        if (IsBall)
         {
-            if (count >= timer)
+            if (GameManager.Instance.gmShotClockManager.IsShotClockActive)
             {
-                Change();
-            }
-            else
-            {
-                if(SceneManager.GetActiveScene().name != "PregameRoom")
+                if (GameManager.Instance.gmShotClockManager.ShotClockCount >= GameManager.Instance.gmShotClockManager.ShotClockTime)
                 {
-                    count += Time.fixedDeltaTime;
+                    Change();
+                }
+                else
+                {
+                    if (SceneManager.GetActiveScene().name != "PregameRoom")
+                    {
+                        GameManager.Instance.gmShotClockManager.ShotClockCount += Time.deltaTime;
+                        //count += Time.fixedDeltaTime;
+                    }
                 }
             }
+            UpdateTravelDistance();
         }
-        UpdateTravelDistance();
         magnitudeOfVelocity = m_rigid.velocity.magnitude;
     }
 
@@ -100,7 +114,11 @@ public class BallInfo : MonoBehaviour
 	public void UpdateLastThrowMonkey(GameObject monkey)
     {
         lastThrowMonkey = monkey;
-        timerUp = true;
+        //timerUp = true;
+        if (IsBall)
+        {
+            GameManager.Instance.gmShotClockManager.IsShotClockActive = true;
+        }
     }
 
     public void ResetPosition()
@@ -113,20 +131,23 @@ public class BallInfo : MonoBehaviour
         canBeCatch = true;
         holdingMonkey = null;
         playerThrewLast = -1;
-        timerUp = false;
-		m_rigid.isKinematic = false;
+        //timerUp = false;
+        GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
+        m_rigid.isKinematic = false;
         //m_rigid.useGravity = true;
     }
-    protected void ResetShotCount()
+    /*protected void ResetShotCount()
     {
         count = 0f;
-    }
+    }*/
 
     public void Change(int index)
     {
         if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID()) PickRandomVictim();
         float longestTimeGorilla = 0f;
-        count = 0;
+        //count = 0;
+        GameManager.Instance.gmShotClockManager.ResetShotClock();
+        GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
         GameObject gorillaToSwitch = null;
         for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
         {
@@ -146,13 +167,14 @@ public class BallInfo : MonoBehaviour
         }
         lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
         ResetPosition();
-        timerUp = false;
+
+        //timerUp = false;
     }
 
     public void Change()
     {
         float longestTimeGorilla = 0f;
-        count = 0;
+        GameManager.Instance.gmShotClockManager.ResetShotClock();
         GameObject gorillaToSwitch = null;
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
         {
@@ -172,7 +194,8 @@ public class BallInfo : MonoBehaviour
         }
         lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
         ResetPosition();
-        timerUp = false;
+        //timerUp = false;
+        GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
     }
 
     public void BeingCatch(GameObject who)
@@ -180,13 +203,20 @@ public class BallInfo : MonoBehaviour
         if (holdingMonkey == null)
         {
             if (who != lastThrowMonkey)
-                ResetShotCount();
+            {
+                if (IsBall)
+                {
+                    GameManager.Instance.gmShotClockManager.ResetShotClock();
+                }
+                //ResetShotCount();
+            }
+
             canBeCatch = false;
             holdingMonkey = who;
             m_rigid.isKinematic = true;
             if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)
                 perfectCatch = true;
-            if(SceneManager.GetActiveScene().name != "PregameRoom")
+            if(SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
             {
                 GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
             }
@@ -196,7 +226,7 @@ public class BallInfo : MonoBehaviour
             numberOfBounce = 0;
         }
     }
-	
+
     void OnTriggerEnter2D(Collider2D other)
     {
         
@@ -204,7 +234,6 @@ public class BallInfo : MonoBehaviour
         {
              isballnear = true;
         }
-
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -251,11 +280,17 @@ public class BallInfo : MonoBehaviour
     {
         if (lastThrowMonkey != null)
         {
-            if (other.gameObject.CompareTag("Floor") || other.gameObject.CompareTag("Ceiling") || other.gameObject.CompareTag("Wall"))
+            if (other.gameObject.layer==LayerMask.NameToLayer("Floor"))
             {
                 numberOfBounce++;
             }
         }
+        /*
+        if (!IsBall)
+        {
+
+        }
+        */
     }
 
     void BounceCount()

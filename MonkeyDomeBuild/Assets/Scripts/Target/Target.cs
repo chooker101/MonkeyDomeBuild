@@ -55,17 +55,24 @@ public class Target : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Ball"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
-            TargetSetter(-1);
-            DisableCollider();
-           // isHit = true;
-            inAlarm = false;
-            targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
-            targetManager.sequenceIndex++;
-            targetManager.hitSum++;
-            //targetManager.advanceTier = targetManager.CheckRally();
-			ResetTarget ();
+            if (other.GetComponentInParent<BallInfo>().IsBall)
+            {
+                TargetSetter(-1);
+                DisableCollider();
+                // isHit = true;
+                inAlarm = false;
+                targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
+                targetManager.sequenceIndex++;
+                targetManager.hitSum++;
+                //targetManager.advanceTier = targetManager.CheckRally();
+                if (!isHit)
+                {
+                    GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
+                }
+                ResetTarget();
+            }
         }
     }
 

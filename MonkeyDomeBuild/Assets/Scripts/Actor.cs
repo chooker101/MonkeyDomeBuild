@@ -60,9 +60,9 @@ public class Actor : MonoBehaviour
     float dashingCount = 0;
     float dashingTime = 0.6f;
     float dashForce = 40f;
-    float smackImpulse = 20f;
+    float smackImpulse = 15f;
     float disableInputTime = .5f;
-    public bool disableInput
+    public bool DisableInput
     {
         get { return beingSmack; }
         set { beingSmack = value; }
@@ -206,6 +206,13 @@ public class Actor : MonoBehaviour
                         tempThrowForce *= (1 + (holdingCatchCount / maxChargeCount / 2f));
                     }
                     Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
+                    if (!ballHolding.GetComponent<BallInfo>().IsBall)
+                    {
+                        if (ballHolding.GetComponent<TrophyInfo>().IsColliderOff)
+                        {
+                            ballHolding.GetComponent<TrophyInfo>().InvokeEnableCollider();
+                        }
+                    }
                     ReleaseBall();
                     ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[playerIndex].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[playerIndex].mXY.y * tempThrowForce), ForceMode2D.Impulse);
                     stat_throw++;
@@ -300,7 +307,7 @@ public class Actor : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Floor"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             isinair = false;
             if (isDashing)
@@ -319,9 +326,10 @@ public class Actor : MonoBehaviour
                                 !GameManager.Instance.gmPlayers[i].GetComponent<Player>().IsInAir)
                             {
                                 GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
+                                GameManager.Instance.gmPlayers[i].GetComponent<Rigidbody2D>().isKinematic = false;
+                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput();
                                 if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
                                 {
-                                    GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput();
                                     GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ReleaseBall();
                                 }
                             }
@@ -365,7 +373,7 @@ public class Actor : MonoBehaviour
     }
     protected void KnockOffMonkey(GameObject monkey)
     {
-        monkey.GetComponent<Actor>().disableInput = true;
+        monkey.GetComponent<Actor>().DisableInput = true;
         monkey.GetComponent<Actor>().InvokeEnableInput();
 		if (monkey.GetComponent<Actor> ().IsHoldingBall) 
 		{
@@ -387,7 +395,7 @@ public class Actor : MonoBehaviour
     }
     public void TempDisableInput()
     {
-        disableInput = true;
+        DisableInput = true;
         InvokeEnableInput();
     }
     public void InvokeEnableInput()
@@ -396,7 +404,7 @@ public class Actor : MonoBehaviour
     }
     protected void ResetBeingSmack()
     {
-        beingSmack = false;
+        DisableInput = false;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -405,7 +413,7 @@ public class Actor : MonoBehaviour
         {
             canClimb = true;
         }
-        if (other.gameObject.CompareTag("BallTrigger"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
             ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
             if (!ballInRange)
@@ -440,7 +448,7 @@ public class Actor : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("BallTrigger"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
             ballInRange = false;
             if (ballHolding != null)
@@ -566,7 +574,7 @@ public class Actor : MonoBehaviour
         GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
 
         PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
-        Debug.Log("Actor: Gorilla Dashed");
+        //Debug.Log("Actor: Gorilla Dashed");
         if (preGameTimer != null)
         {
             preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;

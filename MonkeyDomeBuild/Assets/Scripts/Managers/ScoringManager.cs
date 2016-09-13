@@ -39,8 +39,10 @@ public class ScoringManager : MonoBehaviour
     private int monkeyGettingInterceptScore = -10;
     private int innocentMonkeyScore = -5;
     private int gorillaInterceptScore = 20;
-
-
+    private int hitTargetScoreT0 = 5;
+    private int hitTargetScoreT1 = 10;
+    private int hitTargetScoreT2 = 15;
+    private int hitTargetScoreT3 = 20;
 
     void Start()
     {
@@ -114,35 +116,35 @@ public class ScoringManager : MonoBehaviour
         {
             if (thrower.GetInstanceID() != catcher.GetInstanceID())
             {
-				if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
-				{
-					AddScore(thrower.GetComponent<Actor>().playerIndex, passScore);
-					if (perfectCatch)
-						AddScore(catcher.GetComponent<Actor>().playerIndex, perfectCatchScore);
-					else
-						AddScore(catcher.GetComponent<Actor>().playerIndex, catchScore);
-					/*
+                if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
+                {
+                    AddScore(thrower.GetComponent<Actor>().playerIndex, passScore);
+                    if (perfectCatch)
+                        AddScore(catcher.GetComponent<Actor>().playerIndex, perfectCatchScore);
+                    else
+                        AddScore(catcher.GetComponent<Actor>().playerIndex, catchScore);
+                    /*
                 if (perfectCatch)
                     Debug.Log("perfect catch");
                 else
                     Debug.Log("catch");
                 */
-				}
-				if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
-				{
-					AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
-					//Debug.Log("long throw");
-				}
-				if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
-				{
-					AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
-					//Debug.Log("bounce");
-				}
-				if (catcher.GetComponent<Actor>().IsInAir)
-				{
-					AddScore(catcher.GetComponent<Actor>().playerIndex, catchInAirScore);
-					//Debug.Log("catch in air");
-				}
+                }
+                if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
+                {
+                    AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
+                    //Debug.Log("long throw");
+                }
+                if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
+                {
+                    AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
+                    //Debug.Log("bounce");
+                }
+                if (catcher.GetComponent<Actor>().IsInAir)
+                {
+                    AddScore(catcher.GetComponent<Actor>().playerIndex, catchInAirScore);
+                    //Debug.Log("catch in air");
+                }
             }
         }
     }
@@ -202,6 +204,30 @@ public class ScoringManager : MonoBehaviour
             AddScore(monkeyIndex, -gorillaInterceptScore);
         }
         AddScore(gorilla.GetComponent<Actor>().playerIndex, interceptScore);
+    }
+    public void HitTargetScore(BallInfo ball)
+    {
+        int monkeyIndex = ball.GetLastThrowMonkey().GetComponent<Actor>().playerIndex;
+        int score = 0;
+        switch (GameManager.Instance.gmTargetManager.TargetTier)
+        {
+            default:
+                score = 0;
+                break;
+            case 0:
+                score = hitTargetScoreT0;
+                break;
+            case 1:
+                score = hitTargetScoreT1;
+                break;
+            case 2:
+                score = hitTargetScoreT2;
+                break;
+            case 3:
+                score = hitTargetScoreT3;
+                break;
+        }
+        AddScore(monkeyIndex, score);
     }
 
 }

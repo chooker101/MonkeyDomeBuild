@@ -10,6 +10,7 @@ public class BananaSpawner : MonoBehaviour
     public List<int> playerScores = new List<int>();
     List<int> playerBananaSpawned = new List<int>();
     List<float> bananaSpawnCount = new List<float>();
+    public int scorePerBanana = 5;
     float bananaSpawnTime = 0.3f;
     float bananaSideForce = 1f;
 
@@ -48,7 +49,7 @@ public class BananaSpawner : MonoBehaviour
     {
         for(int i = 0; i < playerScores.Count; i++)
         {
-            if (playerScores[i] != playerBananaSpawned[i])
+            if (playerScores[i] / scorePerBanana != playerBananaSpawned[i])
             {
                 if (bananaSpawnCount[i] >= bananaSpawnTime)
                 {

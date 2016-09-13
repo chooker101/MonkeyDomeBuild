@@ -14,12 +14,14 @@ public class ShotClock : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.gmBalls[0] != null)
+        /*if (GameManager.Instance.gmBalls[0] != null)
         {
-            float time = 8f - GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetCurrentShotClockTime();
-            if (time < 0) time = 0f;
-            shotClock.text = Mathf.Round(time).ToString();
-            //Debug.Log(time);
-        }
+
+        }*/
+        //float time = 8f - GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetCurrentShotClockTime();
+        float time = GameManager.Instance.gmShotClockManager.ShotClockTime - GameManager.Instance.gmShotClockManager.ShotClockCount;
+        if (time < 0) time = 0f;
+        shotClock.text = Mathf.Round(time).ToString();
+        //Debug.Log(time);
     }
 }

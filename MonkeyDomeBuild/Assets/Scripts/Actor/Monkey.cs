@@ -53,6 +53,10 @@ public class Monkey : Character
                 {
                     if (!cacheplayer.haveBall && cacheplayer.ballInRange)
                     {
+                        if (!cacheplayer.ballCanCatch.IsBall)
+                        {
+                            cacheplayer.ballCanCatch.GetComponent<TrophyInfo>().DisableCollider();
+                        }
                         cacheplayer.canCharge = false;
                         cacheplayer.haveBall = true;
                         cacheplayer.ballHolding = cacheplayer.ballCanCatch.gameObject;

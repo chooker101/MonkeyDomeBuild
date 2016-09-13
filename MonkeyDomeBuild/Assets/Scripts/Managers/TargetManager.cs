@@ -51,6 +51,13 @@ public class TargetManager : MonoBehaviour
     {
         return gameTargets.Length;
     }
+    public int TargetTier
+    {
+        get
+        {
+            return targetTier;
+        }
+    }
 
     void Start()
     {

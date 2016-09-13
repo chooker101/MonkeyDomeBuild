@@ -47,16 +47,19 @@ public class Gorilla : Character
             {
                 if (cacheplayer.ballInRange)
                 {
-                    // Checks to see if the current scene isn't the pre-game room
-                    if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
+                    if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().IsBall)
                     {
-                        GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey());
-                    }
-                    cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
-                    cacheplayer.stat_ballGrab++;
-                    if (SceneManager.GetActiveScene().name != "PregameRoom")
-                    {
-                        GameManager.Instance.gmScoringManager.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
+                        // Checks to see if the current scene isn't the pre-game room
+                        if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
+                        {
+                            GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey());
+                        }
+                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
+                        cacheplayer.stat_ballGrab++;
+                        if (SceneManager.GetActiveScene().name != "PregameRoom")
+                        {
+                            GameManager.Instance.gmScoringManager.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
+                        }
                     }
                 }
             }
