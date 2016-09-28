@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+public enum TargetAxis
+{
+    OnGround = 1,
+    OnRightSide = 2,
+    OnLeftSide = -2,
+    OnTop = -1
+}
 public class Target : MonoBehaviour
 {
     public bool isHit;
@@ -26,13 +32,7 @@ public class Target : MonoBehaviour
     public float resetTime = 1;
     public float lifeTime;
     public bool inAlarm = false;
-    public enum TargetAxis
-    {
-        OnGround = 1,
-        OnRightSide = 2,
-        OnLeftSide = -2,
-        OnTop = -1
-    }
+
     public TargetAxis targetAxis = TargetAxis.OnGround;
 
     void Start()
@@ -43,12 +43,15 @@ public class Target : MonoBehaviour
         //targetChild = transform.parent.FindChild("Target").gameObject;
         targetHead = targetHeadL;
         isHit = true;
-
         targetRot = Vector3.zero;
+        Init();
+    }
+    void Init()
+    {
         switch (targetAxis)
         {
             case TargetAxis.OnGround:
-                targetRot = new Vector3(90f,0,0);
+                targetRot = new Vector3(90f, 0, 0);
                 break;
             case TargetAxis.OnLeftSide:
                 targetRot = new Vector3(0, 270f, 270f);
@@ -61,9 +64,7 @@ public class Target : MonoBehaviour
                 break;
         }
         transform.localEulerAngles = targetRot;
-
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -266,5 +267,12 @@ public class Target : MonoBehaviour
     public void MoveTargets()
     {
 
+    }
+    public TargetAxis SetTargetAxis
+    {
+        set
+        {
+            targetAxis = value;
+        }
     }
 }

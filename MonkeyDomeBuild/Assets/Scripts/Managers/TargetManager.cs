@@ -245,6 +245,44 @@ public class TargetManager : MonoBehaviour
             activateTimes[i] ^= activateTimes[j];
             i++;
         }
+        List<int> tempTargetIndexs = new List<int>();
+        int repeatTimes = 0;
+        while (tempTargetIndexs.Count < activateTimes.Length)
+        {
+            int tempIndex = Random.Range(0, gameTargets.Length);
+            bool repeated = false;
+            for(int k = 0; k < tempTargetIndexs.Count; k++)
+            {
+                if (tempTargetIndexs[k] == tempIndex)
+                {
+                    repeated = true;
+                    break;
+                }
+            }
+            if (!repeated)
+            {
+                tempTargetIndexs.Add(tempIndex);
+            }
+            else
+            {
+                repeatTimes++;
+                if (repeatTimes > 10)
+                {
+                    break;
+                }
+            }
+        }
+        for(int k = 0; k < tempTargetIndexs.Count; k++)
+        {
+            activeTargets++;
+            StartCoroutine(ActiveWaiter(gameTargets[tempTargetIndexs[k]]));
+            activateCounter++;
+            if (activateCounter == 6)
+            {
+                Rally();
+            }
+        }
+        /*
         foreach (Target t in gameTargets)
         {
             activeTargets++;
@@ -255,6 +293,7 @@ public class TargetManager : MonoBehaviour
                 Rally();
             }
         }
+        */
         activateCounter = 0;
     }
 }
