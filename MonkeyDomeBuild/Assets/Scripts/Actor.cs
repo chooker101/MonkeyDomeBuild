@@ -118,6 +118,10 @@ public class Actor : MonoBehaviour
 		{
 			isinair = true;
 			cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+            if (AudioEffectManager.Instance != null)
+            {
+                AudioEffectManager.Instance.PlayMonkeyJumpSE();
+            }
 		}
 		else
 		{
@@ -128,7 +132,11 @@ public class Actor : MonoBehaviour
                     cache_rb.gravityScale = 2;
 
                 cache_rb.AddForce(Vector2.up * characterType.jumpforce);
-			}
+                if (AudioEffectManager.Instance != null)
+                {
+                    AudioEffectManager.Instance.PlayMonkeyJumpSE();
+                }
+            }
 			else if(canClimb)
 			{
 				isClimbing = true;
