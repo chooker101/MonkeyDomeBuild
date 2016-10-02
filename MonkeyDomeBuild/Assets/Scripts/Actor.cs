@@ -34,8 +34,9 @@ public class Actor : MonoBehaviour
     public int stat_throw = 0;
     public int stat_ballGrab = 0;
 
-    public float maxminInc = 3f;
+    private float maxminInc = 2f;
     public float characterInc = 0f;
+    private float incAmount = 0.5f;
 
     public bool canCharge = false;
     public float holdingCatchCount = 0f;
@@ -131,10 +132,13 @@ public class Actor : MonoBehaviour
                 if (cache_rb.gravityScale == 0)
                     cache_rb.gravityScale = 2;
 
-                cache_rb.AddForce(Vector2.up * characterType.jumpforce);
-                if (AudioEffectManager.Instance != null)
+                if (GameManager.Instance.gmInputs[playerIndex].mXY.y >= 0)
                 {
-                    AudioEffectManager.Instance.PlayMonkeyJumpSE();
+                    cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+                    if (AudioEffectManager.Instance != null)
+                    {
+                        AudioEffectManager.Instance.PlayMonkeyJumpSE();
+                    }
                 }
             }
 			else if(canClimb)
@@ -156,11 +160,11 @@ public class Actor : MonoBehaviour
                 {
                     if (characterType is Gorilla && characterType.isCharging)
                     {
-                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * characterType.chargespeed;
+                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
                     }
                     else
                     {
-                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * characterType.movespeed;
+                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
                     }
                 }
                 else
@@ -179,9 +183,9 @@ public class Actor : MonoBehaviour
 		}
 		else
 		{
-            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * characterType.movespeed;
-            movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * characterType.movespeed;
-		}
+            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+            movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
+        }
         if(!beingSmack)
         {
             cache_rb.velocity = movement;
@@ -436,7 +440,7 @@ public class Actor : MonoBehaviour
             if (proj.GetCanEffectCharacter())
             {
                 proj.CollideWithCharacter();
-                ReactionToBanana(proj.GetIncAmount());
+                ReactionToBanana(incAmount);
                 Destroy(other.gameObject);
             }
         }
@@ -448,7 +452,7 @@ public class Actor : MonoBehaviour
             if (proj.GetCanEffectCharacter())
             {
                 proj.CollideWithCharacter();
-                ReactionToPoop(proj.GetIncAmount());
+                ReactionToPoop(incAmount);
                 Destroy(other.gameObject);
             }
         }
