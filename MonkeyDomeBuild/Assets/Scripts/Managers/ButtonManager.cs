@@ -21,7 +21,7 @@ public class ButtonManager : MonoBehaviour
 
     public void StartButton()
     {
-        SceneManager.LoadScene("test01");
+        SceneManager.LoadScene("PregameRoom");
     }
 
     public void QuitButton()
