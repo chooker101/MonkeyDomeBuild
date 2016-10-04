@@ -1,23 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PauseManager : MonoBehaviour
 {
 	public bool isGamePaused = false;
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetButton("space"))
+		if (((GameManager.Instance.gmInputs[0].mStart || GameManager.Instance.gmInputs[0].mStart) || (GameManager.Instance.gmInputs[0].mStart || GameManager.Instance.gmInputs[0].mStart)) || GameManager.Instance.gmInputs[0].mStart)
 		{
-			isGamePaused = true;
-			Time.timeScale = 0;
-		}
-		while (isGamePaused)
-		{
-			if(Input.GetButton("space"))
+			if (isGamePaused)
 			{
-				isGamePaused = false;
+				Time.timeScale = 0;
+				//call ui
+			}
+			else
+			{
 				Time.timeScale = 1;
 			}
 		}

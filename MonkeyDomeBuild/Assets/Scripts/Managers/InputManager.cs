@@ -19,4 +19,5 @@ public class InputManager : ScriptableObject
     public bool mChargeStomp;
     public bool mChargeThrow;
     public bool mCatchRelease;
+	public bool mStart;
 }
