@@ -10,7 +10,9 @@ public class PauseManager : MonoBehaviour
 	{
 		if (((GameManager.Instance.gmInputs[0].mStart || GameManager.Instance.gmInputs[0].mStart) || (GameManager.Instance.gmInputs[0].mStart || GameManager.Instance.gmInputs[0].mStart)) || GameManager.Instance.gmInputs[0].mStart)
 		{
-			if (isGamePaused)
+            isGamePaused = !isGamePaused;
+
+            if (isGamePaused)
 			{
 				Time.timeScale = 0;
 				//call ui

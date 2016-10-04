@@ -90,6 +90,7 @@ GameObject:
   - 114: {fileID: 11402142}
   - 114: {fileID: 11433570}
   - 114: {fileID: 11469230}
+  - 114: {fileID: 114000011672575942}
   m_Layer: 0
   m_Name: GameManger
   m_TagString: GameManager
@@ -158,6 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7c194a695819a4ba619fa43a2d0a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotClockTime: 8
 --- !u!114 &11433906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -281,3 +283,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 197046}
   m_IsPrefabParent: 1
+--- !u!114 &114000011672575942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308b3774359a7e84f8b47156cde15d27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGamePaused: 0
