@@ -232,7 +232,8 @@ public class AudienceManager : MonoBehaviour
 
     void BananaCatchEvent()
     {
-
+        //banana catch is handled in Actor
+        //if this event is active the count will be increased there
     }
 
     void KnockDownMonkeysEvent()
@@ -248,6 +249,11 @@ public class AudienceManager : MonoBehaviour
     void BouncePassEvent()
     {
 
+    }
+
+    public AudienceEvent GetCurrentEvent()
+    {
+        return currentEvent;
     }
 
 }
