@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
 							Instance.gmPlayerScripts[i].isPlayer = false;
 						}
 					--NumberOfBotsToBuild;
-				}
+					}
 					   
 					Instance.gmPlayers[i].GetComponent<Actor>().playerIndex = i;
 

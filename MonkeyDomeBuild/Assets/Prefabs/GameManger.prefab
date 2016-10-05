@@ -90,7 +90,7 @@ GameObject:
   - 114: {fileID: 11402142}
   - 114: {fileID: 11433570}
   - 114: {fileID: 11469230}
-  - 114: {fileID: 114000011672575942}
+  - 114: {fileID: 404905926}
   m_Layer: 0
   m_Name: GameManger
   m_TagString: GameManager
@@ -224,6 +224,7 @@ MonoBehaviour:
   gmTargetManager: {fileID: 0}
   gmShotClockManager: {fileID: 11433570}
   gmTrophyManager: {fileID: 11469230}
+  gmAudienceManager: {fileID: 0}
   noGorilla: 1
 --- !u!114 &11458014
 MonoBehaviour:
@@ -283,9 +284,9 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 197046}
   m_IsPrefabParent: 1
---- !u!114 &114000011672575942
+--- !u!114 &404905926
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 197046}
