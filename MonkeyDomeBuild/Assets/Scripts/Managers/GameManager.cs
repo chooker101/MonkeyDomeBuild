@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
 			Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
 			Instance.gmInputs[(int)PN.P1].mAimStomp = Input.GetButtonDown("p1_aim/stomp");
 			Instance.gmInputs[(int)PN.P1].mChargeStomp = Input.GetButton("p1_aim/stomp");
+			Instance.gmInputs[(int)PN.P1].mStart = Input.GetButton("p1_start");
 		}
 		if (Instance.gmPlayerScripts[(int)PN.P2] != null)
 		{
@@ -113,7 +114,8 @@ public class GameManager : MonoBehaviour
 				Instance.gmInputs[(int)PN.P2].mCatchRelease = Input.GetButtonUp("p2_catch/throw");
 				Instance.gmInputs[(int)PN.P2].mAimStomp = Input.GetButtonDown("p2_aim/stomp");
 				Instance.gmInputs[(int)PN.P2].mChargeStomp = Input.GetButton("p2_aim/stomp");
-            }
+				Instance.gmInputs[(int)PN.P2].mStart = Input.GetButton("p2_start");
+			}
 		}
 
 		if (Instance.gmPlayerScripts[(int)PN.P3] != null)
@@ -128,6 +130,7 @@ public class GameManager : MonoBehaviour
 				Instance.gmInputs[(int)PN.P3].mCatchRelease = Input.GetButtonUp("p3_catch/throw");
 				Instance.gmInputs[(int)PN.P3].mAimStomp = Input.GetButtonDown("p3_aim/stomp");
 				Instance.gmInputs[(int)PN.P3].mChargeStomp = Input.GetButton("p3_aim/stomp");
+				Instance.gmInputs[(int)PN.P3].mStart = Input.GetButton("p2_start");
 			}
 		}
         if (Instance.gmPlayerScripts[(int)PN.P4] != null)
@@ -142,7 +145,8 @@ public class GameManager : MonoBehaviour
                 Instance.gmInputs[(int)PN.P4].mCatchRelease = Input.GetButtonUp("p4_catch/throw");
                 Instance.gmInputs[(int)PN.P4].mAimStomp = Input.GetButtonDown("p4_aim/stomp");
                 Instance.gmInputs[(int)PN.P4].mChargeStomp = Input.GetButton("p4_aim/stomp");
-            }
+				Instance.gmInputs[(int)PN.P4].mStart = Input.GetButton("p2_start");
+			}
         }
         if (Instance.gmPlayerScripts[(int)PN.P5] != null)
         {
@@ -156,7 +160,8 @@ public class GameManager : MonoBehaviour
                 Instance.gmInputs[(int)PN.P5].mCatchRelease = Input.GetButtonUp("p5_catch/throw");
                 Instance.gmInputs[(int)PN.P5].mAimStomp = Input.GetButtonDown("p5_aim/stomp");
                 Instance.gmInputs[(int)PN.P5].mChargeStomp = Input.GetButton("p5_aim/stomp");
-            }
+				Instance.gmInputs[(int)PN.P5].mStart = Input.GetButton("p2_start");
+			}
         }
     }
 

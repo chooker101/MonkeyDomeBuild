@@ -14,6 +14,16 @@ public class AudioEffectManager : MonoBehaviour
     public AudioSource ballBounceSoftSE;
     public AudioSource ballBounceHardSE;
 
+	public AudioSource ballInAirSE;
+	public AudioSource monkeyCatchBananaSE;
+	public AudioSource monkeyCatchPoopSE;
+	public AudioSource bananaHitSurfaceSE;
+	public AudioSource poopHitSurfaceSE;
+	public AudioSource targetPopupSE;
+	public AudioSource targetRetractSE;
+	public AudioSource targetUpgradeSE;
+	public AudioSource targetDowngradeSE;
+	public AudioSource targetHitSE;
 
 
     public static AudioEffectManager Instance
