@@ -93,5 +93,76 @@ public class AudioEffectManager : MonoBehaviour
             ballBounceHardSE.PlayOneShot(ballBounceHardSE.clip);
         }
     }
+    public void PlayBallInAirSE()
+    {
+        if (ballInAirSE != null && ballInAirSE.clip != null && !mute)
+        {
+            ballInAirSE.PlayOneShot(ballInAirSE.clip);
+        }
+    }
+    public void PlayMonkeyCatchBananaSE()
+    {
+        if (monkeyCatchBananaSE != null && monkeyCatchBananaSE.clip != null && !mute)
+        {
+            monkeyCatchBananaSE.PlayOneShot(monkeyCatchBananaSE.clip);
+        }
+    }
+
+    public void PlayMonkeyCatchPoopSE()
+    {
+        if (monkeyCatchPoopSE != null && monkeyCatchPoopSE.clip != null && !mute)
+        {
+            monkeyCatchPoopSE.PlayOneShot(monkeyCatchPoopSE.clip);
+        }
+    }
+    public void PlayBananaHitSurfaceSE()
+    {
+        if (bananaHitSurfaceSE != null && bananaHitSurfaceSE.clip != null && !mute)
+        {
+            bananaHitSurfaceSE.PlayOneShot(bananaHitSurfaceSE.clip);
+        }
+    }
+    public void PlayPoopHitSurfaceSE()
+    {
+        if (poopHitSurfaceSE != null && poopHitSurfaceSE.clip != null && !mute)
+        {
+            poopHitSurfaceSE.PlayOneShot(poopHitSurfaceSE.clip);
+        }
+    }
+    public void PlayTargetPopupSE()
+    {
+        if (targetPopupSE != null && targetPopupSE.clip != null && !mute)
+        {
+            targetPopupSE.PlayOneShot(targetPopupSE.clip);
+        }
+    }
+    public void PlayTargetRetractSE()
+    {
+        if (targetRetractSE != null && targetRetractSE.clip != null && !mute)
+        {
+            targetRetractSE.PlayOneShot(targetRetractSE.clip);
+        }
+    }
+    public void PlayTargetUpgradeSE()
+    {
+        if (targetUpgradeSE != null && targetUpgradeSE.clip != null && !mute)
+        {
+            targetUpgradeSE.PlayOneShot(targetUpgradeSE.clip);
+        }
+    }
+    public void PlayTargetDowngradeSE()
+    {
+        if (targetDowngradeSE != null && targetDowngradeSE.clip != null && !mute)
+        {
+            targetDowngradeSE.PlayOneShot(targetDowngradeSE.clip);
+        }
+    }
+    public void PlayTargetHitSE()
+    {
+        if (targetHitSE != null && targetHitSE.clip != null && !mute)
+        {
+            targetHitSE.PlayOneShot(targetHitSE.clip);
+        }
+    }
 
 }
