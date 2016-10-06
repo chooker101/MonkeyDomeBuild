@@ -87,6 +87,7 @@ public class BallInfo : MonoBehaviour
             {
                 if (GameManager.Instance.gmShotClockManager.ShotClockCount >= GameManager.Instance.gmShotClockManager.ShotClockTime)
                 {
+                    GameManager.Instance.gmShotClockManager.ResetShotClock();
                     Change();
                 }
                 else
@@ -123,6 +124,7 @@ public class BallInfo : MonoBehaviour
 
     public void ResetPosition()
     {
+        m_rigid.velocity = Vector3.zero;
         m_rigid.position = startPos;
     }
 
@@ -166,7 +168,7 @@ public class BallInfo : MonoBehaviour
             gorillaToSwitch.GetComponent<Player>().characterType.Mutate();
         }
         lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
-        ResetPosition();
+        //ResetPosition();
 
         //timerUp = false;
     }
@@ -195,6 +197,7 @@ public class BallInfo : MonoBehaviour
         lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
         ResetPosition();
         //timerUp = false;
+        lastThrowMonkey.GetComponent<Actor>().ResetTimeScale();
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
     }
 
@@ -297,4 +300,5 @@ public class BallInfo : MonoBehaviour
     {
 
     }
+
 }

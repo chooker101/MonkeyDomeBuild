@@ -2,11 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-public enum WayOfThrowBall
-{
-    OldWay,
-    Test1
-}
 public class Actor : MonoBehaviour
 {
     /*
@@ -16,7 +11,6 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
 
-    public WayOfThrowBall wayOfThrowBall = WayOfThrowBall.OldWay;
     public int playerIndex;
     public bool isPlayer;
 
@@ -69,6 +63,12 @@ public class Actor : MonoBehaviour
     float disableInputTime = .5f;
 
     bool isCharging = false;
+    bool canBeInSlowMotion = true;
+    bool cantHoldAnymore = false;
+    bool startSlowMo = false;
+    float slowMoTime = 1.5f;
+    float slowMoTimeScale = 0.2f;
+    float slowMoCount = 0;
 
     public bool DisableInput
     {
@@ -172,19 +172,7 @@ public class Actor : MonoBehaviour
                     }
                     else
                     {
-                        if (isCharging && wayOfThrowBall == WayOfThrowBall.Test1)
-                        {
-                            if (!GetComponent<Rigidbody2D>().isKinematic)
-                                GetComponent<Rigidbody2D>().isKinematic = true;
-                            movement.x = 0;
-                            movement.y = 0;
-                        }
-                        else
-                        {
-                            if (GetComponent<Rigidbody2D>().isKinematic)
-                                GetComponent<Rigidbody2D>().isKinematic = false;
-                            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-                        }
+                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
                     }
                 }
                 else
@@ -203,16 +191,8 @@ public class Actor : MonoBehaviour
 		}
 		else
 		{
-            if (isCharging && wayOfThrowBall == WayOfThrowBall.Test1)
-            {
-                movement.x = 0;
-                movement.y = 0;
-            }
-            else
-            {
-                movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-                movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
-            }
+            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+            movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
         }
         if(!beingSmack)
         {
@@ -225,12 +205,33 @@ public class Actor : MonoBehaviour
     {
         if (canCharge)
         {
-            if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall)
+            if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
+                if (Time.timeScale == 1f && canBeInSlowMotion)
+                {
+                    canBeInSlowMotion = false;
+                    startSlowMo = true;
+                }
+                if (startSlowMo)
+                {
+                    slowMoCount += Time.unscaledDeltaTime;
+                    if (slowMoCount < slowMoTime * 0.8f)
+                    {
+                        Time.timeScale = Mathf.Lerp(Time.timeScale, slowMoTimeScale, Time.unscaledDeltaTime * 5f);
+                    }
+                    else if(slowMoCount < slowMoTime)
+                    {
+                        Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.unscaledDeltaTime * 5f);
+                    }
+                    else
+                    {
+                        cantHoldAnymore = true;
+                    }
+                }
                 if (holdingCatchCount < maxChargeCount)
                 {
-                    holdingCatchCount += chargePerSec * Time.deltaTime;
+                    holdingCatchCount += chargePerSec * Time.unscaledDeltaTime;
                 }
                 else
                 {
@@ -240,6 +241,8 @@ public class Actor : MonoBehaviour
             else
             {
                 isCharging = false;
+                cantHoldAnymore = false;
+                ResetTimeScale();
                 if (holdingCatchCount > 0f)
                 {
                     float tempThrowForce = characterType.throwForce;
@@ -448,7 +451,6 @@ public class Actor : MonoBehaviour
     {
         DisableInput = false;
     }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Vine") && !canClimb)
@@ -493,7 +495,6 @@ public class Actor : MonoBehaviour
             }
         }
     }
-
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
@@ -516,29 +517,24 @@ public class Actor : MonoBehaviour
                 cache_rb.gravityScale = 2;
         }
     }
-
     void OnTriggerStay2D(Collider2D other)
     {
         OnTriggerEnter2D(other);
     }
-
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
             IncrementCharacterInc(incAmount);
     }
-
     public void ReactionToPoop(float incAmount)
     {
         if (Mathf.Abs(characterInc) < maxminInc)
             IncrementCharacterInc(-incAmount);
     }
-
     protected void IncrementCharacterInc(float inc)
     {
         characterInc += inc;
     }
-
     void CheckLeader()
     {
         if (GameManager.Instance.gmScoringManager.p1Score == GameManager.Instance.gmScoringManager.p2Score && GameManager.Instance.gmScoringManager.p2Score == GameManager.Instance.gmScoringManager.p3Score)
@@ -628,5 +624,12 @@ public class Actor : MonoBehaviour
             preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
             Debug.Log("Actor: gorillaSmash = true");
         }
+    }
+    public void ResetTimeScale()
+    {
+        Time.timeScale = 1;
+        startSlowMo = false;
+        canBeInSlowMotion = true;
+        slowMoCount = 0;
     }
 }

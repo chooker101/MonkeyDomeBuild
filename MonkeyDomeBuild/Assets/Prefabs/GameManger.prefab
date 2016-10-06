@@ -83,7 +83,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 456864}
   - 114: {fileID: 11436584}
-  - 114: {fileID: 11404282}
   - 114: {fileID: 11458014}
   - 114: {fileID: 11482762}
   - 114: {fileID: 11433906}
@@ -107,7 +106,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -131,23 +129,6 @@ MonoBehaviour:
   scoreEndPlayers: 0000000000000000000000000000000000000000
   playerGorilla: -1
   defaultColour: {fileID: 2100000, guid: 1c5f5859623df434dbc63244581cfcd9, type: 2}
---- !u!114 &11404282
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 197046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e54dd057461ed534c8535c76d3462e2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &11433570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -204,7 +185,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  gmSpawnManager: {fileID: 11404282}
+  gmSpawnManager: {fileID: 0}
   gmSpawnObject: {fileID: 0}
   gmButtonManager: {fileID: 0}
   gmPlayerPrefab: {fileID: 106386, guid: b2a9f252c215e8c48904586552452670, type: 2}
@@ -265,11 +246,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mScale: {x: 1, y: 1, z: 1}
-  mSpeed: 12
+  mSpeed: 18
   mJumpForce: 1500
   mThrowForce: 30
   gScale: {x: 1.5, y: 1.5, z: 1.5}
-  gSpeed: 10
+  gSpeed: 15
   gJumpForce: 1500
   gThrowForce: 10
   gChargeSpeed: 50
@@ -286,7 +267,7 @@ Prefab:
   m_IsPrefabParent: 1
 --- !u!114 &404905926
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 197046}
