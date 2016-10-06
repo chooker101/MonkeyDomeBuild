@@ -2,7 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-
+public enum WayOfThrowBall
+{
+    OldWay,
+    Test1
+}
 public class Actor : MonoBehaviour
 {
     /*
@@ -12,6 +16,7 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
 
+    public WayOfThrowBall wayOfThrowBall = WayOfThrowBall.OldWay;
     public int playerIndex;
     public bool isPlayer;
 
@@ -62,6 +67,9 @@ public class Actor : MonoBehaviour
     float dashForce = 40f;
     float smackImpulse = 15f;
     float disableInputTime = .5f;
+
+    bool isCharging = false;
+
     public bool DisableInput
     {
         get { return beingSmack; }
@@ -164,7 +172,19 @@ public class Actor : MonoBehaviour
                     }
                     else
                     {
-                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                        if (isCharging && wayOfThrowBall == WayOfThrowBall.Test1)
+                        {
+                            if (!GetComponent<Rigidbody2D>().isKinematic)
+                                GetComponent<Rigidbody2D>().isKinematic = true;
+                            movement.x = 0;
+                            movement.y = 0;
+                        }
+                        else
+                        {
+                            if (GetComponent<Rigidbody2D>().isKinematic)
+                                GetComponent<Rigidbody2D>().isKinematic = false;
+                            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                        }
                     }
                 }
                 else
@@ -183,8 +203,16 @@ public class Actor : MonoBehaviour
 		}
 		else
 		{
-            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-            movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
+            if (isCharging && wayOfThrowBall == WayOfThrowBall.Test1)
+            {
+                movement.x = 0;
+                movement.y = 0;
+            }
+            else
+            {
+                movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
+            }
         }
         if(!beingSmack)
         {
@@ -199,6 +227,7 @@ public class Actor : MonoBehaviour
         {
             if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall)
             {
+                isCharging = true;
                 if (holdingCatchCount < maxChargeCount)
                 {
                     holdingCatchCount += chargePerSec * Time.deltaTime;
@@ -210,6 +239,7 @@ public class Actor : MonoBehaviour
             }
             else
             {
+                isCharging = false;
                 if (holdingCatchCount > 0f)
                 {
                     float tempThrowForce = characterType.throwForce;
