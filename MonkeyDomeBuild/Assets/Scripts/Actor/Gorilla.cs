@@ -52,14 +52,10 @@ public class Gorilla : Character
                         // Checks to see if the current scene isn't the pre-game room
                         if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
                         {
-                            GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey());
+                            GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);
                         }
                         cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
                         cacheplayer.stat_ballGrab++;
-                        if (SceneManager.GetActiveScene().name != "PregameRoom")
-                        {
-                            GameManager.Instance.gmScoringManager.SwitchingScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.gameObject);
-                        }
                     }
                 }
             }
