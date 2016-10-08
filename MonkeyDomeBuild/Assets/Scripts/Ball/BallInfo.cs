@@ -163,9 +163,9 @@ public class BallInfo : MonoBehaviour
         }
         if (gorillaToSwitch != null)
         {
-            gorillaToSwitch.GetComponent<Player>().characterType.Mutate();
+            gorillaToSwitch.GetComponent<Actor>().characterType.Mutate();
         }
-        lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
+        lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
         ResetPosition();
 
         //timerUp = false;
@@ -190,9 +190,9 @@ public class BallInfo : MonoBehaviour
         }
         if (gorillaToSwitch != null)
         {
-            gorillaToSwitch.GetComponent<Player>().characterType.Mutate();
+            gorillaToSwitch.GetComponent<Actor>().characterType.Mutate();
         }
-        lastThrowMonkey.GetComponent<Player>().characterType.Mutate();
+        lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
         ResetPosition();
         //timerUp = false;
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;

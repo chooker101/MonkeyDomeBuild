@@ -55,6 +55,7 @@ public class Actor : MonoBehaviour
 
     public Character characterType;
 
+	[SerializeField]
     private GameObject monkeyCrown;
 
     public BallInfo ballCanCatch;
@@ -86,7 +87,6 @@ public class Actor : MonoBehaviour
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
 
-        monkeyCrown = transform.Find("Crown").gameObject;
         monkeyCrown.SetActive(false);
 
         //rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();

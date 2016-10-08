@@ -188,8 +188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalNumberofPlayers: 0
-  NumberOfPlayersToBuild: 3
-  NumberOfBotsToBuild: 0
+  NumberOfPlayersToBuild: 2
+  NumberOfBotsToBuild: 1
   RandomGorilla: 0
   PlayerGorilla: -1
   gmPlayers:
@@ -208,7 +208,7 @@ MonoBehaviour:
   gmSpawnObject: {fileID: 0}
   gmButtonManager: {fileID: 0}
   gmPlayerPrefab: {fileID: 106386, guid: b2a9f252c215e8c48904586552452670, type: 2}
-  gmPlayerPrefabAI: {fileID: 0}
+  gmPlayerPrefabAI: {fileID: 106386, guid: 96bd6b7a652d68f4788e08e677d91f91, type: 2}
   gmBalls:
   - {fileID: 0}
   gmUIManager: {fileID: 0}
@@ -225,6 +225,7 @@ MonoBehaviour:
   gmShotClockManager: {fileID: 11433570}
   gmTrophyManager: {fileID: 11469230}
   gmAudienceManager: {fileID: 0}
+  gmLevelObjectScript: {fileID: 0}
   noGorilla: 1
 --- !u!114 &11458014
 MonoBehaviour:
@@ -286,7 +287,7 @@ Prefab:
   m_IsPrefabParent: 1
 --- !u!114 &404905926
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 197046}

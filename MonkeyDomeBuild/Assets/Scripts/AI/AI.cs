@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AI : Actor
 {
@@ -11,12 +12,31 @@ public class AI : Actor
         Move
     }
 
-    State currentState;
+	public GameObject tempTarg;
+
+	[SerializeField]
+	private Vector3 MoveTarget;
+
+	//private Vector3 ToTarget;
+
+	[SerializeField]
+	private Vector3 currEndTarg;
+
+	private float currClosestDist;
+	private float maxJump;
+
+	State currentState;
 
 	// Use this for initialization
 	void Start ()
 	{
         currentState = State.Idle;
+		
+		cache_tf = GetComponent<Transform>();
+		cache_rb = GetComponent<Rigidbody2D>();
+		tempTarg = GameObject.FindGameObjectWithTag("TempTarget");
+
+		CalculateMaxJump();
 	}
 	
 	// Update is called once per frame
@@ -52,10 +72,9 @@ public class AI : Actor
     {
         if(GameManager.Instance.gmUIManager.matchTime < GameManager.Instance.gmUIManager.startMatchTime)
         {
-            return State.Move;
-        }
-
-        return State.Idle;
+			return State.Move;
+		}
+		return State.Move;
     }
 
     State ExecuteCatch()
@@ -72,15 +91,63 @@ public class AI : Actor
 
     State ExecuteMove()
     {
-        if(characterType is Monkey) //TODO Monkey Move Logic
+		UpdateTarget();
+		if (characterType is Monkey) //TODO Monkey Move Logic
         {
-
+			if(MoveTarget.y > cache_tf.position.y)
+			{
+				FindNearestPlatform(MoveTarget);
+				if (MoveTarget.y > currEndTarg.y)
+				{
+					while (currEndTarg.y > cache_tf.position.y + maxJump)
+					{
+						FindNearestPlatform(currEndTarg);
+					}
+					GameManager.Instance.gmInputs[playerIndex].mXY.x = (currEndTarg - cache_tf.position).normalized.x;
+				}
+			}
         }
         else //TODO Gorilla Move Logic
         {
 
         }
-
         return currentState;
     }
+
+	private void UpdateTarget()
+	{
+		MoveTarget = tempTarg.transform.position;
+	}
+
+	private void FindNearestPlatform(Vector3 FinalPos)
+	{
+		Vector3 position;
+		currClosestDist = 0.0f;
+		float dist;
+		for(float i = 0.0f; i <= 1.0f; i += 0.05f)
+		{
+			position = Vector3.Lerp(cache_tf.position, FinalPos, i);
+			foreach(var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
+			{
+				dist = (T.transform.position - position).magnitude;
+				if(currClosestDist == 0.0f)
+				{
+					currClosestDist = dist;
+					currEndTarg = T.transform.position;
+				}
+				else if(dist < currClosestDist && T.transform.position != FinalPos)
+				{
+					currClosestDist = dist;
+					currEndTarg = T.transform.position;
+				}
+			}
+		}
+	}
+
+	private void CalculateMaxJump()
+	{
+		float g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
+		float iv = characterType.jumpforce / cache_rb.mass;
+		maxJump = (iv * iv) / (2 * g);
+	}
 }

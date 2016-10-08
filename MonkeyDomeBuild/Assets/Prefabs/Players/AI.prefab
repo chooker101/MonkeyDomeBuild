@@ -295,6 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bfcca580fe2a8418e13edf456d47d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayOfThrowBall: 0
   playerIndex: 0
   isPlayer: 0
   movement: {x: 0, y: 0}
@@ -315,9 +316,13 @@ MonoBehaviour:
   maxChargeCount: 10
   chargePerSec: 10
   chargeThrowRequireCount: 5
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  animator: {fileID: 9540896}
+  spriteRenderer: {fileID: 21230074}
+  monkeyCrown: {fileID: 157230}
   ballCanCatch: {fileID: 0}
+  tempTarg: {fileID: 0}
+  MoveTarget: {x: 0, y: 0, z: 0}
+  currEndTarg: {x: 0, y: 0, z: 0}
 --- !u!114 &11469020
 MonoBehaviour:
   m_ObjectHideFlags: 1
