@@ -54,22 +54,28 @@ public class Actor : MonoBehaviour
     protected Transform cache_tf;
 
     public Character characterType;
-
 	[SerializeField]
     private GameObject monkeyCrown;
-
     public BallInfo ballCanCatch;
+    protected GameObject shotPointer;
+    protected Color col;
 
-    private bool beingSmack = false;
+    protected bool beingSmack = false;
 
-    bool isDashing = false;
-    float dashingCount = 0;
-    float dashingTime = 0.6f;
-    float dashForce = 40f;
-    float smackImpulse = 15f;
-    float disableInputTime = .5f;
+    protected bool isDashing = false;
+    protected float dashingCount = 0;
+    protected float dashingTime = 0.6f;
+    protected float dashForce = 40f;
+    protected float smackImpulse = 15f;
+    protected float disableInputTime = .5f;
 
-    bool isCharging = false;
+    protected bool isCharging = false;
+    protected bool canBeInSlowMotion = true;
+    protected bool cantHoldAnymore = false;
+    protected bool startSlowMo = false;
+    protected float slowMoTime = 2f;
+    protected float slowMoTimeScale = 0.2f;
+    protected float slowMoCount = 0;
 
     public bool DisableInput
     {
@@ -89,8 +95,10 @@ public class Actor : MonoBehaviour
 
         monkeyCrown.SetActive(false);
 
+        shotPointer = transform.Find("Canvas").transform.Find("PointerPivot").gameObject;
+        col = shotPointer.GetComponentInChildren<Image>().color;
         //rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-	}
+    }
 
 	void Update()
 	{
@@ -172,19 +180,7 @@ public class Actor : MonoBehaviour
                     }
                     else
                     {
-                        if (isCharging && wayOfThrowBall == WayOfThrowBall.Test1)
-                        {
-                            if (!GetComponent<Rigidbody2D>().isKinematic)
-                                GetComponent<Rigidbody2D>().isKinematic = true;
-                            movement.x = 0;
-                            movement.y = 0;
-                        }
-                        else
-                        {
-                            if (GetComponent<Rigidbody2D>().isKinematic)
-                                GetComponent<Rigidbody2D>().isKinematic = false;
-                            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-                        }
+                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
                     }
                 }
                 else
@@ -203,34 +199,45 @@ public class Actor : MonoBehaviour
 		}
 		else
 		{
-            if (isCharging && wayOfThrowBall == WayOfThrowBall.Test1)
-            {
-                movement.x = 0;
-                movement.y = 0;
-            }
-            else
-            {
-                movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-                movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
-            }
+            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+            movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
         }
         if(!beingSmack)
         {
             cache_rb.velocity = movement;
         }
-
-
 	}
     public void ThrowCheck()
     {
         if (canCharge)
         {
-            if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall)
+            if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
+                if (Time.timeScale == 1f && canBeInSlowMotion)
+                {
+                    canBeInSlowMotion = false;
+                    startSlowMo = true;
+                }
+                if (startSlowMo)
+                {
+                    slowMoCount += Time.unscaledDeltaTime;
+                    if (slowMoCount < slowMoTime * 0.8f)
+                    {
+                        Time.timeScale = Mathf.Lerp(Time.timeScale, slowMoTimeScale, Time.unscaledDeltaTime * 5f);
+                    }
+                    else if(slowMoCount < slowMoTime)
+                    {
+                        Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.unscaledDeltaTime * 5f);
+                    }
+                    else
+                    {
+                        cantHoldAnymore = true;
+                    }
+                }
                 if (holdingCatchCount < maxChargeCount)
                 {
-                    holdingCatchCount += chargePerSec * Time.deltaTime;
+                    holdingCatchCount += chargePerSec * Time.unscaledDeltaTime;
                 }
                 else
                 {
@@ -239,7 +246,8 @@ public class Actor : MonoBehaviour
             }
             else
             {
-                isCharging = false;
+                cantHoldAnymore = false;
+                ResetTimeScale();
                 if (holdingCatchCount > 0f)
                 {
                     float tempThrowForce = characterType.throwForce;
@@ -276,6 +284,7 @@ public class Actor : MonoBehaviour
         ballHolding.GetComponent<BallInfo>().Reset();
         ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
         ballHolding = null;
+        isCharging = false;
     }
     public bool RayCast(int direction)
     {
@@ -338,7 +347,31 @@ public class Actor : MonoBehaviour
     }
     public void Aim()
     {
-        Debug.DrawLine(GetComponent<Rigidbody2D>().position, new Vector2(GetComponent<Rigidbody2D>().position.x + GameManager.Instance.gmInputs[playerIndex].mXY.x * 2, GetComponent<Rigidbody2D>().position.y + GameManager.Instance.gmInputs[playerIndex].mXY.y * 2));
+        if (isCharging)
+        {
+            col.a = Mathf.Lerp(shotPointer.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+            shotPointer.GetComponentInChildren<Image>().color = col;
+            if (GameManager.Instance.gmInputs[playerIndex].mXY.x != 0 || GameManager.Instance.gmInputs[playerIndex].mXY.y != 0)
+            {
+                Vector3 dir = new Vector3(GameManager.Instance.gmInputs[playerIndex].mXY.x, GameManager.Instance.gmInputs[playerIndex].mXY.y, 0);
+                Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
+                if (targetAng.eulerAngles.y == 180f)
+                {
+                    shotPointer.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(shotPointer.transform.localEulerAngles.z, targetAng.eulerAngles.y, 20 * Time.unscaledDeltaTime));
+                }
+                else
+                {
+                    shotPointer.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(shotPointer.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
+                }
+            }
+        }
+        else
+        {
+            col.a = Mathf.Lerp(shotPointer.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+            shotPointer.GetComponentInChildren<Image>().color = col;
+        }
+
+
     }
     public bool IsHoldingBall
     {
@@ -448,7 +481,6 @@ public class Actor : MonoBehaviour
     {
         DisableInput = false;
     }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Vine") && !canClimb)
@@ -493,7 +525,6 @@ public class Actor : MonoBehaviour
             }
         }
     }
-
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
@@ -516,29 +547,24 @@ public class Actor : MonoBehaviour
                 cache_rb.gravityScale = 2;
         }
     }
-
     void OnTriggerStay2D(Collider2D other)
     {
         OnTriggerEnter2D(other);
     }
-
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
             IncrementCharacterInc(incAmount);
     }
-
     public void ReactionToPoop(float incAmount)
     {
         if (Mathf.Abs(characterInc) < maxminInc)
             IncrementCharacterInc(-incAmount);
     }
-
     protected void IncrementCharacterInc(float inc)
     {
         characterInc += inc;
     }
-
     void CheckLeader()
     {
         if (GameManager.Instance.gmScoringManager.p1Score == GameManager.Instance.gmScoringManager.p2Score && GameManager.Instance.gmScoringManager.p2Score == GameManager.Instance.gmScoringManager.p3Score)
@@ -628,5 +654,12 @@ public class Actor : MonoBehaviour
             preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
             Debug.Log("Actor: gorillaSmash = true");
         }
+    }
+    public void ResetTimeScale()
+    {
+        Time.timeScale = 1;
+        startSlowMo = false;
+        canBeInSlowMotion = true;
+        slowMoCount = 0;
     }
 }

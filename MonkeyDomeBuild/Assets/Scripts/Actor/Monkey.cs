@@ -73,9 +73,7 @@ public class Monkey : Character
 		
 		if (cacheplayer.haveBall && cacheplayer.ballHolding != null)
 		{
-			cacheplayer.haveBall = false;
-			cacheplayer.ballHolding.GetComponent<BallInfo>().Reset();
-			cacheplayer.ballHolding = null;
+            cacheplayer.ReleaseBall();
 		}
 		cacheplayer.characterType = new Gorilla(myPlayer);
 		cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
