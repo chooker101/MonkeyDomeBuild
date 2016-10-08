@@ -15,6 +15,7 @@ public class AI : Actor
 	private BoxCollider2D myCollider;
 
 	public GameObject tempTarg;
+	public float approxJumpDist;
 
 	[SerializeField]
 	private Vector3 MoveTarget;
@@ -24,8 +25,13 @@ public class AI : Actor
 	[SerializeField]
 	private Vector3 currEndTarg;
 
+	private Vector3 currEndTargBound;
+
 	private float currClosestDist;
 	private float maxJump;
+	private float jumpVelocity;
+	private float xInput;
+	private bool canJump;
 
 	State currentState;
 
@@ -38,6 +44,7 @@ public class AI : Actor
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
 		tempTarg = GameObject.FindGameObjectWithTag("TempTarget");
+		canJump = true;
 
 		CalculateMaxJump();
 	}
@@ -110,9 +117,15 @@ public class AI : Actor
     State ExecuteMove()
     {
 		UpdateTarget();
+
+		if(IsInAir && !canJump)
+		{
+			GameManager.Instance.gmInputs[playerIndex].mJump = false;
+		}
+
 		if (characterType is Monkey) //TODO Monkey Move Logic
         {
-			if(MoveTarget.y > cache_tf.position.y)
+			if (MoveTarget.y > cache_tf.position.y)
 			{
 				FindNearestPlatform(MoveTarget);
 				if (MoveTarget.y > currEndTarg.y)
@@ -121,10 +134,40 @@ public class AI : Actor
 					{
 						FindNearestPlatform(currEndTarg);
 					}
-					GameManager.Instance.gmInputs[playerIndex].mXY.x = (currEndTarg - cache_tf.position).normalized.x;
+				}
+				currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+
+				if (currEndTargBound.x <= cache_tf.transform.position.x - approxJumpDist)
+				{
+					xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+					if ((xInput <= 1.0f && xInput >= -1.0f) && canJump)
+					{
+						GameManager.Instance.gmInputs[playerIndex].mJump = true;
+						canJump = false;
+						StartCoroutine(JumpWait());
+					}
+					else
+					{
+						xInput = (currEndTarg - cache_tf.position).normalized.x;
+					}
+				}
+				else if (currEndTargBound.x >= cache_tf.transform.position.x + approxJumpDist)
+				{
+					xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+					if ((xInput <= 1.0f && xInput >= -1.0f) && canJump)
+					{
+						GameManager.Instance.gmInputs[playerIndex].mJump = true;
+						canJump = false;
+						StartCoroutine(JumpWait());
+					}
+					else
+					{
+						xInput = (currEndTarg - cache_tf.position).normalized.x;
+					}
 				}
 			}
-        }
+			GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
+		}
         else //TODO Gorilla Move Logic
         {
 
@@ -165,10 +208,54 @@ public class AI : Actor
 		}
 	}
 
+	private Vector3 FindEdgeOfPlatform(Vector3 platPos)
+	{
+		Vector3 result = Vector3.zero;
+		foreach (var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
+		{
+			if(platPos == T.transform.position)
+			{
+				if (cache_tf.position.x < T.transform.position.x)
+				{
+					result = T.transform.position;
+					result.x -= (T.transform.lossyScale.x * 0.5f);
+				}
+				else
+				{
+					result = T.transform.position;
+					result.x += (T.transform.lossyScale.x * 0.5f);
+				}
+			}
+		}
+		return result;
+	}
+
+	private float CalculateJump(Vector3 jumpLanding,bool dir) // right is true
+	{
+		float dx;
+		float t;
+		if(dir)
+		{
+			dx = (jumpLanding.x + 1.0f) - cache_tf.position.x;
+		}
+		else
+		{
+			dx = (jumpLanding.x - 1.0f) - cache_tf.position.x;
+		}
+		t = jumpVelocity / (cache_rb.gravityScale * Physics2D.gravity.magnitude);
+		return dx / t;
+	}
+
 	private void CalculateMaxJump()
 	{
 		float g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
-		float iv = characterType.jumpforce / cache_rb.mass;
-		maxJump = (iv * iv) / (2 * g);
+		jumpVelocity = characterType.jumpforce / cache_rb.mass;
+		maxJump = (jumpVelocity * jumpVelocity) / (2 * g);
+	}
+
+	IEnumerator JumpWait()
+	{
+		yield return new WaitForSeconds(0.5f);
+		canJump = true;
 	}
 }
