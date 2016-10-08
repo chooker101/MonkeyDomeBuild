@@ -3661,6 +3661,12 @@ RectTransform:
   m_AnchoredPosition: {x: 100, y: 15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1882237406 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11418578, guid: c88fda59235094c4c95a3bd2c0339bad,
+    type: 2}
+  m_PrefabInternal: {fileID: 164810628}
+  m_Script: {fileID: 11500000, guid: e54dd057461ed534c8535c76d3462e2e, type: 3}
 --- !u!1 &1894511564
 GameObject:
   m_ObjectHideFlags: 0
@@ -4040,6 +4046,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+      propertyPath: gmSpawnManager
+      value: 
+      objectReference: {fileID: 1882237406}
     - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
       propertyPath: gmBalls.Array.data[0]
       value: 

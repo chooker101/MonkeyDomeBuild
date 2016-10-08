@@ -106,6 +106,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -248,11 +249,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mScale: {x: 1, y: 1, z: 1}
   mSpeed: 18
-  mJumpForce: 1500
+  mJumpForce: 25
   mThrowForce: 30
   gScale: {x: 1.5, y: 1.5, z: 1.5}
   gSpeed: 15
-  gJumpForce: 1500
+  gJumpForce: 25
   gThrowForce: 10
   gChargeSpeed: 50
 --- !u!1001 &100100000

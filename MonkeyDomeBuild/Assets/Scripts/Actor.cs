@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
+
 public enum WayOfThrowBall
 {
     OldWay,
@@ -57,10 +59,11 @@ public class Actor : MonoBehaviour
 	[SerializeField]
     private GameObject monkeyCrown;
     public BallInfo ballCanCatch;
-    protected GameObject shotPointer;
-    protected Color col;
+	[SerializeField]
+	protected GameObject shotPointer;
+	protected Color col;
 
-    protected bool beingSmack = false;
+	protected bool beingSmack = false;
 
     protected bool isDashing = false;
     protected float dashingCount = 0;
@@ -95,14 +98,12 @@ public class Actor : MonoBehaviour
 
         monkeyCrown.SetActive(false);
 
-        shotPointer = transform.Find("Canvas").transform.Find("PointerPivot").gameObject;
+		
         col = shotPointer.GetComponentInChildren<Image>().color;
-        //rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
     }
 
 	void Update()
 	{
-		CheckInputs();
 		//JumpCheck();
 		if (GameManager.Instance.gmInputs[playerIndex].mJump)
 		{
@@ -122,19 +123,19 @@ public class Actor : MonoBehaviour
 		characterType.CHFixedUpdate();
 	}
 
-	public virtual void CheckInputs() { }
+	//public virtual void CheckInputs() { }
 
 
     public bool IsInAir
     {
         get { return isinair; }
     }
-	void Jumping()
+	protected void Jumping()
 	{
 		if (!isinair)
 		{
 			isinair = true;
-			cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+			cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
             if (AudioEffectManager.Instance != null)
             {
                 AudioEffectManager.Instance.PlayMonkeyJumpSE();
@@ -150,7 +151,7 @@ public class Actor : MonoBehaviour
 
                 if (GameManager.Instance.gmInputs[playerIndex].mXY.y >= 0)
                 {
-                    cache_rb.AddForce(Vector2.up * characterType.jumpforce);
+                    cache_rb.AddForce(Vector2.up * characterType.jumpforce, ForceMode2D.Impulse);
                     if (AudioEffectManager.Instance != null)
                     {
                         AudioEffectManager.Instance.PlayMonkeyJumpSE();
@@ -165,7 +166,7 @@ public class Actor : MonoBehaviour
             }
 		}
 	}
-	void MovementVelocity()
+	protected void MovementVelocity()
 	{
         movement = cache_rb.velocity;
         if (!isClimbing)
@@ -207,7 +208,7 @@ public class Actor : MonoBehaviour
             cache_rb.velocity = movement;
         }
 	}
-    public void ThrowCheck()
+	public void ThrowCheck()
     {
         if (canCharge)
         {
@@ -345,12 +346,13 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
+
     public void Aim()
     {
         if (isCharging)
         {
             col.a = Mathf.Lerp(shotPointer.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
-            shotPointer.GetComponentInChildren<Image>().color = col;
+			shotPointer.GetComponentInChildren<Image>().color = col;
             if (GameManager.Instance.gmInputs[playerIndex].mXY.x != 0 || GameManager.Instance.gmInputs[playerIndex].mXY.y != 0)
             {
                 Vector3 dir = new Vector3(GameManager.Instance.gmInputs[playerIndex].mXY.x, GameManager.Instance.gmInputs[playerIndex].mXY.y, 0);
@@ -565,7 +567,8 @@ public class Actor : MonoBehaviour
     {
         characterInc += inc;
     }
-    void CheckLeader()
+
+	protected void CheckLeader()
     {
         if (GameManager.Instance.gmScoringManager.p1Score == GameManager.Instance.gmScoringManager.p2Score && GameManager.Instance.gmScoringManager.p2Score == GameManager.Instance.gmScoringManager.p3Score)
         {
@@ -598,7 +601,7 @@ public class Actor : MonoBehaviour
             monkeyCrown.SetActive(false);
         }
     }
-    private void UpdateColour()
+	protected void UpdateColour()
     {
         for (int i = 0; i < GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
         {

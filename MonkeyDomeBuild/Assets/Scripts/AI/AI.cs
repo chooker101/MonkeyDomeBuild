@@ -12,6 +12,8 @@ public class AI : Actor
         Move
     }
 
+	private BoxCollider2D myCollider;
+
 	public GameObject tempTarg;
 
 	[SerializeField]
@@ -31,18 +33,34 @@ public class AI : Actor
 	void Start ()
 	{
         currentState = State.Idle;
-		
+
+		myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
 		tempTarg = GameObject.FindGameObjectWithTag("TempTarget");
 
 		CalculateMaxJump();
 	}
+
+	void Update()
+	{
+		if (GameManager.Instance.gmInputs[playerIndex].mJump)
+		{
+			Jumping();
+		}
+		Aim();
+		characterType.CHUpdate();
+		CheckLeader();
+		UpdateColour();
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-        ExecuteState();
+		ExecuteState();
+		MovementVelocity();
+		AnimationControl();
+		characterType.CHFixedUpdate();
 	}
 
     void ExecuteState()
@@ -99,7 +117,7 @@ public class AI : Actor
 				FindNearestPlatform(MoveTarget);
 				if (MoveTarget.y > currEndTarg.y)
 				{
-					while (currEndTarg.y > cache_tf.position.y + maxJump)
+					while (currEndTarg.y > cache_tf.position.y + maxJump - (myCollider.size.y - myCollider.offset.y))
 					{
 						FindNearestPlatform(currEndTarg);
 					}
@@ -129,16 +147,19 @@ public class AI : Actor
 			position = Vector3.Lerp(cache_tf.position, FinalPos, i);
 			foreach(var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
 			{
-				dist = (T.transform.position - position).magnitude;
-				if(currClosestDist == 0.0f)
+				if (T.transform.position != FinalPos)
 				{
-					currClosestDist = dist;
-					currEndTarg = T.transform.position;
-				}
-				else if(dist < currClosestDist && T.transform.position != FinalPos)
-				{
-					currClosestDist = dist;
-					currEndTarg = T.transform.position;
+					dist = (T.transform.position - position).magnitude;
+					if (currClosestDist == 0.0f)
+					{
+						currClosestDist = dist;
+						currEndTarg = T.transform.position;
+					}
+					else if (dist < currClosestDist)
+					{
+						currClosestDist = dist;
+						currEndTarg = T.transform.position;
+					}
 				}
 			}
 		}

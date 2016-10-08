@@ -195,7 +195,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 106386}
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1.5
+  m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2
   m_IsKinematic: 0
@@ -311,6 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3972ede853467ca46ba418f4071d0a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayOfThrowBall: 0
   playerIndex: 0
   isPlayer: 0
   movement: {x: 0, y: 0}
@@ -335,6 +336,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 21230074}
   monkeyCrown: {fileID: 157230}
   ballCanCatch: {fileID: 0}
+  shotPointer: {fileID: 145434}
 --- !u!114 &11454366
 MonoBehaviour:
   m_ObjectHideFlags: 1
