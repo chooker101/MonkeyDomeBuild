@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 public class Actor : MonoBehaviour
 {
     /*
@@ -33,9 +34,9 @@ public class Actor : MonoBehaviour
     public int stat_throw = 0;
     public int stat_ballGrab = 0;
 
-    private float maxminInc = 2f;
+    protected float maxminInc = 2f;
     public float characterInc = 0f;
-    private float incAmount = 0.5f;
+    protected float incAmount = 0.5f;
 
     public bool canCharge = false;
     public float holdingCatchCount = 0f;
@@ -48,27 +49,27 @@ public class Actor : MonoBehaviour
     protected Transform cache_tf;
 
     public Character characterType;
-
-    private GameObject monkeyCrown;
-
+    protected GameObject monkeyCrown;
     public BallInfo ballCanCatch;
+    protected GameObject shotPointer;
+    protected Color col;
 
-    private bool beingSmack = false;
+    protected bool beingSmack = false;
 
-    bool isDashing = false;
-    float dashingCount = 0;
-    float dashingTime = 0.6f;
-    float dashForce = 40f;
-    float smackImpulse = 15f;
-    float disableInputTime = .5f;
+    protected bool isDashing = false;
+    protected float dashingCount = 0;
+    protected float dashingTime = 0.6f;
+    protected float dashForce = 40f;
+    protected float smackImpulse = 15f;
+    protected float disableInputTime = .5f;
 
-    bool isCharging = false;
-    bool canBeInSlowMotion = true;
-    bool cantHoldAnymore = false;
-    bool startSlowMo = false;
-    float slowMoTime = 1.5f;
-    float slowMoTimeScale = 0.2f;
-    float slowMoCount = 0;
+    protected bool isCharging = false;
+    protected bool canBeInSlowMotion = true;
+    protected bool cantHoldAnymore = false;
+    protected bool startSlowMo = false;
+    protected float slowMoTime = 2f;
+    protected float slowMoTimeScale = 0.2f;
+    protected float slowMoCount = 0;
 
     public bool DisableInput
     {
@@ -89,8 +90,10 @@ public class Actor : MonoBehaviour
         monkeyCrown = transform.Find("Crown").gameObject;
         monkeyCrown.SetActive(false);
 
+        shotPointer = transform.Find("Canvas").transform.Find("PointerPivot").gameObject;
+        col = shotPointer.GetComponentInChildren<Image>().color;
         //rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-	}
+    }
 
 	void Update()
 	{
@@ -198,8 +201,6 @@ public class Actor : MonoBehaviour
         {
             cache_rb.velocity = movement;
         }
-
-
 	}
     public void ThrowCheck()
     {
@@ -240,7 +241,6 @@ public class Actor : MonoBehaviour
             }
             else
             {
-                isCharging = false;
                 cantHoldAnymore = false;
                 ResetTimeScale();
                 if (holdingCatchCount > 0f)
@@ -279,6 +279,7 @@ public class Actor : MonoBehaviour
         ballHolding.GetComponent<BallInfo>().Reset();
         ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
         ballHolding = null;
+        isCharging = false;
     }
     public bool RayCast(int direction)
     {
@@ -341,7 +342,31 @@ public class Actor : MonoBehaviour
     }
     public void Aim()
     {
-        Debug.DrawLine(GetComponent<Rigidbody2D>().position, new Vector2(GetComponent<Rigidbody2D>().position.x + GameManager.Instance.gmInputs[playerIndex].mXY.x * 2, GetComponent<Rigidbody2D>().position.y + GameManager.Instance.gmInputs[playerIndex].mXY.y * 2));
+        if (isCharging)
+        {
+            col.a = Mathf.Lerp(shotPointer.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+            shotPointer.GetComponentInChildren<Image>().color = col;
+            if (GameManager.Instance.gmInputs[playerIndex].mXY.x != 0 || GameManager.Instance.gmInputs[playerIndex].mXY.y != 0)
+            {
+                Vector3 dir = new Vector3(GameManager.Instance.gmInputs[playerIndex].mXY.x, GameManager.Instance.gmInputs[playerIndex].mXY.y, 0);
+                Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
+                if (targetAng.eulerAngles.y == 180f)
+                {
+                    shotPointer.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(shotPointer.transform.localEulerAngles.z, targetAng.eulerAngles.y, 20 * Time.unscaledDeltaTime));
+                }
+                else
+                {
+                    shotPointer.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(shotPointer.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
+                }
+            }
+        }
+        else
+        {
+            col.a = Mathf.Lerp(shotPointer.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+            shotPointer.GetComponentInChildren<Image>().color = col;
+        }
+
+
     }
     public bool IsHoldingBall
     {
