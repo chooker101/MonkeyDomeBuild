@@ -47,6 +47,7 @@ public class AI : Actor
 		canJump = true;
 
 		CalculateMaxJump();
+		UpdateTarget();
 	}
 
 	void Update()
@@ -116,31 +117,20 @@ public class AI : Actor
 
     State ExecuteMove()
     {
-		UpdateTarget();
 
-		if(IsInAir && !canJump)
+		if (IsInAir && !canJump)
 		{
 			GameManager.Instance.gmInputs[playerIndex].mJump = false;
 		}
 
 		if (characterType is Monkey) //TODO Monkey Move Logic
         {
-			if (MoveTarget.y > cache_tf.position.y)
+			if (currEndTarg.y > cache_tf.position.y - (myCollider.size.y - myCollider.offset.y) - 0.5f)
 			{
-				FindNearestPlatform(MoveTarget);
-				if (MoveTarget.y > currEndTarg.y)
-				{
-					while (currEndTarg.y > cache_tf.position.y + maxJump - (myCollider.size.y - myCollider.offset.y))
-					{
-						FindNearestPlatform(currEndTarg);
-					}
-				}
-				currEndTargBound = FindEdgeOfPlatform(currEndTarg);
-
-				if (currEndTargBound.x <= cache_tf.transform.position.x - approxJumpDist)
+				if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
 				{
 					xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
-					if ((xInput <= 1.0f && xInput >= -1.0f) && canJump)
+					if ((xInput <= 1.0f && xInput >= -1.0f) && canJump) //(xInput <= 1.0f && 
 					{
 						GameManager.Instance.gmInputs[playerIndex].mJump = true;
 						canJump = false;
@@ -151,7 +141,7 @@ public class AI : Actor
 						xInput = (currEndTarg - cache_tf.position).normalized.x;
 					}
 				}
-				else if (currEndTargBound.x >= cache_tf.transform.position.x + approxJumpDist)
+				else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
 				{
 					xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
 					if ((xInput <= 1.0f && xInput >= -1.0f) && canJump)
@@ -178,6 +168,19 @@ public class AI : Actor
 	private void UpdateTarget()
 	{
 		MoveTarget = tempTarg.transform.position;
+		if (!IsInAir)
+		{
+			FindNearestPlatform(MoveTarget);
+			if (MoveTarget.y > currEndTarg.y)
+			{
+				while (currEndTarg.y > (cache_tf.position.y + maxJump - (myCollider.size.y - myCollider.offset.y)))
+				{
+					FindNearestPlatform(currEndTarg);
+				}
+			}
+			currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+		}
+		StartCoroutine(TargetWait());
 	}
 
 	private void FindNearestPlatform(Vector3 FinalPos)
@@ -248,14 +251,22 @@ public class AI : Actor
 
 	private void CalculateMaxJump()
 	{
+		//float t;
 		float g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
 		jumpVelocity = characterType.jumpforce / cache_rb.mass;
 		maxJump = (jumpVelocity * jumpVelocity) / (2 * g);
+		approxJumpDist = (jumpVelocity / g) * characterType.movespeed; //NORMALIZED NEED ACTUAL MODIFIER
 	}
 
 	IEnumerator JumpWait()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.3f);
 		canJump = true;
+	}
+
+	IEnumerator TargetWait()
+	{
+		yield return new WaitForSeconds(1.0f);
+		UpdateTarget();
 	}
 }
