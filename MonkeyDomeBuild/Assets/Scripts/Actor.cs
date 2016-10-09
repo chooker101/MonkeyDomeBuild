@@ -3,12 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
-
-public enum WayOfThrowBall
-{
-    OldWay,
-    Test1
-}
 public class Actor : MonoBehaviour
 {
     /*
@@ -17,8 +11,6 @@ public class Actor : MonoBehaviour
      * - handle players' stats
      * - provide a key to accessing each player's stats 
      */
-
-    public WayOfThrowBall wayOfThrowBall = WayOfThrowBall.OldWay;
     public int playerIndex;
     public bool isPlayer;
 
