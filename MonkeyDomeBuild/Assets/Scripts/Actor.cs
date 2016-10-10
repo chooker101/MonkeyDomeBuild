@@ -472,10 +472,13 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToBanana(incAmount);
                 Destroy(other.gameObject);
-                //TODO add BananaCatchEvent logic
-                if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Bananas)
+                //Audience call for Bananas event
+                if (GameManager.Instance.gmAudienceManager.GetEventActive())
                 {
-
+                    if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Bananas)
+                    {
+                        GameManager.Instance.gmAudienceManager.BananaCaught(playerIndex);
+                    }
                 }
             }
         }
@@ -489,7 +492,9 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToPoop(incAmount);
                 Destroy(other.gameObject);
-                //TODO increase this monkeys audience opinion when hit by poop
+                //TODO add poop event logic
+                //Audience opinion increase when hit by poop
+                GameManager.Instance.gmAudienceManager.HitByPoop(playerIndex);
             }
         }
     }

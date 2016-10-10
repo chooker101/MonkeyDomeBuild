@@ -132,12 +132,14 @@ public class ScoringManager : MonoBehaviour
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
                 {
                     scoreGetThrower += longThrowScore;
+                    //TODO add in BouncePassEvent call here
                     //AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
                     //Debug.Log("long throw");
                 }
                 if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
                 {
                     scoreGetThrower += bounceScore;
+                    //TODO add in BouncePassEvent call here
                     //AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
                     //Debug.Log("bounce");
                 }
