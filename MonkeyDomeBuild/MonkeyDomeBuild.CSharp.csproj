@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\ParticlesManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PreGameTimer.cs" />
     <Compile Include="Assets\Scripts\Managers\RecordKeeper.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TrophyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
+    <Compile Include="Assets\Scripts\ParticleReset.cs" />
     <Compile Include="Assets\Scripts\Players\CallForBallReset.cs" />
     <Compile Include="Assets\Scripts\Players\GorillaCharge.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />

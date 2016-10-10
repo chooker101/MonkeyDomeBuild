@@ -127,11 +127,26 @@ public class Actor : MonoBehaviour
 		if (!isinair)
 		{
 			isinair = true;
-			cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
+            if (ParticlesManager.Instance != null)
+            {
+                GameObject tempParticle = null;
+                if (characterType is Monkey)
+                {
+                    tempParticle = ParticlesManager.Instance.JumpParticle;
+                }
+                if (tempParticle != null)
+                {
+                    tempParticle.SetActive(true);
+                    tempParticle.transform.position = transform.position;
+                }
+
+            }
+            cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
             if (AudioEffectManager.Instance != null)
             {
                 AudioEffectManager.Instance.PlayMonkeyJumpSE();
             }
+
 		}
 		else
 		{
@@ -278,6 +293,10 @@ public class Actor : MonoBehaviour
         ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
         ballHolding = null;
         isCharging = false;
+        if (Time.timeScale != 1)
+        {
+            Time.timeScale = 1;
+        }
     }
     public bool RayCast(int direction)
     {
@@ -338,7 +357,6 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
-
     public void Aim()
     {
         if (isCharging)
@@ -378,7 +396,10 @@ public class Actor : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
-            isinair = false;
+            if (other.collider.CompareTag("Floor"))
+            {
+                isinair = false;
+            }
             if (isDashing)
             {
                 dashingCount = 0;
@@ -477,9 +498,19 @@ public class Actor : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Vine") && !canClimb)
+        if (other.gameObject.CompareTag("Vine"))
         {
-            canClimb = true;
+            if (!canClimb)
+            {
+                canClimb = true;
+            }
+        }
+        else
+        {
+            if (canClimb)
+            {
+                canClimb = false;
+            }
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
@@ -487,6 +518,13 @@ public class Actor : MonoBehaviour
             if (!ballInRange)
             {
                 ballInRange = true;
+            }
+        }
+        else
+        {
+            if (ballInRange)
+            {
+                ballInRange = false;
             }
         }
         if (other.gameObject.CompareTag("Banana"))
