@@ -45,14 +45,14 @@ public class ColourChanger : MonoBehaviour
         if (other.CompareTag("Ball") )
         {
             objectHit = other.GetComponentInParent<BallInfo>().gameObject;
-            Debug.Log("Colour Target: Ball found");
+            //Debug.Log("Colour Target: Ball found");
             if(objectHit != null)
             {
                 materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
 
                 if (objectHit.GetComponent<BallInfo>().playerThrewLast == playerTargetNumber) // If the player who threw the ball is the one for this target
                 {
-                    Debug.Log("Colour Target: This is my player");
+                    //Debug.Log("Colour Target: This is my player");
                     isHit = true;
 
                     for (int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; i++)
@@ -61,14 +61,14 @@ public class ColourChanger : MonoBehaviour
                         {
 							GameManager.Instance.gmRecordKeeper.colourPlayers[i] = materialToApply;
 
-                            Debug.Log("Colour logged into RecordKeeper: " + i.ToString());
+                           //Debug.Log("Colour logged into RecordKeeper: " + i.ToString());
                             break;
                         }
                     }
                 }
                 else
                 {
-                    Debug.Log("Colour Target: Not my player!");
+                    //Debug.Log("Colour Target: Not my player!");
                 }
             }
         }
