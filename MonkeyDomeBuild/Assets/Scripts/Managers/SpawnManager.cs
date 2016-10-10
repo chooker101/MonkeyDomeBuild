@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour
 		{
 			if (GameManager.Instance.gmPlayers[j] != null)
 			{
-				GameManager.Instance.gmPlayers[j].GetComponent<Transform>().position = SpawnPoints[j].position;
+				GameManager.Instance.gmPlayers[j].transform.position = SpawnPoints[j].position;
 			}
 		}
 	}

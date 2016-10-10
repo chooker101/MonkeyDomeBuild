@@ -11,7 +11,7 @@ public class Character
 	public float movespeed;
 	public float chargespeed;
 	protected int myPlayer;
-	protected Player cacheplayer;
+	protected Actor cacheplayer;
 
 
 	public virtual void CHUpdate()

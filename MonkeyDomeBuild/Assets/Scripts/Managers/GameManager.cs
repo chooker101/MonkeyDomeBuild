@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     public ShotClockManager gmShotClockManager;
     public TrophyManager gmTrophyManager;
     public AudienceManager gmAudienceManager;
+	public LevelObjectScript gmLevelObjectScript;
 	public bool noGorilla = false;
 
 	private GameManager() { }

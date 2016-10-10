@@ -17,7 +17,7 @@ public class Gorilla : Character
 		jumpforce = GameManager.Instance.gmMovementManager.gJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.gSpeed;
 		chargespeed = GameManager.Instance.gmMovementManager.gChargeSpeed;
-		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
+		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Actor>();
         chargeUI = cacheplayer.gameObject.GetComponentInChildren<Canvas>().gameObject.GetComponent<GorillaCharge>();
         chargespeed = movespeed / 2;
         if (chargeUI != null)

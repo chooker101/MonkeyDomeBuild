@@ -12,7 +12,7 @@ public class Monkey : Character
 		jumpforce = GameManager.Instance.gmMovementManager.mJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.mSpeed;
 		chargespeed = 0.0f;
-		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Player>();
+		cacheplayer = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Actor>();
         callForBall = cacheplayer.gameObject.GetComponentInChildren<Canvas>().gameObject.GetComponent<CallForBallReset>();
         //callForBallImg.SetActive(false);
 	}
@@ -73,9 +73,7 @@ public class Monkey : Character
 		
 		if (cacheplayer.haveBall && cacheplayer.ballHolding != null)
 		{
-			cacheplayer.haveBall = false;
-			cacheplayer.ballHolding.GetComponent<BallInfo>().Reset();
-			cacheplayer.ballHolding = null;
+            cacheplayer.ReleaseBall();
 		}
 		cacheplayer.characterType = new Gorilla(myPlayer);
 		cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
