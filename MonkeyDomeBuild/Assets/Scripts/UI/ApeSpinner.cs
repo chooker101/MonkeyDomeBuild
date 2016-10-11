@@ -61,7 +61,7 @@ public class ApeSpinner : MonoBehaviour
             spinnerSpeed = 0;
 
             GameManager.Instance.gmRecordKeeper.playerGorilla = playerChosen-1;
-            GameManager.Instance.gmPlayers[playerChosen - 1].GetComponent<Player>().characterType.Mutate();
+            GameManager.Instance.gmPlayers[playerChosen - 1].GetComponent<Actor>().characterType.Mutate();
             //Debug.Log("ApeSpinner: Mutated player into Gorilla");
         }
     }

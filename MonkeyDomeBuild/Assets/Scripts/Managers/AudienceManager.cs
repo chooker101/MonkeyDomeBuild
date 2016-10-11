@@ -224,7 +224,7 @@ public class AudienceManager : MonoBehaviour
         {
             for(int i = 0; i < (int)cachedTotalNumPlayers; ++i)
             {
-                if(GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Monkey)
+                if(GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType is Monkey)
                 {
                     audPlayerOpinion[(PlayerNum)i] += targetUpScore;
                 }

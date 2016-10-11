@@ -376,14 +376,6 @@ Transform:
   - {fileID: 2032821403}
   m_Father: {fileID: 2121078749}
   m_RootOrder: 1
---- !u!4 &153569797 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 416408, guid: c88fda59235094c4c95a3bd2c0339bad, type: 2}
-  m_PrefabInternal: {fileID: 173683085}
---- !u!4 &167176653 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 440742, guid: c88fda59235094c4c95a3bd2c0339bad, type: 2}
-  m_PrefabInternal: {fileID: 173683085}
 --- !u!1001 &173683085
 Prefab:
   m_ObjectHideFlags: 0
@@ -1520,10 +1512,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1172946994 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 479306, guid: c88fda59235094c4c95a3bd2c0339bad, type: 2}
-  m_PrefabInternal: {fileID: 173683085}
 --- !u!1001 &1179418669
 Prefab:
   m_ObjectHideFlags: 0
@@ -1832,10 +1820,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e3383c19fa19684ca77e517b11909ac, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1402308588 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 466756, guid: c88fda59235094c4c95a3bd2c0339bad, type: 2}
-  m_PrefabInternal: {fileID: 173683085}
 --- !u!1001 &1441248561
 Prefab:
   m_ObjectHideFlags: 0
@@ -1894,10 +1878,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1624344224 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 418536, guid: c88fda59235094c4c95a3bd2c0339bad, type: 2}
-  m_PrefabInternal: {fileID: 173683085}
 --- !u!1 &1629670711
 GameObject:
   m_ObjectHideFlags: 0
@@ -2365,40 +2345,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 11404282, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: SpawnPoints.Array.data[0]
-      value: 
-      objectReference: {fileID: 1402308588}
-    - target: {fileID: 11404282, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: SpawnPoints.Array.data[1]
-      value: 
-      objectReference: {fileID: 1624344224}
-    - target: {fileID: 11404282, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: SpawnPoints.Array.data[2]
-      value: 
-      objectReference: {fileID: 167176653}
-    - target: {fileID: 11404282, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: SpawnPoints.Array.data[3]
-      value: 
-      objectReference: {fileID: 1172946994}
-    - target: {fileID: 11404282, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: SpawnPoints.Array.data[4]
-      value: 
-      objectReference: {fileID: 153569797}
-    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: PlayerGorilla
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: NumberOfPlayersToBuild
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: NumberOfBotsToBuild
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 11404282, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &2032821402
@@ -2512,6 +2459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4172d63a7dd5644429e501de111b885c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugStartMatch: 0
   timerText: {fileID: 968262714}
   gorillaSmashText: {fileID: 601984909}
   trophyRoomTimer: 10

@@ -50,9 +50,9 @@ public class UIManager : MonoBehaviour
 
                 for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
                 {
-                    if(GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType.GetType().ToString() == "Gorilla")
+                    if(GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType is Gorilla)
                     {
-                        GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType.Mutate();
+                        GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType.Mutate();
                         GameManager.Instance.gmRecordKeeper.playerGorilla = -1;
                     }
                 }
