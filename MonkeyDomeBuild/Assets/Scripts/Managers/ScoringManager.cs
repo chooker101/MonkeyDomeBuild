@@ -48,6 +48,7 @@ public class ScoringManager : MonoBehaviour
     void Start()
     {
         //_ball = FindObjectOfType<BallInfo>();
+        playerScores.Clear();
         playerScores.Add(WhichPlayer.Player1, 0);
         playerScores.Add(WhichPlayer.Player2, 0);
         playerScores.Add(WhichPlayer.Player3, 0);
