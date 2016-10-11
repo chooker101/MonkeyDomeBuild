@@ -30,8 +30,23 @@ public class Gorilla : Character
 		
 		CatchCheck();
 		StompCheck();
-		
-	}
+
+        if (GameManager.Instance.gmPlayerScripts[myPlayer].characterType is Gorilla)
+        {
+            if (cacheplayer.GetComponent<Transform>().localScale != GameManager.Instance.gmMovementManager.gScale)
+            {
+                cacheplayer.GetComponent<Transform>().localScale = GameManager.Instance.gmMovementManager.gScale;
+            }
+        }
+        else
+        {
+            if (cacheplayer.GetComponent<Transform>().localScale != GameManager.Instance.gmMovementManager.mScale)
+            {
+                cacheplayer.GetComponent<Transform>().localScale = GameManager.Instance.gmMovementManager.mScale;
+            }
+        }
+
+    }
 
 	public override void CHFixedUpdate()
 	{
@@ -53,6 +68,14 @@ public class Gorilla : Character
                         if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
                         {
                             GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);
+                            //On interception check for active audience interception event
+                            if (GameManager.Instance.gmAudienceManager.GetEventActive())
+                            { 
+                                if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Intercept)
+                                {
+                                    GameManager.Instance.gmAudienceManager.AudGorillaIntercepted(GameManager.Instance.gmPlayers[myPlayer]);
+                                }
+                            }
                         }
                         cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
                         cacheplayer.stat_ballGrab++;
@@ -65,7 +88,7 @@ public class Gorilla : Character
 	public override void Mutate()
 	{
 		cacheplayer.characterType = new Monkey(myPlayer);
-		cacheplayer.GetComponent<Transform>().localScale = monkeySize;
+		//cacheplayer.GetComponent<Transform>().localScale = monkeySize;
 
 		/*
 		GameObject tempMonkey = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);

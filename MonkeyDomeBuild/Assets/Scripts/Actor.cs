@@ -72,6 +72,8 @@ public class Actor : MonoBehaviour
     protected float slowMoTimeScale = 0.2f;
     protected float slowMoCount = 0;
 
+    public string cType = "";
+
     public bool DisableInput
     {
         get { return beingSmack; }
@@ -96,7 +98,8 @@ public class Actor : MonoBehaviour
 
 	void Update()
 	{
-		//JumpCheck();
+        //JumpCheck();
+        cType = characterType.ToString();
 		if (GameManager.Instance.gmInputs[playerIndex].mJump)
 		{
 			Jumping();
@@ -127,11 +130,26 @@ public class Actor : MonoBehaviour
 		if (!isinair)
 		{
 			isinair = true;
-			cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
+            if (ParticlesManager.Instance != null)
+            {
+                GameObject tempParticle = null;
+                if (characterType is Monkey)
+                {
+                    tempParticle = ParticlesManager.Instance.JumpParticle;
+                }
+                if (tempParticle != null)
+                {
+                    tempParticle.SetActive(true);
+                    tempParticle.transform.position = transform.position;
+                }
+
+            }
+            cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
             if (AudioEffectManager.Instance != null)
             {
                 AudioEffectManager.Instance.PlayMonkeyJumpSE();
             }
+
 		}
 		else
 		{
@@ -278,6 +296,10 @@ public class Actor : MonoBehaviour
         ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
         ballHolding = null;
         isCharging = false;
+        if (Time.timeScale != 1)
+        {
+            Time.timeScale = 1;
+        }
     }
     public bool RayCast(int direction)
     {
@@ -338,7 +360,6 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
-
     public void Aim()
     {
         if (isCharging)
@@ -378,7 +399,10 @@ public class Actor : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
-            isinair = false;
+            if (other.collider.CompareTag("Floor"))
+            {
+                isinair = false;
+            }
             if (isDashing)
             {
                 dashingCount = 0;
@@ -444,9 +468,9 @@ public class Actor : MonoBehaviour
     {
         monkey.GetComponent<Actor>().DisableInput = true;
         monkey.GetComponent<Actor>().InvokeEnableInput();
-		if (monkey.GetComponent<Actor> ().IsHoldingBall) 
+		if (monkey.GetComponent<Actor>().IsHoldingBall) 
 		{
-			monkey.GetComponent<Actor> ().ReleaseBall ();
+			monkey.GetComponent<Actor>().ReleaseBall();
 		}
         Vector2 dir = -1*(transform.position - monkey.transform.position).normalized;
         if (!isinair)
@@ -477,9 +501,12 @@ public class Actor : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Vine") && !canClimb)
+        if (other.gameObject.CompareTag("Vine"))
         {
-            canClimb = true;
+            if (!canClimb)
+            {
+                canClimb = true;
+            }
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
@@ -487,6 +514,13 @@ public class Actor : MonoBehaviour
             if (!ballInRange)
             {
                 ballInRange = true;
+            }
+        }
+        else
+        {
+            if (ballInRange)
+            {
+                ballInRange = false;
             }
         }
         if (other.gameObject.CompareTag("Banana"))
@@ -498,10 +532,13 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToBanana(incAmount);
                 Destroy(other.gameObject);
-                //TODO add BananaCatchEvent logic
-                if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Bananas)
+                //Audience call for Bananas event
+                if (GameManager.Instance.gmAudienceManager.GetEventActive())
                 {
-
+                    if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Bananas)
+                    {
+                        GameManager.Instance.gmAudienceManager.BananaCaught(playerIndex);
+                    }
                 }
             }
         }
@@ -515,7 +552,9 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToPoop(incAmount);
                 Destroy(other.gameObject);
-                //TODO increase this monkeys audience opinion when hit by poop
+                //TODO add poop event logic
+                //Audience opinion increase when hit by poop
+                GameManager.Instance.gmAudienceManager.HitByPoop(playerIndex);
             }
         }
     }

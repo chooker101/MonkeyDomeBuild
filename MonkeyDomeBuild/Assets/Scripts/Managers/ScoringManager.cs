@@ -48,6 +48,7 @@ public class ScoringManager : MonoBehaviour
     void Start()
     {
         //_ball = FindObjectOfType<BallInfo>();
+        playerScores.Clear();
         playerScores.Add(WhichPlayer.Player1, 0);
         playerScores.Add(WhichPlayer.Player2, 0);
         playerScores.Add(WhichPlayer.Player3, 0);
@@ -110,7 +111,7 @@ public class ScoringManager : MonoBehaviour
         }
 
     }
-    public void PassingScore(GameObject thrower, GameObject catcher, float distanceTravel,float travelTime,bool perfectCatch, int numberOfBounce)
+    public void PassingScore(GameObject thrower, GameObject catcher, float distanceTravel, float travelTime, bool perfectCatch, int numberOfBounce)
     {
         int scoreGetThrower = 0;
         int scoreGetCatcher = 0;
@@ -126,19 +127,25 @@ public class ScoringManager : MonoBehaviour
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
                 {
                     scoreGetThrower += longThrowScore;
+                    //TODO add in BouncePassEvent call here
+                    //AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
+                    //Debug.Log("long throw");
+                    if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
+                    {
+                        scoreGetThrower += bounceScore;
+                        //TODO add in BouncePassEvent call here
+                        //AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
+                        //Debug.Log("bounce");
+                    }
+                    if (catcher.GetComponent<Actor>().IsInAir)
+                    {
+                        scoreGetCatcher += catchInAirScore;
+                    }
+                    FindObjectOfType<ScoreVisualizer>().UpdateScore(thrower.GetComponent<Actor>().playerIndex, GetScore(thrower.GetComponent<Actor>().playerIndex), scoreGetThrower, "Successful Throw");
+                    FindObjectOfType<ScoreVisualizer>().UpdateScore(catcher.GetComponent<Actor>().playerIndex, GetScore(catcher.GetComponent<Actor>().playerIndex), scoreGetCatcher, "Successful Catch");
+                    AddScore(thrower.GetComponent<Actor>().playerIndex, scoreGetThrower);
+                    AddScore(catcher.GetComponent<Actor>().playerIndex, scoreGetCatcher);
                 }
-                if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
-                {
-                    scoreGetThrower += bounceScore;
-                }
-                if (catcher.GetComponent<Actor>().IsInAir)
-                {
-                    scoreGetCatcher += catchInAirScore;
-                }
-                FindObjectOfType<ScoreVisualizer>().UpdateScore(thrower.GetComponent<Actor>().playerIndex, GetScore(thrower.GetComponent<Actor>().playerIndex), scoreGetThrower, "Successful Throw");
-                FindObjectOfType<ScoreVisualizer>().UpdateScore(catcher.GetComponent<Actor>().playerIndex, GetScore(catcher.GetComponent<Actor>().playerIndex), scoreGetCatcher, "Successful Catch");
-                AddScore(thrower.GetComponent<Actor>().playerIndex, scoreGetThrower);
-                AddScore(catcher.GetComponent<Actor>().playerIndex, scoreGetCatcher);
             }
         }
     }

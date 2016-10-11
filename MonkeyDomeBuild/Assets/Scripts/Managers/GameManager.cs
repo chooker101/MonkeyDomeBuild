@@ -62,18 +62,18 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
-		if (s_Instance != this)
-		{
-			Destroy(this.gameObject);
-		}
-		else
-		{
-			DontDestroyOnLoad(this.gameObject);
-		}
-		TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
+        if (s_Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(this.gameObject);
+            TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
+            CreateInputs();
+            CreatePlayers();
+        }
 
-		CreateInputs();
-		CreatePlayers();
 	}
 
 	void Update()
@@ -170,14 +170,15 @@ public class GameManager : MonoBehaviour
 	{
 		if (TotalNumberofPlayers > 0)
 		{
-                if(Instance.gmRecordKeeper != null && Instance.gmRecordKeeper.playerGorilla >= 0) // Get gorilla from Record keeper first if possible.
+            //if(Instance.gmRecordKeeper != null && Instance.gmRecordKeeper.playerGorilla >= 0) // Get gorilla from Record keeper first if possible.
+            //{
+            //    PlayerGorilla = Instance.gmRecordKeeper.playerGorilla;
+            //    //Debug.Log("Game Manager: Gorilla chosen from Record Keeper: " + PlayerGorilla.ToString());
+            //}
+            //else 
+            if (RandomGorilla)
                 {
-                    PlayerGorilla = Instance.gmRecordKeeper.playerGorilla;
-                    Debug.Log("Game Manager: Gorilla chosen from Record Keeper: " + PlayerGorilla.ToString());
-                }
-                else if (RandomGorilla)
-                {
-                    Debug.Log("Game Manager: Gorilla chosen by RandomGorilla: " + PlayerGorilla.ToString());
+                    //Debug.Log("Game Manager: Gorilla chosen by RandomGorilla: " + PlayerGorilla.ToString());
                     PlayerGorilla = RandGor();
                 }
 
@@ -211,8 +212,8 @@ public class GameManager : MonoBehaviour
 					{
 						if (!noGorilla)
 						{
-							Instance.gmPlayers [i].GetComponent<Actor> ().characterType = new Gorilla (i);
-							Instance.gmPlayers [i].GetComponent<Transform> ().localScale = Instance.gmPlayers [i].GetComponent<Actor> ().characterType.gorillaSize;
+							Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Gorilla(i);
+							Instance.gmPlayers[i].GetComponent<Transform>().localScale = Instance.gmPlayers[i].GetComponent<Actor>().characterType.gorillaSize;
 						} else 
 						{
 							Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);

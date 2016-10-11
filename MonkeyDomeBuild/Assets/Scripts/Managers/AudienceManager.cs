@@ -22,7 +22,8 @@ public class AudienceManager : MonoBehaviour
         Bananas,
         KnockDown,
         Intercept,
-        BouncePass
+        BouncePass,
+        PoopStorm
     }
 
     public enum PlayerNum
@@ -43,7 +44,7 @@ public class AudienceManager : MonoBehaviour
     private PlayerNum currentEventLoser;
 
     public static Dictionary<PlayerNum, int> audPlayerOpinion = new Dictionary<PlayerNum, int>();
-    public static Dictionary<PlayerNum, int> eventGoalCompleted = new Dictionary<PlayerNum, int>();
+    public static Dictionary<PlayerNum, int> eventGoalSuccess = new Dictionary<PlayerNum, int>();
 
     private AudienceEvent randEvent;
     private AudienceEvent currentEvent;
@@ -53,7 +54,9 @@ public class AudienceManager : MonoBehaviour
     //specific event variables for event completion checks
     private int startingTargetTier;
     private int targetUpScore = 10; //TODO test score reward for targets upgraded and adjust
-
+    private int bananasCaughtScore = 1;
+    private int gorillaInterceptionScore = 15;
+    private int poopOpinionBoost = 5; //TODO test poop opinion boost and adjust
 
     void Start()
     {
@@ -61,7 +64,7 @@ public class AudienceManager : MonoBehaviour
         for (int i = 0; i < audPlayerOpinion.Count; ++i)
         {
             audPlayerOpinion.Add((PlayerNum)i, 0);
-            eventGoalCompleted.Add((PlayerNum)i, 0);
+            eventGoalSuccess.Add((PlayerNum)i, 0);
         }
         EventEnd();
         cachedTotalNumPlayers = GameManager.Instance.TotalNumberofPlayers;
@@ -103,6 +106,9 @@ public class AudienceManager : MonoBehaviour
                 case AudienceEvent.BouncePass:
                     BouncePassEvent();
                     break;
+                case AudienceEvent.PoopStorm:
+                    PoopStormEvent();
+                    break;
             }
         }
     }
@@ -116,9 +122,9 @@ public class AudienceManager : MonoBehaviour
     {
         currentEvent = RandomAudienceEvent();
 
-        for (int i = 0; i < eventGoalCompleted.Count; ++i)
+        for (int i = 0; i < eventGoalSuccess.Count; ++i)
         {
-            eventGoalCompleted[(PlayerNum)i] = 0;
+            eventGoalSuccess[(PlayerNum)i] = 0;
         }
 
         switch (currentEvent)
@@ -153,6 +159,10 @@ public class AudienceManager : MonoBehaviour
                 activeEventTitle = "One Bounce Pass!";
                 activeEventLifeTime = UnityEngine.Random.Range(3.0f, 5.0f);
                 break;
+            case AudienceEvent.PoopStorm:
+                activeEventTitle = "Poop Storm!";
+                activeEventLifeTime = UnityEngine.Random.Range(5.0f, 8.0f);
+                break;
         }
         eventActive = true;
         StartCoroutine(EventTimer());
@@ -168,6 +178,7 @@ public class AudienceManager : MonoBehaviour
     void EventEnd()
     {
         eventActive = false;
+        //TODO add the call to UpdateAudienceOpinion here
         newEventTimer = UnityEngine.Random.Range(8.0f, 12.0f);
     }
 
@@ -185,15 +196,17 @@ public class AudienceManager : MonoBehaviour
         {
             if (GameManager.Instance.gmInputs[i].mJump)
             {
-                ++eventGoalCompleted[(PlayerNum)i];
+                ++eventGoalSuccess[(PlayerNum)i];
             }
         }
 
+        //TODO move this to an UpdateAudienceOpinion section so that it will actually get called
         if (!eventActive)
         {
             for(int i = 0; i < (int)cachedTotalNumPlayers; ++i)
             {
-                audPlayerOpinion[(PlayerNum)i] += (int)(0.5 * eventGoalCompleted[(PlayerNum)i]);
+                audPlayerOpinion[(PlayerNum)i] += (int)(0.5 * eventGoalSuccess[(PlayerNum)i]);
+                eventGoalSuccess[(PlayerNum)i] = 0;
             }
             EventEnd();
         }
@@ -211,7 +224,7 @@ public class AudienceManager : MonoBehaviour
         {
             for(int i = 0; i < (int)cachedTotalNumPlayers; ++i)
             {
-                if(GameManager.Instance.gmPlayers[i].GetComponent<Player>().characterType is Monkey)
+                if(GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType is Monkey)
                 {
                     audPlayerOpinion[(PlayerNum)i] += targetUpScore;
                 }
@@ -227,13 +240,24 @@ public class AudienceManager : MonoBehaviour
 
     void BuzzerBeaterEvent()
     {
-        
+        //TODO add audeience throwing bananas to successful player during event
     }
 
     void BananaCatchEvent()
     {
-        //banana catch is handled in Actor
-        //if this event is active the count will be increased there
+        
+    }
+
+    public void BananaCaught(int pIndex)
+    {
+        PlayerNum pNum = (PlayerNum)pIndex;
+        ++eventGoalSuccess[pNum];
+    }
+
+    public void HitByPoop(int pIndex)
+    {
+        PlayerNum pNum = (PlayerNum)pIndex;
+        audPlayerOpinion[pNum] += poopOpinionBoost;
     }
 
     void KnockDownMonkeysEvent()
@@ -243,10 +267,21 @@ public class AudienceManager : MonoBehaviour
 
     void GorillaInterceptEvent()
     {
+        //TODO audience throws bananas at successful player after switch
+    }
 
+    public void AudGorillaIntercepted(GameObject plyr)
+    {
+        PlayerNum pNum = (PlayerNum)plyr.GetComponent<Actor>().playerIndex;
+        audPlayerOpinion[pNum] += gorillaInterceptionScore;
     }
 
     void BouncePassEvent()
+    {
+        //TODO add audience throwing bananas to successful player during event
+    }
+
+    void PoopStormEvent()
     {
 
     }
@@ -254,6 +289,11 @@ public class AudienceManager : MonoBehaviour
     public AudienceEvent GetCurrentEvent()
     {
         return currentEvent;
+    }
+
+    public bool GetEventActive()
+    {
+        return eventActive;
     }
 
 }

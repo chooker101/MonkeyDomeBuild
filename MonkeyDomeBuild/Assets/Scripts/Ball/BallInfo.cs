@@ -145,7 +145,8 @@ public class BallInfo : MonoBehaviour
 
     public void Change(int index)
     {
-        if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID()) PickRandomVictim();
+        if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID())
+            PickRandomVictim();
         float longestTimeGorilla = 0f;
         //count = 0;
         GameManager.Instance.gmShotClockManager.ResetShotClock();

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PreGameTimer : MonoBehaviour
 {
-
+    public bool debugStartMatch = false;
     public Text timerText;
     public Text gorillaSmashText;
     //public float pregameTimer;
@@ -37,11 +37,19 @@ public class PreGameTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            debugStartMatch = true;
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            gorillaSmashed = true;
+        }
         // PREGAME ROOM
         if(gameState == "pregame")
         {
             // spawns a spinner that chooses a player to be a gorilla once all targets are hit.
-            if (!spinnerSpawned && AllTargetsHit()) 
+            if (!spinnerSpawned && (AllTargetsHit()||debugStartMatch)) 
             {
                 newSpinner = (GameObject)Instantiate(spinner,spinner.transform.position,spinner.transform.rotation);
                 spinnerSpawned = true;
@@ -66,6 +74,10 @@ public class PreGameTimer : MonoBehaviour
             }*/
             if(newSpinner != null)
             {
+                if (debugStartMatch)
+                {
+                    //gorillaSmashed = true;
+                }
                 if (newSpinner.GetComponent<ApeSpinner>().setGorilla && gorillaSmashed)
                 {
                     //pregameTimer = 0;

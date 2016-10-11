@@ -29,7 +29,22 @@ public class Monkey : Character
 			CatchCheck();
             CallForBall();
 		}
-	}
+
+        if (GameManager.Instance.gmPlayerScripts[myPlayer].characterType is Gorilla)
+        {
+            if (cacheplayer.GetComponent<Transform>().localScale != GameManager.Instance.gmMovementManager.gScale)
+            {
+                cacheplayer.GetComponent<Transform>().localScale = GameManager.Instance.gmMovementManager.gScale;
+            }
+        }
+        else
+        {
+            if (cacheplayer.GetComponent<Transform>().localScale != GameManager.Instance.gmMovementManager.mScale)
+            {
+                cacheplayer.GetComponent<Transform>().localScale = GameManager.Instance.gmMovementManager.mScale;
+            }
+        }
+    }
 
 	public override void CHFixedUpdate()
 	{
@@ -76,8 +91,10 @@ public class Monkey : Character
             cacheplayer.ReleaseBall();
 		}
 		cacheplayer.characterType = new Gorilla(myPlayer);
-		cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
-		/*
+        //cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
+
+
+        /*
 		GameObject tempGorilla = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);
 
 		tempGorilla.GetComponent<Renderer>().material = GameManager.Instance.gmPlayers[myPlayer].GetComponent<Renderer>().material;
@@ -97,5 +114,5 @@ public class Monkey : Character
 			}
 			Destroy(gameObject);*/
 
-	}
+    }
 }
