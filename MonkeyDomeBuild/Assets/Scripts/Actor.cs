@@ -465,9 +465,9 @@ public class Actor : MonoBehaviour
     {
         monkey.GetComponent<Actor>().DisableInput = true;
         monkey.GetComponent<Actor>().InvokeEnableInput();
-		if (monkey.GetComponent<Actor> ().IsHoldingBall) 
+		if (monkey.GetComponent<Actor>().IsHoldingBall) 
 		{
-			monkey.GetComponent<Actor> ().ReleaseBall ();
+			monkey.GetComponent<Actor>().ReleaseBall();
 		}
         Vector2 dir = -1*(transform.position - monkey.transform.position).normalized;
         if (!isinair)

@@ -30,8 +30,23 @@ public class Gorilla : Character
 		
 		CatchCheck();
 		StompCheck();
-		
-	}
+
+        if (GameManager.Instance.gmPlayerScripts[myPlayer].characterType is Gorilla)
+        {
+            if (cacheplayer.GetComponent<Transform>().localScale != gorillaSize)
+            {
+                cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
+            }
+        }
+        else
+        {
+            if (cacheplayer.GetComponent<Transform>().localScale != monkeySize)
+            {
+                cacheplayer.GetComponent<Transform>().localScale = monkeySize;
+            }
+        }
+
+    }
 
 	public override void CHFixedUpdate()
 	{
@@ -73,7 +88,7 @@ public class Gorilla : Character
 	public override void Mutate()
 	{
 		cacheplayer.characterType = new Monkey(myPlayer);
-		cacheplayer.GetComponent<Transform>().localScale = monkeySize;
+		//cacheplayer.GetComponent<Transform>().localScale = monkeySize;
 
 		/*
 		GameObject tempMonkey = (GameObject)Instantiate(GameManager.Instance.gmPlayerPrefab, cacheplayer.GetComponent<Rigidbody>().position, cacheplayer.GetComponent<Rigidbody>().rotation);
