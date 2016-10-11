@@ -106,7 +106,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -191,8 +190,7 @@ MonoBehaviour:
   gmButtonManager: {fileID: 0}
   gmPlayerPrefab: {fileID: 106386, guid: b2a9f252c215e8c48904586552452670, type: 2}
   gmPlayerPrefabAI: {fileID: 106386, guid: 96bd6b7a652d68f4788e08e677d91f91, type: 2}
-  gmBalls:
-  - {fileID: 0}
+  gmBalls: []
   gmUIManager: {fileID: 0}
   gmInputs:
   - {fileID: 0}
@@ -247,11 +245,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72138211defbdf04097b0f95e881f5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mScale: {x: 1, y: 1, z: 1}
+  mScale: {x: 1.3, y: 1.3, z: 1.3}
   mSpeed: 18
   mJumpForce: 25
   mThrowForce: 30
-  gScale: {x: 1.5, y: 1.5, z: 1.5}
+  gScale: {x: 1.8, y: 1.8, z: 1.8}
   gSpeed: 15
   gJumpForce: 25
   gThrowForce: 10
