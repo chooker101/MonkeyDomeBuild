@@ -52,8 +52,8 @@ public class ApeSpinner : MonoBehaviour
             playerChosenText.text = "PLAYER: " + playerChosen.ToString();
 
             pivot.transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
-            Debug.Log("Pointer Pivot z: " + pivot.transform.eulerAngles.z.ToString());
-            Debug.Log("Chosen Monkey: " + playerChosen.ToString());
+            //Debug.Log("Pointer Pivot z: " + pivot.transform.eulerAngles.z.ToString());
+            //Debug.Log("Chosen Monkey: " + playerChosen.ToString());
         }
         else if(spinnerSpeed <= 0 && !setGorilla)
         {
@@ -62,7 +62,7 @@ public class ApeSpinner : MonoBehaviour
 
             GameManager.Instance.gmRecordKeeper.playerGorilla = playerChosen-1;
             GameManager.Instance.gmPlayers[playerChosen - 1].GetComponent<Player>().characterType.Mutate();
-            Debug.Log("ApeSpinner: Mutated player into Gorilla");
+            //Debug.Log("ApeSpinner: Mutated player into Gorilla");
         }
     }
 }

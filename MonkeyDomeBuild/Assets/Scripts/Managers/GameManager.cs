@@ -173,11 +173,11 @@ public class GameManager : MonoBehaviour
                 if(Instance.gmRecordKeeper != null && Instance.gmRecordKeeper.playerGorilla >= 0) // Get gorilla from Record keeper first if possible.
                 {
                     PlayerGorilla = Instance.gmRecordKeeper.playerGorilla;
-                    Debug.Log("Game Manager: Gorilla chosen from Record Keeper: " + PlayerGorilla.ToString());
+                    //Debug.Log("Game Manager: Gorilla chosen from Record Keeper: " + PlayerGorilla.ToString());
                 }
                 else if (RandomGorilla)
                 {
-                    Debug.Log("Game Manager: Gorilla chosen by RandomGorilla: " + PlayerGorilla.ToString());
+                    //Debug.Log("Game Manager: Gorilla chosen by RandomGorilla: " + PlayerGorilla.ToString());
                     PlayerGorilla = RandGor();
                 }
 
