@@ -69,6 +69,7 @@ public class AI : Actor
 		MovementVelocity();
 		AnimationControl();
 		characterType.CHFixedUpdate();
+		GameManager.Instance.gmInputs[playerIndex].mJump = false;
 	}
 
     void ExecuteState()
@@ -117,24 +118,21 @@ public class AI : Actor
 
     State ExecuteMove()
     {
-
-		if (IsInAir && !canJump)
-		{
-			GameManager.Instance.gmInputs[playerIndex].mJump = false;
-		}
-
 		if (characterType is Monkey) //TODO Monkey Move Logic
         {
 			if (currEndTarg.y > cache_tf.position.y - (myCollider.size.y - myCollider.offset.y) - 0.5f)
 			{
 				if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
 				{
-					xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
-					if ((xInput <= 1.0f && xInput >= -1.0f) && canJump) //(xInput <= 1.0f && 
+					if (canJump)
 					{
-						GameManager.Instance.gmInputs[playerIndex].mJump = true;
-						canJump = false;
-						StartCoroutine(JumpWait());
+						xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+						if (xInput <= 1.0f && xInput >= -1.0f)
+						{
+							GameManager.Instance.gmInputs[playerIndex].mJump = true;
+							canJump = false;
+							StartCoroutine(JumpWait());
+						}
 					}
 					else
 					{
@@ -143,12 +141,15 @@ public class AI : Actor
 				}
 				else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
 				{
-					xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
-					if ((xInput <= 1.0f && xInput >= -1.0f) && canJump)
+					if (canJump)
 					{
-						GameManager.Instance.gmInputs[playerIndex].mJump = true;
-						canJump = false;
-						StartCoroutine(JumpWait());
+						xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+						if (xInput <= 1.0f && xInput >= -1.0f)
+						{
+							GameManager.Instance.gmInputs[playerIndex].mJump = true;
+							canJump = false;
+							StartCoroutine(JumpWait());
+						}
 					}
 					else
 					{
