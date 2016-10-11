@@ -37,6 +37,10 @@ public class PreGameTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            debugStartMatch = true;
+        }
         // PREGAME ROOM
         if(gameState == "pregame")
         {
