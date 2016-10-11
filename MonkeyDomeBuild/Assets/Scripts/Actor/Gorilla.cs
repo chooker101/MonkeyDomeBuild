@@ -33,16 +33,16 @@ public class Gorilla : Character
 
         if (GameManager.Instance.gmPlayerScripts[myPlayer].characterType is Gorilla)
         {
-            if (cacheplayer.GetComponent<Transform>().localScale != gorillaSize)
+            if (cacheplayer.GetComponent<Transform>().localScale != GameManager.Instance.gmMovementManager.gScale)
             {
-                cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
+                cacheplayer.GetComponent<Transform>().localScale = GameManager.Instance.gmMovementManager.gScale;
             }
         }
         else
         {
-            if (cacheplayer.GetComponent<Transform>().localScale != monkeySize)
+            if (cacheplayer.GetComponent<Transform>().localScale != GameManager.Instance.gmMovementManager.mScale)
             {
-                cacheplayer.GetComponent<Transform>().localScale = monkeySize;
+                cacheplayer.GetComponent<Transform>().localScale = GameManager.Instance.gmMovementManager.mScale;
             }
         }
 

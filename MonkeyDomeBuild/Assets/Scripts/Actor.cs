@@ -72,6 +72,8 @@ public class Actor : MonoBehaviour
     protected float slowMoTimeScale = 0.2f;
     protected float slowMoCount = 0;
 
+    public string cType = "";
+
     public bool DisableInput
     {
         get { return beingSmack; }
@@ -96,7 +98,8 @@ public class Actor : MonoBehaviour
 
 	void Update()
 	{
-		//JumpCheck();
+        //JumpCheck();
+        cType = characterType.ToString();
 		if (GameManager.Instance.gmInputs[playerIndex].mJump)
 		{
 			Jumping();
@@ -503,13 +506,6 @@ public class Actor : MonoBehaviour
             if (!canClimb)
             {
                 canClimb = true;
-            }
-        }
-        else
-        {
-            if (canClimb)
-            {
-                canClimb = false;
             }
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))

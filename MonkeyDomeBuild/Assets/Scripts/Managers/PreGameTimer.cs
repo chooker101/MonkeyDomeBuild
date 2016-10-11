@@ -41,6 +41,10 @@ public class PreGameTimer : MonoBehaviour
         {
             debugStartMatch = true;
         }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            gorillaSmashed = true;
+        }
         // PREGAME ROOM
         if(gameState == "pregame")
         {
@@ -72,7 +76,7 @@ public class PreGameTimer : MonoBehaviour
             {
                 if (debugStartMatch)
                 {
-                    gorillaSmashed = true;
+                    //gorillaSmashed = true;
                 }
                 if (newSpinner.GetComponent<ApeSpinner>().setGorilla && gorillaSmashed)
                 {

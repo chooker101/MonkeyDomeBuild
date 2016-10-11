@@ -62,18 +62,18 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
-		if (s_Instance != this)
-		{
-			Destroy(this.gameObject);
-		}
-		else
-		{
-			DontDestroyOnLoad(this.gameObject);
-		}
-		TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
+        if (s_Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(this.gameObject);
+            TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
+            CreateInputs();
+            CreatePlayers();
+        }
 
-		CreateInputs();
-		CreatePlayers();
 	}
 
 	void Update()
