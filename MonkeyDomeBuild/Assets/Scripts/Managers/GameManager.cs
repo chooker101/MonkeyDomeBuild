@@ -232,4 +232,8 @@ public class GameManager : MonoBehaviour
 	{
 		return Random.Range(0, (int)TotalNumberofPlayers);
 	}
+    public void AddBall(GameObject ball)
+    {
+        gmBalls.Add(ball);
+    }
 }

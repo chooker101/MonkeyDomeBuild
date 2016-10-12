@@ -20,10 +20,10 @@ public class CameraController : MonoBehaviour
 
     //private GameObject ball;
     public float smoothing = 3.0f;
-    private float maxCamSize = 25f;
+    public float maxCamSize = 25f;
     private float minCamSize = 18f;
     private float minCameraHeight = 12f;
-    private float maxDistanceFromZero = 4f;
+    public float maxDistanceFromZero = 4f;
     private float buffer = 4f;
     private float offsetUp = 0f;
 

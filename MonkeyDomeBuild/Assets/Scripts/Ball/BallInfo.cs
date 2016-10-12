@@ -16,7 +16,7 @@ public class BallInfo : MonoBehaviour
 	public int playerThrewLast = -1;
     protected PhysicsMaterial2D ballMat;
     protected Rigidbody2D m_rigid;
-    protected Vector2 startPos = Vector2.up * 10;
+    protected Vector2 startPos;
     public bool isballnear = false;
     public bool timerUp = false;
     //private float timer = 8f;
@@ -69,6 +69,8 @@ public class BallInfo : MonoBehaviour
     void Start ()
     {
         //Debug.Log("BallInfo Start being called");
+        startPos = transform.position;
+        GameManager.Instance.AddBall(gameObject);
         perfectCatchDistance = 1f;
         m_rigid = GetComponent<Rigidbody2D>();
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
