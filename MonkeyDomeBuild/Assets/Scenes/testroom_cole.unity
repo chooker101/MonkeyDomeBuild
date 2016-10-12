@@ -2535,7 +2535,7 @@ Prefab:
       objectReference: {fileID: 1876634658}
     - target: {fileID: 11436566, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
       propertyPath: noTime
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11436566, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
       propertyPath: matchTime
@@ -4594,6 +4594,8 @@ MonoBehaviour:
   killShake: 8
   shaking: 0
   smoothing: 3
+  maxCamSize: 60
+  maxDistanceFromZero: 12
   considerTargets: 1
 --- !u!1 &1507620953
 GameObject:
