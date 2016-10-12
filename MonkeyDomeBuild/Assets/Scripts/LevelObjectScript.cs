@@ -6,6 +6,7 @@ public class LevelObjectScript : MonoBehaviour
 {
 	public List<GameObject> loPlatforms;
 	public List<GameObject> loVines;
+	public int numberOfLevels = 10;
 
 	void Awake()
 	{

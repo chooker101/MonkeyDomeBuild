@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public class AI : Actor
 {
-    enum State
-    {
-        Idle,
-        Catch,
-        Throw,
-        Move
-    }
+	enum State
+	{
+		Idle,
+		Catch,
+		Throw,
+		Move
+	}
 
 	private BoxCollider2D myCollider;
 
@@ -31,19 +31,21 @@ public class AI : Actor
 	private float maxJump;
 	private float jumpVelocity;
 	private float xInput;
+	private int count;
 	private bool canJump;
+	private bool isAtTargetX;
 
 	State currentState;
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
-        currentState = State.Idle;
+		currentState = State.Idle;
 
 		myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
-		tempTarg = GameObject.FindGameObjectWithTag("TempTarget");
+		tempTarg = GameObject.FindGameObjectWithTag("Ball");
 		canJump = true;
 
 		CalculateMaxJump();
@@ -61,110 +63,134 @@ public class AI : Actor
 		CheckLeader();
 		UpdateColour();
 	}
-	
+
 	// Update is called once per frame
-	void FixedUpdate ()
+	void FixedUpdate()
 	{
 		ExecuteState();
 		MovementVelocity();
 		AnimationControl();
 		characterType.CHFixedUpdate();
-		GameManager.Instance.gmInputs[playerIndex].mJump = false;
 	}
 
-    void ExecuteState()
-    {
-        switch (currentState)
-        {
-            case State.Idle:
-                currentState = ExecuteIdle();
-                break;
-            case State.Catch:
-                currentState = ExecuteCatch();
-                break;
-            case State.Throw:
-                currentState = ExecuteThrow();
-                break;
-            case State.Move:
-                currentState = ExecuteMove();
-                break;
-            default :
-                Debug.LogError("YOU FUCKING BROKE IT!");
-                break;
-        }
+	void ExecuteState()
+	{
+		switch (currentState)
+		{
+			case State.Idle:
+				currentState = ExecuteIdle();
+				break;
+			case State.Catch:
+				currentState = ExecuteCatch();
+				break;
+			case State.Throw:
+				currentState = ExecuteThrow();
+				break;
+			case State.Move:
+				currentState = ExecuteMove();
+				break;
+			default:
+				Debug.LogError("YOU FUCKING BROKE IT!");
+				break;
+		}
 
-    }
+	}
 
-    State ExecuteIdle()
-    {
-        if(GameManager.Instance.gmUIManager.matchTime < GameManager.Instance.gmUIManager.startMatchTime)
-        {
+	State ExecuteIdle()
+	{
+		if (GameManager.Instance.gmUIManager.matchTime < GameManager.Instance.gmUIManager.startMatchTime)
+		{
 			return State.Move;
 		}
 		return State.Move;
-    }
+	}
 
-    State ExecuteCatch()
-    {
-        //TODO Catch Logic
-        return currentState;
-    }
+	State ExecuteCatch()
+	{
+		//TODO Catch Logic
+		return currentState;
+	}
 
-    State ExecuteThrow()
-    {
-        //TODO Target Selection and Throw Logic
-        return currentState;
-    }
+	State ExecuteThrow()
+	{
+		//TODO Target Selection and Throw Logic
+		return currentState;
+	}
 
-    State ExecuteMove()
-    {
+	State ExecuteMove()
+	{
+		isAtTargetX = CheckClose();
+		if (isAtTargetX && cache_tf.position.y >= currEndTarg.y)
+		{
+			UpdateTarget();
+			isAtTargetX = CheckClose();
+			canJump = true;
+		}
+
 		if (characterType is Monkey) //TODO Monkey Move Logic
-        {
+		{
+			
+			xInput = (currEndTarg - cache_tf.position).normalized.x;
+			
 			if (currEndTarg.y > cache_tf.position.y - (myCollider.size.y - myCollider.offset.y) - 0.5f)
 			{
-				if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
+				if (isAtTargetX)
 				{
-					if (canJump)
+					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+					dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
+					currEndTarg.x = dirmult;
+					currEndTarg.y = cache_tf.position.y;
+				}
+				else
+				{
+					if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
 					{
-						xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
-						if (xInput <= 1.0f && xInput >= -1.0f)
+						if (canJump && !IsInAir)
 						{
-							GameManager.Instance.gmInputs[playerIndex].mJump = true;
-							canJump = false;
-							StartCoroutine(JumpWait());
+							xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+							if (xInput <= 1.0f && xInput >= -1.0f)
+							{
+								GameManager.Instance.gmInputs[playerIndex].mJump = true;
+								canJump = false;
+								StartCoroutine(RealisticInput());
+							}
 						}
 					}
-					else
+					else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
 					{
-						xInput = (currEndTarg - cache_tf.position).normalized.x;
+						if (canJump && !IsInAir)
+						{
+							xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+							if (xInput <= 1.0f && xInput >= -1.0f)
+							{
+								GameManager.Instance.gmInputs[playerIndex].mJump = true;
+								canJump = false;
+								StartCoroutine(RealisticInput());
+							}
+						}
 					}
 				}
-				else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
+			}
+			else
+			{
+				if(isAtTargetX)
 				{
-					if (canJump)
-					{
-						xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
-						if (xInput <= 1.0f && xInput >= -1.0f)
-						{
-							GameManager.Instance.gmInputs[playerIndex].mJump = true;
-							canJump = false;
-							StartCoroutine(JumpWait());
-						}
-					}
-					else
-					{
-						xInput = (currEndTarg - cache_tf.position).normalized.x;
-					}
+
 				}
 			}
 			GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
 		}
-        else //TODO Gorilla Move Logic
-        {
+		else //TODO Gorilla Move Logic
+		{
 
-        }
-        return currentState;
-    }
+		}
+		return currentState;
+	}
+
+	private bool CheckClose()
+	{
+		return (cache_tf.position.x < currEndTarg.x + 0.5f && cache_tf.position.x > currEndTarg.x - 0.5f);
+	}
 
 	private void UpdateTarget()
 	{
@@ -174,14 +200,15 @@ public class AI : Actor
 			FindNearestPlatform(MoveTarget);
 			if (MoveTarget.y > currEndTarg.y)
 			{
-				while (currEndTarg.y > (cache_tf.position.y + maxJump - (myCollider.size.y - myCollider.offset.y)))
+				count = GameManager.Instance.gmLevelObjectScript.numberOfLevels;
+				while (currEndTarg.y > (cache_tf.position.y + maxJump - (myCollider.size.y - myCollider.offset.y)) || count <= 0)
 				{
 					FindNearestPlatform(currEndTarg);
+					count--;
 				}
 			}
 			currEndTargBound = FindEdgeOfPlatform(currEndTarg);
 		}
-		StartCoroutine(TargetWait());
 	}
 
 	private void FindNearestPlatform(Vector3 FinalPos)
@@ -189,10 +216,10 @@ public class AI : Actor
 		Vector3 position;
 		currClosestDist = 0.0f;
 		float dist;
-		for(float i = 0.0f; i <= 1.0f; i += 0.05f)
+		for (float i = 0.0f; i <= 1.0f; i += 0.05f)
 		{
 			position = Vector3.Lerp(cache_tf.position, FinalPos, i);
-			foreach(var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
+			foreach (var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
 			{
 				if (T.transform.position != FinalPos)
 				{
@@ -217,7 +244,7 @@ public class AI : Actor
 		Vector3 result = Vector3.zero;
 		foreach (var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
 		{
-			if(platPos == T.transform.position)
+			if (platPos == T.transform.position)
 			{
 				if (cache_tf.position.x < T.transform.position.x)
 				{
@@ -234,11 +261,11 @@ public class AI : Actor
 		return result;
 	}
 
-	private float CalculateJump(Vector3 jumpLanding,bool dir) // right is true
+	private float CalculateJump(Vector3 jumpLanding, bool dir) // right is true
 	{
 		float dx;
 		float t;
-		if(dir)
+		if (dir)
 		{
 			dx = (jumpLanding.x + 1.0f) - cache_tf.position.x;
 		}
@@ -256,18 +283,12 @@ public class AI : Actor
 		float g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
 		jumpVelocity = characterType.jumpforce / cache_rb.mass;
 		maxJump = (jumpVelocity * jumpVelocity) / (2 * g);
-		approxJumpDist = (jumpVelocity / g) * characterType.movespeed; //NORMALIZED NEED ACTUAL MODIFIER
+		approxJumpDist = (jumpVelocity / g) * characterType.movespeed;
 	}
 
-	IEnumerator JumpWait()
+	IEnumerator RealisticInput()
 	{
-		yield return new WaitForSeconds(0.3f);
-		canJump = true;
-	}
-
-	IEnumerator TargetWait()
-	{
-		yield return new WaitForSeconds(1.0f);
-		UpdateTarget();
+		yield return new WaitForEndOfFrame();
+		GameManager.Instance.gmInputs[playerIndex].mJump = false;
 	}
 }
