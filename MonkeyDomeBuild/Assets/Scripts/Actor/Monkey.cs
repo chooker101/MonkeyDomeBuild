@@ -63,7 +63,8 @@ public class Monkey : Character
 		{
             if (cacheplayer.ballCanCatch.GetCanBeCatch())
             {
-                if (!Physics2D.Raycast(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
+                //Vector3 startPos = 
+                if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
                     Vector3.Distance(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
                 {
                     if (!cacheplayer.haveBall && cacheplayer.ballInRange)
