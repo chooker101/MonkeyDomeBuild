@@ -17,6 +17,7 @@ public class BallInfo : MonoBehaviour
     protected PhysicsMaterial2D ballMat;
     protected Rigidbody2D m_rigid;
     protected Vector2 startPos;
+    protected Vector3 holdPos;
     public bool isballnear = false;
     public bool timerUp = false;
     //private float timer = 8f;
@@ -110,7 +111,7 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey != null)
         {
-            m_rigid.transform.position = Vector2.Lerp(m_rigid.transform.position, holdingMonkey.transform.position, 1f);
+            m_rigid.transform.position = Vector2.Lerp(m_rigid.transform.position, holdingMonkey.GetComponent<Actor>().catchCenter.position, 1f);
         }
     }
 
@@ -170,7 +171,7 @@ public class BallInfo : MonoBehaviour
         {
             gorillaToSwitch.GetComponent<Actor>().characterType.Mutate();
         }
-
+        Reset();
         lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
         //ResetPosition();
 
@@ -202,6 +203,7 @@ public class BallInfo : MonoBehaviour
         ResetPosition();
         //timerUp = false;
         lastThrowMonkey.GetComponent<Actor>().ResetTimeScale();
+        Reset();
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
     }
 
@@ -222,7 +224,9 @@ public class BallInfo : MonoBehaviour
             holdingMonkey = who;
             m_rigid.isKinematic = true;
             if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)
+            {
                 perfectCatch = true;
+            }
             if(SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
             {
                 GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
@@ -242,7 +246,10 @@ public class BallInfo : MonoBehaviour
              isballnear = true;
         }
     }
-
+    void OntriggerStay2D(Collider2D other)
+    {
+        OnTriggerEnter2D(other);
+    }
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player")

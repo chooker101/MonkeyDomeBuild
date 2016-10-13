@@ -54,9 +54,11 @@ public class Actor : MonoBehaviour
 	[SerializeField]
 	protected GameObject shotPointer;
 	protected Color col;
+    public Transform catchCenter;
+    public BoxCollider2D raycastCol;
 
 	protected bool beingSmack = false;
-
+    public bool justJump = false;
     protected bool isDashing = false;
     protected float dashingCount = 0;
     protected float dashingTime = 0.6f;
@@ -86,10 +88,11 @@ public class Actor : MonoBehaviour
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
 		cache_rb = GetComponent<Rigidbody2D>();
-		animator = GetComponent<Animator>();
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		animator = GetComponentInChildren<Animator>();
+		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		cache_tf = GetComponent<Transform>();
-
+        catchCenter = transform.FindChild("CatchCenter").transform;
+        raycastCol = transform.FindChild("RayCastCol").GetComponent<BoxCollider2D>();
         monkeyCrown.SetActive(false);
 
 		
@@ -112,8 +115,8 @@ public class Actor : MonoBehaviour
 
     void FixedUpdate()
 	{
-		MovementVelocity();
-		AnimationControl();
+        MovementVelocity();
+        AnimationControl();
 		//Movement();
 		characterType.CHFixedUpdate();
 	}
@@ -130,6 +133,8 @@ public class Actor : MonoBehaviour
 		if (!isinair)
 		{
 			isinair = true;
+            justJump = true;
+            Invoke("ResetJustJump", 0.3f);
             if (ParticlesManager.Instance != null)
             {
                 GameObject tempParticle = null;
@@ -176,6 +181,10 @@ public class Actor : MonoBehaviour
             }
 		}
 	}
+    protected void ResetJustJump()
+    {
+        justJump = false;
+    }
 	protected void MovementVelocity()
 	{
         movement = cache_rb.velocity;
@@ -218,6 +227,13 @@ public class Actor : MonoBehaviour
             cache_rb.velocity = movement;
         }
 	}
+    protected Vector3 RLFeetHitPoint()
+    {
+
+
+
+        return Vector3.zero;
+    }
 	public void ThrowCheck()
     {
         if (canCharge)
@@ -336,22 +352,16 @@ public class Actor : MonoBehaviour
                 leftOrRight = -1.0f;
             }
 
-            BoxCollider2D cachebox = GetComponent<BoxCollider2D>();
-
+            BoxCollider2D cachebox = raycastCol;
             bool hit = false;
             RaycastHit2D hitInfo;
             Vector2 checkPosStart;
-            //checkPos.x = ((cache_tf.position.x - cachebox.offset.x) + (((cachebox.size.x /2) + 0.02f) * leftOrRight)) * cache_tf.localScale.x;
-            //checkPos.y = ((cache_tf.position.y - cachebox.offset.y) + ((cachebox.size.y / 2) + 0.02f)) * cache_tf.localScale.y;
-            //Debug.Log("CeckPos" + (checkPos.x - cachebox.size.x));
             checkPosStart.x = transform.position.x + (cachebox.size.x / 2 + 0.1f) * leftOrRight * transform.localScale.x;
             checkPosStart.y = transform.position.y - (cachebox.size.y / 2 - cachebox.offset.y) * transform.localScale.y;
-            //Vector2 scale = new Vector2(transform.localScale.x, transform.localScale.y);
             Vector2 tempV = checkPosStart;
             tempV.y += (cachebox.size.y * transform.localScale.y) + 0.1f;
             Debug.DrawLine(checkPosStart, tempV);
             hitInfo = Physics2D.Raycast(checkPosStart, Vector2.up, (cachebox.size.y * transform.localScale.y) + 0.1f, layerMask);
-            //hitInfo = Physics2D.Raycast(checkPos, Vector2.down, (cachebox.size.y + 0.02f) * cache_tf.localScale.y, layerMask);
             if (hitInfo.collider != null)
             {
                 hit = true;
@@ -399,10 +409,6 @@ public class Actor : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
-            if (other.collider.CompareTag("Floor"))
-            {
-                isinair = false;
-            }
             if (isDashing)
             {
                 dashingCount = 0;
@@ -445,23 +451,12 @@ public class Actor : MonoBehaviour
     }
     void OnCollisionStay2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Floor"))
-        {
-            isinair = false;
-        }
         if (characterType is Gorilla)
         {
             if (other.collider.CompareTag("Player"))
             {
                 OnCollisionEnter2D(other);
             }
-        }
-    }
-    void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Floor"))
-        {
-            isinair = true;
         }
     }
     protected void KnockOffMonkey(GameObject monkey)
@@ -501,6 +496,13 @@ public class Actor : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        {
+            if (!justJump && isinair)
+            {
+                isinair = false;
+            }
+        }
         if (other.gameObject.CompareTag("Vine"))
         {
             if (!canClimb)
@@ -560,6 +562,13 @@ public class Actor : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D other)
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        {
+            if (!isinair)
+            {
+                isinair = true;
+            }
+        }
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
             ballInRange = false;
@@ -638,7 +647,7 @@ public class Actor : MonoBehaviour
         {
             if (playerIndex == i)
             {
-                GetComponent<SpriteRenderer>().material = GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers[i];
+                GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers[i];
             }
         }
     }
