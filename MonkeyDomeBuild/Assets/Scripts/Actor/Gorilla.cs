@@ -69,13 +69,13 @@ public class Gorilla : Character
                         {
                             GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);
                             //On interception check for active audience interception event
-                            if (GameManager.Instance.gmAudienceManager.GetEventActive())
-                            { 
-                                if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Intercept)
-                                {
-                                    GameManager.Instance.gmAudienceManager.AudGorillaIntercepted(GameManager.Instance.gmPlayers[myPlayer]);
-                                }
-                            }
+                            //if (GameManager.Instance.gmAudienceManager.GetEventActive())
+                            //{ 
+                            //    if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Intercept)
+                            //    {
+                            //        GameManager.Instance.gmAudienceManager.AudGorillaIntercepted(GameManager.Instance.gmPlayers[myPlayer]);
+                            //    }
+                            //}
                         }
                         cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
                         cacheplayer.stat_ballGrab++;

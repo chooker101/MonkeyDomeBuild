@@ -171,7 +171,7 @@ public class BallInfo : MonoBehaviour
         {
             gorillaToSwitch.GetComponent<Actor>().characterType.Mutate();
         }
-
+        Reset();
         lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
         //ResetPosition();
 
@@ -203,6 +203,7 @@ public class BallInfo : MonoBehaviour
         ResetPosition();
         //timerUp = false;
         lastThrowMonkey.GetComponent<Actor>().ResetTimeScale();
+        Reset();
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
     }
 
@@ -245,7 +246,10 @@ public class BallInfo : MonoBehaviour
              isballnear = true;
         }
     }
-
+    void OntriggerStay2D(Collider2D other)
+    {
+        OnTriggerEnter2D(other);
+    }
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player")
