@@ -119,6 +119,10 @@ public class Actor : MonoBehaviour
         AnimationControl();
 		//Movement();
 		characterType.CHFixedUpdate();
+        if (IsHoldingBall && ballHolding == null)
+        {
+            ReleaseBall();
+        }
 	}
 
 	//public virtual void CheckInputs() { }
@@ -166,6 +170,7 @@ public class Actor : MonoBehaviour
 
                 if (GameManager.Instance.gmInputs[playerIndex].mXY.y >= 0)
                 {
+                    cache_rb.velocity *= 0.3f;
                     cache_rb.AddForce(Vector2.up * characterType.jumpforce, ForceMode2D.Impulse);
                     if (AudioEffectManager.Instance != null)
                     {
@@ -227,13 +232,6 @@ public class Actor : MonoBehaviour
             cache_rb.velocity = movement;
         }
 	}
-    protected Vector3 RLFeetHitPoint()
-    {
-
-
-
-        return Vector3.zero;
-    }
 	public void ThrowCheck()
     {
         if (canCharge)
@@ -308,8 +306,10 @@ public class Actor : MonoBehaviour
     public void ReleaseBall()
     {
         haveBall = false;
-        ballHolding.GetComponent<BallInfo>().Reset();
-        ballHolding.GetComponent<BallInfo>().playerThrewLast = playerIndex;
+        if (ballHolding != null)
+        {
+            ballHolding.GetComponent<BallInfo>().Reset();
+        }
         ballHolding = null;
         isCharging = false;
         if (Time.timeScale != 1)
@@ -364,7 +364,14 @@ public class Actor : MonoBehaviour
             hitInfo = Physics2D.Raycast(checkPosStart, Vector2.up, (cachebox.size.y * transform.localScale.y) + 0.1f, layerMask);
             if (hitInfo.collider != null)
             {
-                hit = true;
+                if (hitInfo.collider.CompareTag("Ramp"))
+                {
+                    hit = false;
+                }
+                else
+                {
+                    hit = true;
+                }
             }
             return hit;
         }
@@ -518,13 +525,6 @@ public class Actor : MonoBehaviour
                 ballInRange = true;
             }
         }
-        else
-        {
-            if (ballInRange)
-            {
-                ballInRange = false;
-            }
-        }
         if (other.gameObject.CompareTag("Banana"))
         {
             ProjectileBehavior proj = other.GetComponent<ProjectileBehavior>();
@@ -576,8 +576,7 @@ public class Actor : MonoBehaviour
             {
                 if (other.gameObject.GetComponentInParent<BallInfo>() == ballHolding.GetComponent<BallInfo>())
                 {
-                    ballHolding = null;
-                    haveBall = false;
+                    ReleaseBall();
                 }
             }
         }
@@ -704,5 +703,11 @@ public class Actor : MonoBehaviour
         startSlowMo = false;
         canBeInSlowMotion = true;
         slowMoCount = 0;
+    }
+    public void CaughtBall(GameObject ball)
+    {
+        canCharge = false;
+        haveBall = true;
+        ballHolding = ball;
     }
 }

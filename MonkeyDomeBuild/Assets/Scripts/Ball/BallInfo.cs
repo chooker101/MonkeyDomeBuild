@@ -11,9 +11,10 @@ public class BallInfo : MonoBehaviour
 {
     protected ThrowableType type = ThrowableType.Ball;
     [SerializeField]
-    protected GameObject lastThrowMonkey = null;
-    protected GameObject holdingMonkey = null;
+    public GameObject lastThrowMonkey = null;
+    public GameObject holdingMonkey = null;
 	public int playerThrewLast = -1;
+    public ParticleSystem trailParticle;
     protected PhysicsMaterial2D ballMat;
     protected Rigidbody2D m_rigid;
     protected Vector2 startPos;
@@ -71,11 +72,16 @@ public class BallInfo : MonoBehaviour
     {
         //Debug.Log("BallInfo Start being called");
         startPos = transform.position;
-        GameManager.Instance.AddBall(gameObject);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddBall(gameObject);
+        }
         perfectCatchDistance = 1f;
         m_rigid = GetComponent<Rigidbody2D>();
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
         type = ThrowableType.Ball;
+        trailParticle = GetComponentInChildren<ParticleSystem>();
+        trailParticle.startColor = GetComponent<MeshRenderer>().material.color;
         //bounciness = ballMat.bounciness;
         //timer = 8f;
         //PickRandomVictim();
@@ -86,19 +92,22 @@ public class BallInfo : MonoBehaviour
         //Debug.Log("run" + gameObject.name);
         if (IsBall)
         {
-            if (GameManager.Instance.gmShotClockManager.IsShotClockActive)
+            if (GameManager.Instance != null)
             {
-                if (GameManager.Instance.gmShotClockManager.ShotClockCount >= GameManager.Instance.gmShotClockManager.ShotClockTime)
+                if (GameManager.Instance.gmShotClockManager.IsShotClockActive)
                 {
-                    GameManager.Instance.gmShotClockManager.ResetShotClock();
-                    Change();
-                }
-                else
-                {
-                    if (SceneManager.GetActiveScene().name != "PregameRoom")
+                    if (GameManager.Instance.gmShotClockManager.ShotClockCount >= GameManager.Instance.gmShotClockManager.ShotClockTime)
                     {
-                        GameManager.Instance.gmShotClockManager.ShotClockCount += Time.deltaTime;
-                        //count += Time.fixedDeltaTime;
+                        GameManager.Instance.gmShotClockManager.ResetShotClock();
+                        Change();
+                    }
+                    else
+                    {
+                        if (SceneManager.GetActiveScene().name != "PregameRoom")
+                        {
+                            GameManager.Instance.gmShotClockManager.ShotClockCount += Time.deltaTime;
+                            //count += Time.fixedDeltaTime;
+                        }
                     }
                 }
             }
@@ -223,7 +232,8 @@ public class BallInfo : MonoBehaviour
             canBeCatch = false;
             holdingMonkey = who;
             m_rigid.isKinematic = true;
-            if (Vector3.Distance(who.transform.position, transform.position) <= perfectCatchDistance)
+            
+            if (Vector3.Distance(who.GetComponent<Actor>().catchCenter.position, transform.position) <= perfectCatchDistance)
             {
                 perfectCatch = true;
             }

@@ -57,8 +57,8 @@ public class Gorilla : Character
 	{
         if (GameManager.Instance.gmInputs[myPlayer].mCatch && cacheplayer.ballCanCatch != null)
         {
-            if (!Physics2D.Raycast(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
-                Vector3.Distance(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
+            if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
+                Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
             {
                 if (cacheplayer.ballInRange)
                 {
@@ -77,7 +77,9 @@ public class Gorilla : Character
                             //    }
                             //}
                         }
+                        cacheplayer.CaughtBall(cacheplayer.ballCanCatch.gameObject);
                         cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
+                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
                         cacheplayer.stat_ballGrab++;
                     }
                 }

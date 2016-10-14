@@ -63,9 +63,8 @@ public class Monkey : Character
 		{
             if (cacheplayer.ballCanCatch.GetCanBeCatch())
             {
-                //Vector3 startPos = 
                 if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
-                    Vector3.Distance(cacheplayer.transform.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
+                    Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
                 {
                     if (!cacheplayer.haveBall && cacheplayer.ballInRange)
                     {
@@ -73,9 +72,7 @@ public class Monkey : Character
                         {
                             cacheplayer.ballCanCatch.GetComponent<TrophyInfo>().DisableCollider();
                         }
-                        cacheplayer.canCharge = false;
-                        cacheplayer.haveBall = true;
-                        cacheplayer.ballHolding = cacheplayer.ballCanCatch.gameObject;
+                        cacheplayer.CaughtBall(cacheplayer.ballCanCatch.gameObject);
                         cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
                         cacheplayer.stat_ballGrab++;
                     }

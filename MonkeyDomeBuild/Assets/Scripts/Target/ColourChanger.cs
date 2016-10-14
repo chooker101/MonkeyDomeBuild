@@ -50,11 +50,14 @@ public class ColourChanger : MonoBehaviour
             {
                 materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
 
-                if (objectHit.GetComponent<BallInfo>().playerThrewLast == playerTargetNumber) // If the player who threw the ball is the one for this target
+                if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Player>().playerIndex == playerTargetNumber) // If the player who threw the ball is the one for this target
                 {
                     //Debug.Log("Colour Target: This is my player");
                     isHit = true;
-
+                    if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Player>().IsHoldingBall)
+                    {
+                        objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Player>().ReleaseBall();
+                    }
                     for (int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; i++)
                     {
                         if (i == myPlayer.GetComponent<Player>().playerIndex)

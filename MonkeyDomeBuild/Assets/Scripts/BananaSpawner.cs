@@ -59,6 +59,8 @@ public class BananaSpawner : MonoBehaviour
                             pooledBananas[x].transform.rotation = spawnLocs[i].rotation;
                             pooledBananas[x].SetActive(true);
 							Vector3 dir = Vector3.right * Random.Range (-1f, 1f) + Vector3.forward * Random.Range (-1f, 1f) + Vector3.down * Random.Range (1f, 3f);
+                            pooledBananas[x].GetComponent<Rigidbody>().AddRelativeTorque(pooledBananas[x].transform.right * Random.Range(-1f, 1f) * 50f, ForceMode.Impulse);
+                            pooledBananas[x].GetComponent<Rigidbody>().AddRelativeTorque(pooledBananas[x].transform.up * Random.Range(-1f, 1f) * 50f, ForceMode.Impulse);
                             pooledBananas[x].GetComponent<Rigidbody>().AddForce(dir * bananaSideForce, ForceMode.Impulse);
                             playerBananaSpawned[i]++;
                             bananaSpawnCount[i] = 0;
