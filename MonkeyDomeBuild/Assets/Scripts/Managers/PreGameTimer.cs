@@ -132,14 +132,22 @@ public class PreGameTimer : MonoBehaviour
 
     private bool AllTargetsHit()
     {
-        for(int i = 0; i < colourTargets.Length; i++)
+        if (GameManager.Instance.TotalNumberofPlayers >= 3)
         {
-            // Checks to see if any targets aren't hit. Is any aren't, returns false. 
-            if (!colourTargets[i].GetComponent<ColourChanger>().isHit)
+            for (int i = 0; i < colourTargets.Length; i++)
             {
-                return false;
+                // Checks to see if any targets aren't hit. Is any aren't, returns false.
+                if (colourTargets[i].GetComponent<ColourChanger>().IsActivated)
+                {
+                    if (!colourTargets[i].GetComponent<ColourChanger>().isHit)
+                    {
+                        return false;
+                    }
+                }
             }
+            return true;
         }
-        return true;
+        return false;
+
     }
 }

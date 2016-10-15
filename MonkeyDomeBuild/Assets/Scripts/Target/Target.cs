@@ -193,7 +193,6 @@ public class Target : MonoBehaviour
 
     public void TargetSetter()
     {
-        // to active target, use TargetSetter(1), to deactivate target, use TargetSetter(-1)
         // set target axis in editor for each target
         targetRot = Vector3.zero;
         switch (targetAxis)

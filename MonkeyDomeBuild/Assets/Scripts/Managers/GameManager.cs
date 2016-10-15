@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
 			return s_Instance;
 		}
 	}
-
 	public List<GameObject> gmPlayers;
     public List<Actor> gmPlayerScripts;
 	public SpawnManager gmSpawnManager;
@@ -235,5 +234,24 @@ public class GameManager : MonoBehaviour
     public void AddBall(GameObject ball)
     {
         gmBalls.Add(ball);
+    }
+    public void AddPlayer(int playerIndex)
+    {
+        Transform temp = Instance.gmSpawnManager.SpawnPoints[playerIndex];
+        Instance.gmPlayers[playerIndex] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
+        Instance.gmPlayerScripts[playerIndex] = Instance.gmPlayers[playerIndex].GetComponent<Player>();
+        Instance.gmPlayerScripts[playerIndex].isPlayer = true;
+        Instance.gmPlayers[playerIndex].GetComponent<Actor>().playerIndex = playerIndex;
+        Instance.gmPlayers[playerIndex].GetComponent<Actor>().characterType = new Monkey(playerIndex);
+        TotalNumberofPlayers++;
+    }
+    public void RemovePlayer(int playerIndex)
+    {
+        if (Instance.gmPlayers[playerIndex] != null)
+        {
+            Destroy(Instance.gmPlayers[playerIndex]);
+            Instance.gmPlayers[playerIndex] = null;
+            TotalNumberofPlayers--;
+        }
     }
 }
