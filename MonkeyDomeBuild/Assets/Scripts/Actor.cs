@@ -199,14 +199,15 @@ public class Actor : MonoBehaviour
 			{
                 if (!isDashing)
                 {
-                    if (characterType is Gorilla && characterType.isCharging)
+                    /*if (characterType is Gorilla && characterType.isCharging)
                     {
                         movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
                     }
                     else
                     {
                         movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-                    }
+                    }*/
+                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
                 }
                 else
                 {
@@ -239,10 +240,13 @@ public class Actor : MonoBehaviour
             if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
-                if (Time.timeScale == 1f && canBeInSlowMotion)
+                if (FindObjectOfType<PreGameTimer>() == null)
                 {
-                    canBeInSlowMotion = false;
-                    startSlowMo = true;
+                    if (Time.timeScale == 1f && canBeInSlowMotion)
+                    {
+                        canBeInSlowMotion = false;
+                        startSlowMo = true;
+                    }
                 }
                 if (startSlowMo)
                 {

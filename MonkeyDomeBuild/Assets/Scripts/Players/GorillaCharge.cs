@@ -7,7 +7,7 @@ public class GorillaCharge : MonoBehaviour
 {
 
     public Text chargeCountText;
-    private float chargeCount;
+    public float chargeCount;
     private float maxChargeTime;
     void Start()
     {
@@ -19,14 +19,25 @@ public class GorillaCharge : MonoBehaviour
     }
     void Update()
     {
-        if (chargeCount > 0.5f && chargeCount < maxChargeTime)
+        if(GetComponentInParent<Actor>().characterType is Gorilla)
         {
-            chargeCountText.text = Math.Round(chargeCount, 2).ToString();
+            if (chargeCount > 0.5f && chargeCount < maxChargeTime)
+            {
+                chargeCountText.text = Math.Round(chargeCount, 2).ToString();
+            }
+            else
+            {
+                chargeCountText.text = "";
+            }
         }
         else
         {
-            chargeCountText.text = "";
+            if (chargeCountText.text != "")
+            {
+                chargeCountText.text = "";
+            }
         }
+
     }
     public float ChargeCount
     {

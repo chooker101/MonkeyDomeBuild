@@ -6,8 +6,11 @@ public class Gorilla : Character
 {
 	private float timeBeingGorilla = 0f;
     private float chargeCount = 0f;
-    private float chargeCompleteTime = 1f;
+    private float chargeCompleteTime = 5f;
     private bool canDash = false;
+    private bool justDashed = false;
+    private float justDashedCount = 0;
+    private float justDashedTime = 2f;
     private GorillaCharge chargeUI;
 
 	public Gorilla(int x)
@@ -89,7 +92,7 @@ public class Gorilla : Character
     }
 	public override void Mutate()
 	{
-		cacheplayer.characterType = new Monkey(myPlayer);
+        cacheplayer.characterType = new Monkey(myPlayer);
 		//cacheplayer.GetComponent<Transform>().localScale = monkeySize;
 
 		/*
@@ -119,28 +122,13 @@ public class Gorilla : Character
 	}
 	protected void StompCheck()
 	{
-		if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canDash)
-		{
-            /*
-			for(int i = 0;i < GameManager.Instance.gmPlayers.Capacity; ++i)
-			{
-                Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
-				if (p is Monkey)
-				{
-					//knock both player off vine for now
-					GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
-				}
-			}
-            cacheplayer.cam.ScreenShake();
-            */
-            if (Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.x) > 0 || Mathf.Abs(GameManager.Instance.gmInputs[myPlayer].mXY.y) > 0)
-            {
-
-            }
+        if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canDash)
+        {
+            justDashed = true;
             cacheplayer.GorillaDash();
             canDash = false;
         }
-        else if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp && !canDash)
+        else if (!canDash && !justDashed)
         {
             isCharging = true;
             if (chargeCount >= chargeCompleteTime)
@@ -155,6 +143,18 @@ public class Gorilla : Character
                     chargeUI.ChargeCount = chargeCount;
             }
         }
+        else if (justDashed)
+        {
+            if (justDashedCount >= justDashedTime)
+            {
+                justDashed = false;
+                justDashedCount = 0;
+            }
+            else
+            {
+                justDashedCount += Time.deltaTime;
+            }
+        }
         else
         {
             isCharging = false;
@@ -163,5 +163,9 @@ public class Gorilla : Character
                 chargeUI.ChargeCount = chargeCount;
         }
 	}
+    private void ResetJustDashed()
+    {
+        justDashed = false;
+    }
 
 }

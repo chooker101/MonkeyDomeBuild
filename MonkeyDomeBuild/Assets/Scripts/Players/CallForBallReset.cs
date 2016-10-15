@@ -18,17 +18,25 @@ public class CallForBallReset : MonoBehaviour
 
     void Update()
     {
-        if (callForBall.activeSelf)
+        if(GetComponentInParent<Actor>().characterType is Monkey)
         {
-            if (resetCount <= 0)
+            if (callForBall.activeSelf)
             {
-                callForBall.SetActive(false);
-            }
-            else
-            {
-                resetCount -= Time.deltaTime;
+                if (resetCount <= 0)
+                {
+                    callForBall.SetActive(false);
+                }
+                else
+                {
+                    resetCount -= Time.deltaTime;
+                }
             }
         }
+        else
+        {
+            callForBall.SetActive(false);
+        }
+
     }
 
     public void CallForBall()

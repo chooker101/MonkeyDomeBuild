@@ -176,7 +176,7 @@ public class TargetManager : MonoBehaviour
         // updates tier status at end of a rally
         if (hitSum >= 3)
         {
-            if (targetTier < 4)
+            if (targetTier < 3)
             {
                 targetTier++;
                 //advanceTier = false;
