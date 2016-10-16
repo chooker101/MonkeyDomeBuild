@@ -20,10 +20,11 @@ public class CameraController : MonoBehaviour
 
     //private GameObject ball;
     public float smoothing = 3.0f;
-    public float maxCamSize = 25f;
-    private float minCamSize = 18f;
+    public float maxCamSize = 40f;
+    public float minCamSize = 25f;
     private float minCameraHeight = 12f;
-    public float maxDistanceFromZero = 4f;
+    public float maxDistanceXFromZero = 4f;
+    public float maxDistanceYFromZero = 20f;
     private float buffer = 4f;
     private float offsetUp = 0f;
 
@@ -113,10 +114,7 @@ public class CameraController : MonoBehaviour
     void MeanOfPositions()
     {
         positionSum = Vector2.zero;
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
-        {
-            positionSum += GameManager.Instance.gmPlayers[i].transform.position;
-        }
+
         
         // Checks to see if there is a target manager associated and if there are targets to look for
         if(GameManager.Instance.gmTargetManager != null)
@@ -134,9 +132,9 @@ public class CameraController : MonoBehaviour
         {
             targetsExist = false;
         }
+        int targetCount = 0;
         if (considerTargets && targetsExist)
         {
-            int targetCount = 0;
             for (int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
             {
                 if (!GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).isHit)
@@ -145,17 +143,26 @@ public class CameraController : MonoBehaviour
                     targetCount++;
                 }
             }
-            meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targetCount);
+            //meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targetCount);
+            meanPosition = positionSum / targetCount;
+            positionSum = Vector2.zero;
         }
         else
         {
-            meanPosition = positionSum / (GameManager.Instance.TotalNumberofPlayers);
+            //meanPosition = positionSum / (GameManager.Instance.TotalNumberofPlayers);
         }
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        {
+            positionSum += GameManager.Instance.gmPlayers[i].transform.position;
+        }
+        meanPosition = positionSum / GameManager.Instance.TotalNumberofPlayers;
+
 
         if (GameManager.Instance.gmBalls[0] != null)
         {
             meanPosition = (meanPosition + GameManager.Instance.gmBalls[0].transform.position) / 2;
         }
+
     }
 
     void FindPanning()
@@ -234,13 +241,17 @@ public class CameraController : MonoBehaviour
         meanPosition.y = Mathf.Max(meanPosition.y, minCameraHeight);
         if (meanPosition.x > 0)
         {
-            meanPosition.x = Mathf.Min(meanPosition.x, maxDistanceFromZero);
+            meanPosition.x = Mathf.Min(meanPosition.x, maxDistanceXFromZero);
         }
         else
         {
-            meanPosition.x = Mathf.Max(meanPosition.x, -maxDistanceFromZero);
+            meanPosition.x = Mathf.Max(meanPosition.x, -maxDistanceXFromZero);
         }
-		Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime*smoothing));
+        if (meanPosition.y > 0)
+        {
+            meanPosition.y = Mathf.Min(meanPosition.y, maxDistanceYFromZero);
+        }
+        Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime * smoothing));
 
         myLerp.z = currentPos.z;
         transform.position = myLerp;
