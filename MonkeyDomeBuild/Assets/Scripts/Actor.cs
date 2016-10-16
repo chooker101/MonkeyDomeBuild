@@ -64,7 +64,7 @@ public class Actor : MonoBehaviour
     protected float dashingTime = 0.6f;
     protected float dashForce = 40f;
     protected float smackImpulse = 15f;
-    protected float disableInputTime = .5f;
+    protected float disableInputTime = 2f;
 
     protected bool isCharging = false;
     protected bool canBeInSlowMotion = true;
