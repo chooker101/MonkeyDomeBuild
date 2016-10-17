@@ -82,7 +82,7 @@ public class PreGameTimer : MonoBehaviour
                 {
                     //pregameTimer = 0;
                     gameState = "game";
-                    SceneManager.LoadScene("testingroom");
+                    SceneManager.LoadScene("mb_level02_v2");
                     Destroy(newSpinner, 1f);
                 }
             }

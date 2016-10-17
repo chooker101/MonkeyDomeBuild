@@ -5157,9 +5157,9 @@ MonoBehaviour:
   killShake: 8
   shaking: 0
   smoothing: 3
-  maxCamSize: 25
-  minCamSize: 25
-  maxDistanceXFromZero: 4
+  maxCamSize: 35
+  minCamSize: 20
+  maxDistanceXFromZero: 8
   maxDistanceYFromZero: 20
   considerTargets: 1
 --- !u!1 &1494743288
@@ -6703,7 +6703,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 466396, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 7.77
+      value: 9.28
       objectReference: {fileID: 0}
     - target: {fileID: 466396, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
       propertyPath: m_LocalPosition.z
