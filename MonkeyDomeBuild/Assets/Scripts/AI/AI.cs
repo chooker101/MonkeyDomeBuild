@@ -168,7 +168,7 @@ public class AI : Actor
 				}
 			}
 		}
-		else if(currEndTarget.y < cache_tf.position.y - (myCollider.size.y - myCollider.offset.y))
+		else if(currEndTarg.y < cache_tf.position.y - (myCollider.size.y - myCollider.offset.y))
 		{
 			if(isAtTargetX)
 			{
