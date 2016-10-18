@@ -127,63 +127,58 @@ public class AI : Actor
 			canJump = true;
 		}
 
-		if (characterType is Monkey) //TODO Monkey Move Logic
+		xInput = (currEndTarg - cache_tf.position).normalized.x;
+		
+		if (currEndTarg.y > cache_tf.position.y - (myCollider.size.y - myCollider.offset.y) - 0.5f)
 		{
-			
-			xInput = (currEndTarg - cache_tf.position).normalized.x;
-			
-			if (currEndTarg.y > cache_tf.position.y - (myCollider.size.y - myCollider.offset.y) - 0.5f)
+			if (isAtTargetX)
 			{
-				if (isAtTargetX)
-				{
-					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
-					dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
-					currEndTarg.x = dirmult;
-					currEndTarg.y = cache_tf.position.y;
-				}
-				else
-				{
-					if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
-					{
-						if (canJump && !IsInAir)
-						{
-							xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
-							if (xInput <= 1.0f && xInput >= -1.0f)
-							{
-								GameManager.Instance.gmInputs[playerIndex].mJump = true;
-								canJump = false;
-								StartCoroutine(RealisticInput());
-							}
-						}
-					}
-					else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
-					{
-						if (canJump && !IsInAir)
-						{
-							xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
-							if (xInput <= 1.0f && xInput >= -1.0f)
-							{
-								GameManager.Instance.gmInputs[playerIndex].mJump = true;
-								canJump = false;
-								StartCoroutine(RealisticInput());
-							}
-						}
-					}
-				}
+				float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+				dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
+				currEndTarg.x = dirmult;
+				currEndTarg.y = cache_tf.position.y;
 			}
 			else
 			{
-				if(isAtTargetX)
+				if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
 				{
-
+					if (canJump && !IsInAir)
+					{
+						xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+						if (xInput <= 1.0f && xInput >= -1.0f)
+						{
+							GameManager.Instance.gmInputs[playerIndex].mJump = true;
+							canJump = false;
+							StartCoroutine(RealisticInput());
+						}
+					}
+				}
+				else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
+				{
+					if (canJump && !IsInAir)
+					{
+						xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+						if (xInput <= 1.0f && xInput >= -1.0f)
+						{
+							GameManager.Instance.gmInputs[playerIndex].mJump = true;
+							canJump = false;
+							StartCoroutine(RealisticInput());
+						}
+					}
 				}
 			}
-			GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
 		}
-		else //TODO Gorilla Move Logic
+		else if(currEndTarget.y < cache_tf.position.y - (myCollider.size.y - myCollider.offset.y))
 		{
-
+			if(isAtTargetX)
+			{
+				float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+				currEndTarg.x = currEndTargBound.x + 0.5f * dirmult;
+				currEndTarg.y = currEndTargBound.y;
+			}
 		}
+		GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
+		
 		return currentState;
 	}
 
