@@ -178,7 +178,7 @@ GameObject:
   - 61: {fileID: 48131269}
   m_Layer: 8
   m_Name: Platform
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1416,7 +1416,7 @@ GameObject:
   - 61: {fileID: 485665927}
   m_Layer: 8
   m_Name: Platform
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1916,7 +1916,7 @@ GameObject:
   - 61: {fileID: 875828807}
   m_Layer: 8
   m_Name: Platform
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2341,7 +2341,7 @@ GameObject:
   - 61: {fileID: 1113420537}
   m_Layer: 8
   m_Name: Platform
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2886,6 +2886,10 @@ MonoBehaviour:
   killShake: 8
   shaking: 0
   smoothing: 3
+  maxCamSize: 40
+  minCamSize: 25
+  maxDistanceXFromZero: 4
+  maxDistanceYFromZero: 20
   considerTargets: 0
 --- !u!1001 &1531599080
 Prefab:
@@ -2955,7 +2959,7 @@ GameObject:
   - 61: {fileID: 1551413347}
   m_Layer: 8
   m_Name: Platform
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -1955,7 +1955,7 @@ GameObject:
   - 61: {fileID: 569678155}
   m_Layer: 8
   m_Name: Floor (1)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3170,7 +3170,7 @@ GameObject:
   - 61: {fileID: 871054946}
   m_Layer: 8
   m_Name: Floor (18)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4884,7 +4884,9 @@ MonoBehaviour:
   shaking: 0
   smoothing: 3
   maxCamSize: 60
-  maxDistanceFromZero: 8
+  minCamSize: 25
+  maxDistanceXFromZero: 4
+  maxDistanceYFromZero: 20
   considerTargets: 1
 --- !u!1 &1497340032
 GameObject:
@@ -5223,7 +5225,7 @@ GameObject:
   - 61: {fileID: 1757418603}
   m_Layer: 8
   m_Name: Floor (16)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

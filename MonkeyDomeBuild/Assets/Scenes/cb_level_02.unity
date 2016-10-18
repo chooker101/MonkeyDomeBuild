@@ -3339,7 +3339,7 @@ GameObject:
   - 61: {fileID: 820027696}
   m_Layer: 8
   m_Name: Platform mid mid (11)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3469,7 +3469,7 @@ GameObject:
   - 61: {fileID: 830437201}
   m_Layer: 8
   m_Name: Platform mid mid (12)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4391,7 +4391,7 @@ GameObject:
   - 61: {fileID: 1042269108}
   m_Layer: 8
   m_Name: Platform mid mid (17)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4683,7 +4683,7 @@ GameObject:
   - 61: {fileID: 1162497539}
   m_Layer: 8
   m_Name: Platform mid mid (18)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4917,7 +4917,7 @@ GameObject:
   - 61: {fileID: 1322647673}
   m_Layer: 8
   m_Name: Platform mid mid (13)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5143,7 +5143,7 @@ GameObject:
   - 61: {fileID: 1407868562}
   m_Layer: 8
   m_Name: Platform mid mid (15)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5436,6 +5436,10 @@ Prefab:
     - target: {fileID: 11485236, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
       propertyPath: targetAxis
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11485236, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
+      propertyPath: targetType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
@@ -5736,7 +5740,9 @@ MonoBehaviour:
   shaking: 0
   smoothing: 3
   maxCamSize: 60
-  maxDistanceFromZero: 12
+  minCamSize: 25
+  maxDistanceXFromZero: 4
+  maxDistanceYFromZero: 20
   considerTargets: 1
 --- !u!1 &1507620953
 GameObject:
@@ -5904,7 +5910,7 @@ GameObject:
   - 61: {fileID: 1512677706}
   m_Layer: 8
   m_Name: Platform mid mid (14)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6209,7 +6215,7 @@ GameObject:
   - 61: {fileID: 1758762061}
   m_Layer: 8
   m_Name: Platform mid mid (20)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6579,7 +6585,7 @@ GameObject:
   - 61: {fileID: 1915059960}
   m_Layer: 8
   m_Name: Platform mid mid (16)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6939,7 +6945,7 @@ GameObject:
   - 61: {fileID: 2034475087}
   m_Layer: 8
   m_Name: Platform mid mid (19)
-  m_TagString: Floor
+  m_TagString: Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
