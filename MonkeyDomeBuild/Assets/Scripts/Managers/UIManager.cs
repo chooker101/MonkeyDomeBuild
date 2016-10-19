@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
                         GameManager.Instance.gmRecordKeeper.playerGorilla = -1;
                     }
                 }
-                SceneManager.LoadScene("PregameRoom");
+                SceneManager.LoadScene("VictoryRoom");
             }
         }
 
