@@ -21,7 +21,7 @@ public class ShotClock : MonoBehaviour
         //float time = 8f - GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetCurrentShotClockTime();
         float time = GameManager.Instance.gmShotClockManager.ShotClockTime - GameManager.Instance.gmShotClockManager.ShotClockCount;
         if (time < 0) time = 0f;
-        shotClock.text = Mathf.Round(time).ToString();
+        shotClock.text = time.ToString("F2");
         //Debug.Log(time);
     }
 }

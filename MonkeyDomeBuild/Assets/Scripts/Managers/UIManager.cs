@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour
         if (noTime == false)
         {
             matchTimeText.text = // time of the match left
-       matchTime.ToString("F2");
+       matchTime.ToString("F0");
         }
         else
             matchTimeText.text = "∞";

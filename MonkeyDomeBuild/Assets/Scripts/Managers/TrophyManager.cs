@@ -27,13 +27,14 @@ public class PlayerTrophyStats
 
 public class TrophyManager : MonoBehaviour
 {
+    private int maxPlayers = 5;
     // list for each stat, each stat will have a function that will add it
 
     private static List<PlayerTrophyStats> playerTrophyStats = new List<PlayerTrophyStats>();
 
     void Start()
     {
-        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for(int i = 0; i < maxPlayers; i++)
         {
             playerTrophyStats.Add(new PlayerTrophyStats());
         }
