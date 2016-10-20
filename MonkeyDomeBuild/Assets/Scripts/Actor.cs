@@ -40,9 +40,10 @@ public class Actor : MonoBehaviour
     public bool canCharge = false;
     public float holdingCatchCount = 0f;
     protected float holdCount = 0;
-    protected float holdTime = 3f;
+    protected float holdTime = 1f;
+
     public float maxChargeCount = 10f;
-    public float chargePerSec = 10f;
+    public float chargePerSec = 15f;
     public float chargeThrowRequireCount = 5f;
     public Animator animator;
     public SpriteRenderer spriteRenderer;
@@ -69,11 +70,9 @@ public class Actor : MonoBehaviour
     protected float disableInputTime = 2f;
 
     protected bool isCharging = false;
-    protected bool canBeInSlowMotion = true;
     protected bool cantHoldAnymore = false;
     protected bool startSlowMo = false;
-    protected float slowMoTime = 2f;
-    protected float slowMoTimeScale = 0.2f;
+    protected float slowMoTimeScale = 0.25f;
     protected float slowMoCount = 0;
 
     public float speedMultiplier = 1f;
@@ -251,32 +250,6 @@ public class Actor : MonoBehaviour
             if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
-                /*
-                if (FindObjectOfType<PreGameTimer>() == null)
-                {
-                    if (Time.timeScale == 1f && canBeInSlowMotion)
-                    {
-                        canBeInSlowMotion = false;
-                        startSlowMo = true;
-                    }
-                }
-                if (startSlowMo)
-                {
-                    slowMoCount += Time.unscaledDeltaTime;
-                    if (slowMoCount < slowMoTime * 0.8f)
-                    {
-                        Time.timeScale = Mathf.Lerp(Time.timeScale, slowMoTimeScale, Time.unscaledDeltaTime * 5f);
-                    }
-                    else if(slowMoCount < slowMoTime)
-                    {
-                        Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.unscaledDeltaTime * 5f);
-                    }
-                    else
-                    {
-                        cantHoldAnymore = true;
-                    }
-                }
-                */
                 if (!startSlowMo)
                 {
                     startSlowMo = true;
@@ -731,15 +704,8 @@ public class Actor : MonoBehaviour
         if (preGameTimer != null)
         {
             preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
-            Debug.Log("Actor: gorillaSmash = true");
+            //Debug.Log("Actor: gorillaSmash = true");
         }
-    }
-    public void ResetTimeScale()
-    {
-        Time.timeScale = 1;
-        startSlowMo = false;
-        canBeInSlowMotion = true;
-        slowMoCount = 0;
     }
     public void CaughtBall(GameObject ball)
     {

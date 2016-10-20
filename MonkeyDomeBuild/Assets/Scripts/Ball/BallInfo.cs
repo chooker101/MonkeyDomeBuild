@@ -210,8 +210,6 @@ public class BallInfo : MonoBehaviour
         }
         lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
         ResetPosition();
-        //timerUp = false;
-        lastThrowMonkey.GetComponent<Actor>().ResetTimeScale();
         Reset();
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
     }
