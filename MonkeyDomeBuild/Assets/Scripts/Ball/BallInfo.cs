@@ -29,7 +29,6 @@ public class BallInfo : MonoBehaviour
 
     public float distanceTravel = 0f;
     public float travelTime = 0f;
-    public float minCalcDistanceVelocity = 10f;
     public float magnitudeOfVelocity = 0f;
     public int numberOfBounce = 0;
     protected bool canBeCatch = true;
@@ -182,6 +181,7 @@ public class BallInfo : MonoBehaviour
         }
         Reset();
         lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
+        GameManager.Instance.gmScoringManager.ResetCombo();
         //ResetPosition();
 
         //timerUp = false;
@@ -210,10 +210,9 @@ public class BallInfo : MonoBehaviour
         }
         lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
         ResetPosition();
-        //timerUp = false;
-        lastThrowMonkey.GetComponent<Actor>().ResetTimeScale();
         Reset();
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
+        GameManager.Instance.gmScoringManager.ResetCombo();
     }
 
     public void BeingCatch(GameObject who)
@@ -232,7 +231,6 @@ public class BallInfo : MonoBehaviour
             canBeCatch = false;
             holdingMonkey = who;
             m_rigid.isKinematic = true;
-            UpdateLastThrowMonkey(who);
             if (Vector3.Distance(who.GetComponent<Actor>().catchCenter.position, transform.position) <= perfectCatchDistance)
             {
                 perfectCatch = true;
@@ -240,8 +238,9 @@ public class BallInfo : MonoBehaviour
             if(SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
             {
                 GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
-                GameManager.Instance.gmTrophyManager.PerformPerfectCatch(lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                GameManager.Instance.gmTrophyManager.PerformPerfectCatch(who.GetComponent<Actor>().playerIndex);
             }
+            UpdateLastThrowMonkey(who);
             ResetScoringStats();
             perfectCatch = false;
             numberOfBounce = 0;
@@ -284,14 +283,8 @@ public class BallInfo : MonoBehaviour
     
     void UpdateTravelDistance()
     {
-        if (holdingMonkey == null && lastThrowMonkey != null)
-        {
-            if(m_rigid.velocity.magnitude > minCalcDistanceVelocity)
-            {
-                distanceTravel += m_rigid.velocity.magnitude * Time.deltaTime;
-            }
-            travelTime += Time.deltaTime;
-        }
+        distanceTravel += m_rigid.velocity.magnitude * Time.deltaTime;
+        travelTime += Time.deltaTime;
     }
 
 	void ResetScoringStats()

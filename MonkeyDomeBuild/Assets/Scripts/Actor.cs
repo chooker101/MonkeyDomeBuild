@@ -39,8 +39,6 @@ public class Actor : MonoBehaviour
 
     public bool canCharge = false;
     public float holdingCatchCount = 0f;
-    protected float holdCount = 0;
-    protected float holdTime = 3f;
     public float maxChargeCount = 10f;
     public float chargePerSec = 10f;
     public float chargeThrowRequireCount = 5f;
@@ -75,8 +73,6 @@ public class Actor : MonoBehaviour
     protected float slowMoTime = 2f;
     protected float slowMoTimeScale = 0.2f;
     protected float slowMoCount = 0;
-
-    public float speedMultiplier = 1f;
 
     public string cType = "";
 
@@ -233,17 +229,10 @@ public class Actor : MonoBehaviour
         }
         if(!beingSmack)
         {
-            if (startSlowMo)
-            {
-                cache_rb.velocity = movement * speedMultiplier;
-            }
-            else
-            {
-                cache_rb.velocity = movement;
-            }
-
+            cache_rb.velocity = movement;
         }
 	}
+
 	public void ThrowCheck()
     {
         if (canCharge)
@@ -251,10 +240,9 @@ public class Actor : MonoBehaviour
             if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
-                /*
                 if (FindObjectOfType<PreGameTimer>() == null)
                 {
-                    if (Time.timeScale == 1f && canBeInSlowMotion)
+                    if (Time.timeScale == 1f && canBeInSlowMotion )
                     {
                         canBeInSlowMotion = false;
                         startSlowMo = true;
@@ -276,37 +264,19 @@ public class Actor : MonoBehaviour
                         cantHoldAnymore = true;
                     }
                 }
-                */
-                if (!startSlowMo)
-                {
-                    startSlowMo = true;
-                }
-                if (startSlowMo)
-                {
-                    speedMultiplier = Mathf.Lerp(speedMultiplier, slowMoTimeScale, Time.deltaTime * 5f);
-                }
                 if (holdingCatchCount < maxChargeCount)
                 {
-                    holdingCatchCount += chargePerSec * Time.deltaTime;
+                    holdingCatchCount += chargePerSec * Time.unscaledDeltaTime;
                 }
                 else
                 {
                     holdingCatchCount = maxChargeCount;
                 }
-                if (holdCount < holdTime)
-                {
-                    holdCount += Time.deltaTime;
-                }
-                else
-                {
-                    holdCount = 0;
-                    cantHoldAnymore = true;
-                }
             }
             else
             {
                 cantHoldAnymore = false;
-                //ResetTimeScale();
+                ResetTimeScale();
                 if (holdingCatchCount > 0f)
                 {
                     float tempThrowForce = characterType.throwForce;
@@ -339,9 +309,6 @@ public class Actor : MonoBehaviour
     }
     public void ReleaseBall()
     {
-        holdCount = 0;
-        speedMultiplier = 1f;
-        startSlowMo = false;
         haveBall = false;
         if (ballHolding != null)
         {
@@ -354,6 +321,7 @@ public class Actor : MonoBehaviour
             Time.timeScale = 1;
         }
     }
+
     public bool RayCast(int direction)
     {
         bool hit = false;
@@ -366,7 +334,7 @@ public class Actor : MonoBehaviour
             Vector2 checkPos = transform.position;
             checkPos.x = falloff;
             hitInfo = Physics2D.Raycast(checkPos, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
-            Debug.DrawLine(checkPos, checkPos + Vector2.up * direction);
+            //Debug.DrawLine(checkPos, checkPos + Vector2.up * direction);
             if (hitInfo.collider != null)
             {
                 hit = true;
@@ -374,6 +342,7 @@ public class Actor : MonoBehaviour
         }
         return hit;
     }
+
     public bool RayCastSide(float leftOrRight)
     {
         // right = 1    left = -1
@@ -397,7 +366,7 @@ public class Actor : MonoBehaviour
             checkPosStart.y = transform.position.y - (cachebox.size.y / 2 - cachebox.offset.y) * transform.localScale.y;
             Vector2 tempV = checkPosStart;
             tempV.y += (cachebox.size.y * transform.localScale.y) + 0.1f;
-            Debug.DrawLine(checkPosStart, tempV);
+            //Debug.DrawLine(checkPosStart, tempV);
             hitInfo = Physics2D.Raycast(checkPosStart, Vector2.up, (cachebox.size.y * transform.localScale.y) + 0.1f, layerMask);
             if (hitInfo.collider != null)
             {
@@ -414,6 +383,7 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
+
     public void Aim()
     {
         if (isCharging)
@@ -465,10 +435,10 @@ public class Actor : MonoBehaviour
                         if (p is Monkey)
                         {
                             //knock both player off vine for now
-                            if(GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing ||
-                                !GameManager.Instance.gmPlayers[i].GetComponent<Player>().IsInAir)
+                            if(GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing ||
+                                !GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsInAir)
                             {
-                                GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
+                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing = false;
                                 GameManager.Instance.gmPlayers[i].GetComponent<Rigidbody2D>().isKinematic = false;
                                 GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput();
                                 if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
@@ -493,6 +463,7 @@ public class Actor : MonoBehaviour
             }
         }
     }
+
     void OnCollisionStay2D(Collision2D other)
     {
         if (characterType is Gorilla)
@@ -503,12 +474,9 @@ public class Actor : MonoBehaviour
             }
         }
     }
+
     protected void KnockOffMonkey(GameObject monkey)
     {
-        if (!monkey.GetComponent<Actor>().DisableInput)
-        {
-            GameManager.Instance.gmTrophyManager.KnockDowns(playerIndex);
-        }
         monkey.GetComponent<Actor>().DisableInput = true;
         monkey.GetComponent<Actor>().InvokeEnableInput();
 		if (monkey.GetComponent<Actor>().IsHoldingBall) 
@@ -529,19 +497,23 @@ public class Actor : MonoBehaviour
         }
         monkey.GetComponent<Rigidbody2D>().AddForce(dir * smackImpulse, ForceMode2D.Impulse);
     }
+
     public void TempDisableInput()
     {
         DisableInput = true;
         InvokeEnableInput();
     }
+
     public void InvokeEnableInput()
     {
         Invoke("ResetBeingSmack", disableInputTime);
     }
+
     protected void ResetBeingSmack()
     {
         DisableInput = false;
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Floor"))
@@ -598,11 +570,11 @@ public class Actor : MonoBehaviour
                 Destroy(other.gameObject);
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
-                GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
                 GameManager.Instance.gmAudienceManager.HitByPoop(playerIndex);
             }
         }
     }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
@@ -631,20 +603,24 @@ public class Actor : MonoBehaviour
                 cache_rb.gravityScale = 2;
         }
     }
+
     void OnTriggerStay2D(Collider2D other)
     {
         OnTriggerEnter2D(other);
     }
+
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
             IncrementCharacterInc(incAmount);
     }
+
     public void ReactionToPoop(float incAmount)
     {
         if (Mathf.Abs(characterInc) < maxminInc)
             IncrementCharacterInc(-incAmount);
     }
+
     protected void IncrementCharacterInc(float inc)
     {
         characterInc += inc;
@@ -683,6 +659,7 @@ public class Actor : MonoBehaviour
             monkeyCrown.SetActive(false);
         }
     }
+
 	public void UpdateColour()
     {
         GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.gmRecordKeeper.colourPlayers[playerIndex];
@@ -736,6 +713,7 @@ public class Actor : MonoBehaviour
     }
     public void ResetTimeScale()
     {
+        if(GameManager.Instance.gmPauseManager.isGamePaused == false)
         Time.timeScale = 1;
         startSlowMo = false;
         canBeInSlowMotion = true;

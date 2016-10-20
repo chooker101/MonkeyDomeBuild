@@ -22,15 +22,16 @@ public class ScoringManager : MonoBehaviour
 
     //private BallInfo _ball = null;
     public static Dictionary<WhichPlayer, int> playerScores = new Dictionary<WhichPlayer, int>();
- 
 
-    private float minDistanceTravel = 30f;
+    public int throwCombo = 0;
+
     private float longThrowDistance = 70f;
     private float maxTravelTime = 8f;
     private int longThrowMaxBounce = 8;
     private int minBounce = 3;
     private int maxBounce = 6;
 
+    private int throwComboInc = 5;
     private int catchScore = 5;
     private int perfectCatchScore = 8;
     private int passScore = 3;
@@ -119,11 +120,9 @@ public class ScoringManager : MonoBehaviour
         {
             if (thrower.GetInstanceID() != catcher.GetInstanceID())
             {
-                if (distanceTravel > minDistanceTravel && travelTime < maxTravelTime)
-                {
-                    scoreGetThrower += passScore;
-                    scoreGetCatcher += perfectCatch ? perfectCatchScore : catchScore;
-                }
+                scoreGetThrower += GetPassScore();
+                Debug.Log(scoreGetThrower);
+                scoreGetCatcher += perfectCatch ? perfectCatchScore : catchScore;
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
                 {
                     scoreGetThrower += longThrowScore;
@@ -141,11 +140,12 @@ public class ScoringManager : MonoBehaviour
                     {
                         scoreGetCatcher += catchInAirScore;
                     }
-                    FindObjectOfType<ScoreVisualizer>().UpdateScore(thrower.GetComponent<Actor>().playerIndex, GetScore(thrower.GetComponent<Actor>().playerIndex), scoreGetThrower, "Successful Throw");
-                    FindObjectOfType<ScoreVisualizer>().UpdateScore(catcher.GetComponent<Actor>().playerIndex, GetScore(catcher.GetComponent<Actor>().playerIndex), scoreGetCatcher, "Successful Catch");
-                    AddScore(thrower.GetComponent<Actor>().playerIndex, scoreGetThrower);
-                    AddScore(catcher.GetComponent<Actor>().playerIndex, scoreGetCatcher);
                 }
+                FindObjectOfType<ScoreVisualizer>().UpdateScore(thrower.GetComponent<Actor>().playerIndex, GetScore(thrower.GetComponent<Actor>().playerIndex), scoreGetThrower, "Successful Throw");
+                FindObjectOfType<ScoreVisualizer>().UpdateScore(catcher.GetComponent<Actor>().playerIndex, GetScore(catcher.GetComponent<Actor>().playerIndex), scoreGetCatcher, "Successful Catch");
+                AddScore(thrower.GetComponent<Actor>().playerIndex, scoreGetThrower);
+                AddScore(catcher.GetComponent<Actor>().playerIndex, scoreGetCatcher);
+                throwCombo++;
             }
         }
     }
@@ -192,6 +192,12 @@ public class ScoringManager : MonoBehaviour
         FindObjectOfType<ScoreVisualizer>().UpdateScore(gorilla.GetComponent<Actor>().playerIndex, GetScore(gorilla.GetComponent<Actor>().playerIndex), switchScore, "Intercept");
         AddScore(gorilla.GetComponent<Actor>().playerIndex, switchScore);
     }
+    int GetPassScore()
+    {
+        int score = 0;
+        score = passScore + throwCombo * throwComboInc;
+        return score;
+    }
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey, GameObject ball)
     {
         //Debug.Log("intercetp");
@@ -208,8 +214,10 @@ public class ScoringManager : MonoBehaviour
             AddScore(monkeyIndex, -gorillaInterceptScore);
         }*/
         //AddScore(gorilla.GetComponent<Actor>().playerIndex, interceptScore);
+        throwCombo = 0;
         SwitchingScore(gorilla, ball);
     }
+
     public void HitTargetScore(BallInfo ball)
     {
         int monkeyIndex = ball.GetLastThrowMonkey().GetComponent<Actor>().playerIndex;
@@ -234,6 +242,10 @@ public class ScoringManager : MonoBehaviour
         }
         FindObjectOfType<ScoreVisualizer>().UpdateScore(monkeyIndex, GetScore(monkeyIndex), score, "Hit Target");
         AddScore(monkeyIndex, score);
+    }
+    public void ResetCombo()
+    {
+        throwCombo = 0;
     }
 
 }
