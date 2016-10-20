@@ -660,7 +660,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-	protected void UpdateColour()
+	public void UpdateColour()
     {
         GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.gmRecordKeeper.colourPlayers[playerIndex];
     }
