@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.gmGameOptionsManager.UIManager = this;
 
 
-        Debug.Log(this.name);
+        //Debug.Log(this.name);
     
 		if (FindObjectOfType<UIManager>() != GameManager.Instance.gmUIManager)
 			GameManager.Instance.gmUIManager = FindObjectOfType<UIManager>();
