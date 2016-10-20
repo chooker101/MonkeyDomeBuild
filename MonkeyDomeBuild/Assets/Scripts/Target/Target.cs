@@ -157,6 +157,7 @@ public class Target : MonoBehaviour
                 targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
                 targetManager.sequenceIndex++;
                 targetManager.hitSum++;
+                GameManager.Instance.gmTrophyManager.TargetsHit(other.GetComponent<BallInfo>().lastThrowMonkey.GetComponent<Actor>().playerIndex);
                 //targetManager.advanceTier = targetManager.CheckRally();
                 if (!isHit)
                 {

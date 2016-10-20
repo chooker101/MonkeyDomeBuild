@@ -55,6 +55,7 @@ public class Monkey : Character
         if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && !callForBall.CallForBallActive && !cacheplayer.IsHoldingBall)
         {
             callForBall.CallForBall();
+            GameManager.Instance.gmTrophyManager.CallsForBall(myPlayer);
         }
     }
 	protected void CatchCheck()

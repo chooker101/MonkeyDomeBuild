@@ -210,8 +210,6 @@ public class BallInfo : MonoBehaviour
         }
         lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
         ResetPosition();
-        //timerUp = false;
-        lastThrowMonkey.GetComponent<Actor>().ResetTimeScale();
         Reset();
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
     }
@@ -232,7 +230,7 @@ public class BallInfo : MonoBehaviour
             canBeCatch = false;
             holdingMonkey = who;
             m_rigid.isKinematic = true;
-            
+            UpdateLastThrowMonkey(who);
             if (Vector3.Distance(who.GetComponent<Actor>().catchCenter.position, transform.position) <= perfectCatchDistance)
             {
                 perfectCatch = true;
@@ -240,9 +238,9 @@ public class BallInfo : MonoBehaviour
             if(SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
             {
                 GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
+                GameManager.Instance.gmTrophyManager.PerformPerfectCatch(lastThrowMonkey.GetComponent<Actor>().playerIndex);
             }
             ResetScoringStats();
-            UpdateLastThrowMonkey(who);
             perfectCatch = false;
             numberOfBounce = 0;
         }

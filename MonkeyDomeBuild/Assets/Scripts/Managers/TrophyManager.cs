@@ -38,6 +38,7 @@ public class TrophyManager : MonoBehaviour
             playerTrophyStats.Add(new PlayerTrophyStats());
         }
     }
+
     public void BananasEaten(int playerIndex)
     {
         playerTrophyStats[playerIndex].bananasEaten++;
@@ -62,11 +63,11 @@ public class TrophyManager : MonoBehaviour
     {
         playerTrophyStats[playerIndex].hitByPoop++;
     }
-    public void AudienceWins(int playerIndex)
+    public void AudienceWins(int playerIndex) // need AudienceManager
     {
         playerTrophyStats[playerIndex].audienceWins++;
     }
-    public void AudienceLosses(int playerIndex)
+    public void AudienceLosses(int playerIndex) // need AudienceManager
     {
         playerTrophyStats[playerIndex].audienceLosses++;
     }
