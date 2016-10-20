@@ -109,7 +109,7 @@ public class PreGameTimer : MonoBehaviour
                     GameManager.Instance.gmScoringManager.p3Score = 0;
 
                 }
-                for(int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; i++)
+                for(int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Count; i++)
                 {
                     GameManager.Instance.gmRecordKeeper.colourPlayers[i] = resetMaterial;
                 }

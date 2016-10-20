@@ -110,7 +110,6 @@ public class Actor : MonoBehaviour
 		Aim();
 		characterType.CHUpdate();
         CheckLeader();
-        UpdateColour();
 	}
 
     void FixedUpdate()
@@ -644,15 +643,9 @@ public class Actor : MonoBehaviour
             monkeyCrown.SetActive(false);
         }
     }
-	protected void UpdateColour()
+	public void UpdateColour()
     {
-        for (int i = 0; i < GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
-        {
-            if (playerIndex == i)
-            {
-                GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers[i];
-            }
-        }
+        GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.gmRecordKeeper.colourPlayers[playerIndex];
     }
 
     protected void AnimationControl()

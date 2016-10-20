@@ -32,9 +32,10 @@ public class ApeSpinner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        angle += spinnerSpeed*Time.deltaTime;
+        
         if(spinnerSpeed > 0)
         {
+            angle += spinnerSpeed * Time.deltaTime;
             spinnerSpeed -= spinnerDecay * Time.deltaTime;
 
             if (pivot.transform.eulerAngles.z < 360 && pivot.transform.eulerAngles.z >= 240)

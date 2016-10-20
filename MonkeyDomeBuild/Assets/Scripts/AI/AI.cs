@@ -61,7 +61,6 @@ public class AI : Actor
 		Aim();
 		characterType.CHUpdate();
 		CheckLeader();
-		UpdateColour();
 	}
 
 	// Update is called once per frame

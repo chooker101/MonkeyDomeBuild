@@ -102,6 +102,10 @@ public class GameManager : MonoBehaviour
 			Instance.gmInputs[(int)PN.P1].mChargeStomp = Input.GetButton("p1_aim/stomp");
 			Instance.gmInputs[(int)PN.P1].mStart = Input.GetButton("p1_start");
 		}
+        else
+        {
+            Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
+        }
 		if (Instance.gmPlayerScripts[(int)PN.P2] != null)
 		{
 			if (Instance.gmPlayerScripts[(int)PN.P2].isPlayer)
@@ -117,7 +121,10 @@ public class GameManager : MonoBehaviour
 				Instance.gmInputs[(int)PN.P2].mStart = Input.GetButton("p2_start");
 			}
 		}
-
+        else
+        {
+            Instance.gmInputs[(int)PN.P2].mJump = Input.GetButtonDown("p2_jump");
+        }
 		if (Instance.gmPlayerScripts[(int)PN.P3] != null)
 		{
 			if (Instance.gmPlayerScripts[(int)PN.P3].isPlayer)
@@ -133,6 +140,10 @@ public class GameManager : MonoBehaviour
 				Instance.gmInputs[(int)PN.P3].mStart = Input.GetButton("p2_start");
 			}
 		}
+        else
+        {
+            Instance.gmInputs[(int)PN.P3].mJump = Input.GetButtonDown("p3_jump");
+        }
         if (Instance.gmPlayerScripts[(int)PN.P4] != null)
         {
             if (Instance.gmPlayerScripts[(int)PN.P4].isPlayer)
@@ -147,6 +158,10 @@ public class GameManager : MonoBehaviour
                 Instance.gmInputs[(int)PN.P4].mChargeStomp = Input.GetButton("p4_aim/stomp");
 				Instance.gmInputs[(int)PN.P4].mStart = Input.GetButton("p2_start");
 			}
+        }
+        else
+        {
+            Instance.gmInputs[(int)PN.P4].mJump = Input.GetButtonDown("p4_jump");
         }
         if (Instance.gmPlayerScripts[(int)PN.P5] != null)
         {
@@ -163,8 +178,11 @@ public class GameManager : MonoBehaviour
 				Instance.gmInputs[(int)PN.P5].mStart = Input.GetButton("p2_start");
 			}
         }
+        else
+        {
+            Instance.gmInputs[(int)PN.P5].mJump = Input.GetButtonDown("p5_jump");
+        }
     }
-
 	public void CreatePlayers()
 	{
 		if (TotalNumberofPlayers > 0)
