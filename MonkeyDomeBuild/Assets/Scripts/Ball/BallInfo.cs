@@ -232,7 +232,7 @@ public class BallInfo : MonoBehaviour
             canBeCatch = false;
             holdingMonkey = who;
             m_rigid.isKinematic = true;
-            
+            UpdateLastThrowMonkey(who);
             if (Vector3.Distance(who.GetComponent<Actor>().catchCenter.position, transform.position) <= perfectCatchDistance)
             {
                 perfectCatch = true;
@@ -243,7 +243,6 @@ public class BallInfo : MonoBehaviour
                 GameManager.Instance.gmTrophyManager.PerformPerfectCatch(lastThrowMonkey.GetComponent<Actor>().playerIndex);
             }
             ResetScoringStats();
-            UpdateLastThrowMonkey(who);
             perfectCatch = false;
             numberOfBounce = 0;
         }

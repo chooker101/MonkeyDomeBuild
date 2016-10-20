@@ -39,6 +39,8 @@ public class Actor : MonoBehaviour
 
     public bool canCharge = false;
     public float holdingCatchCount = 0f;
+    protected float holdCount = 0;
+    protected float holdTime = 3f;
     public float maxChargeCount = 10f;
     public float chargePerSec = 10f;
     public float chargeThrowRequireCount = 5f;
@@ -285,11 +287,20 @@ public class Actor : MonoBehaviour
                 }
                 if (holdingCatchCount < maxChargeCount)
                 {
-                    holdingCatchCount += chargePerSec * Time.unscaledDeltaTime;
+                    holdingCatchCount += chargePerSec * Time.deltaTime;
                 }
                 else
                 {
                     holdingCatchCount = maxChargeCount;
+                }
+                if (holdCount < holdTime)
+                {
+                    holdCount += Time.deltaTime;
+                }
+                else
+                {
+                    holdCount = 0;
+                    cantHoldAnymore = true;
                 }
             }
             else
@@ -328,6 +339,7 @@ public class Actor : MonoBehaviour
     }
     public void ReleaseBall()
     {
+        holdCount = 0;
         speedMultiplier = 1f;
         startSlowMo = false;
         haveBall = false;

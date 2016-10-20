@@ -38,6 +38,7 @@ public class TrophyManager : MonoBehaviour
             playerTrophyStats.Add(new PlayerTrophyStats());
         }
     }
+
     public void BananasEaten(int playerIndex)
     {
         playerTrophyStats[playerIndex].bananasEaten++;
