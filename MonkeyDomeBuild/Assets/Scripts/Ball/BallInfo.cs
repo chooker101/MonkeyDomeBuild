@@ -240,6 +240,7 @@ public class BallInfo : MonoBehaviour
             if(SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
             {
                 GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
+                GameManager.Instance.gmTrophyManager.PerformPerfectCatch(lastThrowMonkey.GetComponent<Actor>().playerIndex);
             }
             ResetScoringStats();
             UpdateLastThrowMonkey(who);

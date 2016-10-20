@@ -471,6 +471,10 @@ public class Actor : MonoBehaviour
     }
     protected void KnockOffMonkey(GameObject monkey)
     {
+        if (!monkey.GetComponent<Actor>().DisableInput)
+        {
+            GameManager.Instance.gmTrophyManager.KnockDowns(playerIndex);
+        }
         monkey.GetComponent<Actor>().DisableInput = true;
         monkey.GetComponent<Actor>().InvokeEnableInput();
 		if (monkey.GetComponent<Actor>().IsHoldingBall) 
@@ -560,6 +564,7 @@ public class Actor : MonoBehaviour
                 Destroy(other.gameObject);
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
+                GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
                 GameManager.Instance.gmAudienceManager.HitByPoop(playerIndex);
             }
         }
