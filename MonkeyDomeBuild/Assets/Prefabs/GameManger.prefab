@@ -924,6 +924,7 @@ MonoBehaviour:
   gmAudienceManager: {fileID: 0}
   gmLevelObjectScript: {fileID: 0}
   gmGameOptionsManager: {fileID: 11492684}
+  gmPauseManager: {fileID: 0}
   noGorilla: 1
 --- !u!114 &11439808
 MonoBehaviour:
@@ -1375,10 +1376,10 @@ MonoBehaviour:
   defaultShotClock: 0
   UIManager: {fileID: 0}
   matchtimeText: {fileID: 11418534}
-  MatchTime: 10
+  MatchTime: 60
   ShotClockManager: {fileID: 0}
   ShottimeText: {fileID: 11415386}
-  ShotClock: 0
+  ShotClock: 8
 --- !u!114 &11497166
 MonoBehaviour:
   m_ObjectHideFlags: 1
