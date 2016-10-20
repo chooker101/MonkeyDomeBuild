@@ -537,6 +537,7 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToBanana(incAmount);
                 Destroy(other.gameObject);
+                GameManager.Instance.gmTrophyManager.BananasEaten(playerIndex);
                 //Audience call for Bananas event
                 if (GameManager.Instance.gmAudienceManager.GetEventActive())
                 {
