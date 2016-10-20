@@ -40,7 +40,7 @@ public class Actor : MonoBehaviour
     public bool canCharge = false;
     public float holdingCatchCount = 0f;
     public float maxChargeCount = 10f;
-    public float chargePerSec = 10f;
+    public float chargePerSec = 15f;
     public float chargeThrowRequireCount = 5f;
     public Animator animator;
     public SpriteRenderer spriteRenderer;
@@ -73,6 +73,10 @@ public class Actor : MonoBehaviour
     protected float slowMoTime = 2f;
     protected float slowMoTimeScale = 0.2f;
     protected float slowMoCount = 0;
+
+    protected float holdCount = 0;
+    protected float holdTime = 1f;
+    protected float speedMultiplier = 1f;
 
     public string cType = "";
 
@@ -229,7 +233,14 @@ public class Actor : MonoBehaviour
         }
         if(!beingSmack)
         {
-            cache_rb.velocity = movement;
+            if (startSlowMo)
+            {
+                cache_rb.velocity = movement * speedMultiplier;
+            }
+            else
+            {
+                cache_rb.velocity = movement;
+            }
         }
 	}
 
@@ -240,43 +251,35 @@ public class Actor : MonoBehaviour
             if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
-                if (FindObjectOfType<PreGameTimer>() == null)
+                if (!startSlowMo)
                 {
-                    if (Time.timeScale == 1f && canBeInSlowMotion )
-                    {
-                        canBeInSlowMotion = false;
-                        startSlowMo = true;
-                    }
+                    startSlowMo = true;
                 }
                 if (startSlowMo)
                 {
-                    slowMoCount += Time.unscaledDeltaTime;
-                    if (slowMoCount < slowMoTime * 0.8f)
-                    {
-                        Time.timeScale = Mathf.Lerp(Time.timeScale, slowMoTimeScale, Time.unscaledDeltaTime * 5f);
-                    }
-                    else if(slowMoCount < slowMoTime)
-                    {
-                        Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.unscaledDeltaTime * 5f);
-                    }
-                    else
-                    {
-                        cantHoldAnymore = true;
-                    }
+                    speedMultiplier = Mathf.Lerp(speedMultiplier, slowMoTimeScale, Time.deltaTime * 5f);
                 }
                 if (holdingCatchCount < maxChargeCount)
                 {
-                    holdingCatchCount += chargePerSec * Time.unscaledDeltaTime;
+                    holdingCatchCount += chargePerSec * Time.deltaTime;
                 }
                 else
                 {
                     holdingCatchCount = maxChargeCount;
                 }
+                if (holdCount < holdTime)
+                {
+                    holdCount += Time.deltaTime;
+                }
+                else
+                {
+                    holdCount = 0;
+                    cantHoldAnymore = true;
+                }
             }
             else
             {
                 cantHoldAnymore = false;
-                ResetTimeScale();
                 if (holdingCatchCount > 0f)
                 {
                     float tempThrowForce = characterType.throwForce;
@@ -309,6 +312,9 @@ public class Actor : MonoBehaviour
     }
     public void ReleaseBall()
     {
+        holdCount = 0;
+        speedMultiplier = 1f;
+        startSlowMo = false;
         haveBall = false;
         if (ballHolding != null)
         {

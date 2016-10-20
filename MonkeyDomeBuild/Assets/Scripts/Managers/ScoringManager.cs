@@ -121,7 +121,6 @@ public class ScoringManager : MonoBehaviour
             if (thrower.GetInstanceID() != catcher.GetInstanceID())
             {
                 scoreGetThrower += GetPassScore();
-                Debug.Log(scoreGetThrower);
                 scoreGetCatcher += perfectCatch ? perfectCatchScore : catchScore;
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
                 {
