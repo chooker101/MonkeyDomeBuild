@@ -74,6 +74,8 @@ public class Actor : MonoBehaviour
     protected float slowMoTimeScale = 0.2f;
     protected float slowMoCount = 0;
 
+    public float speedMultiplier = 1f;
+
     public string cType = "";
 
     public bool DisableInput
@@ -229,7 +231,15 @@ public class Actor : MonoBehaviour
         }
         if(!beingSmack)
         {
-            cache_rb.velocity = movement;
+            if (startSlowMo)
+            {
+                cache_rb.velocity = movement * speedMultiplier;
+            }
+            else
+            {
+                cache_rb.velocity = movement;
+            }
+
         }
 	}
 	public void ThrowCheck()
@@ -239,6 +249,7 @@ public class Actor : MonoBehaviour
             if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
+                /*
                 if (FindObjectOfType<PreGameTimer>() == null)
                 {
                     if (Time.timeScale == 1f && canBeInSlowMotion)
@@ -263,6 +274,15 @@ public class Actor : MonoBehaviour
                         cantHoldAnymore = true;
                     }
                 }
+                */
+                if (!startSlowMo)
+                {
+                    startSlowMo = true;
+                }
+                if (startSlowMo)
+                {
+                    speedMultiplier = Mathf.Lerp(speedMultiplier, slowMoTimeScale, Time.deltaTime * 5f);
+                }
                 if (holdingCatchCount < maxChargeCount)
                 {
                     holdingCatchCount += chargePerSec * Time.unscaledDeltaTime;
@@ -275,7 +295,7 @@ public class Actor : MonoBehaviour
             else
             {
                 cantHoldAnymore = false;
-                ResetTimeScale();
+                //ResetTimeScale();
                 if (holdingCatchCount > 0f)
                 {
                     float tempThrowForce = characterType.throwForce;
@@ -308,6 +328,8 @@ public class Actor : MonoBehaviour
     }
     public void ReleaseBall()
     {
+        speedMultiplier = 1f;
+        startSlowMo = false;
         haveBall = false;
         if (ballHolding != null)
         {
