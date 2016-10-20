@@ -241,7 +241,7 @@ public class Actor : MonoBehaviour
                 isCharging = true;
                 if (FindObjectOfType<PreGameTimer>() == null)
                 {
-                    if (Time.timeScale == 1f && canBeInSlowMotion)
+                    if (Time.timeScale == 1f && canBeInSlowMotion )
                     {
                         canBeInSlowMotion = false;
                         startSlowMo = true;
@@ -697,6 +697,7 @@ public class Actor : MonoBehaviour
     }
     public void ResetTimeScale()
     {
+        if(GameManager.Instance.gmPauseManager.isGamePaused == false)
         Time.timeScale = 1;
         startSlowMo = false;
         canBeInSlowMotion = true;
