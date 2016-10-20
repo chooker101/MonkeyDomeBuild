@@ -233,6 +233,7 @@ public class Actor : MonoBehaviour
             cache_rb.velocity = movement;
         }
 	}
+
 	public void ThrowCheck()
     {
         if (canCharge)
@@ -321,6 +322,7 @@ public class Actor : MonoBehaviour
             Time.timeScale = 1;
         }
     }
+
     public bool RayCast(int direction)
     {
         bool hit = false;
@@ -333,7 +335,7 @@ public class Actor : MonoBehaviour
             Vector2 checkPos = transform.position;
             checkPos.x = falloff;
             hitInfo = Physics2D.Raycast(checkPos, direction * Vector2.up, transform.localScale.y / 2 + 0.07f, layerMask);
-            Debug.DrawLine(checkPos, checkPos + Vector2.up * direction);
+            //Debug.DrawLine(checkPos, checkPos + Vector2.up * direction);
             if (hitInfo.collider != null)
             {
                 hit = true;
@@ -341,6 +343,7 @@ public class Actor : MonoBehaviour
         }
         return hit;
     }
+
     public bool RayCastSide(float leftOrRight)
     {
         // right = 1    left = -1
@@ -364,7 +367,7 @@ public class Actor : MonoBehaviour
             checkPosStart.y = transform.position.y - (cachebox.size.y / 2 - cachebox.offset.y) * transform.localScale.y;
             Vector2 tempV = checkPosStart;
             tempV.y += (cachebox.size.y * transform.localScale.y) + 0.1f;
-            Debug.DrawLine(checkPosStart, tempV);
+            //Debug.DrawLine(checkPosStart, tempV);
             hitInfo = Physics2D.Raycast(checkPosStart, Vector2.up, (cachebox.size.y * transform.localScale.y) + 0.1f, layerMask);
             if (hitInfo.collider != null)
             {
@@ -381,6 +384,7 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
+
     public void Aim()
     {
         if (isCharging)
@@ -432,10 +436,10 @@ public class Actor : MonoBehaviour
                         if (p is Monkey)
                         {
                             //knock both player off vine for now
-                            if(GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing ||
-                                !GameManager.Instance.gmPlayers[i].GetComponent<Player>().IsInAir)
+                            if(GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing ||
+                                !GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsInAir)
                             {
-                                GameManager.Instance.gmPlayers[i].GetComponent<Player>().isClimbing = false;
+                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing = false;
                                 GameManager.Instance.gmPlayers[i].GetComponent<Rigidbody2D>().isKinematic = false;
                                 GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput();
                                 if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
@@ -460,6 +464,7 @@ public class Actor : MonoBehaviour
             }
         }
     }
+
     void OnCollisionStay2D(Collision2D other)
     {
         if (characterType is Gorilla)
@@ -470,6 +475,7 @@ public class Actor : MonoBehaviour
             }
         }
     }
+
     protected void KnockOffMonkey(GameObject monkey)
     {
         monkey.GetComponent<Actor>().DisableInput = true;
@@ -492,19 +498,23 @@ public class Actor : MonoBehaviour
         }
         monkey.GetComponent<Rigidbody2D>().AddForce(dir * smackImpulse, ForceMode2D.Impulse);
     }
+
     public void TempDisableInput()
     {
         DisableInput = true;
         InvokeEnableInput();
     }
+
     public void InvokeEnableInput()
     {
         Invoke("ResetBeingSmack", disableInputTime);
     }
+
     protected void ResetBeingSmack()
     {
         DisableInput = false;
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Floor"))
@@ -564,6 +574,7 @@ public class Actor : MonoBehaviour
             }
         }
     }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
@@ -592,20 +603,24 @@ public class Actor : MonoBehaviour
                 cache_rb.gravityScale = 2;
         }
     }
+
     void OnTriggerStay2D(Collider2D other)
     {
         OnTriggerEnter2D(other);
     }
+
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
             IncrementCharacterInc(incAmount);
     }
+
     public void ReactionToPoop(float incAmount)
     {
         if (Mathf.Abs(characterInc) < maxminInc)
             IncrementCharacterInc(-incAmount);
     }
+
     protected void IncrementCharacterInc(float inc)
     {
         characterInc += inc;
@@ -644,6 +659,7 @@ public class Actor : MonoBehaviour
             monkeyCrown.SetActive(false);
         }
     }
+
 	protected void UpdateColour()
     {
         for (int i = 0; i < GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers.Length; i++)

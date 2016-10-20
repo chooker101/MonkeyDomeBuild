@@ -106,6 +106,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -169,8 +170,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalNumberofPlayers: 0
-  NumberOfPlayersToBuild: 3
-  NumberOfBotsToBuild: 0
+  NumberOfPlayersToBuild: 2
+  NumberOfBotsToBuild: 1
   RandomGorilla: 0
   PlayerGorilla: 0
   gmPlayers:
@@ -189,7 +190,7 @@ MonoBehaviour:
   gmSpawnObject: {fileID: 0}
   gmButtonManager: {fileID: 0}
   gmPlayerPrefab: {fileID: 106386, guid: b2a9f252c215e8c48904586552452670, type: 2}
-  gmPlayerPrefabAI: {fileID: 106386, guid: 96bd6b7a652d68f4788e08e677d91f91, type: 2}
+  gmPlayerPrefabAI: {fileID: 106386, guid: 19b681a6ad7c85b4aa231edc8bc29d1f, type: 2}
   gmBalls: []
   gmUIManager: {fileID: 0}
   gmInputs:

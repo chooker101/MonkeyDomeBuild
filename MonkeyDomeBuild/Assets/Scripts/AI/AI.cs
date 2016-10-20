@@ -12,7 +12,7 @@ public class AI : Actor
 		Move
 	}
 
-	private BoxCollider2D myCollider;
+	public BoxCollider2D myCollider;
 
 	public GameObject tempTarg;
 	public float approxJumpDist;
@@ -31,9 +31,13 @@ public class AI : Actor
 	private float maxJump;
 	private float jumpVelocity;
 	private float xInput;
-	private int count;
+	private int levelCounter;
 	private bool canJump;
 	private bool isAtTargetX;
+	private float centerToFeet;
+	private bool isStuck = false;
+	private float reverseX;
+	private Vector3 calcVar;
 
 	State currentState;
 
@@ -42,11 +46,13 @@ public class AI : Actor
 	{
 		currentState = State.Idle;
 
-		myCollider = GetComponent<BoxCollider2D>();
+		//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
 		tempTarg = GameObject.FindGameObjectWithTag("Ball");
 		canJump = true;
+		centerToFeet = myCollider.size.y * 0.5f;
+		//(myCollider.size.x * 0.5f - myCollider.offset.x);
 
 		CalculateMaxJump();
 		UpdateTarget();
@@ -54,6 +60,7 @@ public class AI : Actor
 
 	void Update()
 	{
+		cType = characterType.ToString();
 		if (GameManager.Instance.gmInputs[playerIndex].mJump)
 		{
 			Jumping();
@@ -71,6 +78,10 @@ public class AI : Actor
 		MovementVelocity();
 		AnimationControl();
 		characterType.CHFixedUpdate();
+		if (IsHoldingBall && ballHolding == null)
+		{
+			ReleaseBall();
+		}
 	}
 
 	void ExecuteState()
@@ -120,65 +131,98 @@ public class AI : Actor
 	State ExecuteMove()
 	{
 		isAtTargetX = CheckClose();
-		if (isAtTargetX && cache_tf.position.y >= currEndTarg.y)
+
+		if (!IsInAir)
 		{
-			UpdateTarget();
-			isAtTargetX = CheckClose();
-			canJump = true;
+			if ((isAtTargetX && (currEndTarg.y > cache_tf.position.y - (centerToFeet + 0.5f) && currEndTarg.y < cache_tf.position.y + (centerToFeet + 0.5f))))
+			{
+				UpdateTarget();
+				isAtTargetX = CheckClose();
+				canJump = true;
+			}
 		}
 
-		xInput = (currEndTarg - cache_tf.position).normalized.x;
-		
-		if (currEndTarg.y > cache_tf.position.y - (myCollider.size.y - myCollider.offset.y) - 0.5f)
+		calcVar = cache_tf.position;
+		calcVar.y += (maxJump - centerToFeet);
+		Debug.DrawLine(cache_tf.position, currEndTarg, Color.red);
+		Debug.DrawLine(cache_tf.position, MoveTarget, Color.blue);
+		Debug.DrawLine(cache_tf.position, calcVar, Color.yellow);
+
+		if (!IsInAir)
 		{
-			if (isAtTargetX)
+			xInput = (currEndTarg - cache_tf.position).normalized.x;
+		}
+
+		if (!IsAtMainTarget())
+		{
+			if (MoveTarget.y > cache_tf.position.y - centerToFeet)
 			{
-				float dirmult = (currEndTargBound - currEndTarg).normalized.x;
-				dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
-				currEndTarg.x = dirmult;
-				currEndTarg.y = cache_tf.position.y;
-			}
-			else
-			{
-				if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
+				if ((isAtTargetX && currEndTarg.y > cache_tf.position.y) && (!IsInAir && currEndTarg.y < (cache_tf.position.y + maxJump - centerToFeet - 1.5f)))
 				{
-					if (canJump && !IsInAir)
+					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+					dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
+					currEndTarg.x = dirmult;
+					currEndTarg.y = cache_tf.position.y;
+				}
+				else
+				{
+					if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
 					{
-						xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
-						if (xInput <= 1.0f && xInput >= -1.0f)
+						if (canJump && !IsInAir)
 						{
-							GameManager.Instance.gmInputs[playerIndex].mJump = true;
-							canJump = false;
-							StartCoroutine(RealisticInput());
+							xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+							if (xInput <= 1.0f && xInput >= -1.0f)
+							{
+								GameManager.Instance.gmInputs[playerIndex].mJump = true;
+								canJump = false;
+								StartCoroutine(RealisticInputJump());
+							}
+						}
+					}
+					else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
+					{
+						if (canJump && !IsInAir)
+						{
+							xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+							if (xInput <= 1.0f && xInput >= -1.0f)
+							{
+								GameManager.Instance.gmInputs[playerIndex].mJump = true;
+								canJump = false;
+								StartCoroutine(RealisticInputJump());
+							}
 						}
 					}
 				}
-				else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
+			}
+			else if (MoveTarget.y < cache_tf.position.y - centerToFeet)
+			{
+				if (isAtTargetX && !IsInAir)
 				{
-					if (canJump && !IsInAir)
-					{
-						xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
-						if (xInput <= 1.0f && xInput >= -1.0f)
-						{
-							GameManager.Instance.gmInputs[playerIndex].mJump = true;
-							canJump = false;
-							StartCoroutine(RealisticInput());
-						}
-					}
+					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+					currEndTarg.x = currEndTargBound.x + (2f + (myCollider.size.x * 0.5f)) * dirmult;
+					currEndTarg.y = currEndTargBound.y;
 				}
 			}
 		}
-		else if(currEndTarg.y < cache_tf.position.y - (myCollider.size.y - myCollider.offset.y))
+
+		if(isStuck)
 		{
-			if(isAtTargetX)
-			{
-				float dirmult = (currEndTargBound - currEndTarg).normalized.x;
-				currEndTarg.x = currEndTargBound.x + 0.5f * dirmult;
-				currEndTarg.y = currEndTargBound.y;
-			}
+			xInput = reverseX;
 		}
+		else if(RayCastSide(xInput / Mathf.Abs(xInput)))
+		{
+			StartCoroutine(RealisticInputX());
+			reverseX = -xInput;
+			isStuck = true;
+		}
+
+		if(xInput < 0.05f && xInput > -0.05f)
+		{
+			xInput = 0.0f;
+		}
+
 		GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
-		
+
 		return currentState;
 	}
 
@@ -190,20 +234,33 @@ public class AI : Actor
 	private void UpdateTarget()
 	{
 		MoveTarget = tempTarg.transform.position;
-		if (!IsInAir)
+		if (!IsAtMainTarget())
 		{
-			FindNearestPlatform(MoveTarget);
-			if (MoveTarget.y > currEndTarg.y)
+			if (MoveTarget.y > cache_tf.position.y - centerToFeet)
 			{
-				count = GameManager.Instance.gmLevelObjectScript.numberOfLevels;
-				while (currEndTarg.y > (cache_tf.position.y + maxJump - (myCollider.size.y - myCollider.offset.y)) || count <= 0)
+				FindNearestPlatform(MoveTarget);
+				if (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)))
 				{
-					FindNearestPlatform(currEndTarg);
-					count--;
+					levelCounter = GameManager.Instance.gmLevelObjectScript.numberOfLevels;
+					while (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)) || levelCounter >= 0)
+					{
+						FindNearestPlatform(currEndTarg);
+						levelCounter--;
+					}
 				}
+				currEndTargBound = FindEdgeOfPlatform(currEndTarg);
 			}
-			currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+			else if (MoveTarget.y <= cache_tf.position.y - centerToFeet)
+			{
+				FindNearestPlatform(MoveTarget);
+				currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+			}
 		}
+	}
+
+	private bool IsAtMainTarget()
+	{
+		return ((cache_tf.position.x < MoveTarget.x + 0.5f && cache_tf.position.x > MoveTarget.x - 0.5f) && (MoveTarget.y > cache_tf.position.y - (centerToFeet + 0.5f) && MoveTarget.y < cache_tf.position.y + (centerToFeet + 0.5f)));
 	}
 
 	private void FindNearestPlatform(Vector3 FinalPos)
@@ -216,7 +273,7 @@ public class AI : Actor
 			position = Vector3.Lerp(cache_tf.position, FinalPos, i);
 			foreach (var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
 			{
-				if (T.transform.position != FinalPos)
+				if (T.transform.position != FinalPos && !((cache_tf.position.x < T.transform.position.x + 0.5f && cache_tf.position.x > T.transform.position.x - 0.5f) && (T.transform.position.y > cache_tf.position.y - (centerToFeet + 0.5f) && T.transform.position.y < cache_tf.position.y + (centerToFeet + 0.5f))))
 				{
 					dist = (T.transform.position - position).magnitude;
 					if (currClosestDist == 0.0f)
@@ -281,9 +338,15 @@ public class AI : Actor
 		approxJumpDist = (jumpVelocity / g) * characterType.movespeed;
 	}
 
-	IEnumerator RealisticInput()
+	IEnumerator RealisticInputJump()
 	{
 		yield return new WaitForEndOfFrame();
 		GameManager.Instance.gmInputs[playerIndex].mJump = false;
+	}
+
+	IEnumerator RealisticInputX()
+	{
+		yield return new WaitForSeconds(1.0f);
+		isStuck = false;
 	}
 }

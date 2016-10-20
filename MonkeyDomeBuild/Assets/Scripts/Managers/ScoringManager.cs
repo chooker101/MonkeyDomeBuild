@@ -210,6 +210,7 @@ public class ScoringManager : MonoBehaviour
         //AddScore(gorilla.GetComponent<Actor>().playerIndex, interceptScore);
         SwitchingScore(gorilla, ball);
     }
+
     public void HitTargetScore(BallInfo ball)
     {
         int monkeyIndex = ball.GetLastThrowMonkey().GetComponent<Actor>().playerIndex;
