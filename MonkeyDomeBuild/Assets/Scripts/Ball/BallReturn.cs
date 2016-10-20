@@ -26,7 +26,7 @@ public class BallReturn : MonoBehaviour
         for (int i = 0; i < balls.Length; i++)
         {
             wasActive[i] = balls[i].activeSelf;
-            for(int o = 0; o < GameManager.Instance.gmRecordKeeper.colourPlayers.Length; o++)
+            for(int o = 0; o < GameManager.Instance.gmRecordKeeper.colourPlayers.Count; o++)
             {
                 Material ball = balls[i].GetComponent<BallInfo>().mySpriteColour;
                 Material player = GameManager.Instance.gmRecordKeeper.colourPlayers[o];

@@ -20,8 +20,15 @@ public class UIManager : MonoBehaviour
     public Text targetTierUI;
     public Text targetsInSequenceUI;
 
-	void Awake()
+    public GameManager GameManager;
+
+    void Awake()
 	{
+        GameManager.Instance.gmGameOptionsManager.UIManager = this;
+
+
+        Debug.Log(this.name);
+    
 		if (FindObjectOfType<UIManager>() != GameManager.Instance.gmUIManager)
 			GameManager.Instance.gmUIManager = FindObjectOfType<UIManager>();
 	}
@@ -29,6 +36,7 @@ public class UIManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        //startMatchTime = GameManager.Instance.gmGameOptionsManager.MatchTime;
         matchTime = startMatchTime;
 	}
 	
@@ -39,7 +47,7 @@ public class UIManager : MonoBehaviour
         {
             if (matchTime > 0)
             {
-                matchTime -= Time.fixedDeltaTime;
+                matchTime -= Time.deltaTime;
             }
             else if (matchTime <= 0)
             {

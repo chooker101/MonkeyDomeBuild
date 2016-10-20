@@ -110,7 +110,6 @@ public class Actor : MonoBehaviour
 		Aim();
 		characterType.CHUpdate();
         CheckLeader();
-        UpdateColour();
 	}
 
     void FixedUpdate()
@@ -243,7 +242,7 @@ public class Actor : MonoBehaviour
                 isCharging = true;
                 if (FindObjectOfType<PreGameTimer>() == null)
                 {
-                    if (Time.timeScale == 1f && canBeInSlowMotion)
+                    if (Time.timeScale == 1f && canBeInSlowMotion )
                     {
                         canBeInSlowMotion = false;
                         startSlowMo = true;
@@ -548,6 +547,7 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToBanana(incAmount);
                 Destroy(other.gameObject);
+                GameManager.Instance.gmTrophyManager.BananasEaten(playerIndex);
                 //Audience call for Bananas event
                 if (GameManager.Instance.gmAudienceManager.GetEventActive())
                 {
@@ -662,13 +662,7 @@ public class Actor : MonoBehaviour
 
 	protected void UpdateColour()
     {
-        for (int i = 0; i < GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers.Length; i++)
-        {
-            if (playerIndex == i)
-            {
-                GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.GetComponent<RecordKeeper>().colourPlayers[i];
-            }
-        }
+        GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.gmRecordKeeper.colourPlayers[playerIndex];
     }
 
     protected void AnimationControl()
@@ -719,6 +713,7 @@ public class Actor : MonoBehaviour
     }
     public void ResetTimeScale()
     {
+        if(GameManager.Instance.gmPauseManager.isGamePaused == false)
         Time.timeScale = 1;
         startSlowMo = false;
         canBeInSlowMotion = true;

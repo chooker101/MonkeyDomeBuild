@@ -4,92 +4,95 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class GameOptionsManager : MonoBehaviour {
-    public bool GameoptionsChanged; 
 
-    public UIManager Matchtime;
+    public bool defaultOptions;
+
+    public float defaultMatchTime;
+    public float defaultShotClock;
+
+
+    public UIManager UIManager;
     public Text matchtimeText;
-    public float tempMatchTime;
+    public float MatchTime;
 
-
-    public ShotClockManager Shotclock;
+    public ShotClockManager ShotClockManager;
     public Text ShottimeText;
-    public float tempShotClock;
+    public  float ShotClock;
 
+    //public GameManager GameManager;
+    //public Text numPlayersText;
+    //public uint tempPlayers;
 
-    public GameManager GameManager;
-    public Text numPlayersText;
-    public uint tempPlayers;
+    void SetTimers()
+    {
+        UIManager.startMatchTime = MatchTime;
+        ShotClockManager.shotClockTime = ShotClock;
+    }
 
     void Awake()
     {
-        Matchtime = UIManager.FindObjectOfType<UIManager>();
+  
 
-        Shotclock = ShotClockManager.FindObjectOfType<ShotClockManager>();
+        ShotClockManager = ShotClockManager.FindObjectOfType<ShotClockManager>();
 
-        GameManager = GameManager.FindObjectOfType<GameManager>();
+        //GameManager = GameManager.FindObjectOfType<GameManager>();
 
 
-        DontDestroyOnLoad(this.gameObject);
+
     }
 	// Use this for initialization
 	void Start () {
-        if (GameoptionsChanged == true)
+        if (defaultOptions == true)
         {
-            Matchtime.startMatchTime = tempMatchTime;
-            Shotclock.shotClockTime = tempShotClock;
-            GameManager.TotalNumberofPlayers = tempPlayers;
-        }
-        else
-        {
-            tempMatchTime = Matchtime.startMatchTime;
-            tempShotClock = Shotclock.shotClockTime;
-            tempPlayers = GameManager.TotalNumberofPlayers;
+            MatchTime = defaultMatchTime;
+            ShotClock = defaultShotClock;
+
+            //GameManager.TotalNumberofPlayers = tempPlayers;
         }
 
-
-            
-
+        UIManager.startMatchTime = MatchTime;
+        ShotClockManager.shotClockTime = ShotClock;
     }
+
+ 
 	
 	// Update is called once per frame
 	void Update () {
-        matchtimeText.text = tempMatchTime.ToString();
-        ShottimeText.text = tempShotClock.ToString();
-        numPlayersText.text = tempPlayers.ToString();
+        matchtimeText.text = MatchTime.ToString();
+        ShottimeText.text = ShotClock.ToString();
+        //numPlayersText.text = tempPlayers.ToString();
 
-        if (GameManager.TotalNumberofPlayers == tempPlayers && tempShotClock == Shotclock.shotClockTime && tempMatchTime == Matchtime.startMatchTime)
-        { GameoptionsChanged = false; }
-        if (GameManager.TotalNumberofPlayers != tempPlayers || tempShotClock != Shotclock.shotClockTime || tempMatchTime != Matchtime.startMatchTime)
-        { GameoptionsChanged = true; }
+ 
 
     }
 
     public void AddMatchClock()
     {
-        if (Matchtime.startMatchTime >= 0f)
-        { Matchtime.noTime = false; }
-        tempMatchTime  += 1;
+        if (UIManager.startMatchTime >= 0f)
+        { UIManager.noTime = false; }
+        MatchTime  += 1;
     }
 
     public void LowerMatchClock()
     {
-        if (tempMatchTime <= 1f)
-        { Matchtime.noTime = true; tempMatchTime = 0f; }
+        if (MatchTime <= 1f)
+        { UIManager.noTime = true; MatchTime = 0f; }
         else
-        tempMatchTime -= 1f;
+        MatchTime -= 1f;
     }
 
     public void AddShotClock()
     {
-        tempShotClock += 1;
+        ShotClock += 1;
     }
 
     public void LowerShotClock()
     {
-        if (tempShotClock > 3f)
-            tempShotClock -= 1;
+        if (ShotClock > 3f)
+            ShotClock -= 1;
     }
 
+    /*
     public void AddPlayers()
     {
         if(GameManager.TotalNumberofPlayers <5)
@@ -101,11 +104,13 @@ public class GameOptionsManager : MonoBehaviour {
         if (tempPlayers > 1)
             tempPlayers -= 1;
     }
+    */
 
   public void restartCurrentScene()
       {
           int scene = SceneManager.GetActiveScene().buildIndex;
           SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        SetTimers();
       }
 
 }

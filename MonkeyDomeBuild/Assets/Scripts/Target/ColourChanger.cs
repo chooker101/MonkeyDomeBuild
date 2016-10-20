@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ColourChanger : MonoBehaviour
 {
     public TargetAxis targetAxis = TargetAxis.OnTop;
-    public int playerTargetNumber = -1;
+    public int playerTargetIndex = -1;
     private int playerTargetNumberRegular = 0;
     public Text targetText;
 
@@ -20,15 +20,15 @@ public class ColourChanger : MonoBehaviour
     private Vector3 targetRot;
     private GameObject target;
     public bool activated = false;
-    public bool canEnableTargetHeadCollider = false;
+    private bool canEnableTargetHeadCollider = false;
 
     // Use this for initialization
     void Start()
     {
         // Fills a list with all current players
         target = transform.FindChild("Pivot").gameObject;
-		myPlayer = GameManager.Instance.gmPlayers[playerTargetNumber];
-        playerTargetNumberRegular = playerTargetNumber + 1;
+		myPlayer = GameManager.Instance.gmPlayers[playerTargetIndex];
+        playerTargetNumberRegular = playerTargetIndex + 1;
         GetComponentInChildren<CircleCollider2D>().enabled = false;
         Init();
         if (GameManager.Instance.TotalNumberofPlayers >= playerTargetNumberRegular)
@@ -40,6 +40,13 @@ public class ColourChanger : MonoBehaviour
     void Update()
     {
         DebugFunction();
+        if (GameManager.Instance.gmInputs[playerTargetIndex].mJump && !activated)
+        {
+            GameManager.Instance.AddPlayer(playerTargetIndex);
+            activated = true;
+            GetComponentInChildren<Collider2D>().enabled = false;
+            TargetSetter();
+        }
         if (Vector3.Distance(target.transform.localEulerAngles, targetRot) > 0.01f)
         {
             target.transform.localRotation = Quaternion.LerpUnclamped(target.transform.localRotation, Quaternion.Euler(targetRot), Time.deltaTime * 10f);
@@ -74,24 +81,15 @@ public class ColourChanger : MonoBehaviour
             {
                 materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
 
-                if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerTargetNumber) // If the player who threw the ball is the one for this target
+                if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerTargetIndex) // If the player who threw the ball is the one for this target
                 {
                     isHit = true;
                     if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().IsHoldingBall)
                     {
                         objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().ReleaseBall();
                     }
-                    for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
-                    {
-                        if (i == myPlayer.GetComponent<Actor>().playerIndex)
-                        {
-							GameManager.Instance.gmRecordKeeper.colourPlayers[i] = materialToApply;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
+                    GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerTargetIndex, materialToApply);
+                    GameManager.Instance.gmPlayers[playerTargetIndex].GetComponent<Actor>().UpdateColour();
                 }
             }
         }
@@ -161,7 +159,7 @@ public class ColourChanger : MonoBehaviour
     {
         bool keyPressed = false;
         bool isHitKeyPressed = false;
-        switch (playerTargetNumber)
+        switch (playerTargetIndex)
         {
             case 0:
                 if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -218,14 +216,15 @@ public class ColourChanger : MonoBehaviour
         {
             if (activated)
             {
-                GameManager.Instance.RemovePlayer(playerTargetNumber);
+                GameManager.Instance.gmRecordKeeper.ResetPlayerMaterial(playerTargetIndex);
+                GameManager.Instance.RemovePlayer(playerTargetIndex);
                 activated = false;
                 GetComponentInChildren<Collider2D>().enabled = false;
                 Reset();
             }
             else
             {
-                GameManager.Instance.AddPlayer(playerTargetNumber);
+                GameManager.Instance.AddPlayer(playerTargetIndex);
                 activated = true;
                 GetComponentInChildren<Collider2D>().enabled = false;
                 TargetSetter();
