@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Actor\Character.cs" />
      <Compile Include="Assets\Scripts\Actor\Gorilla.cs" />
      <Compile Include="Assets\Scripts\Actor\Monkey.cs" />
+     <Compile Include="Assets\Scripts\Actor\ThrowCombo.cs" />
      <Compile Include="Assets\Scripts\Audio\AudioMain.cs" />
      <Compile Include="Assets\Scripts\Audio\AudioPregame.cs" />
      <Compile Include="Assets\Scripts\AudioManager.cs" />
@@ -82,7 +83,9 @@
      <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
      <Compile Include="Assets\Scripts\Managers\VictoryRoomManager.cs" />
      <Compile Include="Assets\Scripts\ParticleReset.cs" />
+     <Compile Include="Assets\Scripts\PartilcleController.cs" />
      <Compile Include="Assets\Scripts\Players\CallForBallReset.cs" />
+     <Compile Include="Assets\Scripts\Players\EffectControl.cs" />
      <Compile Include="Assets\Scripts\Players\GorillaCharge.cs" />
      <Compile Include="Assets\Scripts\Players\Player.cs" />
      <Compile Include="Assets\Scripts\Target\ColourChanger.cs" />
