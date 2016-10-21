@@ -136,6 +136,23 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &162926
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22403162}
+  - 222: {fileID: 22215112}
+  - 114: {fileID: 11456228}
+  m_Layer: 0
+  m_Name: Crown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &178880
 GameObject:
@@ -482,6 +499,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetTime: 1
   callForBall: {fileID: 149728}
+--- !u!114 &11456228
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: e408cdef864ce664ea2a5331e505b65c, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &11460036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -531,7 +575,7 @@ MonoBehaviour:
   chargeThrowRequireCount: 5
   animator: {fileID: 9516646}
   spriteRenderer: {fileID: 21227710}
-  monkeyCrown: {fileID: 157230}
+  monkeyCrown: {fileID: 162926}
   ballCanCatch: {fileID: 0}
   shotPointer: {fileID: 145434}
   catchCenter: {fileID: 472690}
@@ -740,6 +784,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149658}
+--- !u!222 &22215112
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162926}
 --- !u!222 &22221808
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -783,6 +833,24 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!224 &22403162
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162926}
+  m_LocalRotation: {x: 0.0013526784, y: -0.01912764, z: 0.15024784, w: 0.9884624}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0.48259997, y: -2.1438, z: 17.2768}
+  m_Children: []
+  m_Father: {fileID: 22493932}
+  m_RootOrder: 5
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.7000312, y: 57.699947}
+  m_SizeDelta: {x: 50, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22430246
 RectTransform:
   m_ObjectHideFlags: 1
@@ -908,6 +976,7 @@ RectTransform:
   - {fileID: 22450578}
   - {fileID: 22488386}
   - {fileID: 22430246}
+  - {fileID: 22403162}
   m_Father: {fileID: 441348}
   m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 0}
