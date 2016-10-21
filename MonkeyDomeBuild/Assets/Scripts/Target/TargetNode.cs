@@ -9,6 +9,7 @@ public class TargetNode : MonoBehaviour
     public TargetAxis targetAxis = TargetAxis.OnGround;
     public TargetType targetType = TargetType.Static;
     public Transform moveLoc;
+
     void Awake()
     {
         moveLoc = transform.FindChild("MoveLoc");

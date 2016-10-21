@@ -44,4 +44,12 @@ public class RecordKeeper : MonoBehaviour
             colourPlayers[playerIndex] = defaultColour;
         }
     }
+    public Color GetPlayerColour(int playerIndex)
+    {
+        if (playerIndex + 1 > colourPlayers.Count)
+        {
+            InitNewPlayerColour(playerIndex);
+        }
+        return colourPlayers[playerIndex].color;
+    }
 }

@@ -147,7 +147,7 @@ public class Actor : MonoBehaviour
                 GameObject tempParticle = null;
                 if (characterType is Monkey)
                 {
-                    tempParticle = ParticlesManager.Instance.JumpParticle;
+                    //tempParticle = ParticlesManager.Instance.JumpParticle;
                 }
                 if (tempParticle != null)
                 {

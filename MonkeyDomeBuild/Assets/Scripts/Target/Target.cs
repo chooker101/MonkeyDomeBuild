@@ -16,6 +16,7 @@ public class Target : MonoBehaviour
 {
     public bool isHit;
     //private int targetTier;
+    public Transform targetTransform;
     private FullTargetRotator targetActivator;
     private GameObject targetParent;
     private GameObject targetChild;
@@ -30,6 +31,8 @@ public class Target : MonoBehaviour
 
     private GameObject targetHead;
     private Collider2D myCollider;
+
+    public Transform hitParticlePivot;
 
     private Vector3 targetRot;
     private bool canEnableTargetHeadCollider = false;
@@ -59,6 +62,7 @@ public class Target : MonoBehaviour
         isHit = true;
         targetRot = Vector3.zero;
         Init();
+
     }
     void Init()
     {
@@ -77,7 +81,7 @@ public class Target : MonoBehaviour
                 targetRot = new Vector3(270f, 0, 180f);
                 break;
         }
-        transform.localEulerAngles = targetRot;
+        targetTransform.localEulerAngles = targetRot;
     }
     // Update is called once per frame
     void Update()
@@ -95,11 +99,11 @@ public class Target : MonoBehaviour
         {
             UpdateTargetTime();
         }
-        if (Vector3.Distance(transform.localEulerAngles, targetRot) > 0.01f)
+        if (Vector3.Distance(targetTransform.localEulerAngles, targetRot) > 0.01f)
         {
-            transform.localRotation = Quaternion.LerpUnclamped(transform.localRotation, Quaternion.Euler(targetRot), Time.deltaTime * 10f);
+            targetTransform.localRotation = Quaternion.LerpUnclamped(targetTransform.localRotation, Quaternion.Euler(targetRot), Time.deltaTime * 10f);
         }
-        if (Vector3.Distance(transform.localEulerAngles, targetRot) > 0.2f)
+        if (Vector3.Distance(targetTransform.localEulerAngles, targetRot) > 0.2f)
         {
             if (canEnableTargetHeadCollider)
             {
@@ -150,6 +154,23 @@ public class Target : MonoBehaviour
             if (other.GetComponent<BallInfo>().IsBall)
             {
                 //TargetSetter(-1);
+                if (!isHit)
+                {
+                    GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
+                    GameObject particle = ParticlesManager.Instance.TargetHitParticle;
+                    particle.SetActive(true);
+                    particle.transform.position = hitParticlePivot.position;
+                    Vector3 ballPos = other.transform.position;
+                    ballPos.z = 0;
+                    Vector3 pivotPos = hitParticlePivot.position;
+                    pivotPos.z = 0;
+                    Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, (ballPos - pivotPos).normalized);
+                    particle.transform.rotation = Quaternion.Euler(0, 0, targetAng.eulerAngles.z);
+                    particle.GetComponentInChildren<ParticleSystem>().Play();
+                    //hitParticlePivot.localEulerAngles = new Vector3(0, 0, targetAng.eulerAngles.z);
+
+                    //hitParticlePivot.GetComponentInChildren<ParticleSystem>().Play();
+                }
                 Reset();
                 DisableCollider();
                 // isHit = true;
@@ -159,10 +180,6 @@ public class Target : MonoBehaviour
                 targetManager.hitSum++;
                 GameManager.Instance.gmTrophyManager.TargetsHit(other.GetComponent<BallInfo>().lastThrowMonkey.GetComponent<Actor>().playerIndex);
                 //targetManager.advanceTier = targetManager.CheckRally();
-                if (!isHit)
-                {
-                    GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
-                }
                 ResetTarget();
             }
         }

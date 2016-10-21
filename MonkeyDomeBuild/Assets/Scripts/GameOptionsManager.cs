@@ -25,7 +25,7 @@ public class GameOptionsManager : MonoBehaviour {
 
     void SetTimers()
     {
-        UIManager.startMatchTime = MatchTime;
+        //UIManager.startMatchTime = MatchTime;
         ShotClockManager.shotClockTime = ShotClock;
     }
 
@@ -50,7 +50,7 @@ public class GameOptionsManager : MonoBehaviour {
             //GameManager.TotalNumberofPlayers = tempPlayers;
         }
 
-        UIManager.startMatchTime = MatchTime;
+        //UIManager.startMatchTime = MatchTime;
         ShotClockManager.shotClockTime = ShotClock;
     }
 

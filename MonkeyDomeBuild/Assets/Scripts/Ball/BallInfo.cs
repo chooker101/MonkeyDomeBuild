@@ -246,7 +246,15 @@ public class BallInfo : MonoBehaviour
             numberOfBounce = 0;
         }
     }
-
+    public bool IsPerfectCatch(Actor player)
+    {
+        if (Vector3.Distance(player.catchCenter.position, transform.position) <= perfectCatchDistance)
+        {
+            perfectCatch = true;
+            return true;
+        }
+        return false;
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
         

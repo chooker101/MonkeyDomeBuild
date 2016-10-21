@@ -73,6 +73,11 @@ public class Monkey : Character
                         {
                             cacheplayer.ballCanCatch.GetComponent<TrophyInfo>().DisableCollider();
                         }
+                        cacheplayer.GetComponent<EffectControl>().PlayCatchEffect(cacheplayer.ballCanCatch.gameObject);
+                        if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().IsPerfectCatch(cacheplayer))
+                        {
+                            cacheplayer.GetComponent<EffectControl>().PlayPerfectCatchEffect(cacheplayer.ballCanCatch.gameObject);
+                        }
                         cacheplayer.CaughtBall(cacheplayer.ballCanCatch.gameObject);
                         cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
                         cacheplayer.stat_ballGrab++;
@@ -84,7 +89,7 @@ public class Monkey : Character
 
 	public override void Mutate()
 	{
-		
+        cacheplayer.GetComponent<EffectControl>().PlaySwitchEffect();
 		if (cacheplayer.haveBall && cacheplayer.ballHolding != null)
 		{
             cacheplayer.ReleaseBall();

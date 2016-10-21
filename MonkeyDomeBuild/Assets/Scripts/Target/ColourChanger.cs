@@ -9,10 +9,11 @@ public class ColourChanger : MonoBehaviour
     public int playerTargetIndex = -1;
     private int playerTargetNumberRegular = 0;
     public Text targetText;
+    public Transform hitParticlePivot;
 
     //private RecordKeeper recordKeeper;
     //private CircleCollider2D targetCollider;
-    
+
     private GameObject myPlayer = null;
     private GameObject objectHit = null;
     private Material materialToApply;
@@ -80,7 +81,16 @@ public class ColourChanger : MonoBehaviour
             if(objectHit != null)
             {
                 materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
-
+                GameObject particle = ParticlesManager.Instance.TargetHitParticle;
+                particle.SetActive(true);
+                particle.transform.position = hitParticlePivot.position;
+                Vector3 ballPos = other.transform.position;
+                ballPos.z = 0;
+                Vector3 pivotPos = hitParticlePivot.position;
+                pivotPos.z = 0;
+                Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, (ballPos - pivotPos).normalized);
+                particle.transform.rotation = Quaternion.Euler(0, 0, targetAng.eulerAngles.z);
+                particle.GetComponentInChildren<ParticleSystem>().Play();
                 if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerTargetIndex) // If the player who threw the ball is the one for this target
                 {
                     isHit = true;

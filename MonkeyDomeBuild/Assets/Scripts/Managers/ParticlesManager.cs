@@ -5,17 +5,17 @@ using System.Collections.Generic;
 public class ParticlesManager : MonoBehaviour
 {
     private static ParticlesManager myInstance;
-    public GameObject jumpParticlePrefab;
-    private List<GameObject> pooledJumpParticles = new List<GameObject>();
+    public GameObject targetHitEffect;
+    private List<GameObject> pooledTargetHitEffect = new List<GameObject>();
 
     void Awake()
     {
-        int jumpParticlePooledAmount = 10;
-        for(int i = 0; i < jumpParticlePooledAmount; i++)
+        int pooledAmount = 10;
+        for(int i = 0; i < pooledAmount; i++)
         {
-            pooledJumpParticles.Add(Instantiate(jumpParticlePrefab));
-            pooledJumpParticles[i].transform.SetParent(transform);
-            pooledJumpParticles[i].SetActive(false);
+            pooledTargetHitEffect.Add(Instantiate(targetHitEffect));
+            pooledTargetHitEffect[i].transform.SetParent(transform);
+            pooledTargetHitEffect[i].SetActive(false);
         }
     }
     public static ParticlesManager Instance
@@ -33,11 +33,25 @@ public class ParticlesManager : MonoBehaviour
     {
         get
         {
-            for(int i = 0; i < pooledJumpParticles.Count; i++)
+            for(int i = 0; i < pooledTargetHitEffect.Count; i++)
             {
-                if (!pooledJumpParticles[i].activeInHierarchy)
+                if (!pooledTargetHitEffect[i].activeInHierarchy)
                 {
-                    return pooledJumpParticles[i];
+                    return pooledTargetHitEffect[i];
+                }
+            }
+            return null;
+        }
+    }
+    public GameObject TargetHitParticle
+    {
+        get
+        {
+            for (int i = 0; i < pooledTargetHitEffect.Count; i++)
+            {
+                if (!pooledTargetHitEffect[i].activeInHierarchy)
+                {
+                    return pooledTargetHitEffect[i];
                 }
             }
             return null;
