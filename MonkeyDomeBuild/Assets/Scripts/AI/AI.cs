@@ -37,6 +37,7 @@ public class AI : Actor
 	private float centerToFeet;
 	private bool isStuck = false;
 	private float reverseX;
+	private bool isEndTargVine = false;
 	private Vector3 calcVar;
 
 	State currentState;
@@ -44,6 +45,7 @@ public class AI : Actor
 	// Use this for initialization
 	void Start()
 	{
+		DontDestroyOnLoad(this.gameObject);
 		currentState = State.Idle;
 
 		//myCollider = GetComponent<BoxCollider2D>();
@@ -147,6 +149,12 @@ public class AI : Actor
 		Debug.DrawLine(cache_tf.position, MoveTarget, Color.blue);
 		Debug.DrawLine(cache_tf.position, calcVar, Color.yellow);
 
+		if((isEndTargVine && cache_tf.position.y >= currEndTargBound.y) && IsInAir)
+		{
+			GameManager.Instance.gmInputs[playerIndex].mJump = true;
+			StartCoroutine(RealisticInputJump());
+		}
+
 		if (!IsInAir)
 		{
 			xInput = (currEndTarg - cache_tf.position).normalized.x;
@@ -169,25 +177,57 @@ public class AI : Actor
 					{
 						if (canJump && !IsInAir)
 						{
-							xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
-							if (xInput <= 1.0f && xInput >= -1.0f)
+							if (!isEndTargVine)
 							{
-								GameManager.Instance.gmInputs[playerIndex].mJump = true;
-								canJump = false;
-								StartCoroutine(RealisticInputJump());
+								xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+								if (xInput <= 1.0f && xInput >= -1.0f)
+								{
+									GameManager.Instance.gmInputs[playerIndex].mJump = true;
+									canJump = false;
+									StartCoroutine(RealisticInputJump());
+								}
+							}
+							else
+							{
+								if (canJump && !IsInAir)
+								{
+									xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+									if (xInput <= 1.0f && xInput >= -1.0f)
+									{
+										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										canJump = false;
+										StartCoroutine(RealisticInputJump());
+									}
+								}
 							}
 						}
-					}
-					else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
-					{
-						if (canJump && !IsInAir)
+						else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
 						{
-							xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
-							if (xInput <= 1.0f && xInput >= -1.0f)
+							if (!isEndTargVine)
 							{
-								GameManager.Instance.gmInputs[playerIndex].mJump = true;
-								canJump = false;
-								StartCoroutine(RealisticInputJump());
+								if (canJump && !IsInAir)
+								{
+									xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+									if (xInput <= 1.0f && xInput >= -1.0f)
+									{
+										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										canJump = false;
+										StartCoroutine(RealisticInputJump());
+									}
+								}
+							}
+							else
+							{
+								if (canJump && !IsInAir)
+								{
+									xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+									if (xInput <= 1.0f && xInput >= -1.0f)
+									{
+										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										canJump = false;
+										StartCoroutine(RealisticInputJump());
+									}
+								}
 							}
 						}
 					}
@@ -237,21 +277,28 @@ public class AI : Actor
 		{
 			if (MoveTarget.y > cache_tf.position.y - centerToFeet)
 			{
-				FindNearestPlatform(MoveTarget);
+				FindNearestLevelObject(MoveTarget);
 				if (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)))
 				{
 					levelCounter = GameManager.Instance.gmLevelObjectScript.numberOfLevels;
-					while (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)) || levelCounter >= 0)
+					while (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)) && levelCounter > 0)
 					{
-						FindNearestPlatform(currEndTarg);
+						FindNearestLevelObject(currEndTarg);
 						levelCounter--;
 					}
 				}
-				currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+				if (!isEndTargVine)
+				{
+					currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+				}
+				else
+				{
+					currEndTargBound = FindEdgeOfVine(currEndTarg);
+				}
 			}
 			else if (MoveTarget.y <= cache_tf.position.y - centerToFeet)
 			{
-				FindNearestPlatform(MoveTarget);
+				FindNearestLevelObject(MoveTarget);
 				currEndTargBound = FindEdgeOfPlatform(currEndTarg);
 			}
 		}
@@ -262,7 +309,7 @@ public class AI : Actor
 		return ((cache_tf.position.x < MoveTarget.x + 0.5f && cache_tf.position.x > MoveTarget.x - 0.5f) && (MoveTarget.y > cache_tf.position.y - (centerToFeet + 0.5f) && MoveTarget.y < cache_tf.position.y + (centerToFeet + 0.5f)));
 	}
 
-	private void FindNearestPlatform(Vector3 FinalPos)
+	private void FindNearestLevelObject(Vector3 FinalPos)
 	{
 		Vector3 position;
 		currClosestDist = 0.0f;
@@ -274,16 +321,43 @@ public class AI : Actor
 			{
 				if (T.transform.position != FinalPos && !((cache_tf.position.x < T.transform.position.x + 0.5f && cache_tf.position.x > T.transform.position.x - 0.5f) && (T.transform.position.y > cache_tf.position.y - (centerToFeet + 0.5f) && T.transform.position.y < cache_tf.position.y + (centerToFeet + 0.5f))))
 				{
-					dist = (T.transform.position - position).magnitude;
-					if (currClosestDist == 0.0f)
+					if (T.transform.position.y < FinalPos.y)
 					{
-						currClosestDist = dist;
-						currEndTarg = T.transform.position;
+						dist = (T.transform.position - position).magnitude;
+						if (currClosestDist == 0.0f)
+						{
+							currClosestDist = dist;
+							currEndTarg = T.transform.position;
+							isEndTargVine = false;
+						}
+						else if (dist < currClosestDist)
+						{
+							currClosestDist = dist;
+							currEndTarg = T.transform.position;
+							isEndTargVine = false;
+						}
 					}
-					else if (dist < currClosestDist)
+				}
+			}
+			foreach (var Y in GameManager.Instance.gmLevelObjectScript.loVines)
+			{
+				if (Y.transform.position != FinalPos && !((cache_tf.position.x < Y.transform.position.x + 0.5f && cache_tf.position.x > Y.transform.position.x - 0.5f) && (Y.transform.position.y > cache_tf.position.y - (centerToFeet + 0.5f) && Y.transform.position.y < cache_tf.position.y + (centerToFeet + 0.5f))))
+				{
+					if (Y.transform.position.y < FinalPos.y)
 					{
-						currClosestDist = dist;
-						currEndTarg = T.transform.position;
+						dist = (Y.transform.position - position).magnitude;
+						if (currClosestDist == 0.0f)
+						{
+							currClosestDist = dist;
+							currEndTarg = Y.transform.position;
+							isEndTargVine = true;
+						}
+						else if (dist < currClosestDist)
+						{
+							currClosestDist = dist;
+							currEndTarg = Y.transform.position;
+							isEndTargVine = true;
+						}
 					}
 				}
 			}
@@ -306,6 +380,26 @@ public class AI : Actor
 				{
 					result = T.transform.position;
 					result.x += (T.transform.lossyScale.x * 0.5f);
+				}
+			}
+		}
+		return result;
+	}
+
+	private Vector3 FindEdgeOfVine(Vector3 vinePos)
+	{
+		Vector3 result = vinePos;
+		foreach (var Y in GameManager.Instance.gmLevelObjectScript.loVines)
+		{
+			if (vinePos == Y.transform.position)
+			{
+				if(cache_tf.position.y < Y.transform.position.y)
+				{
+					result.y -= (Y.GetComponent<BoxCollider2D>().size.y - 1.0f);
+				}
+				else
+				{
+					result.y += (Y.GetComponent<BoxCollider2D>().size.y - 1.0f);
 				}
 			}
 		}
