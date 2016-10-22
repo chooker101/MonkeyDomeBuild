@@ -39,7 +39,7 @@ public class TrophyManager : MonoBehaviour
             playerTrophyStats.Add(new PlayerTrophyStats());
         }
     }
-
+          
     public void BananasEaten(int playerIndex)
     {
         playerTrophyStats[playerIndex].bananasEaten++;
@@ -73,7 +73,7 @@ public class TrophyManager : MonoBehaviour
         playerTrophyStats[playerIndex].audienceLosses++;
     }
 
-    public int AwardBananasTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int AwardBananasTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;
@@ -89,7 +89,7 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
-    public int PerfectCatchTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int PerfectCatchTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;
@@ -105,7 +105,7 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
-    public int TargetsHitTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int TargetsHitTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;
@@ -121,7 +121,7 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
-    public int BallCallingTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int BallCallingTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;
@@ -137,7 +137,7 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
-    public int PoopTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int PoopTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;
@@ -153,7 +153,7 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
-    public int KnockDownTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int KnockDownTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;
@@ -169,7 +169,7 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
-    public int AudienceWinsTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int AudienceWinsTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;
@@ -185,7 +185,7 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
-    public int AudienceLossesTrophy(List<PlayerTrophyStats> playerTrophyStats)
+    public int AudienceLossesTrophy()
     {
         int winningPlayer = 0;
         int tempHighest = 0;

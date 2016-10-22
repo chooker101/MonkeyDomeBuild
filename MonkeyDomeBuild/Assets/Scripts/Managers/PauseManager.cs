@@ -24,6 +24,7 @@ public class PauseManager : MonoBehaviour
 			{
 				Time.timeScale = 1;
                 pauseUI.SetActive(false);
+                //close ui
 			}
 		}
 	}

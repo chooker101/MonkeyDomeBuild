@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class VictoryRoomManager : MonoBehaviour
 {
     public ScoringManager scoreKeeper;
-    public GameManager gameManager;
+    public GameManager GameManager;
+    public TrophyManager TrophyManager;
 
     public float speed;
     public float heightDeviser;
@@ -35,8 +36,22 @@ public class VictoryRoomManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        scoreKeeper = FindObjectOfType<ScoringManager>();
-        gameManager = FindObjectOfType<GameManager>();
+
+        GameManager = FindObjectOfType<GameManager>();
+        TrophyManager = GameManager.Instance.gmTrophyManager;
+        scoreKeeper = GameManager.Instance.gmScoringManager;
+           
+       
+            /*
+            Debug.Log(TrophyManager.AwardBananasTrophy());
+            Debug.Log(TrophyManager.PerfectCatchTrophy());
+            Debug.Log(TrophyManager.TargetsHitTrophy());
+            Debug.Log(TrophyManager.BallCallingTrophy());
+            Debug.Log(TrophyManager.PoopTrophy());
+            Debug.Log(TrophyManager.KnockDownTrophy());
+             */
+        
+        
 
         p1score = scoreKeeper.p1Score / heightDeviser;
         p2score = scoreKeeper.p2Score / heightDeviser;
@@ -48,15 +63,15 @@ public class VictoryRoomManager : MonoBehaviour
         temp = transform.position;
 
 
-        if( gameManager.TotalNumberofPlayers == 1 )
+        if( GameManager.TotalNumberofPlayers == 1 )
             temp.x = 15f;
-        if( gameManager.TotalNumberofPlayers == 2 )
+        if( GameManager.TotalNumberofPlayers == 2 )
             temp.x = 11;
-        if( gameManager.TotalNumberofPlayers == 3 )
+        if( GameManager.TotalNumberofPlayers == 3 )
             temp.x = 7f;
-        if( gameManager.TotalNumberofPlayers == 4 )
+        if( GameManager.TotalNumberofPlayers == 4 )
             temp.x = 3;
-        if( gameManager.TotalNumberofPlayers == 5 )
+        if( GameManager.TotalNumberofPlayers == 5 )
             temp.x = -1;
 
         transform.position = temp;
@@ -85,10 +100,10 @@ public class VictoryRoomManager : MonoBehaviour
         Podium4.transform.position = Vector3.MoveTowards( Podium4.transform.position, new Vector3( podiumPos4.x, podiumPos4.y + p4score, podiumPos4.z ), speed * Time.deltaTime );
         Podium5.transform.position = Vector3.MoveTowards( Podium5.transform.position, new Vector3( podiumPos5.x, podiumPos5.y + p5score, podiumPos5.z ), speed * Time.deltaTime );
 
-        if( scoreKeeper == null )
-            scoreKeeper = FindObjectOfType<ScoringManager>();
 
-        if( gameManager == null )
-            gameManager = FindObjectOfType<GameManager>();
+        if( GameManager == null )
+            GameManager = FindObjectOfType<GameManager>();
+        if( scoreKeeper == null )
+            scoreKeeper = GameManager.Instance.gmScoringManager;
     }
 }
