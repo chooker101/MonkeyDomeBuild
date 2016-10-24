@@ -2,13 +2,11 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-
-
 public class VictoryRoomManager : MonoBehaviour
 {
-    public ScoringManager scoreKeeper;
-    public GameManager GameManager;
-    public TrophyManager TrophyManager;
+    private ScoringManager scoreKeeper;
+    private GameManager GameManager;
+    private TrophyManager TrophyManager;
 
     public float speed;
     public float heightDeviser;
@@ -33,6 +31,22 @@ public class VictoryRoomManager : MonoBehaviour
     private float p4score;
     private float p5score;
 
+    public GameObject Trophy; 
+    public GameObject[] AwardBananasTrophyPos;
+    public GameObject[] PerfectCatchTrophyPos;
+    public GameObject[] TargetsHitTrophyPos;
+    public GameObject[] BallCallingTrophyPos;
+    public GameObject[] AwardPoopTrophyPos;
+    public GameObject[] KnockDownTrophyPos;
+
+    public int a;
+    public int b;
+    public int c;
+    public int d;
+    public int e;
+    public int f;
+
+
     // Use this for initialization
     void Start()
     {
@@ -40,18 +54,14 @@ public class VictoryRoomManager : MonoBehaviour
         GameManager = FindObjectOfType<GameManager>();
         TrophyManager = GameManager.Instance.gmTrophyManager;
         scoreKeeper = GameManager.Instance.gmScoringManager;
-           
-       
-            /*
-            Debug.Log(TrophyManager.AwardBananasTrophy());
-            Debug.Log(TrophyManager.PerfectCatchTrophy());
-            Debug.Log(TrophyManager.TargetsHitTrophy());
-            Debug.Log(TrophyManager.BallCallingTrophy());
-            Debug.Log(TrophyManager.PoopTrophy());
-            Debug.Log(TrophyManager.KnockDownTrophy());
-             */
-        
-        
+
+        PlaceTrophies();
+        /* 
+       if( GameManager == null )
+       GameManager = FindObjectOfType<GameManager>();
+       if( scoreKeeper == null )
+       scoreKeeper = GameManager.Instance.gmScoringManager;
+        */
 
         p1score = scoreKeeper.p1Score / heightDeviser;
         p2score = scoreKeeper.p2Score / heightDeviser;
@@ -59,51 +69,81 @@ public class VictoryRoomManager : MonoBehaviour
         p4score = scoreKeeper.p4Score / heightDeviser;
         p5score = scoreKeeper.p5Score / heightDeviser;
 
-
         temp = transform.position;
 
-
-        if( GameManager.TotalNumberofPlayers == 1 )
+        if (GameManager.TotalNumberofPlayers == 1)
             temp.x = 15f;
-        if( GameManager.TotalNumberofPlayers == 2 )
+        if (GameManager.TotalNumberofPlayers == 2)
             temp.x = 11;
-        if( GameManager.TotalNumberofPlayers == 3 )
+        if (GameManager.TotalNumberofPlayers == 3)
             temp.x = 7f;
-        if( GameManager.TotalNumberofPlayers == 4 )
+        if (GameManager.TotalNumberofPlayers == 4)
             temp.x = 3;
-        if( GameManager.TotalNumberofPlayers == 5 )
+        if (GameManager.TotalNumberofPlayers == 5)
             temp.x = -1;
 
         transform.position = temp;
 
-
-        Podium1 = GameObject.Find( "Podium1" );
-        Podium2 = GameObject.Find( "Podium2" );
-        Podium3 = GameObject.Find( "Podium3" );
-        Podium4 = GameObject.Find( "Podium4" );
-        Podium5 = GameObject.Find( "Podium5" );
+        Podium1 = GameObject.Find("Podium1");
+        Podium2 = GameObject.Find("Podium2");
+        Podium3 = GameObject.Find("Podium3");
+        Podium4 = GameObject.Find("Podium4");
+        Podium5 = GameObject.Find("Podium5");
 
         podiumPos1 = Podium1.transform.position;
         podiumPos2 = Podium2.transform.position;
         podiumPos3 = Podium3.transform.position;
         podiumPos4 = Podium4.transform.position;
         podiumPos5 = Podium5.transform.position;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        Podium1.transform.position = Vector3.MoveTowards( Podium1.transform.position, new Vector3( podiumPos1.x, podiumPos1.y + p1score, podiumPos1.z ), speed * Time.deltaTime );
-        Podium2.transform.position = Vector3.MoveTowards( Podium2.transform.position, new Vector3( podiumPos2.x, podiumPos2.y + p2score, podiumPos2.z ), speed * Time.deltaTime );
-        Podium3.transform.position = Vector3.MoveTowards( Podium3.transform.position, new Vector3( podiumPos3.x, podiumPos3.y + p3score, podiumPos3.z ), speed * Time.deltaTime );
-        Podium4.transform.position = Vector3.MoveTowards( Podium4.transform.position, new Vector3( podiumPos4.x, podiumPos4.y + p4score, podiumPos4.z ), speed * Time.deltaTime );
-        Podium5.transform.position = Vector3.MoveTowards( Podium5.transform.position, new Vector3( podiumPos5.x, podiumPos5.y + p5score, podiumPos5.z ), speed * Time.deltaTime );
+        Podium1.transform.position = Vector3.MoveTowards(Podium1.transform.position, new Vector3(podiumPos1.x, podiumPos1.y + p1score, podiumPos1.z), speed * Time.deltaTime);
+        Podium2.transform.position = Vector3.MoveTowards(Podium2.transform.position, new Vector3(podiumPos2.x, podiumPos2.y + p2score, podiumPos2.z), speed * Time.deltaTime);
+        Podium3.transform.position = Vector3.MoveTowards(Podium3.transform.position, new Vector3(podiumPos3.x, podiumPos3.y + p3score, podiumPos3.z), speed * Time.deltaTime);
+        Podium4.transform.position = Vector3.MoveTowards(Podium4.transform.position, new Vector3(podiumPos4.x, podiumPos4.y + p4score, podiumPos4.z), speed * Time.deltaTime);
+        Podium5.transform.position = Vector3.MoveTowards(Podium5.transform.position, new Vector3(podiumPos5.x, podiumPos5.y + p5score, podiumPos5.z), speed * Time.deltaTime);
+
+    }
+
+    void PlaceTrophies()
+    {
+        
+        a = TrophyManager.a;
+        GameObject BananaTrophy = (GameObject)Instantiate(Trophy, AwardBananasTrophyPos[a].transform.position, transform.rotation);
+        
 
 
-        if( GameManager == null )
-            GameManager = FindObjectOfType<GameManager>();
-        if( scoreKeeper == null )
-            scoreKeeper = GameManager.Instance.gmScoringManager;
+     
+        b = TrophyManager.b;
+        GameObject CatchTrophy = (GameObject)Instantiate(Trophy, PerfectCatchTrophyPos[b].transform.position, transform.rotation);
+        
+
+     
+        c = TrophyManager.c;
+        GameObject TargetsTrophy = (GameObject)Instantiate(Trophy, TargetsHitTrophyPos[c].transform.position, transform.rotation);
+        
+
+        d = TrophyManager.d;
+        GameObject CallingTrophy = (GameObject)Instantiate(Trophy, BallCallingTrophyPos[d].transform.position, transform.rotation);
+        
+
+        e = TrophyManager.e;
+        GameObject PoopTrophy = (GameObject)Instantiate(Trophy, AwardPoopTrophyPos[e].transform.position, transform.rotation);
+        
+
+     
+        f = TrophyManager.f;
+        GameObject KnockDownTrophy = (GameObject)Instantiate(Trophy, KnockDownTrophyPos[f].transform.position, transform.rotation);
+        
+
+        Debug.Log(a);
+        Debug.Log(b);
+        Debug.Log(c);
+        Debug.Log(d);
+        Debug.Log(e);
+        Debug.Log(f);
     }
 }

@@ -23,6 +23,7 @@ public class PlayerTrophyStats
         audienceWins = 0;
         audienceLosses = 0;
     }
+    
 }
 
 public class TrophyManager : MonoBehaviour
@@ -30,7 +31,15 @@ public class TrophyManager : MonoBehaviour
     private int maxPlayers = 5;
     // list for each stat, each stat will have a function that will add it
 
+    public int a;
+    public int b;
+    public int c;
+    public int d;
+    public int e;
+    public int f;
+
     private static List<PlayerTrophyStats> playerTrophyStats = new List<PlayerTrophyStats>();
+
 
     void Start()
     {
@@ -39,6 +48,7 @@ public class TrophyManager : MonoBehaviour
             playerTrophyStats.Add(new PlayerTrophyStats());
         }
     }
+
           
     public void BananasEaten(int playerIndex)
     {
@@ -201,6 +211,18 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
+
     //TODO determine how many trophies will be awarded in the match
+    public void CheckallWinners()
+    { 
+       a = AwardBananasTrophy();
+       b = PerfectCatchTrophy();
+       c = TargetsHitTrophy();
+       d = BallCallingTrophy();
+       e = PoopTrophy();
+       f = KnockDownTrophy();        
+    }
+
+
 
 }
