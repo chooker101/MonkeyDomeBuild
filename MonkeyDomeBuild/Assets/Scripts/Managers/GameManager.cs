@@ -252,10 +252,12 @@ public class GameManager : MonoBehaviour
 	{
 		return Random.Range(0, (int)TotalNumberofPlayers);
 	}
+
     public void AddBall(GameObject ball)
     {
         gmBalls.Add(ball);
     }
+
     public void AddPlayer(int playerIndex)
     {
         Transform temp = Instance.gmSpawnManager.SpawnPoints[playerIndex];

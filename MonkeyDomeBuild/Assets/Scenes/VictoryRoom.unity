@@ -13,7 +13,7 @@ SceneSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 6
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -37,12 +37,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 6
   m_GIWorkflowMode: 1
+  m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -53,22 +53,17 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 4
+    serializedVersion: 3
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
     m_TextureHeight: 1024
-    m_AO: 0
     m_AOMaxDistance: 1
-    m_CompAOExponent: 0
-    m_CompAOExponentDirect: 0
     m_Padding: 2
+    m_CompAOExponent: 0
     m_LightmapParameters: {fileID: 0}
-    m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
-    m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
   m_LightingDataAsset: {fileID: 0}
@@ -114,7 +109,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3.764329, y: 2.3871136, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 359148494}
   - {fileID: 1885815171}
@@ -148,7 +142,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -3.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1578130543}
   m_RootOrder: 3
@@ -176,7 +169,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -11.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1984939714}
   m_RootOrder: 1
@@ -347,7 +339,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 29.01, y: 20.154999, z: 0}
   m_LocalScale: {x: 50.7, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 2060328134}
   m_RootOrder: 0
@@ -376,20 +367,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -431,7 +419,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -16.85, y: -20.810001, z: -0.12}
   m_LocalScale: {x: 8.354295, y: 41.020092, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 198104121}
   - {fileID: 809389141}
@@ -462,20 +449,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -514,7 +498,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -14.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1025429715}
   m_RootOrder: 0
@@ -542,7 +525,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -11.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 359148494}
   m_RootOrder: 1
@@ -625,7 +607,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.36, y: 20.63, z: 0.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 294933021}
   - {fileID: 1215130265}
@@ -653,6 +634,7 @@ MonoBehaviour:
   Podium3: {fileID: 603339685}
   Podium4: {fileID: 1811010673}
   Podium5: {fileID: 1963289173}
+  TrophyCase: {fileID: 1990001152}
   Trophy: {fileID: 161890, guid: fe8e7bf8d5f623e488c51e82e2ca4ba9, type: 2}
   AwardBananasTrophyPos:
   - {fileID: 792364697}
@@ -720,7 +702,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1025429715}
   m_RootOrder: 4
@@ -748,7 +729,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -10.51, y: 3.8770866, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1781384436}
   - {fileID: 299406880}
@@ -784,7 +764,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: -0.34202018, w: 0.9396926}
   m_LocalPosition: {x: 28.74, y: 31.66, z: 0}
   m_LocalScale: {x: 9.792057, y: 0.98417056, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1019485243}
   m_RootOrder: 0
@@ -813,20 +792,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -868,7 +844,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 61.340004, y: -0.059999466, z: 0}
   m_LocalScale: {x: 1, y: 29, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 2060328134}
   m_RootOrder: 2
@@ -897,20 +872,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -949,7 +921,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1578130543}
   m_RootOrder: 4
@@ -980,7 +951,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0.34202018, w: 0.9396926}
   m_LocalPosition: {x: -28.79, y: 31.66, z: 0}
   m_LocalScale: {x: 9.792057, y: 0.98417056, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1019485243}
   m_RootOrder: 1
@@ -1009,20 +979,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1061,7 +1028,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -7.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1885815171}
   m_RootOrder: 2
@@ -1177,7 +1143,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -1208,7 +1173,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.21000051, y: -20.810001, z: -0.12}
   m_LocalScale: {x: 8.354295, y: 41.020092, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 711079215}
   - {fileID: 1164765329}
@@ -1239,20 +1203,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1291,7 +1252,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -3.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 359148494}
   m_RootOrder: 3
@@ -1322,7 +1282,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.3000011, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 29, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 2060328134}
   m_RootOrder: 3
@@ -1351,20 +1310,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1401,9 +1357,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 687429643}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.04, y: 3.8770866, z: 0}
+  m_LocalPosition: {x: -0.48, y: 3.8770866, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 752794561}
   - {fileID: 1679807818}
@@ -1494,7 +1449,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -14.197086, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 687429644}
   m_RootOrder: 0
@@ -1522,7 +1476,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -14.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1984939714}
   m_RootOrder: 0
@@ -1550,7 +1503,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 359148494}
   m_RootOrder: 4
@@ -1682,7 +1634,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -11.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1885815171}
   m_RootOrder: 3
@@ -1711,9 +1662,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1016015436}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.42, y: 4.45, z: 0.04}
-  m_LocalScale: {x: 12.160684, y: 1.0888788, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.55, y: 4.45, z: 0.04}
+  m_LocalScale: {x: 11.900783, y: 1.0888788, z: 1}
   m_Children: []
   m_Father: {fileID: 1990001153}
   m_RootOrder: 2
@@ -1742,20 +1692,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1794,7 +1741,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 29.01, y: -14.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 364364179}
   - {fileID: 494348592}
@@ -1822,9 +1768,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1025429714}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.47, y: 3.8770866, z: 0}
+  m_LocalPosition: {x: -6.56, y: 3.8770866, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 297204528}
   - {fileID: 1260653272}
@@ -1857,7 +1802,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -11.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1578130543}
   m_RootOrder: 1
@@ -1885,7 +1829,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -7.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1025429715}
   m_RootOrder: 2
@@ -1971,7 +1914,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1885815171}
   m_RootOrder: 0
@@ -2060,7 +2002,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.530001, y: -20.810001, z: -0.12}
   m_LocalScale: {x: 8.354295, y: 41.020092, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 313790203}
   - {fileID: 1872512133}
@@ -2091,20 +2032,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2144,9 +2082,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1231230695}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.42, y: -6.69, z: 0.04}
-  m_LocalScale: {x: 12.160684, y: 1.0888788, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.55, y: -6.69, z: 0.04}
+  m_LocalScale: {x: 11.900783, y: 1.0888788, z: 1}
   m_Children: []
   m_Father: {fileID: 1990001153}
   m_RootOrder: 5
@@ -2175,20 +2112,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2227,7 +2161,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -11.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1025429715}
   m_RootOrder: 1
@@ -2254,7 +2187,7 @@ Light:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1273443515}
   m_Enabled: 1
-  serializedVersion: 7
+  serializedVersion: 6
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -2264,7 +2197,6 @@ Light:
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
-    m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
@@ -2277,10 +2209,10 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_Lightmapping: 4
-  m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_AreaSize: {x: 1, y: 1}
 --- !u!4 &1273443517
 Transform:
   m_ObjectHideFlags: 0
@@ -2290,7 +2222,6 @@ Transform:
   m_LocalRotation: {x: 0.40821794, y: -0.23456973, z: 0.109381676, w: 0.87542605}
   m_LocalPosition: {x: 0, y: 16.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -2321,7 +2252,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 29.01, y: -16.1, z: 0}
   m_LocalScale: {x: 66, y: 4.296156, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 2060328134}
   m_RootOrder: 4
@@ -2350,20 +2280,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2460,7 +2387,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -14.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1885815171}
   m_RootOrder: 4
@@ -2488,7 +2414,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -3.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1025429715}
   m_RootOrder: 3
@@ -2520,7 +2445,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -3.5370865, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1885815171}
   m_RootOrder: 1
@@ -2548,7 +2472,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -7.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1984939714}
   m_RootOrder: 2
@@ -2576,7 +2499,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -0.1470871, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 687429644}
   m_RootOrder: 4
@@ -2605,9 +2527,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1530970180}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.42, y: -10.37, z: 0.04}
-  m_LocalScale: {x: 12.160684, y: 1.0888788, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.55, y: -10.37, z: 0.04}
+  m_LocalScale: {x: 11.900783, y: 1.0888788, z: 1}
   m_Children: []
   m_Father: {fileID: 1990001153}
   m_RootOrder: 6
@@ -2636,20 +2557,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2688,7 +2606,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -7.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 359148494}
   m_RootOrder: 2
@@ -2714,9 +2631,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1578130542}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.32, y: 3.8770866, z: 0}
+  m_LocalPosition: {x: -2.5, y: 3.8770866, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2028558147}
   - {fileID: 1032225330}
@@ -2749,7 +2665,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -3.5370865, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 687429644}
   m_RootOrder: 3
@@ -2777,7 +2692,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -7.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1578130543}
   m_RootOrder: 2
@@ -2806,9 +2720,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1636861146}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.42, y: 0.7, z: 0.04}
-  m_LocalScale: {x: 12.160684, y: 1.0888788, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.55, y: 0.7, z: 0.04}
+  m_LocalScale: {x: 11.900783, y: 1.0888788, z: 1}
   m_Children: []
   m_Father: {fileID: 1990001153}
   m_RootOrder: 3
@@ -2837,20 +2750,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2889,7 +2799,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -10.517086, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 687429644}
   m_RootOrder: 1
@@ -2917,7 +2826,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -3.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1984939714}
   m_RootOrder: 3
@@ -2945,7 +2853,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -14.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 359148494}
   m_RootOrder: 0
@@ -3034,7 +2941,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.110001, y: -20.810001, z: -0.12}
   m_LocalScale: {x: 8.354295, y: 41.020092, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1912728224}
   - {fileID: 1367508778}
@@ -3065,20 +2971,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -3117,7 +3020,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1984939714}
   m_RootOrder: 4
@@ -3146,9 +3048,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1829426964}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.42, y: 8.38, z: 0.04}
-  m_LocalScale: {x: 12.160684, y: 1.0888788, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.55, y: 8.38, z: 0.04}
+  m_LocalScale: {x: 11.900783, y: 1.0888788, z: 1}
   m_Children: []
   m_Father: {fileID: 1990001153}
   m_RootOrder: 1
@@ -3177,20 +3078,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -3229,7 +3127,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -6.977087, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 687429644}
   m_RootOrder: 2
@@ -3315,7 +3212,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -8.52, y: 3.8770866, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1179066217}
   - {fileID: 1435230230}
@@ -3409,7 +3305,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.43, y: -20.810001, z: -0.12}
   m_LocalScale: {x: 8.354295, y: 41.020092, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1795202104}
   - {fileID: 1194204826}
@@ -3440,20 +3335,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -3490,9 +3382,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1984939713}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.42, y: 3.8770866, z: 0}
+  m_LocalPosition: {x: -4.51, y: 3.8770866, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 785854279}
   - {fileID: 187267563}
@@ -3523,9 +3414,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1990001152}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.12, y: 38.73, z: -0.04}
+  m_LocalPosition: {x: -25.12, y: 11.7, z: -0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 62571133}
   - {fileID: 1829426965}
@@ -3560,7 +3450,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.14227629, y: -14.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1578130543}
   m_RootOrder: 0
@@ -3588,7 +3477,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.31, y: 22.29, z: 1.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -3616,7 +3504,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -29.8, y: 34.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 267627789}
   - {fileID: 1019485243}
@@ -3650,9 +3537,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2063500061}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.42, y: -2.95, z: 0.04}
-  m_LocalScale: {x: 12.160684, y: 1.0888788, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.55, y: -2.95, z: 0.04}
+  m_LocalScale: {x: 11.900783, y: 1.0888788, z: 1}
   m_Children: []
   m_Father: {fileID: 1990001153}
   m_RootOrder: 4
@@ -3681,20 +3567,17 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 066a23da924744740b518d6cb69ab764, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89

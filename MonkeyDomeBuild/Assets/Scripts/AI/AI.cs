@@ -75,6 +75,7 @@ public class AI : Actor
 	// Update is called once per frame
 	void FixedUpdate()
 	{
+		IsBallNear();
 		ExecuteState();
 		MovementVelocity();
 		AnimationControl();
@@ -119,7 +120,9 @@ public class AI : Actor
 
 	State ExecuteCatch()
 	{
-		//TODO Catch Logic
+		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
+		StartCoroutine(RealisticInputCatch());
+		//need to check flight path if no good move
 		return currentState;
 	}
 
@@ -406,6 +409,18 @@ public class AI : Actor
 		return result;
 	}
 
+	private void IsBallNear()
+	{
+		if(ballInRange)
+		{
+			currentState = State.Catch;
+		}
+		else if((GameManager.Instance.gmBalls[0].transform.position - cache_tf.position).magnitude < (currEndTarg - cache_tf.position).magnitude)
+		{
+			MoveTarget = GameManager.Instance.gmBalls[0].transform.position;
+		}
+	}
+
 	private float CalculateJump(Vector3 jumpLanding, bool dir) // right is true
 	{
 		float dx;
@@ -422,6 +437,11 @@ public class AI : Actor
 		return dx / t;
 	}
 
+	private bool CalculateThrow()
+	{
+
+	}
+
 	private void CalculateMaxJump()
 	{
 		//float t;
@@ -435,6 +455,12 @@ public class AI : Actor
 	{
 		yield return new WaitForEndOfFrame();
 		GameManager.Instance.gmInputs[playerIndex].mJump = false;
+	}
+
+	IEnumerator RealisticInputCatch()
+	{
+		yield return new WaitForEndOfFrame();
+		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
 	}
 
 	IEnumerator RealisticInputX()
