@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 public class Actor : MonoBehaviour
 {
     /*
@@ -114,7 +116,27 @@ public class Actor : MonoBehaviour
 		Aim();
 		characterType.CHUpdate();
         CheckLeader();
+        updatePlayerLocator();
 	}
+
+    void updatePlayerLocator()
+    {
+        if (GetComponent<EffectControl>().playerLocatorActive)
+        {
+            if (SceneManager.GetActiveScene().name != "PregameRoom")
+            {
+                GetComponent<EffectControl>().playerLocatorActive = false;
+                GetComponent<EffectControl>().playerLocatorMatchStart = true;
+            }
+        }
+        else
+        {
+            if (SceneManager.GetActiveScene().name == "PregameRoom")
+            {
+                GetComponent<EffectControl>().playerLocatorActive = true;
+            }
+        }
+    }
 
     void FixedUpdate()
 	{

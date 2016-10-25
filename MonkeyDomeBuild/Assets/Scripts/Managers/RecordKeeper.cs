@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class RecordKeeper : MonoBehaviour
 {
     public List<Material> colourPlayers = new List<Material>();
+    public List<Image> playerLocators = new List<Image>();
     public int[] scoreEndPlayers;
     public int playerGorilla = -1;
     public Material defaultColour;
@@ -45,6 +47,14 @@ public class RecordKeeper : MonoBehaviour
         }
     }
     public Color GetPlayerColour(int playerIndex)
+    {
+        if (playerIndex + 1 > colourPlayers.Count)
+        {
+            InitNewPlayerColour(playerIndex);
+        }
+        return colourPlayers[playerIndex].color;
+    }
+    public Color GetPlayerLocator(int playerIndex)
     {
         if (playerIndex + 1 > colourPlayers.Count)
         {

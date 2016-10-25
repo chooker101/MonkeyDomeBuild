@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class GameManager : MonoBehaviour
 
     public bool noGorilla = false;
 
-	private GameManager() { }
+    private GameManager() { }
 
 	void Start()
 	{

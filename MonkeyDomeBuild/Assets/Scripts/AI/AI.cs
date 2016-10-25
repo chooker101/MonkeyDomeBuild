@@ -439,7 +439,7 @@ public class AI : Actor
 
 	private bool CalculateThrow()
 	{
-
+        return false;
 	}
 
 	private void CalculateMaxJump()
