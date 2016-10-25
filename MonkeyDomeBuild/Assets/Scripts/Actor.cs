@@ -14,8 +14,8 @@ public class Actor : MonoBehaviour
     public int playerIndex;
     public bool isPlayer;
 
-	public Vector2 movement = Vector2.zero;
-	//public CameraController cam;
+    public Vector2 movement = Vector2.zero;
+    //public CameraController cam;
 
 
     //public bool canJump = true;
@@ -48,16 +48,16 @@ public class Actor : MonoBehaviour
     protected Transform cache_tf;
 
     public Character characterType;
-	[SerializeField]
+    [SerializeField]
     private GameObject monkeyCrown;
     public BallInfo ballCanCatch;
-	[SerializeField]
-	protected GameObject shotPointer;
-	protected Color col;
+    [SerializeField]
+    protected GameObject shotPointer;
+    protected Color col;
     public Transform catchCenter;
     public BoxCollider2D raycastCol;
 
-	protected bool beingSmack = false;
+    protected bool beingSmack = false;
     public bool justJump = false;
     protected bool isDashing = false;
     protected float dashingCount = 0;
@@ -77,6 +77,7 @@ public class Actor : MonoBehaviour
     protected float holdCount = 0;
     protected float holdTime = 1f;
     protected float speedMultiplier = 1f;
+    protected bool canThrow = true;
 
     public string cType = "";
 
@@ -87,59 +88,59 @@ public class Actor : MonoBehaviour
     }
     void Start()
     {
-		DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject);
 
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
-		cache_rb = GetComponent<Rigidbody2D>();
-		animator = GetComponentInChildren<Animator>();
-		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-		cache_tf = GetComponent<Transform>();
+        cache_rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        cache_tf = GetComponent<Transform>();
         catchCenter = transform.FindChild("CatchCenter").transform;
         raycastCol = transform.FindChild("RayCastCol").GetComponent<BoxCollider2D>();
         monkeyCrown.SetActive(false);
 
-		
+
         col = shotPointer.GetComponentInChildren<Image>().color;
     }
 
-	void Update()
-	{
+    void Update()
+    {
         //JumpCheck();
         cType = characterType.ToString();
-		if (GameManager.Instance.gmInputs[playerIndex].mJump)
-		{
-			Jumping();
-		}
-		Aim();
-		characterType.CHUpdate();
+        if (GameManager.Instance.gmInputs[playerIndex].mJump)
+        {
+            Jumping();
+        }
+        Aim();
+        characterType.CHUpdate();
         CheckLeader();
-	}
+    }
 
     void FixedUpdate()
-	{
+    {
         MovementVelocity();
         AnimationControl();
-		//Movement();
-		characterType.CHFixedUpdate();
+        //Movement();
+        characterType.CHFixedUpdate();
         if (IsHoldingBall && ballHolding == null)
         {
             ReleaseBall();
         }
-	}
+    }
 
-	//public virtual void CheckInputs() { }
+    //public virtual void CheckInputs() { }
 
 
     public bool IsInAir
     {
         get { return isinair; }
     }
-	protected void Jumping()
-	{
-		if (!isinair)
-		{
-			isinair = true;
+    protected void Jumping()
+    {
+        if (!isinair)
+        {
+            isinair = true;
             justJump = true;
             Invoke("ResetJustJump", 0.3f);
             if (ParticlesManager.Instance != null)
@@ -156,18 +157,18 @@ public class Actor : MonoBehaviour
                 }
 
             }
-            cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
+            cache_rb.AddForce(Vector2.up * characterType.jumpforce, ForceMode2D.Impulse);
             if (AudioEffectManager.Instance != null)
             {
                 AudioEffectManager.Instance.PlayMonkeyJumpSE();
             }
 
-		}
-		else
-		{
-			if (isClimbing)
-			{
-				isClimbing = false;
+        }
+        else
+        {
+            if (isClimbing)
+            {
+                isClimbing = false;
                 if (cache_rb.gravityScale == 0)
                     cache_rb.gravityScale = 2;
 
@@ -181,25 +182,25 @@ public class Actor : MonoBehaviour
                     }
                 }
             }
-			else if(canClimb)
-			{
-				isClimbing = true;
+            else if (canClimb)
+            {
+                isClimbing = true;
                 if (cache_rb.gravityScale != 0)
                     cache_rb.gravityScale = 0;
             }
-		}
-	}
+        }
+    }
     protected void ResetJustJump()
     {
         justJump = false;
     }
-	protected void MovementVelocity()
-	{
+    protected void MovementVelocity()
+    {
         movement = cache_rb.velocity;
         if (!isClimbing)
-		{
-			if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
-			{
+        {
+            if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
+            {
                 if (!isDashing)
                 {
                     /*if (characterType is Gorilla && characterType.isCharging)
@@ -224,14 +225,14 @@ public class Actor : MonoBehaviour
                         dashingCount += Time.fixedDeltaTime;
                     }
                 }
-			}
-		}
-		else
-		{
+            }
+        }
+        else
+        {
             movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
             movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
         }
-        if(!beingSmack)
+        if (!beingSmack)
         {
             if (startSlowMo)
             {
@@ -242,11 +243,11 @@ public class Actor : MonoBehaviour
                 cache_rb.velocity = movement;
             }
         }
-	}
+    }
 
-	public void ThrowCheck()
+    public void ThrowCheck()
     {
-        if (canCharge)
+        if (canCharge && canThrow)
         {
             if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
@@ -307,25 +308,35 @@ public class Actor : MonoBehaviour
             if (GameManager.Instance.gmInputs[playerIndex].mCatchRelease)
             {
                 canCharge = true;
+                if (!canThrow)
+                {
+                    canThrow = true;
+                }
             }
         }
     }
     public void ReleaseBall()
     {
+        haveBall = false;
         holdCount = 0;
         speedMultiplier = 1f;
         startSlowMo = false;
-        haveBall = false;
+        cantHoldAnymore = false;
         if (ballHolding != null)
         {
             ballHolding.GetComponent<BallInfo>().Reset();
         }
         ballHolding = null;
         isCharging = false;
-        if (Time.timeScale != 1)
-        {
-            Time.timeScale = 1;
-        }
+    }
+    public void GorillaCatchReset()
+    {
+        canThrow = false;
+        holdCount = 0;
+        speedMultiplier = 1f;
+        startSlowMo = false;
+        cantHoldAnymore = false;
+        holdingCatchCount = 0f;
     }
 
     public bool RayCast(int direction)
@@ -730,5 +741,16 @@ public class Actor : MonoBehaviour
         canCharge = false;
         haveBall = true;
         ballHolding = ball;
+    }
+    public bool IsChargingThrow
+    {
+        get
+        {
+            if(characterType is Monkey)
+            {
+                return isCharging;
+            }
+            return false;
+        }
     }
 }

@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
 	Vector3 startPos;
 
     //private GameObject ball;
-    public float smoothing = 3.0f;
+    public float smoothing = 2f;
     public float maxCamSize = 40f;
     public float minCamSize = 25f;
     private float minCameraHeight = 12f;
@@ -40,6 +40,7 @@ public class CameraController : MonoBehaviour
 
     public bool considerTargets = false;
     private bool targetsExist = false;
+    public float focusAmount = 1f;
 
     // Use this for initialization
     void Start()
@@ -151,16 +152,74 @@ public class CameraController : MonoBehaviour
         {
             //meanPosition = positionSum / (GameManager.Instance.TotalNumberofPlayers);
         }
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
-        {
-            positionSum += GameManager.Instance.gmPlayers[i].transform.position;
-        }
-        meanPosition = positionSum / GameManager.Instance.TotalNumberofPlayers;
-
-
+        bool monkeyCharging = false;
         if (GameManager.Instance.gmBalls[0] != null)
         {
-            meanPosition = (meanPosition + GameManager.Instance.gmBalls[0].transform.position) / 2;
+            if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey() != null)
+            {
+                if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().IsChargingThrow)
+                {
+                    if (!monkeyCharging)
+                    {
+                        focusAmount = 1f;
+                    }
+                    monkeyCharging = true;
+                }
+            }
+        }
+        Actor throwingMonkey = null;
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        {
+            if (monkeyCharging)
+            {
+                if (GameManager.Instance.gmPlayers[i] != GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey())
+                {
+                    positionSum += GameManager.Instance.gmPlayers[i].transform.position;
+                }
+                else if(GameManager.Instance.gmPlayers[i] == GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey())
+                {
+                    throwingMonkey = GameManager.Instance.gmPlayers[i].GetComponent<Actor>();
+                }
+            }
+            else
+            {
+                positionSum += GameManager.Instance.gmPlayers[i].transform.position;
+            }
+        }
+        if (throwingMonkey != null)
+        {
+            int i = (int)GameManager.Instance.TotalNumberofPlayers - 1;
+            if (i == 0)
+            {
+                i = 1;
+            }
+            meanPosition = positionSum / i;
+        }
+        else
+        {
+            int i = (int)GameManager.Instance.TotalNumberofPlayers;
+            if (i == 0)
+            {
+                i = 1;
+            }
+            meanPosition = positionSum / i;
+        }
+        if (GameManager.Instance.gmBalls[0] != null)
+        {
+            if (throwingMonkey != null)
+            {
+                meanPosition += GameManager.Instance.gmBalls[0].transform.position;
+                meanPosition /= 2;
+                meanPosition += throwingMonkey.transform.position;
+                focusAmount = Mathf.Lerp(focusAmount, 2, Time.deltaTime * 20f);
+                meanPosition /= focusAmount;
+            }
+            else
+            {
+                focusAmount = Mathf.Lerp(focusAmount, 1, Time.deltaTime * 5f);
+                meanPosition += GameManager.Instance.gmBalls[0].transform.position;
+                meanPosition = meanPosition / 2;
+            }
         }
 
     }

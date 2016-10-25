@@ -92,6 +92,7 @@ public class Gorilla : Character
     }
 	public override void Mutate()
 	{
+        cacheplayer.GorillaCatchReset();
         cacheplayer.characterType = new Monkey(myPlayer);
 		//cacheplayer.GetComponent<Transform>().localScale = monkeySize;
 
