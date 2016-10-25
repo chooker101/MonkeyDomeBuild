@@ -555,13 +555,13 @@ public class Actor : MonoBehaviour
                 Destroy(other.gameObject);
                 GameManager.Instance.gmTrophyManager.BananasEaten(playerIndex);
                 //Audience call for Bananas event
-                if (GameManager.Instance.gmAudienceManager.GetEventActive())
-                {
-                    if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Bananas)
-                    {
-                        GameManager.Instance.gmAudienceManager.BananaCaught(playerIndex);
-                    }
-                }
+                //if (GameManager.Instance.gmAudienceManager.GetEventActive())
+                //{
+                //    if(GameManager.Instance.gmAudienceManager.GetCurrentEvent() == AudienceManager.AudienceEvent.Bananas)
+                //    {
+                //        GameManager.Instance.gmAudienceManager.BananaCaught(playerIndex);
+                //    }
+                //}
             }
         }
 
