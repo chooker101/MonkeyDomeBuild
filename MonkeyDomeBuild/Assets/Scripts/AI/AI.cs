@@ -437,6 +437,11 @@ public class AI : Actor
 		return dx / t;
 	}
 
+	private bool CalculateThrow()
+	{
+
+	}
+
 	private void CalculateMaxJump()
 	{
 		//float t;
