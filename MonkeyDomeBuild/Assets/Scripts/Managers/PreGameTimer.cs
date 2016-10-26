@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PreGameTimer : MonoBehaviour
 {
+    public Object gameScene;
     public bool debugStartMatch = false;
     public Text timerText;
     public Text gorillaSmashText;
@@ -82,7 +83,7 @@ public class PreGameTimer : MonoBehaviour
                 {
                     //pregameTimer = 0;
                     gameState = "game";
-                    SceneManager.LoadScene("mb_level04_v2");
+                    SceneManager.LoadScene(gameScene.ToString());
                     Destroy(newSpinner, 1f);
                 }
             }
