@@ -219,7 +219,11 @@ public class ScoringManager : MonoBehaviour
 
     public void HitTargetScore(BallInfo ball)
     {
-        int monkeyIndex = ball.GetLastThrowMonkey().GetComponent<Actor>().playerIndex;
+		int monkeyIndex = 0;
+		if (ball.GetLastThrowMonkey() != null)
+		{
+			monkeyIndex = ball.GetLastThrowMonkey().GetComponent<Actor>().playerIndex;
+		}
         int score = 0;
         switch (GameManager.Instance.gmTargetManager.TargetTier)
         {

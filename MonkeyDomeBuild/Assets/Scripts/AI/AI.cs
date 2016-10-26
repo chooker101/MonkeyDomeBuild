@@ -25,11 +25,15 @@ public class AI : Actor
 	[SerializeField]
 	private Vector3 currEndTarg;
 
+	[SerializeField]
+	private float catchWaitTime = 0.3f;
+
 	private Vector3 currEndTargBound;
 
 	private float currClosestDist;
 	private float maxJump;
 	private float jumpVelocity;
+	private float throwVelocity;
 	private float xInput;
 	private int levelCounter;
 	private bool canJump;
@@ -39,6 +43,10 @@ public class AI : Actor
 	private float reverseX;
 	private bool isEndTargVine = false;
 	private Vector3 calcVar;
+	private Vector3 aimDir;
+	private int lastPlayerTarget = 0;
+	private bool letCatch = false;
+	private bool waitForBallOnce = true;
 
 	State currentState;
 
@@ -120,15 +128,57 @@ public class AI : Actor
 
 	State ExecuteCatch()
 	{
+		GameManager.Instance.gmInputs[playerIndex].mXY.x = 0.0f;
 		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
 		StartCoroutine(RealisticInputCatch());
-		//need to check flight path if no good move
+		int lowestPoints = -1;
+		int secondLowest = 0;
+		for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
+		{
+			if (i != playerIndex)
+			{
+				if (lowestPoints == -1)
+				{
+					lowestPoints = i;
+				}
+				else if (lowestPoints >= GameManager.Instance.gmScoringManager.GetScore(i))
+				{
+					secondLowest = lowestPoints;
+					lowestPoints = i;
+				}
+			}
+		}
+
+		if(lowestPoints != lastPlayerTarget)
+		{
+			lastPlayerTarget = lowestPoints;
+			if (CalculateThrow(GameManager.Instance.gmPlayers[lowestPoints]))
+			{
+				currentState = State.Throw;
+			}
+			else
+			{
+				//calc move target
+			}
+		}
+		else if(secondLowest != lastPlayerTarget)
+		{
+			lastPlayerTarget = secondLowest;
+			if (CalculateThrow(GameManager.Instance.gmPlayers[secondLowest]))
+			{
+				currentState = State.Throw;
+			}
+			else
+			{
+				//calc move target
+			}
+		}
 		return currentState;
 	}
 
 	State ExecuteThrow()
 	{
-		//TODO Target Selection and Throw Logic
+		Debug.Log("Throw");
 		return currentState;
 	}
 
@@ -413,11 +463,23 @@ public class AI : Actor
 	{
 		if(ballInRange)
 		{
-			currentState = State.Catch;
+			if (letCatch)
+			{
+				currentState = State.Catch;
+				letCatch = false;
+			}
+			else if(waitForBallOnce)
+			{
+				StartCoroutine(WaitToCatch());
+				waitForBallOnce = false;
+			}
 		}
-		else if((GameManager.Instance.gmBalls[0].transform.position - cache_tf.position).magnitude < (currEndTarg - cache_tf.position).magnitude)
+		else if(GameManager.Instance.gmBalls[0] != null)
 		{
-			MoveTarget = GameManager.Instance.gmBalls[0].transform.position;
+			if ((GameManager.Instance.gmBalls[0].transform.position - cache_tf.position).magnitude < (currEndTarg - cache_tf.position).magnitude)
+			{
+				MoveTarget = GameManager.Instance.gmBalls[0].transform.position;
+			}
 		}
 	}
 
@@ -437,9 +499,55 @@ public class AI : Actor
 		return dx / t;
 	}
 
-	private bool CalculateThrow()
+	private bool CalculateThrow(GameObject playerTarg)
 	{
-
+		aimDir = Vector3.zero;
+		Vector2 position = Vector2.zero;
+		Vector2 prevPos = cache_tf.position;
+		RaycastHit2D lineHit;
+		float g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
+		throwVelocity = characterType.throwForce;
+		float range = (playerTarg.transform.position.x - cache_tf.position.x);
+		float dir = range / Mathf.Abs(range);
+		float height = (playerTarg.transform.position.y - cache_tf.position.y);
+		float theta = 0.0f;
+		if(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)) > 0.0f)
+		{
+			theta = Mathf.Atan(((throwVelocity * throwVelocity) + dir * Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / g * range);
+		}
+		else
+		{
+			return false;
+		}
+		float xVel = throwVelocity * Mathf.Cos(theta);
+		float yVel = throwVelocity * Mathf.Sin(theta);
+		float t = 0.0f;
+		if((yVel * yVel) - (4 * 0.5f * g * (-height)) > 0)
+		{
+			t = (2 * (yVel / g)) + ((yVel + dir * Mathf.Sqrt((yVel * yVel) - (4 * 0.5f * g * (-height)))) / 2 * 0.5f * g);
+		}
+		else
+		{
+			return false;
+		}
+		aimDir.x = xVel / throwVelocity;
+		aimDir.y = yVel / throwVelocity;
+		for (float i = 0.5f; i < t || i < 10f; i += 0.1f)
+		{
+			position.x = xVel * i;
+			position.y = yVel * i + 0.5f * -g * (i * i);
+			lineHit = Physics2D.Linecast(prevPos, position);
+			Debug.DrawLine(prevPos, position, Color.black, 1.0f);
+			if (lineHit.collider != null)
+			{
+				if (lineHit.collider.isTrigger == false)
+				{
+					aimDir = Vector3.zero;
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private void CalculateMaxJump()
@@ -459,7 +567,7 @@ public class AI : Actor
 
 	IEnumerator RealisticInputCatch()
 	{
-		yield return new WaitForEndOfFrame();
+		yield return new WaitForSeconds(1.0f);
 		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
 	}
 
@@ -467,5 +575,12 @@ public class AI : Actor
 	{
 		yield return new WaitForSeconds(1.0f);
 		isStuck = false;
+	}
+
+	IEnumerator WaitToCatch()
+	{
+		yield return new WaitForSeconds(catchWaitTime);
+		letCatch = true;
+		waitForBallOnce = true;
 	}
 }
