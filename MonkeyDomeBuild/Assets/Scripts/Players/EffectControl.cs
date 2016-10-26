@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class EffectControl : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class EffectControl : MonoBehaviour
     private float stampMoveSpeed = 5f;
     private float stampFadeSpeed = 5f;
 
+    public List<Image> playerLocators;
+    private float playerLocatorTimeMax = 5f;
+    private float playerLocatorTimer = 0f;
+    public bool playerLocatorActive = true;
+    public bool playerLocatorMatchStart = false;
+
     void Start()
     {
         stampInitScale = gorillaStamp.transform.localScale;
@@ -38,10 +45,35 @@ public class EffectControl : MonoBehaviour
             temp.transform.localPosition = new Vector3(0, 0, -0.2f);
             controller = temp.GetComponent<PartilcleController>();
         }
-
     }
     void Update()
     {
+        if(playerLocatorMatchStart)
+        {
+            playerLocatorTimer = playerLocatorTimeMax;
+            playerLocatorMatchStart = false;
+        }
+        else if (playerLocatorActive || playerLocatorTimer > 0f)
+        {
+            if(playerLocatorTimer > 0f)
+            {
+                playerLocatorTimer -= Time.deltaTime;
+                if(playerLocatorTimer < 0f)
+                {
+                    playerLocatorTimer = 0f;
+                }
+            }
+
+            Color locatorColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
+            locatorColour.a = 1;
+            playerLocators[GetComponent<Actor>().playerIndex].color = locatorColour;
+        }
+        else
+        {
+            Color locatorColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
+            locatorColour.a = 0;
+            playerLocators[GetComponent<Actor>().playerIndex].color = locatorColour;
+        }
         if (perfectCatchEffectEnd)
         {
             if (Mathf.Abs(perfectCatch.color.a - 1f) > 0.05f)
