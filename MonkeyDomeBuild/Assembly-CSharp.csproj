@@ -81,10 +81,6 @@
      <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TrophyManager.cs" />
-     <Compile Include="Assets\Scripts\Managers\UI\ApeSpinner.cs" />
-     <Compile Include="Assets\Scripts\Managers\UI\MatchTime.cs" />
-     <Compile Include="Assets\Scripts\Managers\UI\ScoreVisualizer.cs" />
-     <Compile Include="Assets\Scripts\Managers\UI\ShotClock.cs" />
      <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
      <Compile Include="Assets\Scripts\Managers\VictoryRoomManager.cs" />
      <Compile Include="Assets\Scripts\ParticleReset.cs" />
@@ -103,6 +99,11 @@
      <Compile Include="Assets\Scripts\Turret\TargetQueue.cs" />
      <Compile Include="Assets\Scripts\Turret\Turret.cs" />
      <Compile Include="Assets\Scripts\Turret\TurretsManager.cs" />
+     <Compile Include="Assets\Scripts\UI\ApeSpinner.cs" />
+     <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
+     <Compile Include="Assets\Scripts\UI\ScoreVisualizer.cs" />
+     <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
+     <Compile Include="Assets\UIEffect.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

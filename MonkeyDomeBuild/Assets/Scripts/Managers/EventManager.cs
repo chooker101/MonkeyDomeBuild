@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class EventManager : MonoBehaviour {
 
@@ -17,13 +18,18 @@ public class EventManager : MonoBehaviour {
 
     private bool eventActive = false;
     private float eventTimer;
+    private int noneCounter = 0;
 
     public GameObject[] turretTargetLocations;
     public int launchTotal;
+    public Text BananaText;
+    public Text PoopText;
 
     void Start () {
         turretManager = GetComponentInParent<TurretsManager>();
         NoneEvent();
+        BananaText.gameObject.SetActive(false);
+        PoopText.gameObject.SetActive(false);
     }
 
 	void Update () {
@@ -32,8 +38,16 @@ public class EventManager : MonoBehaviour {
 
     void Events()
     {
+        if (noneCounter < 2)
+        {
+            randomEvent = Random.Range(0, 3);
+        }
+        else
+        {
+            randomEvent = Random.Range(0, 2);
+            noneCounter = 0;
+        }
 
-        randomEvent = Random.Range(0, 3);
         switch (randomEvent)
         {
             case (int)Event.Banana:
@@ -51,6 +65,8 @@ public class EventManager : MonoBehaviour {
     void BananaEvent()
     {
         eventActive = true;
+        PoopText.gameObject.SetActive(false);
+        BananaText.gameObject.SetActive(true);
         eventTimer = Random.Range(6f, 10f);
         for (int i = 0; i < launchTotal; i++)
         {
@@ -62,6 +78,8 @@ public class EventManager : MonoBehaviour {
     void PoopEvent()
     {
         eventActive = true;
+        BananaText.gameObject.SetActive(false);
+        PoopText.gameObject.SetActive(true);
         eventTimer = Random.Range(6f, 10f);
         for (int i = 0; i < launchTotal; i++)
         {
@@ -72,9 +90,12 @@ public class EventManager : MonoBehaviour {
 
     void NoneEvent()
     {
+        noneCounter++;
+        BananaText.gameObject.SetActive(false);
+        PoopText.gameObject.SetActive(false);
         randomEvent = (int)Event.None;
         eventActive = true;
-        eventTimer = Random.Range(3f, 4f);
+        eventTimer = Random.Range(1f, 2f);
         StartCoroutine(EventTime());
     }
 
