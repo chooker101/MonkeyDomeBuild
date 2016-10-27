@@ -58,12 +58,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -116,6 +110,7 @@
     <Compile Include="Assets\Scripts\Target\ColourChanger.cs" />
     <Compile Include="Assets\Scripts\Target\FullTargetRotator.cs" />
     <Compile Include="Assets\Scripts\Target\Target.cs" />
+    <Compile Include="Assets\Scripts\Target\TargetBase.cs" />
     <Compile Include="Assets\Scripts\Target\TargetHead.cs" />
     <Compile Include="Assets\Scripts\Target\TargetNode.cs" />
     <Compile Include="Assets\Scripts\Target\TargetNodeManager.cs" />
