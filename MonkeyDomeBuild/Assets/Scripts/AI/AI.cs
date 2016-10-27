@@ -513,7 +513,7 @@ public class AI : Actor
 		float theta = 0.0f;
 		if(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)) > 0.0f)
 		{
-			theta = Mathf.Atan(((throwVelocity * throwVelocity) + dir * Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / g * range);
+			theta = Mathf.Atan(((throwVelocity * throwVelocity) + dir * Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / (g * range));
 		}
 		else
 		{
@@ -522,9 +522,9 @@ public class AI : Actor
 		float xVel = throwVelocity * Mathf.Cos(theta);
 		float yVel = throwVelocity * Mathf.Sin(theta);
 		float t = 0.0f;
-		if((yVel * yVel) - (4 * 0.5f * g * (-height)) > 0)
+		if ((yVel * yVel) - (4 * (0.5f * g) * (-height)) > 0)
 		{
-			t = (2 * (yVel / g)) + ((yVel + dir * Mathf.Sqrt((yVel * yVel) - (4 * 0.5f * g * (-height)))) / 2 * 0.5f * g);
+			t = ((yVel + dir * Mathf.Sqrt((yVel * yVel) - (4 * (0.5f * g) * (-height)))) / (2 * (0.5f * g)));
 		}
 		else
 		{
@@ -532,20 +532,21 @@ public class AI : Actor
 		}
 		aimDir.x = xVel / throwVelocity;
 		aimDir.y = yVel / throwVelocity;
-		for (float i = 0.5f; i < t || i < 10f; i += 0.1f)
+		for (float i = 0.0f; i < t || i < 10f; i += 0.1f)
 		{
-			position.x = xVel * i;
-			position.y = yVel * i + 0.5f * -g * (i * i);
+			position.x = cache_tf.position.x + (xVel * i);
+			position.y = cache_tf.position.y + (yVel * i + 0.5f * -g * (i * i));
 			lineHit = Physics2D.Linecast(prevPos, position);
 			Debug.DrawLine(prevPos, position, Color.black, 1.0f);
 			if (lineHit.collider != null)
 			{
-				if (lineHit.collider.isTrigger == false)
+				if (lineHit.transform.tag == "Floor")
 				{
 					aimDir = Vector3.zero;
 					return false;
 				}
 			}
+			prevPos = position;
 		}
 		return true;
 	}

@@ -248,7 +248,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startTrack: {fileID: 8300000, guid: e718e329940b0bf4f8f238685433daaf, type: 3}
   mainLoop: {fileID: 8300000, guid: 5fce6503b903cd64080f259395acbba1, type: 3}
-  levelAudio: {fileID: 0}
 --- !u!82 &79158694
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2632,11 +2631,6 @@ MonoBehaviour:
   - {fileID: 664263698}
   - {fileID: 440672450}
   - {fileID: 595036042}
-  scoreDisplays: []
-  scoreGainLose: []
-  actionPerformedTexts: []
-  counts: []
-  gainLoseScores: 
 --- !u!1 &1046521618
 GameObject:
   m_ObjectHideFlags: 0
@@ -2761,7 +2755,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetHitEffect: {fileID: 121926, guid: 1364f903ad477eb41bc0624f9c6c6eca, type: 2}
-  pooledTargetHitEffect: []
 --- !u!4 &1155509746
 Transform:
   m_ObjectHideFlags: 0
@@ -3624,31 +3617,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06098f0c728b4f44dae22f74d926d14e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movePos: {fileID: 0}
   startShakeDur: 1
-  shakeDur: 0
   shakeMag: 0.4
   killShake: 8
   shaking: 0
-  startPos: {x: 0, y: 0, z: 0}
   smoothing: 3
   maxCamSize: 25
   minCamSize: 25
-  minCameraHeight: 12
   maxDistanceXFromZero: 4
   maxDistanceYFromZero: 20
-  buffer: 4
-  offsetUp: 0
-  offset: {x: 0, y: 0, z: 0}
-  maxXDistance: 0
-  maxYDistance: 0
-  panningY: 0
-  positionSum: {x: 0, y: 0, z: 0}
-  meanPosition: {x: 0, y: 0, z: 0}
-  myCam: {fileID: 0}
-  camSize: 0
   considerTargets: 1
-  targetsExist: 0
+  focusAmount: 1
 --- !u!1001 &1505375318
 Prefab:
   m_ObjectHideFlags: 0
@@ -3819,12 +3798,7 @@ MonoBehaviour:
   - {fileID: 1628396015}
   playerScores: 
   playerBananaSpawned: 
-  bananaSpawnCount: []
   scorePerBanana: 5
-  bananaSpawnTime: 0.3
-  bananaSideForce: 1
-  pooledBananas: []
-  bananaPoolAmount: 2000
 --- !u!4 &1593521103
 Transform:
   m_ObjectHideFlags: 0

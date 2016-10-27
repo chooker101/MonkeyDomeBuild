@@ -731,4 +731,12 @@ public class Actor : MonoBehaviour
         haveBall = true;
         ballHolding = ball;
     }
+
+	public void GorillaCatchReset()
+	{
+
+	}
+
+	public bool IsChargingThrow = false;
+	
 }
