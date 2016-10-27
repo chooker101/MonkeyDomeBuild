@@ -30,7 +30,8 @@ public class EventManager : MonoBehaviour {
     public Text PoopText;
 
     void Start () {
-        turretManager = GetComponentInParent<TurretsManager>();
+        turretManager = GameManager.Instance.GetComponent<TurretsManager>();
+        //turretManager = GetComponentInParent<TurretsManager>();
         NoneEvent();
         BananaText.gameObject.SetActive(false);
         PoopText.gameObject.SetActive(false);

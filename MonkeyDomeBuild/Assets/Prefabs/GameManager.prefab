@@ -366,7 +366,6 @@ GameObject:
   - 114: {fileID: 11469230}
   - 114: {fileID: 404905926}
   - 114: {fileID: 11492684}
-  - 114: {fileID: 114000012722380816}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1994,29 +1993,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5502e8058c7070f42aaf7a6ed0c0cfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114000012722380816
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 197046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77dba564d3b69af44b78ec296b5b19ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turretTargetLocations:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  launchTotal: 20
-  BananaText: {fileID: 114000013505044140}
-  PoopText: {fileID: 114000013872485980}
 --- !u!114 &114000013505044140
 MonoBehaviour:
   m_ObjectHideFlags: 1
