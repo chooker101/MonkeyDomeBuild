@@ -69,12 +69,6 @@ public class VictoryRoomManager : MonoBehaviour
         Podium4 = GameObject.Find("Podium4");
         Podium5 = GameObject.Find("Podium5");
 
-        podiumPos1 = Podium1.transform.position;
-        podiumPos2 = Podium2.transform.position;
-        podiumPos3 = Podium3.transform.position;
-        podiumPos4 = Podium4.transform.position;
-        podiumPos5 = Podium5.transform.position;
-
         movePodiums();
         GameManager.Instance.gmSpawnManager.Start();
         moveCase();
@@ -136,6 +130,12 @@ public class VictoryRoomManager : MonoBehaviour
             temp.x = -1;
 
         transform.position = temp;
+
+        podiumPos1 = Podium1.transform.position;
+        podiumPos2 = Podium2.transform.position;
+        podiumPos3 = Podium3.transform.position;
+        podiumPos4 = Podium4.transform.position;
+        podiumPos5 = Podium5.transform.position;
     }
     void moveCase()
     {
