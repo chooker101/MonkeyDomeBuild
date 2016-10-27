@@ -50,9 +50,9 @@ public class ScoringManager : MonoBehaviour
     {
         //_ball = FindObjectOfType<BallInfo>();
         playerScores.Clear();
-        playerScores.Add(WhichPlayer.Player1, 0);
+        playerScores.Add(WhichPlayer.Player1, 160);
         playerScores.Add(WhichPlayer.Player2, 0);
-        playerScores.Add(WhichPlayer.Player3, 0);
+        playerScores.Add(WhichPlayer.Player3, 200);
         playerScores.Add(WhichPlayer.Player4, 0);
         playerScores.Add(WhichPlayer.Player5, 0);
     }
