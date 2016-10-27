@@ -31,15 +31,15 @@ public class EffectControl : MonoBehaviour
     public bool playerLocatorActive = true;
     public bool playerLocatorMatchStart = false;
 
+    public bool faceWithColor;
     public Image HappyFace;
-    private float HappyFaceLastTime = 1.5f;
-    private float HappyFaceFadeSpeed = 5f;
-    private bool HappyFaceEffectEnd = true;
-
     public Image SadFace;
-    private float SadFaceLastTime = 1.5f;
-    private float SadFaceFadeSpeed = 5f;
+    private float FaceLastTime = 1.5f;
+    private float FaceFadeSpeed = 5f;
+    private bool HappyFaceEffectEnd = true;
     private bool SadFaceEffectEnd = true;
+    private Color c;
+
 
 
     void Start()
@@ -64,7 +64,7 @@ public class EffectControl : MonoBehaviour
             if (Mathf.Abs(HappyFace.color.a - 1f) > 0.05f)
             {
                 Color c = HappyFace.color;
-                c.a = Mathf.Lerp(c.a, 0, Time.deltaTime * HappyFaceFadeSpeed);
+                c.a = Mathf.Lerp(c.a, 0, Time.deltaTime * FaceFadeSpeed);
             }
             else
             {
@@ -81,7 +81,7 @@ public class EffectControl : MonoBehaviour
             if (Mathf.Abs(SadFace.color.a - 1f) > 0.05f)
             {
                 Color c = SadFace.color;
-                c.a = Mathf.Lerp(c.a, 0, Time.deltaTime * SadFaceFadeSpeed);
+                c.a = Mathf.Lerp(c.a, 0, Time.deltaTime * FaceFadeSpeed);
             }
             else
             {
@@ -224,10 +224,11 @@ public class EffectControl : MonoBehaviour
             particleColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
         }
         HappyFaceEffectEnd = true;
-        Color c = particleColour;
+        if(faceWithColor == true)
+        c = particleColour;
         c.a = 1f;
         HappyFace.color = c;
-        Invoke("ResetHappyFace", HappyFaceLastTime);
+        Invoke("ResetHappyFace", FaceLastTime);
     }
     void ResetHappyFace()
     {
@@ -241,10 +242,11 @@ public class EffectControl : MonoBehaviour
             particleColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
         }
         SadFaceEffectEnd = true;
-        Color c = particleColour;
+        if (faceWithColor == true)
+        c = particleColour;
         c.a = 1f;
         SadFace.color = c;
-        Invoke("ResetSadFace", SadFaceLastTime);
+        Invoke("ResetSadFace", FaceLastTime);
     }
     void ResetSadFace()
     {
