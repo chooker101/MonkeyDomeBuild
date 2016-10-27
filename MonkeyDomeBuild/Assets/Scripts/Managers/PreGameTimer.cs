@@ -83,7 +83,7 @@ public class PreGameTimer : MonoBehaviour
                 {
                     //pregameTimer = 0;
                     gameState = "game";
-                    SceneManager.LoadScene(gameScene.ToString());
+                    SceneManager.LoadScene("mb_level04_v2");
                     Destroy(newSpinner, 1f);
                 }
             }

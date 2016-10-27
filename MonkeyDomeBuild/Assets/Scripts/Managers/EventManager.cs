@@ -37,7 +37,6 @@ public class EventManager : MonoBehaviour {
     }
 
 	void Update () {
-        Debug.Log(randomEvent);
 	}
 
     void Events()
