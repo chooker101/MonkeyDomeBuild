@@ -31,13 +31,13 @@ public class EventManager : MonoBehaviour {
 
     void Start () {
         turretManager = GameManager.Instance.GetComponent<TurretsManager>();
-        //turretManager = GetComponentInParent<TurretsManager>();
         NoneEvent();
         BananaText.gameObject.SetActive(false);
         PoopText.gameObject.SetActive(false);
     }
 
 	void Update () {
+        //Debug.Log(randomEvent);
 	}
 
     void Events()

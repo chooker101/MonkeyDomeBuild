@@ -403,7 +403,6 @@ GameObject:
   - 33: {fileID: 294933024}
   - 23: {fileID: 294933023}
   - 61: {fileID: 294933022}
-  - 50: {fileID: 294933025}
   m_Layer: 8
   m_Name: Podium1
   m_TagString: Floor
@@ -475,23 +474,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 294933020}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!50 &294933025
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 294933020}
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 1
 --- !u!1 &297204527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,7 +1157,6 @@ GameObject:
   - 33: {fileID: 603339689}
   - 23: {fileID: 603339688}
   - 61: {fileID: 603339687}
-  - 50: {fileID: 603339690}
   m_Layer: 8
   m_Name: Podium3
   m_TagString: Floor
@@ -1247,23 +1228,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 603339685}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!50 &603339690
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 603339685}
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 1
 --- !u!1 &633028643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,7 +1986,6 @@ GameObject:
   - 33: {fileID: 1215130268}
   - 23: {fileID: 1215130267}
   - 61: {fileID: 1215130266}
-  - 50: {fileID: 1215130269}
   m_Layer: 8
   m_Name: Podium2
   m_TagString: Floor
@@ -2094,23 +2057,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1215130264}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!50 &1215130269
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1215130264}
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 1
 --- !u!1 &1231230695
 GameObject:
   m_ObjectHideFlags: 0
@@ -2979,7 +2925,6 @@ GameObject:
   - 33: {fileID: 1811010677}
   - 23: {fileID: 1811010676}
   - 61: {fileID: 1811010675}
-  - 50: {fileID: 1811010678}
   m_Layer: 8
   m_Name: Podium4
   m_TagString: Floor
@@ -3051,23 +2996,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1811010673}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!50 &1811010678
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1811010673}
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 1
 --- !u!1 &1819882581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3361,7 +3289,6 @@ GameObject:
   - 33: {fileID: 1963289177}
   - 23: {fileID: 1963289176}
   - 61: {fileID: 1963289175}
-  - 50: {fileID: 1963289178}
   m_Layer: 8
   m_Name: Podium5
   m_TagString: Floor
@@ -3433,23 +3360,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1963289173}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!50 &1963289178
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1963289173}
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 1
 --- !u!1 &1984939713
 GameObject:
   m_ObjectHideFlags: 0
