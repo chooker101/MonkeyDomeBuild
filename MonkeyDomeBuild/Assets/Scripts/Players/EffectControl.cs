@@ -31,6 +31,17 @@ public class EffectControl : MonoBehaviour
     public bool playerLocatorActive = true;
     public bool playerLocatorMatchStart = false;
 
+    public bool faceWithColor;
+    public Image HappyFace;
+    public Image SadFace;
+    private float FaceLastTime = 1.5f;
+    private float FaceFadeSpeed = 5f;
+    private bool HappyFaceEffectEnd = true;
+    private bool SadFaceEffectEnd = true;
+    private Color c;
+
+
+
     void Start()
     {
         stampInitScale = gorillaStamp.transform.localScale;
@@ -48,7 +59,41 @@ public class EffectControl : MonoBehaviour
     }
     void Update()
     {
-        if(playerLocatorMatchStart)
+        if (!HappyFaceEffectEnd)
+        {
+            if (Mathf.Abs(HappyFace.color.a - 1f) > 0.05f)
+            {
+                Color c = HappyFace.color;
+                c.a = Mathf.Lerp(c.a, 0, Time.deltaTime * FaceFadeSpeed);
+            }
+            else
+            {
+                if (HappyFace.color.a != 0)
+                {
+                    Color c = HappyFace.color;
+                    c.a = 0;
+                    HappyFace.color = c;
+                }
+            }
+        }
+        if (!SadFaceEffectEnd)
+        {
+            if (Mathf.Abs(SadFace.color.a - 1f) > 0.05f)
+            {
+                Color c = SadFace.color;
+                c.a = Mathf.Lerp(c.a, 0, Time.deltaTime * FaceFadeSpeed);
+            }
+            else
+            {
+                if (SadFace.color.a != 0)
+                {
+                    Color c = SadFace.color;
+                    c.a = 0;
+                    SadFace.color = c;
+                }
+            }
+        }
+        if (playerLocatorMatchStart)
         {
             playerLocatorTimer = playerLocatorTimeMax;
             playerLocatorMatchStart = false;
@@ -171,4 +216,41 @@ public class EffectControl : MonoBehaviour
         CancelInvoke("ResetSwitchEffect");
     }
 
+
+    public void PlayHappyFace()
+    {
+        if (particleColour != GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex))
+        {
+            particleColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
+        }
+        HappyFaceEffectEnd = true;
+        if(faceWithColor == true)
+        c = particleColour;
+        c.a = 1f;
+        HappyFace.color = c;
+        Invoke("ResetHappyFace", FaceLastTime);
+    }
+    void ResetHappyFace()
+    {
+        HappyFaceEffectEnd = false;
+        CancelInvoke("ResetHappyFace");
+    }
+    public void PlaySadFace()
+    {
+        if (particleColour != GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex))
+        {
+            particleColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
+        }
+        SadFaceEffectEnd = true;
+        if (faceWithColor == true)
+        c = particleColour;
+        c.a = 1f;
+        SadFace.color = c;
+        Invoke("ResetSadFace", FaceLastTime);
+    }
+    void ResetSadFace()
+    {
+        SadFaceEffectEnd = false;
+        CancelInvoke("ResetSadFace");
+    }
 }
