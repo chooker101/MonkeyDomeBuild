@@ -20,8 +20,8 @@ public class TurretsManager : MonoBehaviour
             if(obj.activeInHierarchy)
                 turrets.Add(obj.GetComponent<Turret>());
         }
-        tempShootTimeMin = 8f;
-        tempShootTimeMax = 10f;
+        tempShootTimeMin = .5f;
+        tempShootTimeMax = 1f;
         tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
 
     }
@@ -36,10 +36,11 @@ public class TurretsManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
+            // first value is which player and the second is banana or poop
             AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofPlayers)], 1);
         }
         //Debug.Log(targetQueues.Count);
-        TempTest();
+        //TempTest();
         if (targetQueues.Count > 0)
         {
             int availableTurretIndex = 99;

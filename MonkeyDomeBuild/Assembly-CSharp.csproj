@@ -68,6 +68,7 @@
      <Compile Include="Assets\Scripts\Managers\AudienceManager.cs" />
      <Compile Include="Assets\Scripts\Managers\AudioEffectManager.cs" />
      <Compile Include="Assets\Scripts\Managers\ButtonManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\EventManager.cs" />
      <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
      <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
      <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
@@ -102,6 +103,7 @@
      <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
      <Compile Include="Assets\Scripts\UI\ScoreVisualizer.cs" />
      <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
+     <Compile Include="Assets\UIEffect.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

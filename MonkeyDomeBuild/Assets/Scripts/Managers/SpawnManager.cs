@@ -30,7 +30,7 @@ public class SpawnManager : MonoBehaviour
 		Spawn(this.gameObject);
 	}
 
-	void Start()
+	public void Start()
 	{
 		for (int j = 0; j < (int)GameManager.Instance.TotalNumberofPlayers; j++)
 		{

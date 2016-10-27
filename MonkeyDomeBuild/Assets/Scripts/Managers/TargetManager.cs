@@ -182,7 +182,10 @@ public class TargetManager : MonoBehaviour
                 //advanceTier = false;
             }
         }
-        else
+        else if (hitSum == 2)
+        {
+            
+        } else 
         {
             if (targetTier > 0 && hitSum < 3)
             {
