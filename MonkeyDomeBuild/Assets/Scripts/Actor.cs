@@ -576,7 +576,7 @@ public class Actor : MonoBehaviour
                 Destroy(other.gameObject);
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
-                GameManager.Instance.gmAudienceManager.HitByPoop(playerIndex);
+                GameManager.Instance.gmAudienceManager.HitByPoop(playerIndex); 
             }
         }
     }
