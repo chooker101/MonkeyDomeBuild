@@ -6,6 +6,7 @@ public class UIEffect : MonoBehaviour {
 
     private Text myText;
     private bool scalingUp;
+    private int aliveCounter;
 
     private Vector3 tempScale;
     private Vector3 originalScale;
@@ -14,7 +15,8 @@ public class UIEffect : MonoBehaviour {
         scalingUp = true;
         myText = GetComponent<Text>();
          originalScale = myText.transform.localScale;
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -26,6 +28,7 @@ public class UIEffect : MonoBehaviour {
         {
             ScaleDownText();
         }
+
 	}
 
     // USE SLERP! the x and y local scale
@@ -33,8 +36,8 @@ public class UIEffect : MonoBehaviour {
     {
         tempScale = myText.transform.localScale;
 
-       tempScale.x = Mathf.Lerp(myText.transform.localScale.x, 2f, 5f*Time.deltaTime);
-       tempScale.y = Mathf.Lerp(myText.transform.localScale.y, 2f, 5f*Time.deltaTime);
+       tempScale.x = Mathf.Lerp(myText.transform.localScale.x, 2f, 1f*Time.deltaTime);
+       tempScale.y = Mathf.Lerp(myText.transform.localScale.y, 2f, 1f*Time.deltaTime);
 
         myText.transform.localScale = tempScale;
         StartCoroutine(ScalingTime());
@@ -53,7 +56,7 @@ public class UIEffect : MonoBehaviour {
 
     IEnumerator ScalingTime()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(.5f);
         scalingUp = false;
     }
 }

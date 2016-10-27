@@ -48,10 +48,10 @@ public class Turret : MonoBehaviour {
         minFiringAngle = 30f;
         angleRatio = 1f;
         distanceFalloff = 2f;
-        coolDownMin = 2f;
-        coolDownMax = 5f;
+        coolDownMin = .2f;   // was 2f
+        coolDownMax = .5f;   // was 5f
         falloff = 0.5f;
-        moveSpeed = 10f;
+        moveSpeed = 20f;    // was 10f
     }
 
     void Update()

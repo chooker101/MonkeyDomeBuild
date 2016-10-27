@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+/*
+ * PAN CAMERA OUT WHEN EVENT ACTIVE!
+ */
+
 public class EventManager : MonoBehaviour {
 
     private TurretsManager turretManager;
@@ -38,7 +42,7 @@ public class EventManager : MonoBehaviour {
 
     void Events()
     {
-        if (noneCounter < 2)
+        if (noneCounter == 2)
         {
             randomEvent = Random.Range(0, 3);
         }
@@ -67,7 +71,7 @@ public class EventManager : MonoBehaviour {
         eventActive = true;
         PoopText.gameObject.SetActive(false);
         BananaText.gameObject.SetActive(true);
-        eventTimer = Random.Range(6f, 10f);
+        eventTimer = Random.Range(8f, 12f);
         for (int i = 0; i < launchTotal; i++)
         {
             turretManager.AddFireQueue(turretTargetLocations[Random.Range(0, (int)turretTargetLocations.Length)], 0);
@@ -80,7 +84,7 @@ public class EventManager : MonoBehaviour {
         eventActive = true;
         BananaText.gameObject.SetActive(false);
         PoopText.gameObject.SetActive(true);
-        eventTimer = Random.Range(6f, 10f);
+        eventTimer = Random.Range(8f, 12f);
         for (int i = 0; i < launchTotal; i++)
         {
             turretManager.AddFireQueue(turretTargetLocations[Random.Range(0, (int)turretTargetLocations.Length)], 1);
@@ -95,7 +99,7 @@ public class EventManager : MonoBehaviour {
         PoopText.gameObject.SetActive(false);
         randomEvent = (int)Event.None;
         eventActive = true;
-        eventTimer = Random.Range(1f, 2f);
+        eventTimer = Random.Range(4f, 12f);
         StartCoroutine(EventTime());
     }
 

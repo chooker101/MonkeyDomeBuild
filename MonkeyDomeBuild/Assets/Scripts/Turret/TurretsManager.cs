@@ -20,8 +20,8 @@ public class TurretsManager : MonoBehaviour
             if(obj.activeInHierarchy)
                 turrets.Add(obj.GetComponent<Turret>());
         }
-        tempShootTimeMin = .5f;
-        tempShootTimeMax = 1f;
+        tempShootTimeMin = .2f;
+        tempShootTimeMax = .5f;
         tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
 
     }
