@@ -6,20 +6,21 @@ public class UIEffect : MonoBehaviour {
 
     private Text myText;
     private bool scalingUp;
-    private int aliveCounter;
+    public int aliveCounter;
 
     private Vector3 tempScale;
     private Vector3 originalScale;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         scalingUp = true;
         myText = GetComponent<Text>();
-         originalScale = myText.transform.localScale;
+        originalScale = myText.transform.localScale;
 
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         if (scalingUp)
         {
             ScaleUpText();
@@ -31,8 +32,7 @@ public class UIEffect : MonoBehaviour {
 
 	}
 
-    // USE SLERP! the x and y local scale
-    void ScaleUpText()
+     void ScaleUpText()
     {
         tempScale = myText.transform.localScale;
 
@@ -43,7 +43,7 @@ public class UIEffect : MonoBehaviour {
         StartCoroutine(ScalingTime());
     }
 
-    void ScaleDownText()
+     void ScaleDownText()
     {
         tempScale = myText.transform.localScale;
 
@@ -54,7 +54,7 @@ public class UIEffect : MonoBehaviour {
         scalingUp = true;
     }
 
-    IEnumerator ScalingTime()
+     IEnumerator ScalingTime()
     {
         yield return new WaitForSeconds(.5f);
         scalingUp = false;

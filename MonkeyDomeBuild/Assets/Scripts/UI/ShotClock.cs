@@ -5,10 +5,17 @@ using System;
 
 public class ShotClock : MonoBehaviour
 {
+    private bool scalingUp;
     Text shotClock = null;
+
+    private Vector3 originalScale;
+    private Vector3 tempScale;
     void Start()
     {
-        shotClock = GetComponent<Text>();      
+        shotClock = GetComponent<Text>();   
+        scalingUp = true;
+        originalScale = shotClock.transform.localScale;
+
     }
 
 
@@ -23,5 +30,62 @@ public class ShotClock : MonoBehaviour
         if (time < 0) time = 0f;
         shotClock.text = time.ToString("F2");
         //Debug.Log(time);
+
+        if (time > 4f)
+        {
+            shotClock.fontStyle = FontStyle.Normal;
+            shotClock.color = new Color(0f, 0f, 00f);
+        } else if (time > 2f && time <= 4f)
+        {
+            shotClock.color = new Color(200f, 200f, 00f);
+            if (scalingUp)
+            {
+                ScaleUpText(3f,1f);
+            }
+            else
+            {
+                ScaleDownText();
+            }
+        } else
+        {
+            shotClock.color = new Color(200f, 0f, 00f);
+            if (scalingUp)
+            {
+                shotClock.fontStyle = FontStyle.Bold;
+                ScaleUpText(5f,5f);
+            }
+            else
+            {
+                ScaleDownText();
+            }
+        }
+    }
+
+     void ScaleUpText(float factor, float time)
+    {
+        tempScale = shotClock.transform.localScale;
+
+        tempScale.x = Mathf.Lerp(shotClock.transform.localScale.x, factor, time * Time.deltaTime);
+        tempScale.y = Mathf.Lerp(shotClock.transform.localScale.y, factor, time * Time.deltaTime);
+
+        shotClock.transform.localScale = tempScale;
+        StartCoroutine(ScalingTime());
+    }
+
+     void ScaleDownText()
+    {
+        tempScale = shotClock.transform.localScale;
+
+        tempScale.x = Mathf.Lerp(shotClock.transform.localScale.x, originalScale.x, 5f * Time.deltaTime);
+        tempScale.y = Mathf.Lerp(shotClock.transform.localScale.y, originalScale.y, 5f * Time.deltaTime);
+
+        shotClock.transform.localScale = tempScale;
+        scalingUp = true;
+    }
+
+     IEnumerator ScalingTime()
+    {
+        yield return new WaitForSeconds(.5f);
+        scalingUp = false;
     }
 }
