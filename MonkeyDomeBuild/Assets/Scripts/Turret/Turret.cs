@@ -5,7 +5,6 @@ public class Turret : MonoBehaviour {
 
     private GameObject stuffToShoot;
     private Rigidbody2D projectile;
-    private Transform myTransform;
     private Vector3 velocity;
     private Transform target;
     private Vector3 fireLoc;
@@ -19,10 +18,8 @@ public class Turret : MonoBehaviour {
     private bool isFiring = false;
     private float timeForNext = 0f;
 
-    [SerializeField]
-    private float currentMinFiringAngle;
-    [SerializeField]
-    private float currentMaxFiringAngle;
+    //private float currentMinFiringAngle;
+    //private float currentMaxFiringAngle;
     [SerializeField]
     private bool isAvailable = true;
 
@@ -39,7 +36,6 @@ public class Turret : MonoBehaviour {
     void Awake()
     {
         gravity = -Physics2D.gravity.y;
-        myTransform = transform;
         firingAngleRange[0] = 40f;
         firingAngleRange[1] = 70f;
         fireLoc = Vector2.zero;
@@ -88,8 +84,8 @@ public class Turret : MonoBehaviour {
         minAng = Mathf.Max(minAng, minFiringAngle);
         float maxAng = firingAngleRange[1] - m_rigid.transform.position.y * angleRatio;
         maxAng = Mathf.Min(maxAng, maxFiringAngle);
-        currentMinFiringAngle = minAng;
-        currentMaxFiringAngle = maxAng;
+        //currentMinFiringAngle = minAng;
+        //currentMaxFiringAngle = maxAng;
 
         //Quaternion.EulerRotation(0f,GetFiringAngle(),0f);
         //transform.rotation = Quaternion.EulerRotation(0f, 0f, GetFiringAngle());

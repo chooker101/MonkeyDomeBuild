@@ -48,8 +48,7 @@ public class Actor : MonoBehaviour
     protected Transform cache_tf;
 
     public Character characterType;
-	[SerializeField]
-    private GameObject monkeyCrown;
+    public GameObject monkeyCrown;
     public BallInfo ballCanCatch;
 	[SerializeField]
 	protected GameObject shotPointer;

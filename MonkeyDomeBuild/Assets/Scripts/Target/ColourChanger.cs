@@ -14,7 +14,7 @@ public class ColourChanger : MonoBehaviour
     //private RecordKeeper recordKeeper;
     //private CircleCollider2D targetCollider;
 
-    private GameObject myPlayer = null;
+    //private GameObject myPlayer = null;
     private GameObject objectHit = null;
     private Material materialToApply;
     public bool isHit = false;
@@ -28,7 +28,7 @@ public class ColourChanger : MonoBehaviour
     {
         // Fills a list with all current players
         target = transform.FindChild("Pivot").gameObject;
-		myPlayer = GameManager.Instance.gmPlayers[playerTargetIndex];
+		//myPlayer = GameManager.Instance.gmPlayers[playerTargetIndex];
         playerTargetNumberRegular = playerTargetIndex + 1;
         GetComponentInChildren<CircleCollider2D>().enabled = false;
         Init();

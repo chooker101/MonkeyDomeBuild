@@ -105,7 +105,7 @@ public class UIManager : MonoBehaviour
     void TargetsUI()
     {
         targetTierUI.text = GameManager.Instance.gmTargetManager.targetTier.ToString();
-        targetsInSequenceUI.text = GameManager.Instance.gmTargetManager.hitSum.ToString();
+        targetsInSequenceUI.text = GameManager.Instance.gmTargetManager.HitSum.ToString();
     }
 
 }

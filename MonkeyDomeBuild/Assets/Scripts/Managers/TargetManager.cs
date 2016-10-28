@@ -15,15 +15,13 @@ public class TargetManager : MonoBehaviour
     public bool[] targetsHitInSequence = new bool[5];
     public int sequenceIndex = 0;
     public bool advanceTier;
-    public float timeBetweenRallies = 10f;
+    private float timeBetweenRallies = 10f;
 
     [SerializeField]
     private Target[] gameTargets;
     private float startLifeTime;
     private int[] activateTimes = new int[5] { 0, 3, 6, 8, 10 };
     private int activateCounter;
-    private int addScore;
-    private bool isHit;
 
     public bool rallyOn;
     public int activeTargets;
@@ -75,10 +73,9 @@ public class TargetManager : MonoBehaviour
         activateCounter = 0;
         gameTargets = FindObjectsOfType<Target>();
         targetTier = 0;
-        isHit = false;
         //ballInfo = GetComponent<BallInfo>();
         RallySetter();
-        Rally();
+        Invoke("StartRallyDelay", timeBetweenRallies);
     }
 
 
@@ -87,8 +84,12 @@ public class TargetManager : MonoBehaviour
         if (rallyOn && activeTargets == 0)
         {
             StopAllCoroutines();
-            Invoke("StartRallyDelay", 5f);
+            Invoke("StartRallyDelay", timeBetweenRallies);
             rallyOn = false;
+            foreach (Target t in gameTargets)
+            {
+                t.RallyEnd();
+            }
         }
 
 
@@ -144,10 +145,6 @@ public class TargetManager : MonoBehaviour
     void StartRally()
     {
         UpdateTierStatus();
-        foreach (Target t in gameTargets)
-        {
-            //t.SetTargetHeads(targetTier);
-        }
         // call this method at the start of each rally. will activate target and deactivate if hit
         //isHit = false;
         ActivateTarget();
@@ -208,7 +205,10 @@ public class TargetManager : MonoBehaviour
         RallySetter();
         //advanceTier = CheckRally();
         StartRally();
-
+        foreach(Target t in gameTargets)
+        {
+            t.RallyStart();
+        }
     }
 
     void BetweenRallies()
@@ -219,7 +219,7 @@ public class TargetManager : MonoBehaviour
     IEnumerator ActiveWaiter(Target t)
     {
         //activeTargets++;
-        yield return new WaitForSeconds(activateTimes[activateCounter]);
+        yield return new WaitForSeconds(activateTimes[activateCounter] + timeBetweenRallies);
         t.targetActive = true;
         //t.SetTargetHeads(targetTier);
         t.TargetSetter();
@@ -247,6 +247,10 @@ public class TargetManager : MonoBehaviour
             activateTimes[j] = activateTimes[i] ^ activateTimes[j];
             activateTimes[i] ^= activateTimes[j];
             i++;
+        }
+        foreach(Target t in gameTargets)
+        {
+            t.WaitTime = 0f;
         }
         List<int> tempTargetIndexs = new List<int>();
         int repeatTimes = 0;
@@ -278,6 +282,7 @@ public class TargetManager : MonoBehaviour
         for(int k = 0; k < tempTargetIndexs.Count; k++)
         {
             activeTargets++;
+            gameTargets[tempTargetIndexs[k]].WaitTime = activateTimes[activateCounter] + timeBetweenRallies;
             StartCoroutine(ActiveWaiter(gameTargets[tempTargetIndexs[k]]));
             activateCounter++;
             if (activateCounter == 6)
@@ -298,5 +303,23 @@ public class TargetManager : MonoBehaviour
         }
         */
         activateCounter = 0;
+    }
+    public bool RallyOn
+    {
+        get
+        {
+            return rallyOn;
+        }
+    }
+    public float HitSum
+    {
+        get
+        {
+            return hitSum;
+        }
+    }
+    public void TargetHit()
+    {
+        hitSum++;
     }
 }

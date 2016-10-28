@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 public class AudienceManager : MonoBehaviour
 {
-
+    /*
     public enum AudienceEvent
     {
         Jump, //=0
@@ -295,5 +295,5 @@ public class AudienceManager : MonoBehaviour
     {
         return eventActive;
     }
-
+    */
 }

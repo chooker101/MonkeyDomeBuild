@@ -10,7 +10,7 @@ public class ProjectileBehavior : MonoBehaviour
 
 
     public Sprite squishSprite;
-    private bool isBanana = true;
+    //private bool isBanana = true;
     private SpriteRenderer myRenderer;
 
     void Start()

@@ -20,6 +20,7 @@ public class TargetNode : MonoBehaviour
         target.GetComponent<Target>().SetTargetAxis = targetAxis;
         target.GetComponent<Target>().SetTargetType = targetType;
         target.GetComponent<Target>().MoveLocation = moveLoc.position;
+        target.GetComponent<Target>().SetTargetBase = GetComponentInChildren<TargetBase>();
         target.transform.SetParent(TargetNodeManager.Instance.transform);
     }
 }
