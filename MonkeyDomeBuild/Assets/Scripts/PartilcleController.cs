@@ -3,9 +3,9 @@ using System.Collections;
 
 public class PartilcleController : MonoBehaviour
 {
-    private int playerIndex = 0;
+    //private int playerIndex = 0;
 
-    private Color playerColor;
+    //private Color playerColor;
     public ParticleSystem testParticle;
     private Transform catchParticlePivot;
     

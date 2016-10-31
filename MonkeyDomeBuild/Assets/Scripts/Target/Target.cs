@@ -17,11 +17,6 @@ public class Target : MonoBehaviour
     public bool isHit;
     //private int targetTier;
     public Transform targetTransform;
-    private FullTargetRotator targetActivator;
-    private GameObject targetParent;
-    private GameObject targetChild;
-    private Target gameTarget;
-    private bool stayTier;
     private TargetManager targetManager;
     public bool targetActive = false;
     public GameObject targetHeadL;
@@ -30,7 +25,6 @@ public class Target : MonoBehaviour
     public GameObject targetHeadT;
 
     private GameObject targetHead;
-    private Collider2D myCollider;
 
     public Transform hitParticlePivot;
 
@@ -39,6 +33,7 @@ public class Target : MonoBehaviour
 
     public float resetTime = 1;
     public float lifeTime;
+    private float initialLifeTime;
     public bool inAlarm = false;
 
     public TargetAxis targetAxis = TargetAxis.OnGround;
@@ -49,6 +44,13 @@ public class Target : MonoBehaviour
     private Vector3 targetPos;
     float maxDis = 2f;
     float moveSpeed = 2f;
+
+    public float waitTime;
+    float prepTime = 5f;
+    float warningTime = 2f;
+
+
+    TargetBase panel;
 
     void Start()
     {
@@ -63,6 +65,14 @@ public class Target : MonoBehaviour
         targetRot = Vector3.zero;
         Init();
 
+    }
+    public TargetBase SetTargetBase
+    {
+        set
+        {
+            panel = value;
+            panel.SetTarget = this;
+        }
     }
     void Init()
     {
@@ -98,6 +108,25 @@ public class Target : MonoBehaviour
         if (targetActive)
         {
             UpdateTargetTime();
+        }
+        if (targetManager.RallyOn)
+        {
+            if (waitTime != 0)
+            {
+                if (waitTime <= prepTime)
+                {
+                    if (!targetActive)
+                    {
+                        panel.ChangeTargetState(TargetBaseState.Prep);
+                    }
+                    waitTime = 0;
+                }
+                else
+                {
+                    waitTime -= Time.deltaTime;
+                }
+
+            }
         }
         if (Vector3.Distance(targetTransform.localEulerAngles, targetRot) > 0.01f)
         {
@@ -156,6 +185,7 @@ public class Target : MonoBehaviour
                 //TargetSetter(-1);
                 if (!isHit)
                 {
+                    panel.ChangeTargetState(TargetBaseState.Hit);
                     GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
                     GameObject particle = ParticlesManager.Instance.TargetHitParticle;
                     particle.SetActive(true);
@@ -170,17 +200,21 @@ public class Target : MonoBehaviour
                     //hitParticlePivot.localEulerAngles = new Vector3(0, 0, targetAng.eulerAngles.z);
 
                     //hitParticlePivot.GetComponentInChildren<ParticleSystem>().Play();
+                    Reset();
+                    DisableCollider();
+                    // isHit = true;
+                    inAlarm = false;
+                    targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
+                    targetManager.sequenceIndex++;
+                    targetManager.TargetHit();
+                    if (other.GetComponent<BallInfo>().lastThrowMonkey != null)
+                    {
+                        GameManager.Instance.gmTrophyManager.TargetsHit(other.GetComponent<BallInfo>().lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                    }
+                    //targetManager.advanceTier = targetManager.CheckRally();
+                    ResetTarget();
                 }
-                Reset();
-                DisableCollider();
-                // isHit = true;
-                inAlarm = false;
-                targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
-                targetManager.sequenceIndex++;
-                targetManager.hitSum++;
-                GameManager.Instance.gmTrophyManager.TargetsHit(other.GetComponent<BallInfo>().lastThrowMonkey.GetComponent<Actor>().playerIndex);
-                //targetManager.advanceTier = targetManager.CheckRally();
-                ResetTarget();
+
             }
         }
     }
@@ -206,24 +240,8 @@ public class Target : MonoBehaviour
             col.enabled = false;
         }
     }
-
-    /*public void EnableCollider()
-    {
-        GetComponentInChildren<Collider2D>().enabled = true;
-    }*/
-
     public void SetTargetHeads(int targetTier)
     {
-        if (myCollider != null)
-        {
-            //myCollider.enabled = true;
-        }
-
-        if (targetHead != null)
-        {
-            //targetHead.SetActive(false);
-        }
-
         switch (targetTier)
         {
             case 0:
@@ -261,8 +279,6 @@ public class Target : MonoBehaviour
         canEnableTargetHeadCollider = true;
         //targetHead.GetComponent<CircleCollider2D>().enabled = true;
     }
-
-
     public void TargetSetter()
     {
         // set target axis in editor for each target
@@ -297,7 +313,7 @@ public class Target : MonoBehaviour
     public void TargetTime()
     {
         // starts lifeTime alarm
-        if (isHit == false)
+        if (!isHit)
         {
             if (targetManager != null)
             {
@@ -307,7 +323,7 @@ public class Target : MonoBehaviour
             {
                 lifeTime = 5f;
             }
-
+            initialLifeTime = lifeTime;
             inAlarm = true;
         }
     }
@@ -317,12 +333,20 @@ public class Target : MonoBehaviour
         if (inAlarm)
         {
             lifeTime -= Time.deltaTime;
+            if (lifeTime < warningTime)
+            {
+                panel.ChangeTargetState(TargetBaseState.Warning);
+            }
+            else
+            {
+                Popup();
+            }
             if (lifeTime <= 0)
             {
                 // deactive alarm, reset lifeTime
                 //TargetSetter(-1f);
+                panel.ChangeTargetState(TargetBaseState.Miss);
                 Reset();
-                stayTier = false;
                 if (targetManager != null)
                 {
                     lifeTime = targetManager.SetLifeTime();
@@ -331,6 +355,7 @@ public class Target : MonoBehaviour
                 {
                     lifeTime = 5f;
                 }
+                initialLifeTime = lifeTime;
                 inAlarm = false;
                 targetActive = false;
                 DisableCollider();
@@ -381,6 +406,50 @@ public class Target : MonoBehaviour
         set
         {
             moveLoc = value;
+        }
+    }
+    public float WaitTime
+    {
+        get
+        {
+            return waitTime;
+        }
+        set
+        {
+            waitTime = value;
+        }
+    }
+    public void Popup()
+    {
+        panel.ChangeTargetState(TargetBaseState.Pop);
+    }
+    public void RallyStart()
+    {
+        panel.ChangeTargetState(TargetBaseState.RallyStart);
+    }
+    public void RallyEnd()
+    {
+        panel.ChangeTargetState(TargetBaseState.RallyEnd);
+    }
+    public float InitialLifeTime
+    {
+        get
+        {
+            return initialLifeTime;
+        }
+    }
+    public float PrepTime
+    {
+        get
+        {
+            return prepTime;
+        }
+    }
+    public float WarningTime
+    {
+        get
+        {
+            return warningTime;
         }
     }
 }

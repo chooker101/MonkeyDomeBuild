@@ -26,7 +26,7 @@ public class ScoringManager : MonoBehaviour
     public int throwCombo = 0;
 
     private float longThrowDistance = 70f;
-    private float maxTravelTime = 8f;
+    //private float maxTravelTime = 8f;
     private int longThrowMaxBounce = 8;
     private int minBounce = 3;
     private int maxBounce = 6;
@@ -40,7 +40,7 @@ public class ScoringManager : MonoBehaviour
     private int catchInAirScore = 3;
     private int monkeyGettingInterceptScore = -10;
     private int innocentMonkeyScore = -5;
-    private int gorillaInterceptScore = 20;
+    //private int gorillaInterceptScore = 20;
     private int hitTargetScoreT0 = 5;
     private int hitTargetScoreT1 = 10;
     private int hitTargetScoreT2 = 15;
@@ -101,6 +101,7 @@ public class ScoringManager : MonoBehaviour
     }
     void AddScore(int playerIndex,int score)
     {
+        GameManager.Instance.gmPlayers[playerIndex].GetComponent<EffectControl>().PlayHappyFace();
         WhichPlayer p = CheckWhichPlayer(playerIndex);
         if (playerScores[p] + score > 0)
         {
@@ -150,9 +151,9 @@ public class ScoringManager : MonoBehaviour
     }
     public void SwitchingScore(GameObject gorilla, GameObject ball)
     {
-        //subtract scrore from other monkeys
+        //subtract score from other monkeys
         int switchScore = 0;
-        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
             if (GameManager.Instance.gmPlayers[i].GetInstanceID() != gorilla.GetInstanceID())
             {
@@ -170,6 +171,7 @@ public class ScoringManager : MonoBehaviour
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), monkeyGettingInterceptScore, "Being Intercept");
                         AddScore(i, monkeyGettingInterceptScore);
                     }
+                    GameManager.Instance.gmPlayers[i].GetComponent<EffectControl>().PlaySadFace();
                 }
                 else
                 {
@@ -185,6 +187,7 @@ public class ScoringManager : MonoBehaviour
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), innocentMonkeyScore, "Being Intercept");
                         AddScore(i, innocentMonkeyScore);
                     }
+                    GameManager.Instance.gmPlayers[i].GetComponent<EffectControl>().PlaySadFace();
                 }
             }
         }
@@ -200,8 +203,8 @@ public class ScoringManager : MonoBehaviour
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey, GameObject ball)
     {
         //Debug.Log("intercetp");
-        int interceptScore = 0;
-        int monkeyIndex = monkey.GetComponent<Actor>().playerIndex;
+        //int interceptScore = 0;
+        //int monkeyIndex = monkey.GetComponent<Actor>().playerIndex;
         /*if (playerScores[CheckWhichPlayer(monkeyIndex)] < Mathf.Abs(gorillaInterceptScore))
         {
             interceptScore += playerScores[CheckWhichPlayer(monkeyIndex)];

@@ -36,7 +36,6 @@ public class CameraController : MonoBehaviour
     private Vector3 positionSum = Vector3.zero;
     private Vector3 meanPosition = Vector3.zero;
     private Camera myCam;
-    private float camSize;
 
     public bool considerTargets = false;
     private bool targetsExist = false;
@@ -229,7 +228,6 @@ public class CameraController : MonoBehaviour
         //get average position of players
         //then use it to get the average position of the ball and the players
         MeanOfPositions();
-        camSize = myCam.orthographicSize;
         maxXDistance = 0f;
         maxYDistance = 0f;
         // get maxXDistance       

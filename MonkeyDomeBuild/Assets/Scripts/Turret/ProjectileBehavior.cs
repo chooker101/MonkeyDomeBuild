@@ -8,10 +8,24 @@ public class ProjectileBehavior : MonoBehaviour
     private bool canEffectCharacter = true;
     public float characterInc;
 
+
+    public Sprite squishSprite;
+    //private bool isBanana = true;
+    private SpriteRenderer myRenderer;
+
     void Start()
     {
+        myRenderer = GetComponent<SpriteRenderer>();
         _rigid = GetComponent<Rigidbody2D>();
         characterInc = 0.5f;
+
+        //if (gameObject.CompareTag("Banana"))
+        //{
+        //    squishSprite = bananaSprite;
+        //} else if (gameObject.CompareTag("Poop"))
+        //{
+        //    squishSprite = poopSprite;
+        //}
     }
 
     void Update()
@@ -37,7 +51,8 @@ public class ProjectileBehavior : MonoBehaviour
                 _rigid.isKinematic = true;
                 //_rigid.useGravity = false;
                 _rigid.transform.position = remainLoc;
-                _rigid.transform.localScale = new Vector3(1.5f, 0.5f, 1f);
+                //_rigid.transform.localScale = new Vector3(1.5f, 0.5f, 1f);
+                myRenderer.sprite = squishSprite;
                 remainLoc.y = other.transform.position.y + other.transform.localScale.y / 2;
             }
             else if (other.CompareTag("Wall"))

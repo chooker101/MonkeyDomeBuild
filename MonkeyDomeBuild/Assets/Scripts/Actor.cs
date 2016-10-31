@@ -48,8 +48,7 @@ public class Actor : MonoBehaviour
     protected Transform cache_tf;
 
     public Character characterType;
-	[SerializeField]
-    private GameObject monkeyCrown;
+    public GameObject monkeyCrown;
     public BallInfo ballCanCatch;
 	[SerializeField]
 	protected GameObject shotPointer;
@@ -576,7 +575,6 @@ public class Actor : MonoBehaviour
                 Destroy(other.gameObject);
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
-                GameManager.Instance.gmAudienceManager.HitByPoop(playerIndex);
             }
         }
     }
