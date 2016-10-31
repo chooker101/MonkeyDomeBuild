@@ -47,6 +47,26 @@ public class AI : Actor
 	private int lastPlayerTarget = 0;
 	private bool letCatch = false;
 	private bool waitForBallOnce = true;
+	private bool wantsToThrow = false;
+	private int upOrDownThrow = 0;
+	private LayerMask ballLayer = LayerMask.NameToLayer("Ball");
+
+	//throw away shit
+	private float g;
+	private float range;
+	private float height;
+	private float negTheta;
+	private float posTheta;
+	private float t1;
+	private float t2;
+	private float xVel1;
+	private float yVel1;
+	private float xVel2;
+	private float yVel2;
+	private float directionOfParabola;
+	private RaycastHit2D lineHit;
+	private Vector2 posOnParabola;
+	private Vector2 prevPosOnParabola;
 
 	State currentState;
 
@@ -84,6 +104,13 @@ public class AI : Actor
 	void FixedUpdate()
 	{
 		IsBallNear();
+		if(wantsToThrow)
+		{
+			if(CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
+			{
+				currentState = State.Throw;
+			}
+		}
 		ExecuteState();
 		MovementVelocity();
 		AnimationControl();
@@ -158,7 +185,9 @@ public class AI : Actor
 			}
 			else
 			{
+				wantsToThrow = true;
 				//calc move target
+				currentState = State.Move;
 			}
 		}
 		else if(secondLowest != lastPlayerTarget)
@@ -170,7 +199,9 @@ public class AI : Actor
 			}
 			else
 			{
+				wantsToThrow = true;
 				//calc move target
+				currentState = State.Move;
 			}
 		}
 		return currentState;
@@ -178,7 +209,11 @@ public class AI : Actor
 
 	State ExecuteThrow()
 	{
-		Debug.Log("Throw");
+		GameManager.Instance.gmInputs[playerIndex].mXY.x = aimDir.x;
+		GameManager.Instance.gmInputs[playerIndex].mXY.y = aimDir.y;
+		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = true;
+		StartCoroutine(RealisticInputThrow());
+		currentState = State.Move;
 		return currentState;
 	}
 
@@ -502,53 +537,140 @@ public class AI : Actor
 	private bool CalculateThrow(GameObject playerTarg)
 	{
 		aimDir = Vector3.zero;
-		Vector2 position = Vector2.zero;
-		Vector2 prevPos = cache_tf.position;
-		RaycastHit2D lineHit;
-		float g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
+		posOnParabola = Vector2.zero;
+		prevPosOnParabola = cache_tf.position;
+		g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
 		throwVelocity = characterType.throwForce;
-		float range = (playerTarg.transform.position.x - cache_tf.position.x);
-		float dir = range / Mathf.Abs(range);
-		float height = (playerTarg.transform.position.y - cache_tf.position.y);
-		float theta = 0.0f;
+		range = (playerTarg.transform.position.x - cache_tf.position.x);
+		if (range != 0.0f)
+		{
+			directionOfParabola = range / Mathf.Abs(range);
+		}
+		else
+		{
+			return false;
+		}
+		height = (playerTarg.transform.position.y - cache_tf.position.y);
+		posTheta = 0.0f;
+		negTheta = 0.0f;
 		if(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)) > 0.0f)
 		{
-			theta = Mathf.Atan(((throwVelocity * throwVelocity) + dir * Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / (g * range));
+			posTheta = Mathf.Atan(((throwVelocity * throwVelocity) + Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / (g * range));
+			negTheta = Mathf.Atan(((throwVelocity * throwVelocity) - Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / (g * range));
 		}
 		else
 		{
 			return false;
 		}
-		float xVel = throwVelocity * Mathf.Cos(theta);
-		float yVel = throwVelocity * Mathf.Sin(theta);
-		float t = 0.0f;
-		if ((yVel * yVel) - (4 * (0.5f * g) * (-height)) > 0)
+
+		xVel1 = throwVelocity * Mathf.Cos(posTheta);
+		yVel1 = throwVelocity * Mathf.Sin(posTheta);
+		t1 = 0.0f;
+		if (directionOfParabola > 0)
 		{
-			t = ((yVel + dir * Mathf.Sqrt((yVel * yVel) - (4 * (0.5f * g) * (-height)))) / (2 * (0.5f * g)));
+			if ((yVel1 * yVel1) - (4 * (0.5f * g) * height) > 0)
+			{
+				t1 = ((yVel1 + Mathf.Sqrt((yVel1 * yVel1) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
-			return false;
+			if ((yVel1 * yVel1) - (4 * (0.5f * g) * height) > 0)
+			{
+				t1 = ((yVel1 - Mathf.Sqrt((yVel1 * yVel1) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+			}
+			else
+			{
+				return false;
+			}
 		}
-		aimDir.x = xVel / throwVelocity;
-		aimDir.y = yVel / throwVelocity;
-		for (float i = 0.0f; i < t || i < 10f; i += 0.1f)
+
+		xVel2 = throwVelocity * Mathf.Cos(negTheta);
+		yVel2 = throwVelocity * Mathf.Sin(negTheta);
+		t2 = 0.0f;
+		if (directionOfParabola > 0)
 		{
-			position.x = cache_tf.position.x + (xVel * i);
-			position.y = cache_tf.position.y + (yVel * i + 0.5f * -g * (i * i));
-			lineHit = Physics2D.Linecast(prevPos, position);
-			Debug.DrawLine(prevPos, position, Color.black, 1.0f);
+			if ((yVel2 * yVel2) - (4 * (0.5f * g) * height) > 0)
+			{
+				t2 = ((yVel2 + Mathf.Sqrt((yVel2 * yVel2) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if ((yVel2 * yVel2) - (4 * (0.5f * g) * height) > 0)
+			{
+				t2 = ((yVel2 - Mathf.Sqrt((yVel2 * yVel2) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		upOrDownThrow = 1;
+		for (float i = 0.0f; i < t1 || i < 10f; i += 0.1f)
+		{
+			posOnParabola.x = cache_tf.position.x + (xVel1 * i);
+			posOnParabola.y = cache_tf.position.y + (yVel1 * i + 0.5f * -g * (i * i));
+			lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola);
+			Debug.DrawLine(prevPosOnParabola, posOnParabola, Color.black, 0.5f);
 			if (lineHit.collider != null)
 			{
-				if (lineHit.transform.tag == "Floor")
+				if (lineHit.transform.tag == "Floor" || lineHit.transform.tag == "Wall")
 				{
 					aimDir = Vector3.zero;
-					return false;
+					upOrDownThrow = 0;
+					break;
 				}
 			}
-			prevPos = position;
+			prevPosOnParabola = posOnParabola;
 		}
-		return true;
+
+
+		if (upOrDownThrow == 0)
+		{
+			prevPosOnParabola = cache_tf.position;
+			upOrDownThrow = -1;
+			for (float i = 0.0f; i < t2 || i < 10f; i += 0.1f)
+			{
+				posOnParabola.x = cache_tf.position.x + (xVel2 * i);
+				posOnParabola.y = cache_tf.position.y + (yVel2 * i + 0.5f * -g * (i * i));
+				lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola);
+				Debug.DrawLine(prevPosOnParabola, posOnParabola, Color.gray, 0.5f);
+				if (lineHit.collider != null)
+				{
+					if (lineHit.transform.tag == "Floor" || lineHit.transform.tag == "Wall")
+					{
+						aimDir = Vector3.zero;
+						upOrDownThrow = 0;
+						break;
+					}
+				}
+				prevPosOnParabola = posOnParabola;
+			}
+		}
+
+		if (upOrDownThrow == 1)
+		{
+			aimDir.x = xVel1 / throwVelocity;
+			aimDir.y = yVel1 / throwVelocity;
+			return true;
+		}
+		else if(upOrDownThrow == -1)
+		{
+			aimDir.x = xVel2 / throwVelocity;
+			aimDir.y = yVel2 / throwVelocity;
+			return true;
+		}
+		return false;
 	}
 
 	private void CalculateMaxJump()
@@ -570,6 +692,12 @@ public class AI : Actor
 	{
 		yield return new WaitForSeconds(1.0f);
 		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
+	}
+
+	IEnumerator RealisticInputThrow()
+	{
+		yield return new WaitForSeconds(0.3f);
+		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = false;
 	}
 
 	IEnumerator RealisticInputX()
