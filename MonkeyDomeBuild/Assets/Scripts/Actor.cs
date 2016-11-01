@@ -50,9 +50,18 @@ public class Actor : MonoBehaviour
     public Character characterType;
     public GameObject monkeyCrown;
     public BallInfo ballCanCatch;
-	[SerializeField]
-	protected GameObject shotPointer;
-	protected Color col;
+
+    [SerializeField]
+    protected GameObject PointerPivot;
+    [SerializeField]
+    protected GameObject PointerCenter;
+    [SerializeField]
+    protected GameObject pointerBase;
+
+    protected Color col;
+    protected Color col1;
+    protected Color col2;
+
     public Transform catchCenter;
     public BoxCollider2D raycastCol;
 
@@ -98,8 +107,9 @@ public class Actor : MonoBehaviour
         raycastCol = transform.FindChild("RayCastCol").GetComponent<BoxCollider2D>();
         monkeyCrown.SetActive(false);
 
-		
-        col = shotPointer.GetComponentInChildren<Image>().color;
+
+        col1 = PointerCenter.GetComponent<Image>().color;
+        col2 = pointerBase.GetComponent<Image>().color;
     }
 
 	void Update()
@@ -393,29 +403,39 @@ public class Actor : MonoBehaviour
     {
         if (isCharging)
         {
-            col.a = Mathf.Lerp(shotPointer.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
-			shotPointer.GetComponentInChildren<Image>().color = col;
+            col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+            col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+            PointerCenter.GetComponentInChildren<Image>().color = col1;
+            pointerBase.GetComponentInChildren<Image>().color = col2;
+
+            //Debug.Log(a);
+            var a = Mathf.Lerp(1, 4, holdingCatchCount / maxChargeCount);
+            PointerCenter.transform.parent.GetComponent<RectTransform>().localScale = new Vector3(a, a, a);
             if (GameManager.Instance.gmInputs[playerIndex].mXY.x != 0 || GameManager.Instance.gmInputs[playerIndex].mXY.y != 0)
             {
                 Vector3 dir = new Vector3(GameManager.Instance.gmInputs[playerIndex].mXY.x, GameManager.Instance.gmInputs[playerIndex].mXY.y, 0);
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
                 if (targetAng.eulerAngles.y == 180f)
                 {
-                    shotPointer.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(shotPointer.transform.localEulerAngles.z, targetAng.eulerAngles.y, 20 * Time.unscaledDeltaTime));
+                    PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.y, 20 * Time.unscaledDeltaTime));
                 }
                 else
                 {
-                    shotPointer.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(shotPointer.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
+                    PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
                 }
             }
         }
         else
         {
-            col.a = Mathf.Lerp(shotPointer.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
-            shotPointer.GetComponentInChildren<Image>().color = col;
+            //shotPointer.GetComponentsInChildren<Image>().color.a;
+            col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+            col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+
+            PointerCenter.GetComponentInChildren<Image>().color = col1;
+            pointerBase.GetComponentInChildren<Image>().color = col2;
+
+            PointerCenter.transform.parent.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
         }
-
-
     }
     public bool IsHoldingBall
     {
