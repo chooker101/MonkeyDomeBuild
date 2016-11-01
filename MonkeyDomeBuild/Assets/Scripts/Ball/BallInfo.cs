@@ -119,7 +119,7 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey != null)
         {
-            m_rigid.transform.position = Vector2.Lerp(m_rigid.transform.position, holdingMonkey.GetComponent<Actor>().catchCenter.position, 1f);
+			m_rigid.transform.position = holdingMonkey.GetComponent<Actor>().catchCenter.position;
         }
     }
 
