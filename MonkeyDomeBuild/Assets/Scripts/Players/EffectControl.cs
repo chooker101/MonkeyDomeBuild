@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class EffectControl : MonoBehaviour
 {
@@ -93,12 +95,18 @@ public class EffectControl : MonoBehaviour
                 }
             }
         }
-        if (playerLocatorMatchStart)
+
+        // PLAYER LOCATORS ------------------------------------------------------------------
+        if (playerLocatorMatchStart && SceneManager.GetActiveScene().name != "PregameRoom") 
         {
             playerLocatorTimer = playerLocatorTimeMax;
             playerLocatorMatchStart = false;
         }
-        else if (playerLocatorActive || playerLocatorTimer > 0f)
+        else if(SceneManager.GetActiveScene().name == "PregameRoom" && !playerLocatorMatchStart)
+        {
+            playerLocatorMatchStart = true;
+        }
+        else if (playerLocatorActive && SceneManager.GetActiveScene().name == "PregameRoom" || playerLocatorTimer > 0f)
         {
             if(playerLocatorTimer > 0f)
             {
@@ -109,16 +117,17 @@ public class EffectControl : MonoBehaviour
                 }
             }
 
-            Color locatorColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
+            Color locatorColour = Color.white;
             locatorColour.a = 1;
             playerLocators[GetComponent<Actor>().playerIndex].color = locatorColour;
         }
         else
         {
-            Color locatorColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
+            Color locatorColour = Color.white;
             locatorColour.a = 0;
             playerLocators[GetComponent<Actor>().playerIndex].color = locatorColour;
         }
+        // ------------------------------------------------------------------------------
         if (perfectCatchEffectEnd)
         {
             if (Mathf.Abs(perfectCatch.color.a - 1f) > 0.05f)
