@@ -49,7 +49,10 @@ public class AI : Actor
 	private bool waitForBallOnce = true;
 	private bool wantsToThrow = false;
 	private int upOrDownThrow = 0;
-	private LayerMask ballLayer = LayerMask.NameToLayer("Ball");
+	private LayerMask ballLayer;
+	private bool onCatchCoolDown = false;
+	private Vector3 prevAiPos;
+	private float timeInSamePos;
 
 	//throw away shit
 	private float g;
@@ -74,7 +77,7 @@ public class AI : Actor
 	void Start()
 	{
 		DontDestroyOnLoad(this.gameObject);
-		currentState = State.Idle;
+		currentState = State.Move;
 
 		//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
@@ -83,6 +86,8 @@ public class AI : Actor
 		canJump = true;
 		centerToFeet = myCollider.size.y * 0.5f;
 		//(myCollider.size.x * 0.5f - myCollider.offset.x);
+		ballLayer = (1 << 8);
+		prevAiPos = cache_tf.position;
 
 		CalculateMaxJump();
 		UpdateTarget();
@@ -103,7 +108,10 @@ public class AI : Actor
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		IsBallNear();
+		if (!onCatchCoolDown)
+		{
+			IsBallNear();
+		}
 		if(wantsToThrow)
 		{
 			if(CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
@@ -119,6 +127,7 @@ public class AI : Actor
 		{
 			ReleaseBall();
 		}
+		prevAiPos = cache_tf.position;
 	}
 
 	void ExecuteState()
@@ -146,11 +155,7 @@ public class AI : Actor
 
 	State ExecuteIdle()
 	{
-		if (GameManager.Instance.gmUIManager.matchTime < GameManager.Instance.gmUIManager.startMatchTime)
-		{
-			return State.Move;
-		}
-		return State.Move;
+		return currentState;
 	}
 
 	State ExecuteCatch()
@@ -204,21 +209,33 @@ public class AI : Actor
 				currentState = State.Move;
 			}
 		}
+		onCatchCoolDown = true;
+		StartCoroutine(WaitForCatchCoolDown());
 		return currentState;
 	}
 
 	State ExecuteThrow()
 	{
+		//Debug.Log("Throw");
 		GameManager.Instance.gmInputs[playerIndex].mXY.x = aimDir.x;
 		GameManager.Instance.gmInputs[playerIndex].mXY.y = aimDir.y;
+		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
 		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = true;
+		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = true;
 		StartCoroutine(RealisticInputThrow());
-		currentState = State.Move;
+		wantsToThrow = false;
+		if (!onCatchCoolDown)
+		{
+			onCatchCoolDown = true;
+			StartCoroutine(WaitForCatchCoolDown());
+		}
+		currentState = State.Idle;
 		return currentState;
 	}
 
 	State ExecuteMove()
 	{
+		SamePosUpdate();
 		isAtTargetX = CheckClose();
 
 		if (!IsInAir)
@@ -336,12 +353,6 @@ public class AI : Actor
 		{
 			xInput = reverseX;
 		}
-		else if(RayCastSide(xInput / Mathf.Abs(xInput)))
-		{
-			StartCoroutine(RealisticInputX());
-			reverseX = -xInput;
-			isStuck = true;
-		}
 
 		if(xInput < 0.05f && xInput > -0.05f)
 		{
@@ -351,6 +362,21 @@ public class AI : Actor
 		GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
 
 		return currentState;
+	}
+
+	private void SamePosUpdate()
+	{
+		if(cache_tf.position == prevAiPos)
+		{
+			timeInSamePos += Time.deltaTime;
+		}
+		if(timeInSamePos >= 1.0f)
+		{
+			timeInSamePos = 0.0f;
+			isStuck = true;
+			StartCoroutine(RealisticInputX());
+			reverseX = -xInput;
+		}
 	}
 
 	private bool CheckClose()
@@ -542,7 +568,7 @@ public class AI : Actor
 		g = cache_rb.gravityScale * Physics2D.gravity.magnitude;
 		throwVelocity = characterType.throwForce;
 		range = (playerTarg.transform.position.x - cache_tf.position.x);
-		if (range != 0.0f)
+		if (range != 0.0f && (cache_tf.position.x <= playerTarg.transform.position.x - 0.3f || cache_tf.position.x >= playerTarg.transform.position.x + 0.3f))
 		{
 			directionOfParabola = range / Mathf.Abs(range);
 		}
@@ -570,7 +596,7 @@ public class AI : Actor
 		{
 			if ((yVel1 * yVel1) - (4 * (0.5f * g) * height) > 0)
 			{
-				t1 = ((yVel1 + Mathf.Sqrt((yVel1 * yVel1) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+				t1 = ((directionOfParabola * yVel1 + Mathf.Sqrt((yVel1 * yVel1) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
 			}
 			else
 			{
@@ -581,7 +607,7 @@ public class AI : Actor
 		{
 			if ((yVel1 * yVel1) - (4 * (0.5f * g) * height) > 0)
 			{
-				t1 = ((yVel1 - Mathf.Sqrt((yVel1 * yVel1) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+				t1 = ((directionOfParabola * yVel1 - Mathf.Sqrt((yVel1 * yVel1) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
 			}
 			else
 			{
@@ -596,7 +622,7 @@ public class AI : Actor
 		{
 			if ((yVel2 * yVel2) - (4 * (0.5f * g) * height) > 0)
 			{
-				t2 = ((yVel2 + Mathf.Sqrt((yVel2 * yVel2) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+				t2 = ((directionOfParabola * yVel2 + Mathf.Sqrt((yVel2 * yVel2) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
 			}
 			else
 			{
@@ -607,7 +633,7 @@ public class AI : Actor
 		{
 			if ((yVel2 * yVel2) - (4 * (0.5f * g) * height) > 0)
 			{
-				t2 = ((yVel2 - Mathf.Sqrt((yVel2 * yVel2) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
+				t2 = ((directionOfParabola * yVel2 - Mathf.Sqrt((yVel2 * yVel2) - (4 * (0.5f * g) * height))) / (2 * (0.5f * g)));
 			}
 			else
 			{
@@ -616,11 +642,11 @@ public class AI : Actor
 		}
 
 		upOrDownThrow = 1;
-		for (float i = 0.0f; i < t1 || i < 10f; i += 0.1f)
+		for (float i = 0.0f; i < Mathf.Abs(t1) || i < 10f; i += 0.1f)
 		{
-			posOnParabola.x = cache_tf.position.x + (xVel1 * i);
-			posOnParabola.y = cache_tf.position.y + (yVel1 * i + 0.5f * -g * (i * i));
-			lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola);
+			posOnParabola.x = cache_tf.position.x + (directionOfParabola * xVel1 * i);
+			posOnParabola.y = cache_tf.position.y + (directionOfParabola * yVel1 * i + 0.5f * -g * (i * i));
+			lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola,ballLayer);
 			Debug.DrawLine(prevPosOnParabola, posOnParabola, Color.black, 0.5f);
 			if (lineHit.collider != null)
 			{
@@ -631,6 +657,10 @@ public class AI : Actor
 					break;
 				}
 			}
+			if(posOnParabola.x >= range - 0.3f && posOnParabola.x <= range + 0.3f)
+			{
+				break;
+			}
 			prevPosOnParabola = posOnParabola;
 		}
 
@@ -639,11 +669,11 @@ public class AI : Actor
 		{
 			prevPosOnParabola = cache_tf.position;
 			upOrDownThrow = -1;
-			for (float i = 0.0f; i < t2 || i < 10f; i += 0.1f)
+			for (float i = 0.0f; i < Mathf.Abs(t2) || i < 10f; i += 0.1f)
 			{
-				posOnParabola.x = cache_tf.position.x + (xVel2 * i);
-				posOnParabola.y = cache_tf.position.y + (yVel2 * i + 0.5f * -g * (i * i));
-				lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola);
+				posOnParabola.x = cache_tf.position.x + (directionOfParabola * xVel2 * i);
+				posOnParabola.y = cache_tf.position.y + (directionOfParabola * yVel2 * i + 0.5f * -g * (i * i));
+				lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola, ballLayer);
 				Debug.DrawLine(prevPosOnParabola, posOnParabola, Color.gray, 0.5f);
 				if (lineHit.collider != null)
 				{
@@ -654,20 +684,24 @@ public class AI : Actor
 						break;
 					}
 				}
+				if (posOnParabola.x >= range - 0.3f && posOnParabola.x <= range + 0.3f)
+				{
+					break;
+				}
 				prevPosOnParabola = posOnParabola;
 			}
 		}
 
 		if (upOrDownThrow == 1)
 		{
-			aimDir.x = xVel1 / throwVelocity;
-			aimDir.y = yVel1 / throwVelocity;
+			aimDir.x = (xVel1 * directionOfParabola) / throwVelocity;
+			aimDir.y = (yVel1 * directionOfParabola) / throwVelocity;
 			return true;
 		}
 		else if(upOrDownThrow == -1)
 		{
-			aimDir.x = xVel2 / throwVelocity;
-			aimDir.y = yVel2 / throwVelocity;
+			aimDir.x = (xVel2 * directionOfParabola) / throwVelocity;
+			aimDir.y = (yVel2 * directionOfParabola) / throwVelocity;
 			return true;
 		}
 		return false;
@@ -691,18 +725,23 @@ public class AI : Actor
 	IEnumerator RealisticInputCatch()
 	{
 		yield return new WaitForSeconds(1.0f);
-		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
+		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = false;
 	}
 
 	IEnumerator RealisticInputThrow()
 	{
-		yield return new WaitForSeconds(0.3f);
+		yield return new WaitForSeconds(0.05f);
+		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
+		yield return new WaitForSeconds(0.05f);
 		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = false;
+		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = false;
+		yield return new WaitForSeconds(0.3f);
+		currentState = State.Move;
 	}
 
 	IEnumerator RealisticInputX()
 	{
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(0.3f);
 		isStuck = false;
 	}
 
@@ -711,5 +750,11 @@ public class AI : Actor
 		yield return new WaitForSeconds(catchWaitTime);
 		letCatch = true;
 		waitForBallOnce = true;
+	}
+
+	IEnumerator WaitForCatchCoolDown()
+	{
+		yield return new WaitForSeconds(2.0f);
+		onCatchCoolDown = false;
 	}
 }
