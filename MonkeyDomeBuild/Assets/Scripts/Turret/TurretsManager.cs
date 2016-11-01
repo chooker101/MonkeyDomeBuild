@@ -95,4 +95,8 @@ public class TurretsManager : MonoBehaviour
             AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofPlayers)], whatToShoot);
         }
     }
+    public void AddTurret(Turret t)
+    {
+        turrets.Add(t);
+    }
 }
