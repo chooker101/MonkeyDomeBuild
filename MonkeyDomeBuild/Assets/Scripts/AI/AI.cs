@@ -53,6 +53,8 @@ public class AI : Actor
 	private bool onCatchCoolDown = false;
 	private Vector3 prevAiPos;
 	private float timeInSamePos;
+	private bool hadBalLLastFrame;
+	public bool tempCanCatch = true;
 
 	//throw away shit
 	private float g;
@@ -95,7 +97,19 @@ public class AI : Actor
 
 	void Update()
 	{
-		cType = characterType.ToString();
+		if(!haveBall && hadBalLLastFrame)
+		{
+			if (!onCatchCoolDown)
+			{
+				onCatchCoolDown = true;
+				StartCoroutine(WaitForCatchCoolDown());
+			}
+		}
+		if (!onCatchCoolDown)
+		{
+			IsBallNear();
+		}
+		//cType = characterType.ToString();
 		if (GameManager.Instance.gmInputs[playerIndex].mJump)
 		{
 			Jumping();
@@ -108,10 +122,7 @@ public class AI : Actor
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		if (!onCatchCoolDown)
-		{
-			IsBallNear();
-		}
+		
 		if(wantsToThrow)
 		{
 			if(CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
@@ -128,6 +139,8 @@ public class AI : Actor
 			ReleaseBall();
 		}
 		prevAiPos = cache_tf.position;
+		
+		hadBalLLastFrame = haveBall;
 	}
 
 	void ExecuteState()
@@ -163,7 +176,7 @@ public class AI : Actor
 		GameManager.Instance.gmInputs[playerIndex].mXY.x = 0.0f;
 		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
 		StartCoroutine(RealisticInputCatch());
-		int lowestPoints = -1;
+		int lowestPoints = 0;
 		int secondLowest = 0;
 		for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
 		{
@@ -181,7 +194,7 @@ public class AI : Actor
 			}
 		}
 
-		if(lowestPoints != lastPlayerTarget)
+		if(lowestPoints != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[lowestPoints].characterType is Monkey)
 		{
 			lastPlayerTarget = lowestPoints;
 			if (CalculateThrow(GameManager.Instance.gmPlayers[lowestPoints]))
@@ -195,7 +208,7 @@ public class AI : Actor
 				currentState = State.Move;
 			}
 		}
-		else if(secondLowest != lastPlayerTarget)
+		else if(secondLowest != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[secondLowest].characterType is Monkey)
 		{
 			lastPlayerTarget = secondLowest;
 			if (CalculateThrow(GameManager.Instance.gmPlayers[secondLowest]))
@@ -209,8 +222,17 @@ public class AI : Actor
 				currentState = State.Move;
 			}
 		}
-		onCatchCoolDown = true;
-		StartCoroutine(WaitForCatchCoolDown());
+		else
+		{
+			wantsToThrow = true;
+			//calc move target
+			currentState = State.Move;
+		}
+		if (!onCatchCoolDown)
+		{
+			onCatchCoolDown = true;
+			StartCoroutine(WaitForCatchCoolDown());
+		}
 		return currentState;
 	}
 
@@ -724,8 +746,8 @@ public class AI : Actor
 
 	IEnumerator RealisticInputCatch()
 	{
-		yield return new WaitForSeconds(1.0f);
-		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = false;
+		yield return new WaitForSeconds(0.3f);
+		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
 	}
 
 	IEnumerator RealisticInputThrow()

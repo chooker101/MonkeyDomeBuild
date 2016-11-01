@@ -156,7 +156,7 @@ public class CameraController : MonoBehaviour
         {
             if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey() != null)
             {
-                if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().IsChargingThrow)
+                if (GameManager.Instance.gmInputs[GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().playerIndex].mChargeThrow)
                 {
                     if (!monkeyCharging)
                     {

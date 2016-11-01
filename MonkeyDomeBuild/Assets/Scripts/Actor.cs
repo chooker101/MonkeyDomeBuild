@@ -86,7 +86,7 @@ public class Actor : MonoBehaviour
     protected float holdTime = 1f;
     protected float speedMultiplier = 1f;
 
-    public string cType = "";
+    //public string cType = "";
 
     public bool DisableInput
     {
@@ -115,7 +115,7 @@ public class Actor : MonoBehaviour
 	void Update()
 	{
         //JumpCheck();
-        cType = characterType.ToString();
+        //cType = characterType.ToString();
 		if (GameManager.Instance.gmInputs[playerIndex].mJump)
 		{
 			Jumping();
@@ -444,7 +444,7 @@ public class Actor : MonoBehaviour
             return haveBall;
         }
     }
-    void OnCollisionEnter2D(Collision2D other)
+	protected void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
@@ -489,7 +489,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-    void OnCollisionStay2D(Collision2D other)
+	protected void OnCollisionStay2D(Collision2D other)
     {
         if (characterType is Gorilla)
         {
@@ -539,7 +539,7 @@ public class Actor : MonoBehaviour
         DisableInput = false;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    protected void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
@@ -599,7 +599,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+	protected void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
@@ -628,7 +628,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-    void OnTriggerStay2D(Collider2D other)
+	protected void OnTriggerStay2D(Collider2D other)
     {
         OnTriggerEnter2D(other);
     }
