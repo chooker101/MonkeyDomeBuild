@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 using UnityEngine.SceneManagement;
 
 public class Gorilla : Character
@@ -70,7 +72,8 @@ public class Gorilla : Character
                         // Checks to see if the current scene isn't the pre-game room
                         if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
                         {
-                            GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);
+							cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().ReleaseBall();
+							GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);
                             //On interception check for active audience interception event
                             //if (GameManager.Instance.gmAudienceManager.GetEventActive())
                             //{ 

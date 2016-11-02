@@ -50,10 +50,7 @@ public class Turret : MonoBehaviour {
         falloff = 0.5f;
         moveSpeed = 20f;    // was 10f
     }
-    void Start()
-    {
-        GameManager.Instance.gmTurretManager.AddTurret(this);
-    }
+
     void Update()
     {
         if (GetComponent<SpriteRenderer>().flipX)

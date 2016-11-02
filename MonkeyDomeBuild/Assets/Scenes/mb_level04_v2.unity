@@ -5840,7 +5840,7 @@ Transform:
   m_GameObject: {fileID: 1328192163}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4, y: 21.5, z: 0}
-  m_LocalScale: {x: 6.820738, y: 6.820738, z: 6.820738}
+  m_LocalScale: {x: 7.031688, y: 7.031688, z: 7.031688}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 21
@@ -6319,6 +6319,14 @@ Prefab:
       propertyPath: m_Name
       value: TargetNode (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 11485236, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
+      propertyPath: targetAxis
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11485236, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
+      propertyPath: targetType
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f34a39894ca5d8d49b740a9025b43a8d, type: 2}
   m_IsPrefabParent: 0
@@ -6615,7 +6623,7 @@ MonoBehaviour:
   smoothing: 3
   maxCamSize: 35
   minCamSize: 22
-  maxDistanceXFromZero: 8
+  maxDistanceXFromZero: 5
   maxDistanceYFromZero: 25
   considerTargets: 1
   focusAmount: 1
