@@ -32,29 +32,35 @@ public class ApeSpinner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if(spinnerSpeed > 0)
         {
             angle += spinnerSpeed * Time.deltaTime;
             spinnerSpeed -= spinnerDecay * Time.deltaTime;
+            float current_pivot = pivot.transform.eulerAngles.z;
 
-            if (pivot.transform.eulerAngles.z < 360 && pivot.transform.eulerAngles.z >= 240)
+            if (current_pivot >= 0 && current_pivot < 360 / GameManager.Instance.TotalNumberofPlayers && GameManager.Instance.TotalNumberofPlayers >= 1)
+            {
+                playerChosen = 1;
+            }
+            else if(current_pivot >= 0 + (360 / GameManager.Instance.TotalNumberofPlayers) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers)*2 && GameManager.Instance.TotalNumberofPlayers >= 2)
             {
                 playerChosen = 2;
             }
-            else if(pivot.transform.eulerAngles.z < 240 && pivot.transform.eulerAngles.z >= 120)
+            else if (current_pivot >= 0 + ((360 / GameManager.Instance.TotalNumberofPlayers) * 2) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers) * 3 && GameManager.Instance.TotalNumberofPlayers >= 3)
             {
                 playerChosen = 3;
             }
-            else if(pivot.transform.eulerAngles.z < 120 && pivot.transform.eulerAngles.z >= 0)
+            else if (current_pivot >= 0 + ((360 / GameManager.Instance.TotalNumberofPlayers) * 3) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers) * 4 && GameManager.Instance.TotalNumberofPlayers >= 4)
             {
-                playerChosen = 1;
+                playerChosen = 4;
+            }
+            else if (current_pivot >= 0 + ((360 / GameManager.Instance.TotalNumberofPlayers) * 4) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers) * 5 && GameManager.Instance.TotalNumberofPlayers >= 5)
+            {
+                playerChosen = 5;
             }
             playerChosenText.text = "PLAYER: " + playerChosen.ToString();
 
             pivot.transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
-            //Debug.Log("Pointer Pivot z: " + pivot.transform.eulerAngles.z.ToString());
-            //Debug.Log("Chosen Monkey: " + playerChosen.ToString());
         }
         else if(spinnerSpeed <= 0 && !setGorilla)
         {
@@ -63,7 +69,8 @@ public class ApeSpinner : MonoBehaviour
 
             GameManager.Instance.gmRecordKeeper.playerGorilla = playerChosen-1;
             GameManager.Instance.gmPlayers[playerChosen - 1].GetComponent<Actor>().characterType.Mutate();
-            //Debug.Log("ApeSpinner: Mutated player into Gorilla");
+
+            Destroy(gameObject);
         }
     }
 }
