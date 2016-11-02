@@ -2376,6 +2376,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+      propertyPath: gmAudienceAnimator
+      value: 
+      objectReference: {fileID: 1328192167}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
   m_IsPrefabParent: 0
@@ -5790,7 +5794,7 @@ Animator:
   m_GameObject: {fileID: 1328192163}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 24f4f23fc7b9d674cb9423e39f78e8a9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 97cbb7ce8ebbf03429848f76e739ad6d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5846,14 +5850,13 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1328192163}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d6b40d193ee4374fbec2ee82bfb36cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  happy: {fileID: 7400000, guid: 8772a85b720d8314ebba7fc690467b5b, type: 2}
-  angry: {fileID: 7400000, guid: 3e55c5a3b03c70844b52674f09074679, type: 2}
-  neutral: {fileID: 7400000, guid: b0842c8320c3bde429d58d59890a51fa, type: 2}
+  animationLength: 0
+  controller: {fileID: 1328192164}
 --- !u!1 &1371790828
 GameObject:
   m_ObjectHideFlags: 0
