@@ -46,10 +46,6 @@ public class TargetBase : MonoBehaviour
     {
         changeTier = true;
         //ChangeTargetState(TargetBaseState.RallyStart);
-		if(GetComponentInParent<TargetNode>().targetAxis == TargetAxis.OnRightSide || GetComponentInParent<TargetNode>().targetAxis == TargetAxis.OnLeftSide)
-		{
-			transform.localRotation = Quaternion.Euler(0, 0, 270f);
-		}
     }
 
 
