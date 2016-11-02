@@ -395,6 +395,7 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);
+
                     }
                 }
                 else

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Character : ScriptableObject
+public class Character
 {
 	public Vector3 gorillaSize = GameManager.Instance.gmMovementManager.gScale;
 	public Vector3 monkeySize = GameManager.Instance.gmMovementManager.mScale;
