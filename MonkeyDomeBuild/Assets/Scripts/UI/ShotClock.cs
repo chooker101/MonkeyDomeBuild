@@ -36,9 +36,9 @@ public class ShotClock : MonoBehaviour
             if (!gameObject.CompareTag("StageUI"))
             {
                 shotClock.fontStyle = FontStyle.Normal;
-                shotClock.color = new Color(0f, 0f, 00f);
             }
-            }
+            shotClock.color = new Color(0f, 0f, 00f);
+        }
             else if (time > 2f && time <= 4f)
             {
                 shotClock.color = new Color(200f, 200f, 00f);

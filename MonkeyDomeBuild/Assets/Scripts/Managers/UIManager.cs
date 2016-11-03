@@ -67,6 +67,7 @@ public class UIManager : MonoBehaviour
                 GameManager.Instance.gmTrophyManager.CheckallWinners();
                 Debug.Log(GameManager.Instance.gmTrophyManager.a);
                 SceneManager.LoadScene("VictoryRoom");
+                GameManager.Instance.SwitchRooms();
             }
         }
 

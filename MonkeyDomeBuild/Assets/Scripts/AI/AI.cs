@@ -120,9 +120,19 @@ public class AI : Actor
 
         if (isinair && cache_rb.velocity.y < 0f)
         {
-            animator.SetBool("IsInAir", false);
-            animator.SetBool("IsInAirDown", true);
-            animator.SetBool("IsStartJump", false);
+            if (isClimbing)
+            {
+                //animator.SetBool("IsIdle", true);
+                //animator.SetBool("IsInAirDown", false); 
+                animator.SetBool("IsClimbing", true);
+            }
+            else
+            {
+                animator.SetBool("IsClimbing", false);
+                animator.SetBool("IsInAirDown", true);
+                animator.SetBool("IsInAir", false);
+                animator.SetBool("IsJumping", false);
+            }
         }
         else if (isinair && cache_rb.velocity.y >= 0f)
         {

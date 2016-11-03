@@ -15,6 +15,7 @@ public class AudienceAnimator : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        GameManager.Instance.gmAudienceAnimator = this;
         audienceAnimation = GetComponent<Animation>();
         //audienceAnimation.clip = neutral;
         controller.SetBool("Happy", false);

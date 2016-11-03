@@ -118,19 +118,17 @@ public class PreGameTimer : MonoBehaviour
             {
                 pregameTimer -= Time.deltaTime;
             }*/
-            if(newSpinner != null)
+
+            if (debugStartMatch)
             {
-                if (debugStartMatch)
-                {
-                    //gorillaSmashed = true;
-                }
-                if (gorillaSet && gorillaSmashed)
-                {
-                    //pregameTimer = 0;
-                    gameState = "game";
-                    SceneManager.LoadScene("mb_level04_v2");
-                    Destroy(newSpinner, 1f);
-                }
+                //gorillaSmashed = true;
+            }
+            if (gorillaSet && gorillaSmashed)
+            {
+                //pregameTimer = 0;
+                gameState = "game";
+                SceneManager.LoadScene("mb_level04_v2");
+                GameManager.Instance.SwitchRooms();
             }
 
             timerText.text = "Pre-game Room\n"; //+ pregameTimer.ToString("F2");
