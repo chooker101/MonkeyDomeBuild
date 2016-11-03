@@ -526,7 +526,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 106386}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f7b9830b3d476de4fbae78f7e300dfc8, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0.57}
@@ -568,7 +568,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 106386}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f7b9830b3d476de4fbae78f7e300dfc8, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 1.3}
@@ -863,7 +863,6 @@ MonoBehaviour:
   catchCenter: {fileID: 472690}
   raycastCol: {fileID: 6109438}
   justJump: 0
-  cType: 
   IsChargingThrow: 0
   myCollider: {fileID: 6161348}
   tempTarg: {fileID: 0}
@@ -871,6 +870,7 @@ MonoBehaviour:
   MoveTarget: {x: 0, y: 0, z: 0}
   currEndTarg: {x: 0, y: 0, z: 0}
   catchWaitTime: 0.3
+  tempCanCatch: 1
 --- !u!114 &11467550
 MonoBehaviour:
   m_ObjectHideFlags: 1
