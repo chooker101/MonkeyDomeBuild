@@ -224,7 +224,10 @@ public class EffectControl : MonoBehaviour
         startStamp = false;
         CancelInvoke("ResetSwitchEffect");
     }
-
+    public void PlayStunEffect()
+    {
+        controller.StunEffect.GetComponentInChildren<ParticleSystem>().Play();
+    }
 
     public void PlayHappyFace()
     {

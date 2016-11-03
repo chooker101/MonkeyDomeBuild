@@ -489,7 +489,7 @@ public class Actor : MonoBehaviour
                             {
                                 GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing = false;
                                 GameManager.Instance.gmPlayers[i].GetComponent<Rigidbody2D>().isKinematic = false;
-                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput();
+                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput(disableInputTime * 2);
                                 if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
                                 {
                                     GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ReleaseBall();
@@ -526,8 +526,7 @@ public class Actor : MonoBehaviour
 
     protected void KnockOffMonkey(GameObject monkey)
     {
-        monkey.GetComponent<Actor>().DisableInput = true;
-        monkey.GetComponent<Actor>().InvokeEnableInput();
+        monkey.GetComponent<Actor>().TempDisableInput(disableInputTime);
 		if (monkey.GetComponent<Actor>().IsHoldingBall) 
 		{
 			monkey.GetComponent<Actor>().ReleaseBall();
@@ -547,15 +546,17 @@ public class Actor : MonoBehaviour
         monkey.GetComponent<Rigidbody2D>().AddForce(dir * smackImpulse, ForceMode2D.Impulse);
     }
 
-    public void TempDisableInput()
+    public void TempDisableInput(float time)
     {
+        GetComponent<EffectControl>().PlayStunEffect();
         DisableInput = true;
-        InvokeEnableInput();
+        InvokeEnableInput(time);
     }
 
-    public void InvokeEnableInput()
+    public void InvokeEnableInput(float time)
     {
-        Invoke("ResetBeingSmack", disableInputTime);
+        CancelInvoke("ResetBeingSmack");
+        Invoke("ResetBeingSmack", time);
     }
 
     protected void ResetBeingSmack()
