@@ -13,11 +13,19 @@ public class PreGameTimer : MonoBehaviour
     public float trophyRoomTimer;
     public GameObject spinner;
     public Material resetMaterial;
+    public GameObject sign_catch;
+    public GameObject sign_jump;
+    public GameObject sign_callForBall;
+    public GameObject sign_gorillaSmash;
+    public GameObject sign_climbVines;
+    public GameObject sign_throw;
+    public GameObject sign_throwLong;
 
     GameObject newSpinner;
     static string gameState = "null";
 
     private bool spinnerSpawned = false;
+    public bool gorillaSet = false;
     public bool gorillaSmashed = false;
     private GameObject[] colourTargets;
 
@@ -27,6 +35,15 @@ public class PreGameTimer : MonoBehaviour
         if(gameState == "null")
         {
             gameState = "pregame";
+            sign_catch.SetActive(true);
+            sign_jump.SetActive(true);
+            sign_callForBall.SetActive(true);
+            sign_climbVines.SetActive(true);
+            sign_throw.SetActive(true);
+            sign_throwLong.SetActive(true);
+
+            sign_gorillaSmash.SetActive(false);
+
         }
         else if(gameState == "game")
         {
@@ -49,6 +66,34 @@ public class PreGameTimer : MonoBehaviour
         // PREGAME ROOM
         if(gameState == "pregame")
         {
+            if(!AllTargetsHit() && !sign_catch.activeSelf)
+            {
+                sign_catch.SetActive(true);
+                sign_jump.SetActive(true);
+                sign_callForBall.SetActive(true);
+                sign_climbVines.SetActive(true);
+                sign_throw.SetActive(true);
+                sign_throwLong.SetActive(true);
+
+                sign_gorillaSmash.SetActive(false);
+            }
+            else if(AllTargetsHit() && spinnerSpawned)
+            {
+                if (!gorillaSet && sign_catch.activeSelf)
+                {
+                    sign_catch.SetActive(false);
+                    sign_jump.SetActive(false);
+                    sign_callForBall.SetActive(false);
+                    sign_climbVines.SetActive(false);
+                    sign_throw.SetActive(false);
+                    sign_throwLong.SetActive(false);
+                }
+                else if (gorillaSet && !sign_gorillaSmash.activeSelf)
+                {
+                    sign_gorillaSmash.SetActive(true);
+                }
+            }
+
             // spawns a spinner that chooses a player to be a gorilla once all targets are hit.
             if (!spinnerSpawned && (AllTargetsHit()||debugStartMatch)) 
             {
@@ -58,7 +103,7 @@ public class PreGameTimer : MonoBehaviour
             // Sets the Gorilla Smash text once the gorilla has been chosen
             if (spinnerSpawned && newSpinner != null)
             {
-                if (newSpinner.GetComponent<ApeSpinner>().setGorilla)
+                if (gorillaSet)
                 {
                     gorillaSmashText.text = "Gorilla Smash!";
                 }
@@ -79,7 +124,7 @@ public class PreGameTimer : MonoBehaviour
                 {
                     //gorillaSmashed = true;
                 }
-                if (newSpinner.GetComponent<ApeSpinner>().setGorilla && gorillaSmashed)
+                if (gorillaSet && gorillaSmashed)
                 {
                     //pregameTimer = 0;
                     gameState = "game";

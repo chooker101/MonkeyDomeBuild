@@ -64,6 +64,7 @@ public class ApeSpinner : MonoBehaviour
         }
         else if(spinnerSpeed <= 0 && !setGorilla)
         {
+            FindObjectOfType<PreGameTimer>().GetComponent<PreGameTimer>().gorillaSet = true;
             setGorilla = true;
             spinnerSpeed = 0;
 
