@@ -32,7 +32,14 @@ public class TargetNode : MonoBehaviour
         target.GetComponent<Target>().SetTargetAxis = targetAxis;
         target.GetComponent<Target>().SetTargetType = targetType;
         target.GetComponent<Target>().MoveLocation = moveLoc.position;
-        target.GetComponent<Target>().SetTargetBase = GetComponentInChildren<TargetBase>();
+        if (horizontalPanel.activeInHierarchy)
+        {
+            target.GetComponent<Target>().SetTargetBase = horizontalPanel.GetComponent<TargetBase>();
+        }
+        else
+        {
+            target.GetComponent<Target>().SetTargetBase = verticalPanel.GetComponent<TargetBase>();
+        }
         target.transform.SetParent(TargetNodeManager.Instance.transform);
 
     }
