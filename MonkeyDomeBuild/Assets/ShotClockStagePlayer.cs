@@ -10,8 +10,9 @@ public class ShotClockStagePlayer : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         currentPlayerText = GetComponent<Text>();
-        
-	}
+        currentPlayerText.text = "LOOSE BALL!";
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -35,9 +36,15 @@ public class ShotClockStagePlayer : MonoBehaviour {
                 case 4:
                     currentPlayerText.text = "PLAYER 5";
                     break;
+                default:
+                    currentPlayerText.text = "LOOSE BALL!";
+                    break;
 
             }
             currentPlayerText.color = GameManager.Instance.gmRecordKeeper.colourPlayers[currentPlayer.GetComponent<Actor>().playerIndex].color;
+        } else
+        {
+            currentPlayerText.text = "LOOSE BALL!";
         }
     }
 }
