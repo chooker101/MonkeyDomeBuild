@@ -113,6 +113,7 @@ public class Turret : MonoBehaviour {
         float drag = projectile.drag;
         float target_Distance = Vector2.Distance(projectile.position, target.position);
         target_Distance += Random.Range(-distanceFalloff, distanceFalloff);
+        projectile.AddTorque(Random.Range(1f,5f), ForceMode2D.Impulse);
         //float firingAngle;
         //firingAngle = GetFiringAngle();
         //Debug.Log(firingAngle);
