@@ -12,6 +12,7 @@ GameObject:
   - 58: {fileID: 5875324}
   - 61: {fileID: 6161348}
   - 61: {fileID: 6145844}
+  - 58: {fileID: 5896440}
   - 114: {fileID: 11467368}
   - 114: {fileID: 11477754}
   m_Layer: 10
@@ -532,6 +533,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.57}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!58 &5896440
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106386}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: f7b9830b3d476de4fbae78f7e300dfc8, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 2.3}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!61 &6109438
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -571,9 +586,9 @@ BoxCollider2D:
   m_Material: {fileID: 6200000, guid: f7b9830b3d476de4fbae78f7e300dfc8, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 1.3}
+  m_Offset: {x: 0, y: 1.39}
   serializedVersion: 2
-  m_Size: {x: 0.93, y: 1.15}
+  m_Size: {x: 0.93, y: 1.8}
 --- !u!95 &9516646
 Animator:
   serializedVersion: 3

@@ -9,6 +9,7 @@ public class PartilcleController : MonoBehaviour
     public ParticleSystem testParticle;
     private Transform catchParticlePivot;
     private Transform stunParticlePivot;
+    public Transform trail;
     
     void Start()
     {
@@ -43,6 +44,13 @@ public class PartilcleController : MonoBehaviour
                 stunParticlePivot = transform.FindChild("StunParticle");
             }
             return stunParticlePivot;
+        }
+    }
+    public Transform TrailEffect
+    {
+        get
+        {
+            return trail;
         }
     }
 }

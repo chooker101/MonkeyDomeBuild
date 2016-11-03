@@ -228,6 +228,24 @@ public class EffectControl : MonoBehaviour
     {
         controller.StunEffect.GetComponentInChildren<ParticleSystem>().Play();
     }
+    public void PlayDashEffect()
+    {
+        if (particleColour != GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex))
+        {
+            particleColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
+        }
+
+        ParticleSystem[] temp = controller.TrailEffect.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem ps in temp)
+        {
+            ps.startColor = particleColour;
+        }
+        controller.TrailEffect.gameObject.SetActive(true);
+    }
+    public void EndDashEffect()
+    {
+        controller.TrailEffect.gameObject.SetActive(false);
+    }
 
     public void PlayHappyFace()
     {

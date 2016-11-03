@@ -233,22 +233,19 @@ public class Actor : MonoBehaviour
 		{
 			if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
 			{
-                if (!isDashing)
+                if (characterType is Gorilla && characterType.manuallyCharging)
                 {
-                    /*if (characterType is Gorilla && characterType.isCharging)
-                    {
-                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
-                    }
-                    else
-                    {
-                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-                    }*/
-                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
                 }
                 else
                 {
+                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                }
+                if(isDashing)
+                {
                     if (dashingCount >= dashingTime)
                     {
+                        GetComponent<EffectControl>().EndDashEffect();
                         dashingCount = 0;
                         isDashing = false;
                     }
@@ -360,7 +357,6 @@ public class Actor : MonoBehaviour
             Time.timeScale = 1;
         }
     }
-
     public bool RayCast(int direction)
     {
         bool hit = false;
@@ -381,7 +377,6 @@ public class Actor : MonoBehaviour
         }
         return hit;
     }
-
     public bool RayCastSide(float leftOrRight)
     {
         // right = 1    left = -1
@@ -422,7 +417,6 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
-
     public void Aim()
     {
         if (isCharging)
@@ -476,6 +470,7 @@ public class Actor : MonoBehaviour
             {
                 dashingCount = 0;
                 isDashing = false;
+                GetComponent<EffectControl>().EndDashEffect();
                 for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; ++i)
                 {
                     if (GameManager.Instance.gmPlayers[i] != null)
@@ -663,13 +658,17 @@ public class Actor : MonoBehaviour
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
+        {
             IncrementCharacterInc(incAmount);
+        }
     }
 
     public void ReactionToPoop(float incAmount)
     {
-        if (Mathf.Abs(characterInc) < maxminInc)
+        if (Mathf.Abs(characterInc) > -maxminInc)
+        {
             IncrementCharacterInc(-incAmount);
+        }
     }
 
     protected void IncrementCharacterInc(float inc)
@@ -742,6 +741,7 @@ public class Actor : MonoBehaviour
     {
         isDashing = true;
         Vector2 dashDir = Vector2.zero;
+        GetComponent<EffectControl>().PlayDashEffect();
         dashDir.y = 1f;
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) > 0)
         {
@@ -761,7 +761,6 @@ public class Actor : MonoBehaviour
         if (preGameTimer != null)
         {
             preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
-            Debug.Log("Actor: gorillaSmash = true");
         }
     }
     public void ResetTimeScale()

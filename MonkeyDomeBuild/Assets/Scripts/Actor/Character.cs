@@ -10,7 +10,8 @@ public class Character
 	public float jumpforce;
 	public float movespeed;
 	public float chargespeed;
-	protected int myPlayer;
+    public bool manuallyCharging = false;
+    protected int myPlayer;
 	protected Actor cacheplayer;
 
 
