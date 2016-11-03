@@ -126,14 +126,21 @@ public class Actor : MonoBehaviour
 
         if(isinair && cache_rb.velocity.y < 0f)
         {
+            if (isClimbing)
+            {
+                animator.SetBool("IsIdle", true);
+                animator.SetBool("IsInAirDown", false);      
+            } else
+            {
+                animator.SetBool("IsInAirDown", true);
+            }
             animator.SetBool("IsInAir", false);
-            animator.SetBool("IsInAirDown", true);
-            animator.SetBool("IsStartJump", false);
-        } else if (isinair && cache_rb.velocity.y >= 0f)
+            animator.SetBool("IsJumping", false);
+        } else if (isinair && cache_rb.velocity.y >= 0f )
         {
             animator.SetBool("IsInAir", true);
             //animator.SetBool("IsStartJump", false);
-        }
+        } 
 	}
 
     void FixedUpdate()
@@ -177,7 +184,7 @@ public class Actor : MonoBehaviour
 
             }
             cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
-            animator.SetBool("IsStartJump", true);
+            animator.SetBool("IsJumping", true);
             if (AudioEffectManager.Instance != null)
             {
                 AudioEffectManager.Instance.PlayMonkeyJumpSE();
@@ -190,13 +197,17 @@ public class Actor : MonoBehaviour
 			{
 				isClimbing = false;
                 if (cache_rb.gravityScale == 0)
+                {
                     cache_rb.gravityScale = 2;
+                    animator.SetBool("IsWalking", false);
+                    animator.SetBool("IsIdle",true);
+                }
 
                 if (GameManager.Instance.gmInputs[playerIndex].mXY.y >= 0)
                 {
                     cache_rb.velocity *= 0.3f;
                     cache_rb.AddForce(Vector2.up * characterType.jumpforce, ForceMode2D.Impulse);
-                    animator.SetBool("IsStartJump", true);
+                    animator.SetBool("IsJumping", true);
                     if (AudioEffectManager.Instance != null)
                     {
                         AudioEffectManager.Instance.PlayMonkeyJumpSE();
@@ -718,10 +729,12 @@ public class Actor : MonoBehaviour
         if (Mathf.Abs(cache_rb.velocity.x) > 1f || GameManager.Instance.gmInputs[playerIndex].mXY.x != 0)
         {
             animator.SetBool("IsWalking", true);
+            animator.SetBool("IsIdle", false);
         }
         else
         {
             animator.SetBool("IsWalking", false);
+            animator.SetBool("IsIdle", true);
         }
     }
     public void GorillaDash()
