@@ -52,7 +52,7 @@ public class Target : MonoBehaviour
 
     TargetBase panel;
 
-    void Start()
+    void Awake()
     {
         startLoc = transform.position;
         targetPos = moveLoc;

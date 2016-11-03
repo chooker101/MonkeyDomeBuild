@@ -102,6 +102,7 @@ public class ScoringManager : MonoBehaviour
     void AddScore(int playerIndex,int score)
     {
         GameManager.Instance.gmPlayers[playerIndex].GetComponent<EffectControl>().PlayHappyFace();
+        GameManager.Instance.gmAudienceAnimator.AudienceHappy();
         WhichPlayer p = CheckWhichPlayer(playerIndex);
         if (playerScores[p] + score > 0)
         {

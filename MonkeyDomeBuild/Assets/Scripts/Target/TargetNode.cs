@@ -9,10 +9,22 @@ public class TargetNode : MonoBehaviour
     public TargetAxis targetAxis = TargetAxis.OnGround;
     public TargetType targetType = TargetType.Static;
     public Transform moveLoc;
+    public GameObject horizontalPanel;
+    public GameObject verticalPanel;
 
     void Awake()
     {
         moveLoc = transform.FindChild("MoveLoc");
+        if (GetComponentInParent<TargetNode>().targetAxis == TargetAxis.OnRightSide || GetComponentInParent<TargetNode>().targetAxis == TargetAxis.OnLeftSide)
+        {
+            horizontalPanel.SetActive(false);
+            verticalPanel.SetActive(true);
+            verticalPanel.transform.localRotation = Quaternion.Euler(0, 0, 270f);
+        }
+        else
+        {
+            horizontalPanel.SetActive(true);
+        }
     }
     public void Init()
     {
@@ -20,7 +32,15 @@ public class TargetNode : MonoBehaviour
         target.GetComponent<Target>().SetTargetAxis = targetAxis;
         target.GetComponent<Target>().SetTargetType = targetType;
         target.GetComponent<Target>().MoveLocation = moveLoc.position;
-        target.GetComponent<Target>().SetTargetBase = GetComponentInChildren<TargetBase>();
+        if (horizontalPanel.activeInHierarchy)
+        {
+            target.GetComponent<Target>().SetTargetBase = horizontalPanel.GetComponent<TargetBase>();
+        }
+        else
+        {
+            target.GetComponent<Target>().SetTargetBase = verticalPanel.GetComponent<TargetBase>();
+        }
         target.transform.SetParent(TargetNodeManager.Instance.transform);
+
     }
 }

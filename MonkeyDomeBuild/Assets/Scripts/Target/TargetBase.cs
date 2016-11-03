@@ -10,7 +10,8 @@ public enum TargetBaseState
     Pop,
     Prep,
     Warning,
-    RallyEnd
+    RallyEnd,
+    TierUpdate
 }
 public class TargetBase : MonoBehaviour
 {
@@ -32,16 +33,18 @@ public class TargetBase : MonoBehaviour
     public Image pop;
     public Image prep;
     public Image warning;
-    public Image upTier;
-    public Image stayTier;
-    public Image downTier;
+    public Image upTierLight;
+    public Image stayTierLight;
+    public Image downTierLight;
+    public Image tierUp;
+    public Image tierStay;
+    public Image tierDown;
 
     float timeCount = 0;
     float defaultTime = 2f;
     private bool changeTier = false;
 
     private GameObject activatedImg = null;
-
     void Start()
     {
         changeTier = true;
@@ -59,7 +62,7 @@ public class TargetBase : MonoBehaviour
         switch (state)
         {
             case TargetBaseState.RallyStart:
-                StartState(2f);
+                StartState(2f, false);
                 break;
             case TargetBaseState.Hit:
                 HitState();
@@ -78,6 +81,9 @@ public class TargetBase : MonoBehaviour
                 break;
             case TargetBaseState.RallyEnd:
                 EndState();
+                break;
+            case TargetBaseState.TierUpdate:
+                TierUpdateState();
                 break;
         }
     }
@@ -124,24 +130,24 @@ public class TargetBase : MonoBehaviour
             switch (tierStatus)
             {
                 case TierStatus.TierNull:
-                    upTier.color = Color.grey;
-                    stayTier.color = Color.grey;
-                    downTier.color = Color.grey;
+                    upTierLight.color = Color.grey;
+                    stayTierLight.color = Color.grey;
+                    downTierLight.color = Color.grey;
                     break;
                 case TierStatus.TierUp:
-                    upTier.color = Color.green;
-                    stayTier.color = Color.green;
-                    downTier.color = Color.green;
+                    upTierLight.color = Color.green;
+                    stayTierLight.color = Color.green;
+                    downTierLight.color = Color.green;
                     break;
                 case TierStatus.TierStay:
-                    upTier.color = Color.grey;
-                    stayTier.color = Color.yellow;
-                    downTier.color = Color.yellow;
+                    upTierLight.color = Color.grey;
+                    stayTierLight.color = Color.yellow;
+                    downTierLight.color = Color.yellow;
                     break;
                 case TierStatus.TierDown:
-                    upTier.color = Color.grey;
-                    stayTier.color = Color.grey;
-                    downTier.color = Color.red;
+                    upTierLight.color = Color.grey;
+                    stayTierLight.color = Color.grey;
+                    downTierLight.color = Color.red;
                     break;
             }
         }
@@ -151,7 +157,7 @@ public class TargetBase : MonoBehaviour
         if(this.state != state)
         {
             Vector3 sliderNewScale = slider.localScale;
-            sliderNewScale.x = 1;
+            sliderNewScale.x = 0;
             slider.localScale = sliderNewScale;
             timeCount = 0;
             this.state = state;
@@ -181,11 +187,28 @@ public class TargetBase : MonoBehaviour
                     break;
                 case TargetBaseState.RallyEnd:
                     activatedImg = end.gameObject;
+                    StartCoroutine(StartUpdateTargetTierState());
+                    break;
+                case TargetBaseState.TierUpdate:
+                    switch (tierStatus)
+                    {
+                        default:
+                            goto case TierStatus.TierDown;
+                        case TierStatus.TierUp:
+                            activatedImg = tierUp.gameObject;
+                            break;
+                        case TierStatus.TierStay:
+                            activatedImg = tierStay.gameObject;
+                            break;
+                        case TierStatus.TierDown:
+                            activatedImg = tierDown.gameObject;
+                            break;
+                    }
                     break;
             }
         }
     }
-    void StartState(float time)
+    void StartState(float time, bool useSlider)
     {
         if (!activatedImg.activeInHierarchy && timeCount == 0)
         {
@@ -198,19 +221,22 @@ public class TargetBase : MonoBehaviour
         }
         else
         {
-            Vector3 sliderNewScale = slider.localScale;
-            sliderNewScale.x = (time - timeCount) / time;
-            slider.localScale = sliderNewScale;
+            if (useSlider)
+            {
+                Vector3 sliderNewScale = slider.localScale;
+                sliderNewScale.x = (time - timeCount) / time;
+                slider.localScale = sliderNewScale;
+            }
             timeCount -= Time.deltaTime;
         }
     }
     void HitState()
     {
-        StartState(defaultTime);
+        StartState(defaultTime, false);
     }
     void MissState()
     {
-        StartState(defaultTime);
+        StartState(defaultTime, false);
     }
     void PopState()
     {
@@ -231,18 +257,22 @@ public class TargetBase : MonoBehaviour
             activatedImg.SetActive(true);
             timeCount = target.PrepTime;
         }
-        Vector3 sliderNewScale = slider.localScale;
-        sliderNewScale.x = (target.PrepTime - timeCount) / target.PrepTime;
-        timeCount -= Time.deltaTime;
-        slider.localScale = sliderNewScale;
+        //Vector3 sliderNewScale = slider.localScale;
+        //sliderNewScale.x = (target.PrepTime - timeCount) / target.PrepTime;
+        //timeCount -= Time.deltaTime;
+        //slider.localScale = sliderNewScale;
     }
     void WarningState()
     {
-        StartState(target.WarningTime);
+        StartState(target.WarningTime, false);
     }
     void EndState()
     {
-        StartState(3f);
+        StartState(3f, false);
+    }
+    void TierUpdateState()
+    {
+        StartState(2f, false);
     }
     public Target SetTarget
     {
@@ -250,6 +280,11 @@ public class TargetBase : MonoBehaviour
         {
             target = value;
         }
+    }
+    IEnumerator StartUpdateTargetTierState()
+    {
+        yield return new WaitForSeconds(3f);
+        ChangeTargetState(TargetBaseState.TierUpdate);
     }
 
 }

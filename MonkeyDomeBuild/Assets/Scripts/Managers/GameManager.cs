@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     public ShotClockManager gmShotClockManager;
     public TrophyManager gmTrophyManager;
     public AudienceManager gmAudienceManager;
+    public AudienceAnimator gmAudienceAnimator;
     public LevelObjectScript gmLevelObjectScript;
     public GameOptionsManager gmGameOptionsManager;
     public PauseManager gmPauseManager;
@@ -394,6 +395,7 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Monkey(i);
+
                     }
                 }
                 else

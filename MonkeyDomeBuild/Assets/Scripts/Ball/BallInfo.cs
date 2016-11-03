@@ -98,6 +98,7 @@ public class BallInfo : MonoBehaviour
                     if (GameManager.Instance.gmShotClockManager.ShotClockCount >= GameManager.Instance.gmShotClockManager.ShotClockTime)
                     {
                         GameManager.Instance.gmShotClockManager.ResetShotClock();
+                        GameManager.Instance.gmAudienceAnimator.AudienceAngry();
                         Change();
                     }
                     else
@@ -119,7 +120,7 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey != null)
         {
-            m_rigid.transform.position = Vector2.Lerp(m_rigid.transform.position, holdingMonkey.GetComponent<Actor>().catchCenter.position, 1f);
+			m_rigid.transform.position = holdingMonkey.GetComponent<Actor>().catchCenter.position;
         }
     }
 

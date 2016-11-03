@@ -8,7 +8,7 @@ public class TargetNodeManager : MonoBehaviour
     public GameObject targetPrefab;
     private int numberOfTargets = 0;
     public List<GameObject> targetNodes;
-    void Awake()
+    void Start()
     {
         TargetNode[] tempNodes = FindObjectsOfType<TargetNode>();
         List<TargetNode> tempList = new List<TargetNode>();

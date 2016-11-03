@@ -40,6 +40,7 @@ public class CameraController : MonoBehaviour
     public bool considerTargets = false;
     private bool targetsExist = false;
     public float focusAmount = 1f;
+    private float monkeyHoldingCount = 0;
 
     // Use this for initialization
     void Start()
@@ -156,13 +157,27 @@ public class CameraController : MonoBehaviour
         {
             if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey() != null)
             {
-                if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().IsChargingThrow)
+                if (GameManager.Instance.gmInputs[GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().playerIndex].mChargeThrow)
                 {
                     if (!monkeyCharging)
                     {
                         focusAmount = 1f;
                     }
-                    monkeyCharging = true;
+                    if (monkeyHoldingCount > 0.3f)
+                    {
+                        monkeyCharging = true;
+                    }
+                    else
+                    {
+                        monkeyHoldingCount += Time.deltaTime;
+                    }
+                }
+            }
+            else
+            {
+                if (monkeyHoldingCount != 0)
+                {
+                    monkeyHoldingCount = 0;
                 }
             }
         }
