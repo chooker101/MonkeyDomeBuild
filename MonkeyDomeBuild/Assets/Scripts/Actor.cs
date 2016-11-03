@@ -123,6 +123,17 @@ public class Actor : MonoBehaviour
 		Aim();
 		characterType.CHUpdate();
         CheckLeader();
+
+        if(isinair && cache_rb.velocity.y < 0f)
+        {
+            animator.SetBool("IsInAir", false);
+            animator.SetBool("IsInAirDown", true);
+            animator.SetBool("IsStartJump", false);
+        } else if (isinair && cache_rb.velocity.y >= 0f)
+        {
+            animator.SetBool("IsInAir", true);
+            //animator.SetBool("IsStartJump", false);
+        }
 	}
 
     void FixedUpdate()
@@ -166,6 +177,7 @@ public class Actor : MonoBehaviour
 
             }
             cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
+            animator.SetBool("IsStartJump", true);
             if (AudioEffectManager.Instance != null)
             {
                 AudioEffectManager.Instance.PlayMonkeyJumpSE();
@@ -184,6 +196,7 @@ public class Actor : MonoBehaviour
                 {
                     cache_rb.velocity *= 0.3f;
                     cache_rb.AddForce(Vector2.up * characterType.jumpforce, ForceMode2D.Impulse);
+                    animator.SetBool("IsStartJump", true);
                     if (AudioEffectManager.Instance != null)
                     {
                         AudioEffectManager.Instance.PlayMonkeyJumpSE();
@@ -545,7 +558,9 @@ public class Actor : MonoBehaviour
         {
             if (!justJump && isinair)
             {
+                animator.SetBool("IsInAirDown", false);
                 isinair = false;
+                animator.SetBool("IsLanding", true);
             }
         }
         if (other.gameObject.CompareTag("Vine"))

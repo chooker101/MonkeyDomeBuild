@@ -103,7 +103,19 @@ public class AI : Actor
 		Aim();
 		characterType.CHUpdate();
 		CheckLeader();
-	}
+
+        if (isinair && cache_rb.velocity.y < 0f)
+        {
+            animator.SetBool("IsInAir", false);
+            animator.SetBool("IsInAirDown", true);
+            animator.SetBool("IsStartJump", false);
+        }
+        else if (isinair && cache_rb.velocity.y >= 0f)
+        {
+            animator.SetBool("IsInAir", true);
+            //animator.SetBool("IsStartJump", false);
+        }
+    }
 
 	// Update is called once per frame
 	void FixedUpdate()
