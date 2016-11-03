@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
             CreateInputs();
             CreatePlayers();
         }
+        gmBalls.Clear();
 
     }
 
@@ -435,5 +436,10 @@ public class GameManager : MonoBehaviour
             Instance.gmPlayers[playerIndex] = null;
             TotalNumberofPlayers--;
         }
+    }
+
+    public void SwitchRooms()
+    {
+        gmBalls.Clear();
     }
 }

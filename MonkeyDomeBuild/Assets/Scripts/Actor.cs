@@ -128,14 +128,16 @@ public class Actor : MonoBehaviour
         {
             if (isClimbing)
             {
-                animator.SetBool("IsIdle", true);
-                animator.SetBool("IsInAirDown", false);      
+                //animator.SetBool("IsIdle", true);
+                //animator.SetBool("IsInAirDown", false); 
+                animator.SetBool("IsClimbing", true);     
             } else
             {
+                animator.SetBool("IsClimbing", false);
                 animator.SetBool("IsInAirDown", true);
+                animator.SetBool("IsInAir", false);
+                animator.SetBool("IsJumping", false);
             }
-            animator.SetBool("IsInAir", false);
-            animator.SetBool("IsJumping", false);
         } else if (isinair && cache_rb.velocity.y >= 0f )
         {
             animator.SetBool("IsInAir", true);
@@ -233,22 +235,19 @@ public class Actor : MonoBehaviour
 		{
 			if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
 			{
-                if (!isDashing)
+                if (characterType is Gorilla && characterType.manuallyCharging)
                 {
-                    /*if (characterType is Gorilla && characterType.isCharging)
-                    {
-                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
-                    }
-                    else
-                    {
-                        movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-                    }*/
-                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
                 }
                 else
                 {
+                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                }
+                if(isDashing)
+                {
                     if (dashingCount >= dashingTime)
                     {
+                        GetComponent<EffectControl>().EndDashEffect();
                         dashingCount = 0;
                         isDashing = false;
                     }
@@ -360,7 +359,6 @@ public class Actor : MonoBehaviour
             Time.timeScale = 1;
         }
     }
-
     public bool RayCast(int direction)
     {
         bool hit = false;
@@ -381,7 +379,6 @@ public class Actor : MonoBehaviour
         }
         return hit;
     }
-
     public bool RayCastSide(float leftOrRight)
     {
         // right = 1    left = -1
@@ -422,7 +419,6 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
-
     public void Aim()
     {
         if (isCharging)
@@ -476,6 +472,7 @@ public class Actor : MonoBehaviour
             {
                 dashingCount = 0;
                 isDashing = false;
+                GetComponent<EffectControl>().EndDashEffect();
                 for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; ++i)
                 {
                     if (GameManager.Instance.gmPlayers[i] != null)
@@ -489,7 +486,7 @@ public class Actor : MonoBehaviour
                             {
                                 GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing = false;
                                 GameManager.Instance.gmPlayers[i].GetComponent<Rigidbody2D>().isKinematic = false;
-                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput();
+                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput(disableInputTime * 2);
                                 if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
                                 {
                                     GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ReleaseBall();
@@ -526,8 +523,7 @@ public class Actor : MonoBehaviour
 
     protected void KnockOffMonkey(GameObject monkey)
     {
-        monkey.GetComponent<Actor>().DisableInput = true;
-        monkey.GetComponent<Actor>().InvokeEnableInput();
+        monkey.GetComponent<Actor>().TempDisableInput(disableInputTime);
 		if (monkey.GetComponent<Actor>().IsHoldingBall) 
 		{
 			monkey.GetComponent<Actor>().ReleaseBall();
@@ -547,15 +543,17 @@ public class Actor : MonoBehaviour
         monkey.GetComponent<Rigidbody2D>().AddForce(dir * smackImpulse, ForceMode2D.Impulse);
     }
 
-    public void TempDisableInput()
+    public void TempDisableInput(float time)
     {
+        GetComponent<EffectControl>().PlayStunEffect();
         DisableInput = true;
-        InvokeEnableInput();
+        InvokeEnableInput(time);
     }
 
-    public void InvokeEnableInput()
+    public void InvokeEnableInput(float time)
     {
-        Invoke("ResetBeingSmack", disableInputTime);
+        CancelInvoke("ResetBeingSmack");
+        Invoke("ResetBeingSmack", time);
     }
 
     protected void ResetBeingSmack()
@@ -662,13 +660,17 @@ public class Actor : MonoBehaviour
     public void ReactionToBanana(float incAmount)
     {
         if (characterInc < maxminInc)
+        {
             IncrementCharacterInc(incAmount);
+        }
     }
 
     public void ReactionToPoop(float incAmount)
     {
-        if (Mathf.Abs(characterInc) < maxminInc)
+        if (Mathf.Abs(characterInc) > -maxminInc)
+        {
             IncrementCharacterInc(-incAmount);
+        }
     }
 
     protected void IncrementCharacterInc(float inc)
@@ -741,6 +743,7 @@ public class Actor : MonoBehaviour
     {
         isDashing = true;
         Vector2 dashDir = Vector2.zero;
+        GetComponent<EffectControl>().PlayDashEffect();
         dashDir.y = 1f;
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) > 0)
         {
@@ -760,7 +763,6 @@ public class Actor : MonoBehaviour
         if (preGameTimer != null)
         {
             preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
-            Debug.Log("Actor: gorillaSmash = true");
         }
     }
     public void ResetTimeScale()

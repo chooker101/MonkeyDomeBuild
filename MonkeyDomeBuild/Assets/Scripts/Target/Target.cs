@@ -48,7 +48,7 @@ public class Target : MonoBehaviour
     public float waitTime;
     float prepTime = 5f;
     float warningTime = 2f;
-
+    public bool activeInCam = false;
 
     TargetBase panel;
 
@@ -98,8 +98,8 @@ public class Target : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            targetActive = true;
-            TargetSetter();
+            //targetActive = true;
+            //TargetSetter();
         }
         if (!inAlarm)
         {
@@ -118,6 +118,7 @@ public class Target : MonoBehaviour
                     if (!targetActive)
                     {
                         panel.ChangeTargetState(TargetBaseState.Prep);
+                        activeInCam = true;
                     }
                     waitTime = 0;
                 }
@@ -186,6 +187,7 @@ public class Target : MonoBehaviour
                 if (!isHit)
                 {
                     panel.ChangeTargetState(TargetBaseState.Hit);
+                    activeInCam = false;
                     GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
                     GameObject particle = ParticlesManager.Instance.TargetHitParticle;
                     particle.SetActive(true);
@@ -346,6 +348,7 @@ public class Target : MonoBehaviour
                 // deactive alarm, reset lifeTime
                 //TargetSetter(-1f);
                 panel.ChangeTargetState(TargetBaseState.Miss);
+                activeInCam = false;
                 Reset();
                 if (targetManager != null)
                 {
@@ -450,6 +453,13 @@ public class Target : MonoBehaviour
         get
         {
             return warningTime;
+        }
+    }
+    public bool IsActive
+    {
+        get
+        {
+            return activeInCam;
         }
     }
 }

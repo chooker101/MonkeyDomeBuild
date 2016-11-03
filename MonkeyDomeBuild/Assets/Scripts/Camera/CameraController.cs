@@ -138,15 +138,18 @@ public class CameraController : MonoBehaviour
         {
             for (int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
             {
-                if (!GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).isHit)
+                if (GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).IsActive)
                 {
                     positionSum += GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position;
                     targetCount++;
                 }
             }
             //meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targetCount);
-            meanPosition = positionSum / targetCount;
-            positionSum = Vector2.zero;
+            if (targetCount > 0)
+            {
+                meanPosition = positionSum / targetCount;
+            }
+            //positionSum = Vector2.zero;
         }
         else
         {
