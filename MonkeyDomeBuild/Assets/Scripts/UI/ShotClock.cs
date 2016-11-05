@@ -31,17 +31,17 @@ public class ShotClock : MonoBehaviour
         shotClock.text = time.ToString("F2");
         //Debug.Log(time);
 
-            if (time > 4f)
-            {
+        if (time > 4f)
+        {
             if (!gameObject.CompareTag("StageUI"))
             {
                 shotClock.fontStyle = FontStyle.Normal;
             }
             shotClock.color = new Color(0f, 0f, 00f);
         }
-            else if (time > 2f && time <= 4f)
-            {
-                shotClock.color = new Color(200f, 200f, 00f);
+        else if (time > 2f && time <= 4f)
+        {
+            shotClock.color = Color.red; //new Color(200f, 200f, 00f);
             if (!gameObject.CompareTag("StageUI"))
             {
                 if (scalingUp)
@@ -53,10 +53,10 @@ public class ShotClock : MonoBehaviour
                     ScaleDownText();
                 }
             }
-            }
-            else
-            {
-                shotClock.color = new Color(200f, 0f, 00f);
+        }
+        else
+        {
+            shotClock.color = Color.white; //new Color(200f, 0f, 00f);
             if (!gameObject.CompareTag("StageUI"))
             {
                 if (scalingUp)

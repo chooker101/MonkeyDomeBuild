@@ -130,9 +130,9 @@ public class TargetBase : MonoBehaviour
             switch (tierStatus)
             {
                 case TierStatus.TierNull:
-                    upTierLight.color = Color.grey;
-                    stayTierLight.color = Color.grey;
-                    downTierLight.color = Color.grey;
+                    upTierLight.color = Color.black;
+                    stayTierLight.color = Color.black;
+                    downTierLight.color = Color.black;
                     break;
                 case TierStatus.TierUp:
                     upTierLight.color = Color.green;
@@ -140,13 +140,13 @@ public class TargetBase : MonoBehaviour
                     downTierLight.color = Color.green;
                     break;
                 case TierStatus.TierStay:
-                    upTierLight.color = Color.grey;
+                    upTierLight.color = Color.black;
                     stayTierLight.color = Color.yellow;
                     downTierLight.color = Color.yellow;
                     break;
                 case TierStatus.TierDown:
-                    upTierLight.color = Color.grey;
-                    stayTierLight.color = Color.grey;
+                    upTierLight.color = Color.black;
+                    stayTierLight.color = Color.black;
                     downTierLight.color = Color.red;
                     break;
             }
