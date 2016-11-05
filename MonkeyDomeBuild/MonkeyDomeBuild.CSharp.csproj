@@ -58,24 +58,18 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AudienceAnimator.cs" />
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actor.cs" />
     <Compile Include="Assets\Scripts\Actor\Character.cs" />
     <Compile Include="Assets\Scripts\Actor\Gorilla.cs" />
     <Compile Include="Assets\Scripts\Actor\Monkey.cs" />
     <Compile Include="Assets\Scripts\Actor\ThrowCombo.cs" />
+    <Compile Include="Assets\Scripts\AudienceAnimator.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioMain.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioPregame.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
@@ -114,6 +108,7 @@
     <Compile Include="Assets\Scripts\Players\EffectControl.cs" />
     <Compile Include="Assets\Scripts\Players\GorillaCharge.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />
+    <Compile Include="Assets\Scripts\ShotClockStagePlayer.cs" />
     <Compile Include="Assets\Scripts\Target\ColourChanger.cs" />
     <Compile Include="Assets\Scripts\Target\FullTargetRotator.cs" />
     <Compile Include="Assets\Scripts\Target\Target.cs" />
@@ -129,7 +124,7 @@
     <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreVisualizer.cs" />
     <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
-    <Compile Include="Assets\UIEffect.cs" />
+    <Compile Include="Assets\Scripts\UIEffect.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -14,6 +14,7 @@ public class ScoreVisualizer : MonoBehaviour
     private List<Text> playerNumbers = new List<Text>();
     private List<Image> playerHead_monkey = new List<Image>();
     private List<Image> playerHead_gorilla = new List<Image>();
+    private List<Image> ballPossession = new List<Image>();
 
     private List<Image> playerBoardBack = new List<Image>();
     private List<Image> ledBack = new List<Image>();
@@ -28,6 +29,7 @@ public class ScoreVisualizer : MonoBehaviour
             playerNumbers.Add(infos[i].transform.FindChild("PlayerNumber").GetComponent<Text>());
             playerHead_monkey.Add(infos[i].transform.FindChild("Monkey Head").GetComponent<Image>());
             playerHead_gorilla.Add(infos[i].transform.FindChild("Gorilla Head").GetComponent<Image>());
+            ballPossession.Add(infos[i].transform.FindChild("Ball Possession").GetComponent<Image>());
             playerBoardBack.Add(infos[i].transform.FindChild("PlayerBoard Back").GetComponent<Image>());
             ledBack.Add(infos[i].transform.FindChild("LED Back").GetComponent<Image>());
             actionPerformedTexts[i].text = "";
@@ -57,8 +59,7 @@ public class ScoreVisualizer : MonoBehaviour
             }
             else
             {
-                playerNumbers[i].text = "";
-                scoreDisplays[i].text = "";
+                infos[i].gameObject.SetActive(false);
             }
         }
     }
@@ -81,9 +82,20 @@ public class ScoreVisualizer : MonoBehaviour
                 }
             }
         }
-
-        for(int i = 0; i< GameManager.Instance.TotalNumberofPlayers; i++) // Used to choose what player head to display
+        
+        for (int i = 0; i< GameManager.Instance.TotalNumberofPlayers; i++)
         {
+            // Changes who's holding the ball on the UI bin
+            if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall && !ballPossession[i].gameObject.activeSelf)
+            {
+                ballPossession[i].gameObject.SetActive(true);
+            }
+            else if(!GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall && ballPossession[i].gameObject.activeSelf)
+            {
+                ballPossession[i].gameObject.SetActive(false);
+            }
+
+            // Displays if a player is a gorilla or a monkey on the UI bin
             if(GameManager.Instance.gmPlayerScripts[i].characterType is Gorilla && !playerHead_gorilla[i].gameObject.activeSelf)
             {
                 playerHead_gorilla[i].gameObject.SetActive(true);
