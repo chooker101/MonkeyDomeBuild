@@ -36,8 +36,8 @@ public class UIEffect : MonoBehaviour {
     {
         tempScale = myText.transform.localScale;
 
-       tempScale.x = Mathf.Lerp(myText.transform.localScale.x, 2f, 1f*Time.deltaTime);
-       tempScale.y = Mathf.Lerp(myText.transform.localScale.y, 2f, 1f*Time.deltaTime);
+       tempScale.x = Mathf.Lerp(myText.transform.localScale.x, 1.5f, 1f*Time.deltaTime);
+       tempScale.y = Mathf.Lerp(myText.transform.localScale.y, 1.5f, 1f*Time.deltaTime);
 
         myText.transform.localScale = tempScale;
         StartCoroutine(ScalingTime());
