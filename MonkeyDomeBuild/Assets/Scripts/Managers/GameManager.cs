@@ -450,7 +450,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         Instance.gmCurtainController.CloseCurtain();
 
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(3f);
         for (int i = 0; i < gmPlayers.Count; i++)
         {
             if (gmPlayers[i] != null)
@@ -458,8 +458,8 @@ public class GameManager : MonoBehaviour
                 gmPlayers[i].GetComponent<Actor>().SwitchRoomReset();
             }
         }
-        SceneManager.LoadScene(nextRoom);
         Instance.SwitchRooms();
+        SceneManager.LoadScene(nextRoom);
         yield return new WaitForSeconds(1f);
         Instance.gmCurtainController.OpenCurtain();
     }

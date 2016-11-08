@@ -12,7 +12,7 @@ public class TurretsManager : MonoBehaviour
     public float tempShootTimeMax;
     private float tempShootTime;
 
-    void Awake()
+    void Start()
     {
         //GameObject[] tempTurrets = GameObject.FindGameObjectsWithTag("Turret");
         /*foreach(GameObject obj in tempTurrets)
@@ -95,10 +95,12 @@ public class TurretsManager : MonoBehaviour
     }
     public void AddTurret(Turret t)
     {
+        Debug.Log("run");
         turrets.Add(t);
     }
     public void Reset()
     {
+        Debug.Log("reset");
         turrets.Clear();
         targetQueues.Clear();
     }
