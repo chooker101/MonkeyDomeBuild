@@ -8,8 +8,8 @@ public class CurtainsController : MonoBehaviour
     public Image rightCurtain;
     private Vector3 leftInitLoc;
     private Vector3 rightInitLoc;
-    private Vector3 leftFinalLoc;
-    private Vector3 rightFinalLoc;
+    public Transform leftFinalLoc;
+    public Transform rightFinalLoc;
     private Vector3 leftTargetLoc;
     private Vector3 rightTargetLoc;
 
@@ -18,8 +18,6 @@ public class CurtainsController : MonoBehaviour
         GameManager.Instance.gmCurtainController = this;
         leftInitLoc = leftCurtain.transform.localPosition;
         rightInitLoc = rightCurtain.transform.localPosition;
-        leftFinalLoc = leftInitLoc + new Vector3(500f, 0, 0);
-        rightFinalLoc = rightInitLoc + new Vector3(-510f, 0, 0);
         OpenCurtain();
     }
     void Update()
@@ -40,11 +38,11 @@ public class CurtainsController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            CloseCurtain();
+            //CloseCurtain();
         }
         else if (Input.GetKeyDown(KeyCode.K))
         {
-            OpenCurtain();
+            //OpenCurtain();
         }
     }
     public void OpenCurtain()
@@ -54,7 +52,7 @@ public class CurtainsController : MonoBehaviour
     }
     public void CloseCurtain()
     {
-        leftTargetLoc = leftFinalLoc;
-        rightTargetLoc = rightFinalLoc;
+        leftTargetLoc = leftFinalLoc.localPosition;
+        rightTargetLoc = rightFinalLoc.localPosition;
     }
 }
