@@ -147,7 +147,7 @@ public class CameraController : MonoBehaviour
             //meanPosition = positionSum / (GameManager.Instance.gmPlayers.Count + targetCount);
             if (targetCount > 0)
             {
-                meanPosition = positionSum / targetCount;
+                //meanPosition = positionSum / targetCount;
             }
             //positionSum = Vector2.zero;
         }
@@ -210,6 +210,10 @@ public class CameraController : MonoBehaviour
             {
                 i = 1;
             }
+            if (targetCount > 0)
+            {
+                i += targetCount;
+            }
             meanPosition = positionSum / i;
         }
         else
@@ -218,6 +222,10 @@ public class CameraController : MonoBehaviour
             if (i == 0)
             {
                 i = 1;
+            }
+            if (targetCount > 0)
+            {
+                i += targetCount;
             }
             meanPosition = positionSum / i;
         }

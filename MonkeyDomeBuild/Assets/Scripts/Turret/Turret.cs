@@ -33,7 +33,7 @@ public class Turret : MonoBehaviour {
     public float coolDownMax;
     public float distanceFalloff; // range from -distanceFalloff to +distanceFalloff
 
-    void Awake()
+    void Start()
     {
         gravity = -Physics2D.gravity.y;
         firingAngleRange[0] = 40f;
@@ -49,6 +49,7 @@ public class Turret : MonoBehaviour {
         coolDownMax = .5f;   // was 5f
         falloff = 0.5f;
         moveSpeed = 20f;    // was 10f
+        GameManager.Instance.gmTurretManager.AddTurret(this);
     }
 
     void Update()

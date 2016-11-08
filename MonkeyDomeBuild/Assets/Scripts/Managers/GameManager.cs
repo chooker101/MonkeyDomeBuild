@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     public LevelObjectScript gmLevelObjectScript;
     public GameOptionsManager gmGameOptionsManager;
     public PauseManager gmPauseManager;
+    public TurretsManager gmTurretManager;
 
     bool displayController1Name;
     bool displayController2Name;
@@ -441,5 +442,6 @@ public class GameManager : MonoBehaviour
     public void SwitchRooms()
     {
         gmBalls.Clear();
+        gmTurretManager.Reset();
     }
 }

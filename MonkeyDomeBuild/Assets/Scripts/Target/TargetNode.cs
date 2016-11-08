@@ -12,7 +12,7 @@ public class TargetNode : MonoBehaviour
     public GameObject horizontalPanel;
     public GameObject verticalPanel;
 
-    void Awake()
+    public void Init()
     {
         moveLoc = transform.FindChild("MoveLoc");
         if (GetComponentInParent<TargetNode>().targetAxis == TargetAxis.OnRightSide || GetComponentInParent<TargetNode>().targetAxis == TargetAxis.OnLeftSide)
@@ -25,9 +25,6 @@ public class TargetNode : MonoBehaviour
         {
             horizontalPanel.SetActive(true);
         }
-    }
-    public void Init()
-    {
         GameObject target = (GameObject)Instantiate(TargetNodeManager.Instance.TargetPrefab, transform.position, transform.rotation);
         target.GetComponent<Target>().SetTargetAxis = targetAxis;
         target.GetComponent<Target>().SetTargetType = targetType;

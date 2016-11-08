@@ -42,7 +42,7 @@ public class ProjectileBehavior : MonoBehaviour
     {
         if (canCollideWithFloor)
         {
-            if (other.CompareTag("Floor"))
+            if (other.CompareTag("Floor") || other.CompareTag("Ramp"))
             {
                 canEffectCharacter = false;
 				Vector2 remainLoc = transform.position;
