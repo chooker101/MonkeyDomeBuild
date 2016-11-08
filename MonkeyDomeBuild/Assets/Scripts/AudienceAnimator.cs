@@ -3,13 +3,8 @@ using System.Collections;
 
 public class AudienceAnimator : MonoBehaviour {
 
-
-    //private EventManager eventManager;
     private Animation audienceAnimation;
 
-    //public AnimationClip happy;
-    //public AnimationClip angry;
-    ////public AnimationClip neutral;
     public float animationLength;
     public Animator controller;
 
