@@ -786,5 +786,14 @@ public class Actor : MonoBehaviour
 	}
 
 	public bool IsChargingThrow = false;
-	
+	public void SwitchRoomReset()
+    {
+        ReleaseBall();
+        canClimb = false;
+        isClimbing = false;
+        if (cache_rb.gravityScale == 0)
+        {
+            cache_rb.gravityScale = 2;
+        }
+    }
 }

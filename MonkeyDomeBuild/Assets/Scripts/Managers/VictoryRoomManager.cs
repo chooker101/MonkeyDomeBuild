@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class VictoryRoomManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class VictoryRoomManager : MonoBehaviour
     public GameObject Podium4;
     public GameObject Podium5;
 
-    public GameObject TrophyCase;
+    public List<GameObject> TrophyCase;
 
     private Vector3 podiumPos1;
     private Vector3 podiumPos2;
@@ -107,12 +108,12 @@ public class VictoryRoomManager : MonoBehaviour
         f = TrophyManager.f;
         GameObject KnockDownTrophy = (GameObject)Instantiate(Trophy, KnockDownTrophyPos[f].transform.position, transform.rotation);
         
-        Debug.Log(a);
+        /*Debug.Log(a);
         Debug.Log(b);
         Debug.Log(c);
         Debug.Log(d);
         Debug.Log(e);
-        Debug.Log(f);
+        Debug.Log(f);*/
     }
 
     void movePodiums()
@@ -140,19 +141,9 @@ public class VictoryRoomManager : MonoBehaviour
     }
     void moveCase()
     {
-        temp = TrophyCase.transform.position;
-
-        if (GameManager.TotalNumberofPlayers == 1)
-            temp.y = 15.7f;
-        if (GameManager.TotalNumberofPlayers == 2)
-            temp.y = 19.45f;
-        if (GameManager.TotalNumberofPlayers == 3)
-            temp.y = 23.1f;
-        if (GameManager.TotalNumberofPlayers == 4)
-            temp.y = 26.85f;
-        if (GameManager.TotalNumberofPlayers == 5)
-            temp.y = 30.5f;
-
-        TrophyCase.transform.position = temp;
+        for(int i = 4; i > GameManager.Instance.TotalNumberofPlayers-1; i--)
+        {
+            TrophyCase[i].SetActive(false);
+        }
     }
 }
