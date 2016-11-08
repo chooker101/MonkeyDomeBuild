@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudienceAnimator : MonoBehaviour {
-
-
+public class AudienceAnimator : MonoBehaviour
+{
     //private EventManager eventManager;
     private Animation audienceAnimation;
 
@@ -14,7 +13,9 @@ public class AudienceAnimator : MonoBehaviour {
     public Animator controller;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+	{
+		GameManager.Instance.gmAudienceAnimator = this;
         audienceAnimation = GetComponent<Animation>();
         //audienceAnimation.clip = neutral;
         controller.SetBool("Happy", false);
@@ -43,7 +44,8 @@ public class AudienceAnimator : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+	{
 	
 	}
 }
