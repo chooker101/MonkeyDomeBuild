@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEditor;
 
 public class EffectControl : MonoBehaviour
 {

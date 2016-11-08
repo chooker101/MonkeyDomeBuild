@@ -65,6 +65,11 @@ public class ProjectileBehavior : MonoBehaviour
                 _rigid.transform.eulerAngles = new Vector3(0f, 0f, whichSideMultiplier * 90f);
                 remainLoc.x = other.transform.position.x + whichSideMultiplier * other.transform.localScale.x / 2;
             }
+            Transform trail = transform.FindChild("BananaTrail");
+            if (trail != null)
+            {
+                trail.gameObject.SetActive(false);
+            }
             StartCoroutine(StartFading());
         }
     }
