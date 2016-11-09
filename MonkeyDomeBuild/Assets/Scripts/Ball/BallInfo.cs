@@ -229,7 +229,10 @@ public class BallInfo : MonoBehaviour
                 if (IsBall)
                 {
                     GameManager.Instance.gmShotClockManager.ResetShotClock();
-                    AudioEffectManager.Instance.PlayAudienceCatch();
+                    if (SceneManager.GetActiveScene().name != "PregameRoom")
+                    {
+                        AudioEffectManager.Instance.PlayAudienceCatch();
+                    }
                 }
                 //ResetShotCount();
             }

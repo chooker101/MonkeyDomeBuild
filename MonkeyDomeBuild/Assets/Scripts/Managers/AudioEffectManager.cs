@@ -50,6 +50,7 @@ public class AudioEffectManager : MonoBehaviour
     public AudioSource audienceShotClock;
     public AudioSource audienceTargetUp;
     public AudioSource audienceSmash;
+    public AudioSource audiencePoop;
 
     public static AudioEffectManager Instance
     {
@@ -120,7 +121,7 @@ public class AudioEffectManager : MonoBehaviour
         if (audienceInterception != null && audienceInterception.clip != null && !mute)
         {
             audienceCatch.pitch = Random.Range(.95f, 1.35f);
-            audienceCatch.volume = Random.Range(.4f, .8f);
+            audienceCatch.volume = Random.Range(0.65f, 1.05f);
             audienceInterception.PlayOneShot(audienceInterception.clip);
         }
     }
@@ -138,7 +139,7 @@ public class AudioEffectManager : MonoBehaviour
         if (audienceTargetUp != null && audienceTargetUp.clip != null && !mute)
         {
             audienceCatch.pitch = Random.Range(.95f, 1.35f);
-            audienceCatch.volume = Random.Range(.4f, .8f);
+            audienceCatch.volume = Random.Range(.7f, .9f);
             audienceTargetUp.PlayOneShot(audienceTargetUp.clip);
         }
     }
@@ -147,8 +148,17 @@ public class AudioEffectManager : MonoBehaviour
         if (audienceSmash != null && audienceSmash.clip != null && !mute)
         {
             audienceCatch.pitch = Random.Range(.95f, 1.35f);
-            audienceCatch.volume = Random.Range(.4f, .8f);
+            audienceCatch.volume = Random.Range(.8f, 1.2f);
             audienceSmash.PlayOneShot(audienceSmash.clip);
+        }
+    }
+    public void PlayAudiencePoop()
+    {
+        if (audiencePoop != null && audiencePoop.clip != null && !mute)
+        {
+            audiencePoop.pitch = Random.Range(.95f, 1.35f);
+            audiencePoop.volume = Random.Range(.8f, 1.2f);
+            audiencePoop.PlayOneShot(audiencePoop.clip);
         }
     }
     //Monkey Sound Effects

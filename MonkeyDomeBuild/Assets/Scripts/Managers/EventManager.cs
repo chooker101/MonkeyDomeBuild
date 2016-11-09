@@ -84,6 +84,7 @@ public class EventManager : MonoBehaviour {
 
     void PoopEvent()
     {
+        AudioEffectManager.Instance.PlayAudiencePoop();
         eventActive = true;
         BananaText.gameObject.SetActive(false);
         PoopText.gameObject.SetActive(true);
