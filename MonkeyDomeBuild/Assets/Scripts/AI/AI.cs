@@ -87,7 +87,7 @@ public class AI : Actor
 		//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
-		tempTarg = GameObject.FindGameObjectWithTag("Ball");
+		tempTarg = null;
 		canJump = true;
 		centerToFeet = myCollider.size.y * 0.5f;
 		//(myCollider.size.x * 0.5f - myCollider.offset.x);
