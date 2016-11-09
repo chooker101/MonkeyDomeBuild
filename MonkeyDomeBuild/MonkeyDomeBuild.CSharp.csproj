@@ -84,7 +84,6 @@
     <Compile Include="Assets\Scripts\Actor\Gorilla.cs" />
     <Compile Include="Assets\Scripts\Actor\Monkey.cs" />
     <Compile Include="Assets\Scripts\Actor\ThrowCombo.cs" />
-    <Compile Include="Assets\Scripts\AudienceAnimator.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioMain.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioPregame.cs" />
     <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
@@ -140,11 +139,7 @@
     <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreVisualizer.cs" />
     <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
-<<<<<<< HEAD
     <Compile Include="Assets\Scripts\UI\UIEffect.cs" />
-=======
-    <Compile Include="Assets\Scripts\UIEffect.cs" />
->>>>>>> ae9a4a6d97b3f331acc5f329f443efe8394aa36d
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
