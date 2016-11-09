@@ -618,6 +618,7 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToPoop(incAmount);
                 Destroy(other.gameObject);
+                GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
             }

@@ -176,7 +176,7 @@ public class PreGameTimer : MonoBehaviour
         gameState = state;
     }
 
-    private bool AllTargetsHit()
+    public bool AllTargetsHit()
     {
         if (GameManager.Instance.TotalNumberofPlayers >= 3)
         {
