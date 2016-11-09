@@ -98,12 +98,10 @@ public class TurretsManager : MonoBehaviour
     }
     public void AddTurret(Turret t)
     {
-        Debug.Log("run");
         turrets.Add(t);
     }
     public void Reset()
     {
-        Debug.Log("reset");
         turrets.Clear();
         targetQueues.Clear();
     }
