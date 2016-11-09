@@ -617,6 +617,7 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToPoop(incAmount);
                 Destroy(other.gameObject);
+                GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
             }
@@ -786,5 +787,14 @@ public class Actor : MonoBehaviour
 	}
 
 	public bool IsChargingThrow = false;
-	
+	public void SwitchRoomReset()
+    {
+        ReleaseBall();
+        canClimb = false;
+        isClimbing = false;
+        if (cache_rb.gravityScale == 0)
+        {
+            cache_rb.gravityScale = 2;
+        }
+    }
 }

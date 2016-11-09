@@ -52,7 +52,7 @@ public class Target : MonoBehaviour
 
     TargetBase panel;
 
-    void Awake()
+    void Start()
     {
         startLoc = transform.position;
         targetPos = moveLoc;
@@ -64,7 +64,6 @@ public class Target : MonoBehaviour
         isHit = true;
         targetRot = Vector3.zero;
         Init();
-
     }
     public TargetBase SetTargetBase
     {
@@ -181,7 +180,7 @@ public class Target : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Ball"))
         {
-            if (other.GetComponent<BallInfo>().IsBall)
+            if (other.GetComponent<BallInfo>().IsBall && other.GetComponent<BallInfo>().GetLastThrowMonkey() != null)
             {
                 //TargetSetter(-1);
                 if (!isHit)

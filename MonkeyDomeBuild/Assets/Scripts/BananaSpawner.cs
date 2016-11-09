@@ -17,6 +17,8 @@ public class BananaSpawner : MonoBehaviour
     List<GameObject> pooledBananas = new List<GameObject>();
     int bananaPoolAmount = 2000;
 
+
+    public GameObject[] Baskets;
     void Start()
     {
         for (int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
@@ -32,6 +34,26 @@ public class BananaSpawner : MonoBehaviour
             pooledBananas[i].transform.SetParent(bananaHolder);
             pooledBananas[i].SetActive(false);
         }
+
+
+        for (uint i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+            Baskets[i].SetActive(true);
+        
+        for (uint i = GameManager.Instance.TotalNumberofPlayers; i <= 4; i++)
+            Baskets[i].SetActive(false);
+
+        if (GameManager.Instance.TotalNumberofPlayers == 1)
+            transform.position = new Vector3(transform.position.x + 20, transform.position.y, transform.position.z);
+        else if (GameManager.Instance.TotalNumberofPlayers == 2)
+            transform.position = new Vector3(transform.position.x + 15, transform.position.y, transform.position.z);
+        else if (GameManager.Instance.TotalNumberofPlayers == 3)
+            transform.position = new Vector3(transform.position.x + 10, transform.position.y, transform.position.z);
+        else if (GameManager.Instance.TotalNumberofPlayers == 4)
+            transform.position = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
+        else if (GameManager.Instance.TotalNumberofPlayers == 5)
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+
+
     }
 
     void Update()

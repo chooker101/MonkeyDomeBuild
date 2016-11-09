@@ -28,6 +28,7 @@ public class PreGameTimer : MonoBehaviour
     public bool gorillaSet = false;
     public bool gorillaSmashed = false;
     private GameObject[] colourTargets;
+    private bool loadedScene = false;
 
     // Use this for initialization
     void Start()
@@ -123,12 +124,13 @@ public class PreGameTimer : MonoBehaviour
             {
                 //gorillaSmashed = true;
             }
-            if (gorillaSet && gorillaSmashed)
+            if (gorillaSet && gorillaSmashed && !loadedScene)
             {
                 //pregameTimer = 0;
+                loadedScene = true;
                 gameState = "game";
-                SceneManager.LoadScene("mb_level04_v2");
-                GameManager.Instance.SwitchRooms();
+                GameManager.Instance.StartMatch();
+                //StartCoroutine(LoadScene());
             }
 
             timerText.text = "Pre-game Room\n"; //+ pregameTimer.ToString("F2");
@@ -174,7 +176,7 @@ public class PreGameTimer : MonoBehaviour
         gameState = state;
     }
 
-    private bool AllTargetsHit()
+    public bool AllTargetsHit()
     {
         if (GameManager.Instance.TotalNumberofPlayers >= 3)
         {
@@ -192,6 +194,5 @@ public class PreGameTimer : MonoBehaviour
             return true;
         }
         return false;
-
     }
 }

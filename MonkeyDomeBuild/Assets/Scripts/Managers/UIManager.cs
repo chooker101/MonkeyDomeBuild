@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     public GameObject ShotClockActive;
     public GameObject ShotClockWarning;
     private bool playerHoldingBall = false;
+    private bool loadedScene = false;
 
     void Awake()
 	{
@@ -117,9 +118,14 @@ public class UIManager : MonoBehaviour
                     }
                 }
                 GameManager.Instance.gmTrophyManager.CheckallWinners();
-                Debug.Log(GameManager.Instance.gmTrophyManager.a);
-                SceneManager.LoadScene("VictoryRoom");
-                GameManager.Instance.SwitchRooms();
+                //Debug.Log(GameManager.Instance.gmTrophyManager.a);
+                if (!loadedScene)
+                {
+                    loadedScene = true;
+                    GameManager.Instance.LoadPregameRoom();
+                }
+                //SceneManager.LoadScene("VictoryRoom");
+                //GameManager.Instance.SwitchRooms();
             }
         }
 

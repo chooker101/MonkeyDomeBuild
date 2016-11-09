@@ -7,21 +7,25 @@ public class ColourChanger : MonoBehaviour
 {
     public TargetAxis targetAxis = TargetAxis.OnTop;
     public int playerTargetIndex = -1;
-    private int playerTargetNumberRegular = 0;
-    public Text targetText;
+    public bool isHit = false;
+    public bool activated = false;
     public Transform hitParticlePivot;
+    public Image targetBase;
+    public Image targetJoin;
+    public Image targetUnready;
+    public Image targetReady;
+    public Image targetReadyAll;
+    public Image targetHeadMonkey;
+    public Image targetHeadGorilla;
+    public Text playerNumberText;
 
-    //private RecordKeeper recordKeeper;
-    //private CircleCollider2D targetCollider;
-
-    //private GameObject myPlayer = null;
+    private int playerTargetNumberRegular = 0;
     private GameObject objectHit = null;
     private Material materialToApply;
-    public bool isHit = false;
     private Vector3 targetRot;
     private GameObject target;
-    public bool activated = false;
     private bool canEnableTargetHeadCollider = false;
+    private PreGameTimer preGameTimerObject;
 
     // Use this for initialization
     void Start()
@@ -31,22 +35,37 @@ public class ColourChanger : MonoBehaviour
 		//myPlayer = GameManager.Instance.gmPlayers[playerTargetIndex];
         playerTargetNumberRegular = playerTargetIndex + 1;
         GetComponentInChildren<CircleCollider2D>().enabled = false;
+        preGameTimerObject = FindObjectOfType<PreGameTimer>().GetComponent<PreGameTimer>();
         Init();
         if (GameManager.Instance.TotalNumberofPlayers >= playerTargetNumberRegular)
         {
             activated = true;
             TargetSetter();
         }
+
+        if(activated)
+        {
+            playerNumberText.gameObject.SetActive(true);
+            playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
+        }
+        else
+        {
+            playerNumberText.gameObject.SetActive(false);
+        }
     }
     void Update()
     {
         DebugFunction();
+        // Add player target to join
         if (GameManager.Instance.gmInputs[playerTargetIndex].mJump && !activated)
         {
             GameManager.Instance.AddPlayer(playerTargetIndex);
             activated = true;
             GetComponentInChildren<Collider2D>().enabled = false;
             TargetSetter();
+            playerNumberText.gameObject.SetActive(false);
+            playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
+
         }
         if (Vector3.Distance(target.transform.localEulerAngles, targetRot) > 0.01f)
         {
@@ -63,13 +82,63 @@ public class ColourChanger : MonoBehaviour
                 }
             }
         }
-        if (isHit)
+
+        // State of target
+        if(!activated)
         {
-            targetText.text = "P" + playerTargetNumberRegular.ToString() + " READY!";
+            if (!targetJoin.gameObject.activeSelf)
+            {
+                targetJoin.gameObject.SetActive(true);
+                targetUnready.gameObject.SetActive(false);
+                targetReady.gameObject.SetActive(false);
+                targetReadyAll.gameObject.SetActive(false);
+            }
         }
-        else
+        else if(activated && !isHit)
         {
-            targetText.text = "P" + playerTargetNumberRegular.ToString() + " NOT READY";
+            if(!targetUnready.gameObject.activeSelf)
+            {
+                targetJoin.gameObject.SetActive(false);
+                targetUnready.gameObject.SetActive(true);
+                targetReady.gameObject.SetActive(false);
+                targetReadyAll.gameObject.SetActive(false);
+            }
+        }
+        else if(activated && isHit && !preGameTimerObject.AllTargetsHit())
+        {
+            if (!targetReady.gameObject.activeSelf)
+            {
+                targetJoin.gameObject.SetActive(false);
+                targetUnready.gameObject.SetActive(false);
+                targetReady.gameObject.SetActive(true);
+                targetReadyAll.gameObject.SetActive(false);
+            }
+        }
+        else if(activated && isHit && preGameTimerObject.AllTargetsHit())
+        {
+            if (!targetReadyAll.gameObject.activeSelf)
+            {
+                targetBase.gameObject.SetActive(false);
+                targetJoin.gameObject.SetActive(false);
+                targetJoin.gameObject.SetActive(false);
+                targetUnready.gameObject.SetActive(false);
+                targetReady.gameObject.SetActive(false);
+                targetReadyAll.gameObject.SetActive(true);
+            }
+        }
+
+        if(activated) // Displays player heads on panel
+        {
+            if (GameManager.Instance.gmPlayerScripts[playerTargetIndex].characterType is Gorilla && !targetHeadGorilla.gameObject.activeSelf)
+            {
+                targetHeadGorilla.gameObject.SetActive(true);
+                targetHeadMonkey.gameObject.SetActive(false);
+            }
+            else if (GameManager.Instance.gmPlayerScripts[playerTargetIndex].characterType is Monkey && !targetHeadMonkey.gameObject.activeSelf)
+            {
+                targetHeadGorilla.gameObject.SetActive(false);
+                targetHeadMonkey.gameObject.SetActive(true);
+            }
         }
     }
     void OnTriggerEnter2D(Collider2D other)

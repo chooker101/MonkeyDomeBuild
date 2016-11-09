@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void LateUpdate()
+    void Update()
     {
         SetCamera();
         if (Input.GetKeyDown(KeyCode.K))

@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
     public GameOptionsManager gmGameOptionsManager;
     public PauseManager gmPauseManager;
     public TurretsManager gmTurretManager;
+    public CurtainsController gmCurtainController;
+    public string nextRoom;
 
     bool displayController1Name;
     bool displayController2Name;
@@ -438,10 +440,38 @@ public class GameManager : MonoBehaviour
             TotalNumberofPlayers--;
         }
     }
-
     public void SwitchRooms()
     {
         gmBalls.Clear();
         gmTurretManager.Reset();
     }
+    IEnumerator LoadMatchScene(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        Instance.gmCurtainController.CloseCurtain();
+
+        yield return new WaitForSeconds(3f);
+        for (int i = 0; i < gmPlayers.Count; i++)
+        {
+            if (gmPlayers[i] != null)
+            {
+                gmPlayers[i].GetComponent<Actor>().SwitchRoomReset();
+            }
+        }
+        Instance.SwitchRooms();
+        SceneManager.LoadScene(nextRoom);
+        yield return new WaitForSeconds(1f);
+        Instance.gmCurtainController.OpenCurtain();
+    }
+    public void StartMatch()
+    {
+        nextRoom = "mb_level04_v2";
+        StartCoroutine(LoadMatchScene(2f));
+    }
+    public void LoadPregameRoom()
+    {
+        nextRoom = "VictoryRoom";
+        StartCoroutine(LoadMatchScene(0f));
+    }
+
 }
