@@ -118,6 +118,8 @@ public class ColourChanger : MonoBehaviour
         {
             if (!targetReadyAll.gameObject.activeSelf)
             {
+                targetBase.gameObject.SetActive(false);
+                targetJoin.gameObject.SetActive(false);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(false);
