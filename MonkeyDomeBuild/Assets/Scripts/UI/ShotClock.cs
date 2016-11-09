@@ -33,30 +33,41 @@ public class ShotClock : MonoBehaviour
 
         if (time > 4f)
         {
-            shotClock.fontStyle = FontStyle.Normal;
+            if (!gameObject.CompareTag("StageUI"))
+            {
+                shotClock.fontStyle = FontStyle.Normal;
+            }
             shotClock.color = new Color(0f, 0f, 00f);
-        } else if (time > 2f && time <= 4f)
+        }
+        else if (time > 2f && time <= 4f)
         {
-            shotClock.color = new Color(200f, 200f, 00f);
-            if (scalingUp)
+            shotClock.color = Color.red; //new Color(200f, 200f, 00f);
+            if (!gameObject.CompareTag("StageUI"))
             {
-                ScaleUpText(3f,1f);
+                if (scalingUp)
+                {
+                    ScaleUpText(3f, 1f);
+                }
+                else
+                {
+                    ScaleDownText();
+                }
             }
-            else
-            {
-                ScaleDownText();
-            }
-        } else
+        }
+        else
         {
-            shotClock.color = new Color(200f, 0f, 00f);
-            if (scalingUp)
+            shotClock.color = Color.white; //new Color(200f, 0f, 00f);
+            if (!gameObject.CompareTag("StageUI"))
             {
-                shotClock.fontStyle = FontStyle.Bold;
-                ScaleUpText(5f,5f);
-            }
-            else
-            {
-                ScaleDownText();
+                if (scalingUp)
+                {
+                    shotClock.fontStyle = FontStyle.Bold;
+                    ScaleUpText(5f, 5f);
+                }
+                else
+                {
+                    ScaleDownText();
+                }
             }
         }
     }

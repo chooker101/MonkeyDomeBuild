@@ -8,6 +8,11 @@ public class ProjectileBehavior : MonoBehaviour
     private bool canEffectCharacter = true;
     public float characterInc;
 
+    private float fadeTime = 2f;
+    private bool faded = false;
+
+    private Color spriteColor = Color.white;
+    
 
     public Sprite squishSprite;
     //private bool isBanana = true;
@@ -19,13 +24,6 @@ public class ProjectileBehavior : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
         characterInc = 0.5f;
 
-        //if (gameObject.CompareTag("Banana"))
-        //{
-        //    squishSprite = bananaSprite;
-        //} else if (gameObject.CompareTag("Poop"))
-        //{
-        //    squishSprite = poopSprite;
-        //}
     }
 
     void Update()
@@ -44,7 +42,7 @@ public class ProjectileBehavior : MonoBehaviour
     {
         if (canCollideWithFloor)
         {
-            if (other.CompareTag("Floor"))
+            if (other.CompareTag("Floor") || other.CompareTag("Ramp"))
             {
                 canEffectCharacter = false;
 				Vector2 remainLoc = transform.position;
@@ -67,6 +65,12 @@ public class ProjectileBehavior : MonoBehaviour
                 _rigid.transform.eulerAngles = new Vector3(0f, 0f, whichSideMultiplier * 90f);
                 remainLoc.x = other.transform.position.x + whichSideMultiplier * other.transform.localScale.x / 2;
             }
+            Transform trail = transform.FindChild("BananaTrail");
+            if (trail != null)
+            {
+                trail.gameObject.SetActive(false);
+            }
+            StartCoroutine(StartFading());
         }
     }
 
@@ -84,4 +88,31 @@ public class ProjectileBehavior : MonoBehaviour
     {
         return canEffectCharacter;
     }
+
+   
+
+    private IEnumerator StartFading()
+    {
+        float startTime = Time.time;
+        float fade = 1f;
+        if (!faded)
+        {
+            //myRenderer.color = new Color(1f, 1f, 1f, Mathf.PingPong(Time.deltaTime * fadeTime, 1f));
+            //myRenderer.color = new Color(1f, 1f, 1f, Mathf.SmoothStep(0f, 1f, Time.deltaTime * fadeTime));
+            while (fade > 0f)
+            {
+                fade = Mathf.Lerp(1f, 0f, (Time.time - startTime) / fadeTime);
+                spriteColor.a = fade;
+                myRenderer.color = spriteColor;
+                faded = true;
+                yield return null;
+            }
+            fade = 0f;
+            spriteColor.a = fade;
+            myRenderer.color = spriteColor;
+            yield return new WaitForSeconds(2f);
+        }
+        //yield return new WaitForSeconds(fadeDelay);
+    }
+
 }

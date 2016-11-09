@@ -11,6 +11,13 @@ public class ScoreVisualizer : MonoBehaviour
     private List<Text> actionPerformedTexts = new List<Text>();
     private List<float> counts = new List<float>();
     private List<int> gainLoseScores = new List<int>();
+    private List<Text> playerNumbers = new List<Text>();
+    private List<Image> playerHead_monkey = new List<Image>();
+    private List<Image> playerHead_gorilla = new List<Image>();
+    private List<Image> ballPossession = new List<Image>();
+
+    private List<Image> playerBoardBack = new List<Image>();
+    private List<Image> ledBack = new List<Image>();
 
     void Start()
     {
@@ -19,10 +26,41 @@ public class ScoreVisualizer : MonoBehaviour
             scoreDisplays.Add(infos[i].transform.FindChild("Score").GetComponent<Text>());
             scoreGainLose.Add(infos[i].transform.FindChild("ScoreGainLose").GetComponent<Text>());
             actionPerformedTexts.Add(infos[i].transform.FindChild("ActionPerformed").GetComponent<Text>());
-            scoreDisplays[i].text = "0";
+            playerNumbers.Add(infos[i].transform.FindChild("PlayerNumber").GetComponent<Text>());
+            playerHead_monkey.Add(infos[i].transform.FindChild("Monkey Head").GetComponent<Image>());
+            playerHead_gorilla.Add(infos[i].transform.FindChild("Gorilla Head").GetComponent<Image>());
+            ballPossession.Add(infos[i].transform.FindChild("Ball Possession").GetComponent<Image>());
+            playerBoardBack.Add(infos[i].transform.FindChild("PlayerBoard Back").GetComponent<Image>());
+            ledBack.Add(infos[i].transform.FindChild("LED Back").GetComponent<Image>());
             actionPerformedTexts[i].text = "";
             scoreGainLose[i].text = "";
             counts.Add(0);
+
+            playerHead_monkey[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+            playerHead_gorilla[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+            playerBoardBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+            ledBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+
+            if(GameManager.Instance.TotalNumberofPlayers > i)
+            {
+                playerNumbers[i].text = "P" + (i + 1).ToString();
+                scoreDisplays[i].text = "0";
+
+                if (GameManager.Instance.gmPlayerScripts[i].characterType is Gorilla && !playerHead_gorilla[i].gameObject.activeSelf)
+                {
+                    playerHead_gorilla[i].gameObject.SetActive(true);
+                    playerHead_monkey[i].gameObject.SetActive(false);
+                }
+                else if (GameManager.Instance.gmPlayerScripts[i].characterType is Monkey && !playerHead_monkey[i].gameObject.activeSelf)
+                {
+                    playerHead_monkey[i].gameObject.SetActive(true);
+                    playerHead_gorilla[i].gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                infos[i].gameObject.SetActive(false);
+            }
         }
     }
     void LateUpdate()
@@ -42,6 +80,31 @@ public class ScoreVisualizer : MonoBehaviour
                     scoreGainLose[i].text = "";
                     actionPerformedTexts[i].text = "";
                 }
+            }
+        }
+        
+        for (int i = 0; i< GameManager.Instance.TotalNumberofPlayers; i++)
+        {
+            // Changes who's holding the ball on the UI bin
+            if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall && !ballPossession[i].gameObject.activeSelf)
+            {
+                ballPossession[i].gameObject.SetActive(true);
+            }
+            else if(!GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall && ballPossession[i].gameObject.activeSelf)
+            {
+                ballPossession[i].gameObject.SetActive(false);
+            }
+
+            // Displays if a player is a gorilla or a monkey on the UI bin
+            if(GameManager.Instance.gmPlayerScripts[i].characterType is Gorilla && !playerHead_gorilla[i].gameObject.activeSelf)
+            {
+                playerHead_gorilla[i].gameObject.SetActive(true);
+                playerHead_monkey[i].gameObject.SetActive(false);
+            }
+            else if(GameManager.Instance.gmPlayerScripts[i].characterType is Monkey && !playerHead_monkey[i].gameObject.activeSelf)
+            {
+                playerHead_monkey[i].gameObject.SetActive(true);
+                playerHead_gorilla[i].gameObject.SetActive(false);
             }
         }
     }

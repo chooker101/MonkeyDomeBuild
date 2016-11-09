@@ -25,11 +25,12 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 441348}
-  - 114: {fileID: 11449008}
   - 50: {fileID: 5011966}
   - 58: {fileID: 5875324}
   - 61: {fileID: 6161348}
   - 61: {fileID: 6145844}
+  - 58: {fileID: 5828814}
+  - 114: {fileID: 11449008}
   - 114: {fileID: 11429996}
   m_Layer: 10
   m_Name: PlayerNew
@@ -419,7 +420,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 106386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.881645, y: 9.158968, z: 0}
+  m_LocalPosition: {x: -17.5673, y: 4.3179274, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 426416}
@@ -490,6 +491,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!58 &5828814
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106386}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: f7b9830b3d476de4fbae78f7e300dfc8, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 1.73}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!58 &5875324
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -498,7 +513,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 106386}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f7b9830b3d476de4fbae78f7e300dfc8, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0.57}
@@ -540,7 +555,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 106386}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f7b9830b3d476de4fbae78f7e300dfc8, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 1.3}
@@ -692,7 +707,7 @@ MonoBehaviour:
   - {fileID: 11410502}
   - {fileID: 11412400}
   playerLocatorActive: 1
-  playerLocatorMatchStart: 1
+  playerLocatorMatchStart: 0
   faceWithColor: 0
   HappyFace: {fileID: 11408192}
   SadFace: {fileID: 11447162}
@@ -898,7 +913,6 @@ MonoBehaviour:
   catchCenter: {fileID: 0}
   raycastCol: {fileID: 0}
   justJump: 0
-  cType: 
   IsChargingThrow: 0
 --- !u!114 &11454366
 MonoBehaviour:

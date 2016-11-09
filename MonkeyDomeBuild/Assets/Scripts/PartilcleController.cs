@@ -8,6 +8,8 @@ public class PartilcleController : MonoBehaviour
     //private Color playerColor;
     public ParticleSystem testParticle;
     private Transform catchParticlePivot;
+    private Transform stunParticlePivot;
+    public Transform trail;
     
     void Start()
     {
@@ -31,6 +33,24 @@ public class PartilcleController : MonoBehaviour
                 catchParticlePivot = transform.FindChild("CatchParticle");
             }
             return catchParticlePivot;
+        }
+    }
+    public Transform StunEffect
+    {
+        get
+        {
+            if(stunParticlePivot == null)
+            {
+                stunParticlePivot = transform.FindChild("StunParticle");
+            }
+            return stunParticlePivot;
+        }
+    }
+    public Transform TrailEffect
+    {
+        get
+        {
+            return trail;
         }
     }
 }

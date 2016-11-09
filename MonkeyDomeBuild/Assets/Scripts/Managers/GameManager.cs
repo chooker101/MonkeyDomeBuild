@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     public LevelObjectScript gmLevelObjectScript;
     public GameOptionsManager gmGameOptionsManager;
     public PauseManager gmPauseManager;
+    public TurretsManager gmTurretManager;
 
     bool displayController1Name;
     bool displayController2Name;
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
             CreateInputs();
             CreatePlayers();
         }
+        gmBalls.Clear();
 
     }
 
@@ -435,5 +437,11 @@ public class GameManager : MonoBehaviour
             Instance.gmPlayers[playerIndex] = null;
             TotalNumberofPlayers--;
         }
+    }
+
+    public void SwitchRooms()
+    {
+        gmBalls.Clear();
+        gmTurretManager.Reset();
     }
 }

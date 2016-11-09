@@ -98,7 +98,10 @@ public class BallInfo : MonoBehaviour
                     if (GameManager.Instance.gmShotClockManager.ShotClockCount >= GameManager.Instance.gmShotClockManager.ShotClockTime)
                     {
                         GameManager.Instance.gmShotClockManager.ResetShotClock();
+
+                        if (GameManager.Instance.gmAudienceAnimator != null)
                         GameManager.Instance.gmAudienceAnimator.AudienceAngry();
+
                         Change();
                     }
                     else

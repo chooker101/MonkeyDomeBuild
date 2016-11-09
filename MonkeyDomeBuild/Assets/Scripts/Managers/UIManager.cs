@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -13,23 +14,27 @@ public class UIManager : MonoBehaviour
     public bool noTime;
     public float matchTime;
     public Text debugLog;
-    public Text shotClock;
     public float startMatchTime;
-
 
     public Text targetTierUI;
     public Text targetsInSequenceUI;
 
     public GameManager GameManager;
 
+    public Text shotClockText;
+    public GameObject ShotClockInactive;
+    public GameObject ShotClockActive;
+    public GameObject ShotClockWarning;
+    private bool playerHoldingBall = false;
+
     void Awake()
 	{
         GameManager.Instance.gmGameOptionsManager.UIManager = this;
-
+        
 
         //Debug.Log(this.name);
-    
-		if (FindObjectOfType<UIManager>() != GameManager.Instance.gmUIManager)
+
+        if (FindObjectOfType<UIManager>() != GameManager.Instance.gmUIManager)
 			GameManager.Instance.gmUIManager = FindObjectOfType<UIManager>();
 	}
 
@@ -43,6 +48,53 @@ public class UIManager : MonoBehaviour
 	// Update is called once per frame
 	void LateUpdate ()
 	{
+        // Shot Clock Image States
+        float time = GameManager.Instance.gmShotClockManager.ShotClockTime - GameManager.Instance.gmShotClockManager.ShotClockCount;
+        if (time < 0) time = 0f;
+
+        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        {
+            if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
+            {
+                playerHoldingBall = true;
+                break;
+            }
+            else
+            {
+                playerHoldingBall = false;
+            }
+        }
+
+        // Set the state of the shot clock image
+        if (time > 4f && playerHoldingBall && !ShotClockActive.gameObject.activeSelf)
+        {
+            shotClockText.color = Color.black;
+            ShotClockActive.gameObject.SetActive(true);
+            ShotClockInactive.gameObject.SetActive(false);
+            ShotClockWarning.gameObject.SetActive(false);
+        }
+        else if (time > 2f && time <= 4f && playerHoldingBall && !ShotClockActive.gameObject.activeSelf)
+        {
+            shotClockText.color = Color.black;
+            ShotClockActive.gameObject.SetActive(true);
+            ShotClockInactive.gameObject.SetActive(false);
+            ShotClockWarning.gameObject.SetActive(false);
+        }
+        else if (time <= 2f && playerHoldingBall && !ShotClockWarning.gameObject.activeSelf)
+        {
+            shotClockText.color = Color.black;
+            ShotClockActive.gameObject.SetActive(false);
+            ShotClockInactive.gameObject.SetActive(false);
+            ShotClockWarning.gameObject.SetActive(true);
+        }
+        else if (!playerHoldingBall && !ShotClockInactive.gameObject.activeSelf)
+        {
+            shotClockText.color = Color.black;
+            ShotClockActive.gameObject.SetActive(false);
+            ShotClockInactive.gameObject.SetActive(true);
+            ShotClockWarning.gameObject.SetActive(false);
+        }
+
         if (noTime == false)
         {
             if (matchTime > 0)
@@ -67,6 +119,7 @@ public class UIManager : MonoBehaviour
                 GameManager.Instance.gmTrophyManager.CheckallWinners();
                 Debug.Log(GameManager.Instance.gmTrophyManager.a);
                 SceneManager.LoadScene("VictoryRoom");
+                GameManager.Instance.SwitchRooms();
             }
         }
 

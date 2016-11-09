@@ -128,6 +128,7 @@ public class Gorilla : Character
 	{
         if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canDash)
         {
+            manuallyCharging = false;
             justDashed = true;
             cacheplayer.GorillaDash();
             canDash = false;
@@ -137,12 +138,22 @@ public class Gorilla : Character
             isCharging = true;
             if (chargeCount >= chargeCompleteTime)
             {
+                manuallyCharging = false;
                 canDash = true;
                 isCharging = false;
             }
             else
             {
-                chargeCount += Time.deltaTime;
+                if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp)
+                {
+                    chargeCount += Time.deltaTime * 3f;
+                    manuallyCharging = true;
+                }
+                else
+                {
+                    manuallyCharging = false;
+                    chargeCount += Time.deltaTime;
+                }
                 if (chargeUI != null)
                     chargeUI.ChargeCount = chargeCount;
             }

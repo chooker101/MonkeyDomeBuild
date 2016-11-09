@@ -33,7 +33,7 @@ public class Turret : MonoBehaviour {
     public float coolDownMax;
     public float distanceFalloff; // range from -distanceFalloff to +distanceFalloff
 
-    void Awake()
+    void Start()
     {
         gravity = -Physics2D.gravity.y;
         firingAngleRange[0] = 40f;
@@ -49,6 +49,7 @@ public class Turret : MonoBehaviour {
         coolDownMax = .5f;   // was 5f
         falloff = 0.5f;
         moveSpeed = 20f;    // was 10f
+        GameManager.Instance.gmTurretManager.AddTurret(this);
     }
 
     void Update()
@@ -113,6 +114,7 @@ public class Turret : MonoBehaviour {
         float drag = projectile.drag;
         float target_Distance = Vector2.Distance(projectile.position, target.position);
         target_Distance += Random.Range(-distanceFalloff, distanceFalloff);
+        projectile.AddTorque(Random.Range(1f,5f), ForceMode2D.Impulse);
         //float firingAngle;
         //firingAngle = GetFiringAngle();
         //Debug.Log(firingAngle);
