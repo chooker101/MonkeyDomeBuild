@@ -449,9 +449,17 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         Instance.gmCurtainController.CloseCurtain();
-        yield return new WaitForSeconds(6f);
-        SceneManager.LoadScene(nextRoom);
+
+        yield return new WaitForSeconds(3f);
+        for (int i = 0; i < gmPlayers.Count; i++)
+        {
+            if (gmPlayers[i] != null)
+            {
+                gmPlayers[i].GetComponent<Actor>().SwitchRoomReset();
+            }
+        }
         Instance.SwitchRooms();
+        SceneManager.LoadScene(nextRoom);
         yield return new WaitForSeconds(1f);
         Instance.gmCurtainController.OpenCurtain();
     }

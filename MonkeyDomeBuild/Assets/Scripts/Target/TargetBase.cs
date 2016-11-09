@@ -264,7 +264,7 @@ public class TargetBase : MonoBehaviour
     }
     void WarningState()
     {
-        StartState(target.WarningTime, false);
+        StartState(target.WarningTime, true);
     }
     void EndState()
     {

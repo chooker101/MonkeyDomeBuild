@@ -12,7 +12,7 @@ public class TurretsManager : MonoBehaviour
     public float tempShootTimeMax;
     private float tempShootTime;
 
-    void Awake()
+    void Start()
     {
         //GameObject[] tempTurrets = GameObject.FindGameObjectsWithTag("Turret");
         /*foreach(GameObject obj in tempTurrets)
@@ -20,7 +20,10 @@ public class TurretsManager : MonoBehaviour
             if(obj.activeInHierarchy)
                 turrets.Add(obj.GetComponent<Turret>());
         }*/
-        GameManager.Instance.gmTurretManager = this;
+        if (GameManager.Instance.gmTurretManager == null)
+        {
+            GameManager.Instance.gmTurretManager = this;
+        }
         tempShootTimeMin = .2f;
         tempShootTimeMax = .5f;
         tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
@@ -95,10 +98,12 @@ public class TurretsManager : MonoBehaviour
     }
     public void AddTurret(Turret t)
     {
+        Debug.Log("run");
         turrets.Add(t);
     }
     public void Reset()
     {
+        Debug.Log("reset");
         turrets.Clear();
         targetQueues.Clear();
     }

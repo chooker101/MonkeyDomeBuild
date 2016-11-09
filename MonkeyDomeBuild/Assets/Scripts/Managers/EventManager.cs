@@ -17,6 +17,7 @@ public class EventManager : MonoBehaviour {
         Poop,
         None
     }
+    public float textTimer;
 
     private int randomEvent;
 
@@ -71,6 +72,8 @@ public class EventManager : MonoBehaviour {
         eventActive = true;
         PoopText.gameObject.SetActive(false);
         BananaText.gameObject.SetActive(true);
+        Invoke("DisableText", textTimer);
+
         eventTimer = Random.Range(8f, 12f);
         for (int i = 0; i < launchTotal; i++)
         {
@@ -84,6 +87,8 @@ public class EventManager : MonoBehaviour {
         eventActive = true;
         BananaText.gameObject.SetActive(false);
         PoopText.gameObject.SetActive(true);
+        Invoke("DisableText", textTimer);
+
         eventTimer = Random.Range(8f, 12f);
         for (int i = 0; i < launchTotal; i++)
         {
@@ -122,6 +127,12 @@ public class EventManager : MonoBehaviour {
                 break;
 
         }
+    }
+
+    void DisableText()
+    {
+        BananaText.gameObject.SetActive(false);
+        PoopText.gameObject.SetActive(false);
     }
 
 }

@@ -181,7 +181,7 @@ public class Target : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Ball"))
         {
-            if (other.GetComponent<BallInfo>().IsBall)
+            if (other.GetComponent<BallInfo>().IsBall && other.GetComponent<BallInfo>().GetLastThrowMonkey() != null)
             {
                 //TargetSetter(-1);
                 if (!isHit)
