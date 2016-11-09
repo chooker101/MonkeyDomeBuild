@@ -22,6 +22,7 @@ public class TargetManager : MonoBehaviour
     private float startLifeTime;
     private int[] activateTimes = new int[5] { 0, 3, 6, 8, 10 };
     private int activateCounter;
+    private bool playAudienceAudio;
 
     public bool rallyOn;
     public int activeTargets;
@@ -81,6 +82,12 @@ public class TargetManager : MonoBehaviour
 
     void Update()
     {
+        if(hitSum >= 3 && playAudienceAudio)
+        {
+            AudioEffectManager.Instance.PlayAudienceTargetUp();
+            playAudienceAudio = false;
+        }
+
         if (rallyOn && activeTargets == 0)
         {
             StopAllCoroutines();
@@ -113,6 +120,7 @@ public class TargetManager : MonoBehaviour
 
     void RallySetter()
     {
+        playAudienceAudio = true;
         // this method is used to clear the targetsHitInSequence array
         for (int i = 0; i < targetsHitInSequence.Length; i++)
         {

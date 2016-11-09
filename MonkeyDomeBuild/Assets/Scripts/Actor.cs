@@ -496,6 +496,7 @@ public class Actor : MonoBehaviour
                     }
                 }
                 FindObjectOfType<CameraController>().ScreenShake();
+                AudioEffectManager.Instance.PlayAudienceSmash();
             }
         }
         if (characterType is Gorilla)

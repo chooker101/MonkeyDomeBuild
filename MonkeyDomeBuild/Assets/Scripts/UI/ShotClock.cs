@@ -10,6 +10,7 @@ public class ShotClock : MonoBehaviour
 
     private Vector3 originalScale;
     private Vector3 tempScale;
+    private bool playShotClocAudio = true;
     void Start()
     {
         shotClock = GetComponent<Text>();   
@@ -33,6 +34,7 @@ public class ShotClock : MonoBehaviour
 
         if (time > 4f)
         {
+            playShotClocAudio = true;
             if (!gameObject.CompareTag("StageUI"))
             {
                 shotClock.fontStyle = FontStyle.Normal;
@@ -59,6 +61,11 @@ public class ShotClock : MonoBehaviour
             shotClock.color = Color.white; //new Color(200f, 0f, 00f);
             if (!gameObject.CompareTag("StageUI"))
             {
+                if (playShotClocAudio)
+                {
+                    AudioEffectManager.Instance.PlayAudienceShotClock();
+                    playShotClocAudio = false;
+                }
                 if (scalingUp)
                 {
                     shotClock.fontStyle = FontStyle.Bold;

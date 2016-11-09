@@ -210,6 +210,7 @@ public class BallInfo : MonoBehaviour
         }
         if (gorillaToSwitch != null)
         {
+            AudioEffectManager.Instance.PlayAudienceInterception();
             gorillaToSwitch.GetComponent<Actor>().characterType.Mutate();
         }
         lastThrowMonkey.GetComponent<Actor>().characterType.Mutate();
@@ -228,6 +229,7 @@ public class BallInfo : MonoBehaviour
                 if (IsBall)
                 {
                     GameManager.Instance.gmShotClockManager.ResetShotClock();
+                    AudioEffectManager.Instance.PlayAudienceCatch();
                 }
                 //ResetShotCount();
             }

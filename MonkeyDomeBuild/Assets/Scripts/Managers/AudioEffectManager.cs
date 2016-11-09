@@ -45,7 +45,11 @@ public class AudioEffectManager : MonoBehaviour
     public AudioSource audienceBoo2;
     public AudioSource audienceBoo3;
 
-
+    public AudioSource audienceCatch;
+    public AudioSource audienceInterception;
+    public AudioSource audienceShotClock;
+    public AudioSource audienceTargetUp;
+    public AudioSource audienceSmash;
 
     public static AudioEffectManager Instance
     {
@@ -100,6 +104,51 @@ public class AudioEffectManager : MonoBehaviour
         if (audienceBoo3 != null && audienceBoo3.clip != null && !mute)
         {
             audienceBoo3.PlayOneShot(audienceBoo3.clip);
+        }
+    }
+    public void PlayAudienceCatch()
+    {
+        if (audienceCatch != null && audienceCatch.clip != null && !mute)
+        {
+            audienceCatch.pitch = Random.Range(.65f, 1.35f);
+            audienceCatch.volume = Random.Range(.3f, .6f);
+            audienceCatch.PlayOneShot(audienceCatch.clip);
+        }
+    }
+    public void PlayAudienceInterception()
+    {
+        if (audienceInterception != null && audienceInterception.clip != null && !mute)
+        {
+            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.volume = Random.Range(.4f, .8f);
+            audienceInterception.PlayOneShot(audienceInterception.clip);
+        }
+    }
+    public void PlayAudienceShotClock()
+    {
+        if (audienceShotClock != null && audienceShotClock.clip != null && !mute)
+        {
+            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.volume = Random.Range(.4f, .8f);
+            audienceShotClock.PlayOneShot(audienceShotClock.clip);
+        }
+    }
+    public void PlayAudienceTargetUp()
+    {
+        if (audienceTargetUp != null && audienceTargetUp.clip != null && !mute)
+        {
+            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.volume = Random.Range(.4f, .8f);
+            audienceTargetUp.PlayOneShot(audienceTargetUp.clip);
+        }
+    }
+    public void PlayAudienceSmash()
+    {
+        if (audienceSmash != null && audienceSmash.clip != null && !mute)
+        {
+            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.volume = Random.Range(.4f, .8f);
+            audienceSmash.PlayOneShot(audienceSmash.clip);
         }
     }
     //Monkey Sound Effects
