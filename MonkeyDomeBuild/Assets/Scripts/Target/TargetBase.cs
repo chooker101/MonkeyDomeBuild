@@ -227,7 +227,17 @@ public class TargetBase : MonoBehaviour
                 sliderNewScale.x = (time - timeCount) / time;
                 slider.localScale = sliderNewScale;
             }
-            timeCount -= Time.deltaTime;
+            if (GetComponentInParent<TargetNode>().stand.IsActivated)
+            {
+                if(state != TargetBaseState.Warning)
+                {
+                    timeCount -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                timeCount -= Time.deltaTime;
+            }
         }
     }
     void HitState()
@@ -247,7 +257,10 @@ public class TargetBase : MonoBehaviour
         }
         Vector3 sliderNewScale = slider.localScale;
         sliderNewScale.x = (target.InitialLifeTime - target.WarningTime - timeCount) / (target.InitialLifeTime - target.WarningTime);
-        timeCount -= Time.deltaTime;
+        if (!GetComponentInParent<TargetNode>().stand.IsActivated)
+        {
+            timeCount -= Time.deltaTime;
+        }
         slider.localScale = sliderNewScale;
     }
     void PrepState()
