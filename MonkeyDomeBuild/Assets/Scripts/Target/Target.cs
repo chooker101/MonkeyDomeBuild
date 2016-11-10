@@ -28,6 +28,8 @@ public class Target : MonoBehaviour
 
     public Transform hitParticlePivot;
 
+    TargetNode targetNode;
+
     private Vector3 targetRot;
     private bool canEnableTargetHeadCollider = false;
 
@@ -333,7 +335,10 @@ public class Target : MonoBehaviour
     {
         if (inAlarm)
         {
-            lifeTime -= Time.deltaTime;
+            if (!targetNode.stand.IsActivated)
+            {
+                lifeTime -= Time.deltaTime;
+            }
             if (lifeTime < warningTime)
             {
                 panel.ChangeTargetState(TargetBaseState.Warning);
@@ -460,5 +465,9 @@ public class Target : MonoBehaviour
         {
             return activeInCam;
         }
+    }
+    public void SetTargetNode(TargetNode node)
+    {
+        targetNode = node;
     }
 }
