@@ -83,8 +83,8 @@ public class AI : Actor
 	void Start()
 	{
 		DontDestroyOnLoad(this.gameObject);
-
-		SceneManager.activeSceneChanged += sceneChangedDelegate;
+        currentState = State.Move;
+		//SceneManager.activeSceneChanged += sceneChangedDelegate;
 		//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
