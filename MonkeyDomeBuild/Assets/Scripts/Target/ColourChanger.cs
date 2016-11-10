@@ -86,9 +86,18 @@ public class ColourChanger : MonoBehaviour
         // State of target
         if(!activated)
         {
-            if (!targetJoin.gameObject.activeSelf)
+            if (!preGameTimerObject.AllTargetsHit() && !targetJoin.gameObject.activeSelf)
             {
+                targetBase.gameObject.SetActive(true);
                 targetJoin.gameObject.SetActive(true);
+                targetUnready.gameObject.SetActive(false);
+                targetReady.gameObject.SetActive(false);
+                targetReadyAll.gameObject.SetActive(false);
+            }
+            else if(preGameTimerObject.AllTargetsHit() && targetJoin.gameObject.activeSelf)
+            {
+                targetBase.gameObject.SetActive(false);
+                targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(false);
                 targetReadyAll.gameObject.SetActive(false);
@@ -98,6 +107,7 @@ public class ColourChanger : MonoBehaviour
         {
             if(!targetUnready.gameObject.activeSelf)
             {
+                targetBase.gameObject.SetActive(true);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(true);
                 targetReady.gameObject.SetActive(false);
@@ -108,6 +118,7 @@ public class ColourChanger : MonoBehaviour
         {
             if (!targetReady.gameObject.activeSelf)
             {
+                targetBase.gameObject.SetActive(true);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(true);
@@ -118,8 +129,7 @@ public class ColourChanger : MonoBehaviour
         {
             if (!targetReadyAll.gameObject.activeSelf)
             {
-                targetBase.gameObject.SetActive(false);
-                targetJoin.gameObject.SetActive(false);
+                targetBase.gameObject.SetActive(true);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(false);
