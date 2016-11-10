@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -83,6 +84,7 @@ public class AI : Actor
 	{
 		DontDestroyOnLoad(this.gameObject);
 
+		SceneManager.activeSceneChanged += sceneChangedDelegate;
 		//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
@@ -103,7 +105,7 @@ public class AI : Actor
 
 	void Update()
 	{
-		if(!haveBall && hadBalLLastFrame)
+		if (!haveBall && hadBalLLastFrame)
 		{
 			if (!onCatchCoolDown)
 			{
@@ -151,7 +153,7 @@ public class AI : Actor
 	void FixedUpdate()
 	{
 		
-		if(wantsToThrow)
+		if(wantsToThrow && haveBall)
 		{
 			if(CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
 			{
@@ -174,20 +176,27 @@ public class AI : Actor
 		hadBalLLastFrame = haveBall;
 	}
 
-	void UpdateTarget()
+	private void sceneChangedDelegate(Scene prevScene, Scene nextScene)
 	{
-		if()
+		if (nextScene.name == "PregameRoom" || nextScene.name == "VictoryRoom")
 		{
 			currentState = State.Idle;
 		}
-		
+		else
+		{
+			currentState = State.Move;
+		}
+	}
+
+	void UpdateTarget()
+	{
 		if(characterType is Gorilla)
 		{
-
+			MoveTarget = GameManager.Instance.gmBalls[0].transform.position;
 		}
 		else
 		{
-
+			//Targetting
 		}
 	}
 
