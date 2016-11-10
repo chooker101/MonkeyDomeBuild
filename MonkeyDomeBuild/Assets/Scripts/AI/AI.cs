@@ -82,7 +82,6 @@ public class AI : Actor
 	void Start()
 	{
 		DontDestroyOnLoad(this.gameObject);
-		currentState = State.Idle;
 
 		//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
@@ -177,13 +176,18 @@ public class AI : Actor
 
 	void UpdateTarget()
 	{
-		if (tempTarg == null)
+		if()
 		{
 			currentState = State.Idle;
 		}
+		
+		if(characterType is Gorilla)
+		{
+
+		}
 		else
 		{
-			MoveTarget = tempTarg.transform.position;
+
 		}
 	}
 
