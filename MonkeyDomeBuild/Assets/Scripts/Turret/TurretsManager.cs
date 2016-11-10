@@ -105,4 +105,15 @@ public class TurretsManager : MonoBehaviour
         turrets.Clear();
         targetQueues.Clear();
     }
+    public bool IsActive
+    {
+        get
+        {
+            if (targetQueues.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
 }
