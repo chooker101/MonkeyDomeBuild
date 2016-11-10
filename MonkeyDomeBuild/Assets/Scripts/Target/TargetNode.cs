@@ -11,7 +11,7 @@ public class TargetNode : MonoBehaviour
     public Transform moveLoc;
     public GameObject horizontalPanel;
     public GameObject verticalPanel;
-    public TargetStand stand;
+    //public TargetStand stand;
 
     public void Init()
     {

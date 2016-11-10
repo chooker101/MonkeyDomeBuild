@@ -38,6 +38,7 @@ public class CameraController : MonoBehaviour
     private Camera myCam;
 
     public bool considerTargets = false;
+    public bool considerTurrets = false;
     private bool targetsExist = false;
     public float focusAmount = 1f;
     private float monkeyHoldingCount = 0;
@@ -115,8 +116,18 @@ public class CameraController : MonoBehaviour
     void MeanOfPositions()
     {
         positionSum = Vector2.zero;
-
-        
+        int targetCount = 0;
+        int turretCount = 0;
+        if (GameManager.Instance.gmTurretManager.turrets.Count > 0 && considerTurrets && GameManager.Instance.gmTurretManager.IsActive)
+        {
+            for(int i = 0; i < GameManager.Instance.gmTurretManager.turrets.Count; i++)
+            {
+                Vector3 tempPos = GameManager.Instance.gmTurretManager.turrets[i].transform.position;
+                tempPos.y = 15;
+                positionSum += tempPos;
+                turretCount++;
+            }
+        }
         // Checks to see if there is a target manager associated and if there are targets to look for
         if(GameManager.Instance.gmTargetManager != null)
         {
@@ -133,14 +144,16 @@ public class CameraController : MonoBehaviour
         {
             targetsExist = false;
         }
-        int targetCount = 0;
+
         if (considerTargets && targetsExist)
         {
             for (int i = 0; i < GameManager.Instance.gmTargetManager.GetTargetArrayLength(); i++)
             {
                 if (GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).IsActive)
                 {
-                    positionSum += GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position;
+                    Vector3 turretPos = GameManager.Instance.gmTargetManager.GetTargetAtIndex(i).transform.position;
+                    turretPos.z = 0;
+                    positionSum += turretPos;
                     targetCount++;
                 }
             }
@@ -214,6 +227,10 @@ public class CameraController : MonoBehaviour
             {
                 i += targetCount;
             }
+            if (turretCount > 0)
+            {
+                i += turretCount;
+            }
             meanPosition = positionSum / i;
         }
         else
@@ -226,6 +243,10 @@ public class CameraController : MonoBehaviour
             if (targetCount > 0)
             {
                 i += targetCount;
+            }
+            if (turretCount > 0)
+            {
+                i += turretCount;
             }
             meanPosition = positionSum / i;
         }
@@ -290,7 +311,23 @@ public class CameraController : MonoBehaviour
                     }
                 }
             }
-
+        }
+        if (considerTurrets && GameManager.Instance.gmTurretManager.turrets.Count > 0)
+        {
+            for (int i = 0; i < GameManager.Instance.gmTurretManager.turrets.Count; i++)
+            {
+                if (GameManager.Instance.gmTurretManager.IsActive)
+                {
+                    if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmTurretManager.turrets[i].transform.position.x))
+                    {
+                        maxXDistance = Mathf.Abs(meanPosition.x - GameManager.Instance.gmTurretManager.turrets[i].transform.position.x);
+                    }
+                    if (maxYDistance < Mathf.Abs(meanPosition.y - GameManager.Instance.gmTurretManager.turrets[i].transform.position.y))
+                    {
+                        //maxYDistance = Mathf.Abs(meanPosition.y - GameManager.Instance.gmTurretManager.turrets[i].transform.position.y);
+                    }
+                }
+            }
         }
         if (GameManager.Instance.gmBalls[0] != null)
         {

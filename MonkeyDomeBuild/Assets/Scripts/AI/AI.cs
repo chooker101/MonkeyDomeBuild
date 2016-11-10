@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -58,6 +59,9 @@ public class AI : Actor
 	private bool hadBalLLastFrame;
 	private bool isTargetCoroutineRunning = false;
 	private bool updateEndTargBeforeCoroutine = false;
+	private bool oldSceneCheck = false;
+	private string currSceneOld;
+	private string lastSceneOld;
 
 	//throw away shit
 	private float g;
@@ -83,9 +87,14 @@ public class AI : Actor
 	void Start()
 	{
 		DontDestroyOnLoad(this.gameObject);
-        currentState = State.Move;
-		//SceneManager.activeSceneChanged += sceneChangedDelegate;
-		//myCollider = GetComponent<BoxCollider2D>();
+        //currentState = State.Move;
+		lastSceneOld = EditorApplication.currentScene.ToString();
+#if UNITY_5_3
+		oldSceneCheck = true;
+#elif UNITY_5_4
+		SceneManager.activeSceneChanged += sceneChangedDelegate;
+#endif
+			//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
 		tempTarg = null;
@@ -105,6 +114,14 @@ public class AI : Actor
 
 	void Update()
 	{
+		if (oldSceneCheck)
+		{
+			currSceneOld = EditorApplication.currentScene.ToString();
+			if (currSceneOld != lastSceneOld)
+			{
+				sceneChangedOld();
+			}
+		}
 		if (!haveBall && hadBalLLastFrame)
 		{
 			if (!onCatchCoolDown)
@@ -176,6 +193,19 @@ public class AI : Actor
 		hadBalLLastFrame = haveBall;
 	}
 
+	private void sceneChangedOld()
+	{
+		if (currSceneOld == "PregameRoom" || currSceneOld == "VictoryRoom")
+		{
+			currentState = State.Idle;
+		}
+		else
+		{
+			currentState = State.Move;
+		}
+		lastSceneOld = currSceneOld;
+	}
+
 	private void sceneChangedDelegate(Scene prevScene, Scene nextScene)
 	{
 		if (nextScene.name == "PregameRoom" || nextScene.name == "VictoryRoom")
@@ -196,8 +226,30 @@ public class AI : Actor
 		}
 		else
 		{
-			//Targetting
+			if(!IsTargetViable(MoveTarget))
+			{
+				//change
+			}
 		}
+	}
+
+	bool IsTargetViable(Vector3 target)
+	{
+		if(haveBall)
+		{
+			foreach(GameObject P in GameManager.Instance.gmPlayers)
+			{
+				if(P is Gorilla)
+				{
+
+				}
+			}
+		}
+		else
+		{
+
+		}
+		return false;
 	}
 
 	void ExecuteState()

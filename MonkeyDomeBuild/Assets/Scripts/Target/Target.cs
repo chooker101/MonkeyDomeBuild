@@ -335,10 +335,11 @@ public class Target : MonoBehaviour
     {
         if (inAlarm)
         {
-            if (!targetNode.stand.IsActivated)
+            /*if (!targetNode.stand.IsActivated)
             {
                 lifeTime -= Time.deltaTime;
-            }
+            }*/
+            lifeTime -= Time.deltaTime;
             if (lifeTime < warningTime)
             {
                 panel.ChangeTargetState(TargetBaseState.Warning);
