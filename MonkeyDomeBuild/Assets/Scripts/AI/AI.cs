@@ -226,8 +226,30 @@ public class AI : Actor
 		}
 		else
 		{
-			//Targetting
+			if(!IsTargetViable(MoveTarget))
+			{
+				//change
+			}
 		}
+	}
+
+	bool IsTargetViable(Vector3 target)
+	{
+		if(haveBall)
+		{
+			foreach(GameObject P in GameManager.Instance.gmPlayers)
+			{
+				if(P is Gorilla)
+				{
+
+				}
+			}
+		}
+		else
+		{
+
+		}
+		return false;
 	}
 
 	void ExecuteState()
