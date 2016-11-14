@@ -36,11 +36,15 @@ public class BananaSpawner : MonoBehaviour
         }
 
 
-        for (uint i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
-            Baskets[i].SetActive(true);
-        
-        for (uint i = GameManager.Instance.TotalNumberofPlayers; i <= 4; i++)
-            Baskets[i].SetActive(false);
+		for (uint i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+		{
+			Baskets[i].SetActive(true);
+		}
+
+		for (uint i = GameManager.Instance.TotalNumberofPlayers; i <= 4; i++)
+		{
+			Baskets[i].SetActive(false);
+		}
 
         if (GameManager.Instance.TotalNumberofPlayers == 1)
             transform.position = new Vector3(transform.position.x + 20, transform.position.y, transform.position.z);

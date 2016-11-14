@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     public GameManager GameManager;
 
     public Text shotClockText;
+    public Text shotClockPlayerText;
     public GameObject ShotClockInactive;
     public GameObject ShotClockActive;
     public GameObject ShotClockWarning;
@@ -44,6 +45,7 @@ public class UIManager : MonoBehaviour
     {
         //startMatchTime = GameManager.Instance.gmGameOptionsManager.MatchTime;
         matchTime = startMatchTime;
+        shotClockPlayerText.text = "";
 	}
 	
 	// Update is called once per frame
@@ -58,6 +60,7 @@ public class UIManager : MonoBehaviour
             if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
             {
                 playerHoldingBall = true;
+                shotClockPlayerText.text = "P" + (i+1).ToString();
                 break;
             }
             else

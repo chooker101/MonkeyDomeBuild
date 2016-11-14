@@ -22,7 +22,6 @@ public class Turret : MonoBehaviour {
     //private float currentMaxFiringAngle;
     [SerializeField]
     private bool isAvailable = true;
-
     public float[] firingAngleRange = new float[2]; // init fire angle range
     public float minFiringAngle;
     public float maxFiringAngle;

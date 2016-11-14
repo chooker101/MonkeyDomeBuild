@@ -11,6 +11,7 @@ public class TargetNode : MonoBehaviour
     public Transform moveLoc;
     public GameObject horizontalPanel;
     public GameObject verticalPanel;
+    //public TargetStand stand;
 
     public void Init()
     {
@@ -29,6 +30,7 @@ public class TargetNode : MonoBehaviour
         target.GetComponent<Target>().SetTargetAxis = targetAxis;
         target.GetComponent<Target>().SetTargetType = targetType;
         target.GetComponent<Target>().MoveLocation = moveLoc.position;
+        target.GetComponent<Target>().SetTargetNode(this);
         if (horizontalPanel.activeInHierarchy)
         {
             target.GetComponent<Target>().SetTargetBase = horizontalPanel.GetComponent<TargetBase>();

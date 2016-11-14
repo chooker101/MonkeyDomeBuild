@@ -253,8 +253,10 @@ public class EffectControl : MonoBehaviour
             particleColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
         }
         HappyFaceEffectEnd = true;
-        if(faceWithColor == true)
-        c = particleColour;
+        if (faceWithColor == true)
+            c = particleColour;
+        else
+            c = Color.white;
         c.a = 1f;
         HappyFace.color = c;
         Invoke("ResetHappyFace", FaceLastTime);
@@ -272,7 +274,9 @@ public class EffectControl : MonoBehaviour
         }
         SadFaceEffectEnd = true;
         if (faceWithColor == true)
-        c = particleColour;
+            c = particleColour;
+        else
+            c = Color.white;
         c.a = 1f;
         SadFace.color = c;
         Invoke("ResetSadFace", FaceLastTime);

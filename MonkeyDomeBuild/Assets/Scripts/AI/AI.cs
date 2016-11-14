@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -28,6 +30,7 @@ public class AI : Actor
 	[SerializeField]
 	private float catchWaitTime = 0.3f;
 
+	[SerializeField]
 	private Vector3 currEndTargBound;
 
 	private float currClosestDist;
@@ -54,7 +57,11 @@ public class AI : Actor
 	private Vector3 prevAiPos;
 	private float timeInSamePos;
 	private bool hadBalLLastFrame;
-	public bool tempCanCatch = true;
+	private bool isTargetCoroutineRunning = false;
+	private bool updateEndTargBeforeCoroutine = false;
+	private bool oldSceneCheck = false;
+	private string currSceneOld;
+	private string lastSceneOld;
 
 	//throw away shit
 	private float g;
@@ -72,6 +79,7 @@ public class AI : Actor
 	private RaycastHit2D lineHit;
 	private Vector2 posOnParabola;
 	private Vector2 prevPosOnParabola;
+	private Target nearestSignTarget;
 
 	State currentState;
 
@@ -79,12 +87,17 @@ public class AI : Actor
 	void Start()
 	{
 		DontDestroyOnLoad(this.gameObject);
-		currentState = State.Move;
-
-		//myCollider = GetComponent<BoxCollider2D>();
+        //currentState = State.Move;
+		lastSceneOld = EditorApplication.currentScene.ToString();
+#if UNITY_5_3
+		oldSceneCheck = true;
+#elif UNITY_5_4
+		SceneManager.activeSceneChanged += sceneChangedDelegate;
+#endif
+			//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
-		tempTarg = GameObject.FindGameObjectWithTag("Ball");
+		tempTarg = null;
 		canJump = true;
 		centerToFeet = myCollider.size.y * 0.5f;
 		//(myCollider.size.x * 0.5f - myCollider.offset.x);
@@ -93,11 +106,23 @@ public class AI : Actor
 
 		CalculateMaxJump();
 		UpdateTarget();
+		if (currentState == State.Move)
+		{
+			UpdateEndTarget();
+		}
 	}
 
 	void Update()
 	{
-		if(!haveBall && hadBalLLastFrame)
+		if (oldSceneCheck)
+		{
+			currSceneOld = EditorApplication.currentScene.ToString();
+			if (currSceneOld != lastSceneOld)
+			{
+				sceneChangedOld();
+			}
+		}
+		if (!haveBall && hadBalLLastFrame)
 		{
 			if (!onCatchCoolDown)
 			{
@@ -105,7 +130,7 @@ public class AI : Actor
 				StartCoroutine(WaitForCatchCoolDown());
 			}
 		}
-		if (!onCatchCoolDown)
+		if (!onCatchCoolDown && currentState != State.Idle)
 		{
 			IsBallNear();
 		}
@@ -145,11 +170,12 @@ public class AI : Actor
 	void FixedUpdate()
 	{
 		
-		if(wantsToThrow)
+		if(wantsToThrow && haveBall)
 		{
 			if(CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
 			{
 				currentState = State.Throw;
+				wantsToThrow = false;
 			}
 		}
 		ExecuteState();
@@ -160,9 +186,70 @@ public class AI : Actor
 		{
 			ReleaseBall();
 		}
+		UpdateTarget();
+
 		prevAiPos = cache_tf.position;
 		
 		hadBalLLastFrame = haveBall;
+	}
+
+	private void sceneChangedOld()
+	{
+		if (currSceneOld == "PregameRoom" || currSceneOld == "VictoryRoom")
+		{
+			currentState = State.Idle;
+		}
+		else
+		{
+			currentState = State.Move;
+		}
+		lastSceneOld = currSceneOld;
+	}
+
+	private void sceneChangedDelegate(Scene prevScene, Scene nextScene)
+	{
+		if (nextScene.name == "PregameRoom" || nextScene.name == "VictoryRoom")
+		{
+			currentState = State.Idle;
+		}
+		else
+		{
+			currentState = State.Move;
+		}
+	}
+
+	void UpdateTarget()
+	{
+		if(characterType is Gorilla)
+		{
+			MoveTarget = GameManager.Instance.gmBalls[0].transform.position;
+		}
+		else
+		{
+			if(!IsTargetViable(MoveTarget))
+			{
+				//change
+			}
+		}
+	}
+
+	bool IsTargetViable(Vector3 target)
+	{
+		if(haveBall)
+		{
+			foreach(GameObject P in GameManager.Instance.gmPlayers)
+			{
+				if(P is Gorilla)
+				{
+
+				}
+			}
+		}
+		else
+		{
+
+		}
+		return false;
 	}
 
 	void ExecuteState()
@@ -246,9 +333,24 @@ public class AI : Actor
 		}
 		else
 		{
-			wantsToThrow = true;
-			//calc move target
-			currentState = State.Move;
+			nearestSignTarget = GameManager.Instance.gmTargetManager.GetTargetAtIndex(0);
+			foreach(Target T in GameManager.Instance.gmTargetManager.TargetGetter())
+			{
+				if((T.transform.position - cache_tf.position).magnitude < (nearestSignTarget.transform.position - cache_tf.position).magnitude)
+				{
+					nearestSignTarget = T;
+				}
+			}
+			if (CalculateThrow(nearestSignTarget.gameObject))
+			{
+				currentState = State.Throw;
+			}
+			else
+			{
+				wantsToThrow = true;
+				//calc move target
+				currentState = State.Move;
+			}
 		}
 		if (!onCatchCoolDown)
 		{
@@ -261,19 +363,26 @@ public class AI : Actor
 	State ExecuteThrow()
 	{
 		//Debug.Log("Throw");
-		GameManager.Instance.gmInputs[playerIndex].mXY.x = aimDir.x;
-		GameManager.Instance.gmInputs[playerIndex].mXY.y = aimDir.y;
-		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
-		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = true;
-		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = true;
-		StartCoroutine(RealisticInputThrow());
-		wantsToThrow = false;
-		if (!onCatchCoolDown)
+		if (haveBall)
 		{
-			onCatchCoolDown = true;
-			StartCoroutine(WaitForCatchCoolDown());
+			GameManager.Instance.gmInputs[playerIndex].mXY.x = aimDir.x;
+			GameManager.Instance.gmInputs[playerIndex].mXY.y = aimDir.y;
+			GameManager.Instance.gmInputs[playerIndex].mCatch = true;
+			GameManager.Instance.gmInputs[playerIndex].mChargeThrow = true;
+			GameManager.Instance.gmInputs[playerIndex].mCatchRelease = true;
+			StartCoroutine(RealisticInputThrow());
+			wantsToThrow = false;
+			if (!onCatchCoolDown)
+			{
+				onCatchCoolDown = true;
+				StartCoroutine(WaitForCatchCoolDown());
+			}
+			currentState = State.Idle;
 		}
-		currentState = State.Idle;
+		else
+		{
+			currentState = State.Move;
+		}
 		return currentState;
 	}
 
@@ -284,9 +393,9 @@ public class AI : Actor
 
 		if (!IsInAir)
 		{
-			if ((isAtTargetX && (currEndTarg.y > cache_tf.position.y - (centerToFeet + 0.5f) && currEndTarg.y < cache_tf.position.y + (centerToFeet + 0.5f))))
+			if (isAtTargetX)//&& (currEndTarg.y > cache_tf.position.y - (centerToFeet + 0.5f) && currEndTarg.y < cache_tf.position.y + (centerToFeet + 0.5f))))
 			{
-				UpdateTarget();
+				UpdateEndTarget();
 				isAtTargetX = CheckClose();
 				canJump = true;
 			}
@@ -297,12 +406,7 @@ public class AI : Actor
 		Debug.DrawLine(cache_tf.position, currEndTarg, Color.red);
 		Debug.DrawLine(cache_tf.position, MoveTarget, Color.blue);
 		Debug.DrawLine(cache_tf.position, calcVar, Color.yellow);
-
-		if((isEndTargVine && cache_tf.position.y >= currEndTargBound.y) && IsInAir)
-		{
-			GameManager.Instance.gmInputs[playerIndex].mJump = true;
-			StartCoroutine(RealisticInputJump());
-		}
+		//Debug.DrawLine(cache_tf.position, currEndTargBound, Color.green);
 
 		if (!IsInAir)
 		{
@@ -311,12 +415,13 @@ public class AI : Actor
 
 		if (!IsAtMainTarget())
 		{
-			if (MoveTarget.y > cache_tf.position.y - centerToFeet)
+			if (MoveTarget.y > cache_tf.position.y + centerToFeet)
 			{
 				if ((isAtTargetX && currEndTarg.y > cache_tf.position.y) && (!IsInAir && currEndTarg.y < (cache_tf.position.y + maxJump - centerToFeet - 1.5f)))
 				{
 					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
 					dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
+					updateEndTargBeforeCoroutine = true;
 					currEndTarg.x = dirmult;
 					currEndTarg.y = cache_tf.position.y;
 				}
@@ -342,6 +447,15 @@ public class AI : Actor
 								{
 									xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
 									if (xInput <= 1.0f && xInput >= -1.0f)
+									{
+										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										canJump = false;
+										StartCoroutine(RealisticInputJump());
+									}
+								}
+								else if (IsInAir && canClimb)
+								{
+									if (cache_tf.position.y >= currEndTargBound.y)
 									{
 										GameManager.Instance.gmInputs[playerIndex].mJump = true;
 										canJump = false;
@@ -377,6 +491,15 @@ public class AI : Actor
 										StartCoroutine(RealisticInputJump());
 									}
 								}
+								else if(IsInAir && canClimb)
+								{
+									if(cache_tf.position.y >= currEndTargBound.y)
+									{
+										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										canJump = false;
+										StartCoroutine(RealisticInputJump());
+									}
+								}
 							}
 						}
 					}
@@ -384,12 +507,17 @@ public class AI : Actor
 			}
 			else if (MoveTarget.y < cache_tf.position.y - centerToFeet)
 			{
-				if (isAtTargetX && !IsInAir)
-				{
-					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
-					currEndTarg.x = currEndTargBound.x + (2f + (myCollider.size.x * 0.5f)) * dirmult;
-					currEndTarg.y = currEndTargBound.y;
-				}
+				//if (isAtTargetX && !IsInAir)
+				//{
+				//	float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+				//	updateEndTargBeforeCoroutine = true;
+				//	currEndTarg.x = currEndTargBound.x + (2f + (myCollider.size.x * 0.5f)) * dirmult;
+				//	currEndTarg.y = currEndTargBound.y;
+				//}
+			}
+			else
+			{
+				xInput = (MoveTarget - cache_tf.position).normalized.x;
 			}
 		}
 
@@ -428,20 +556,36 @@ public class AI : Actor
 		return (cache_tf.position.x < currEndTarg.x + 0.5f && cache_tf.position.x > currEndTarg.x - 0.5f);
 	}
 
-	private void UpdateTarget()
+	private void UpdateEndTarget()
 	{
-		MoveTarget = tempTarg.transform.position;
+		if (!isTargetCoroutineRunning)
+		{
+			StartCoroutine(WaitToCheckEndTarg());
+		}
+		else
+		{
+			updateEndTargBeforeCoroutine = true;
+		}
+
 		if (!IsAtMainTarget())
 		{
-			if (MoveTarget.y > cache_tf.position.y - centerToFeet)
+			if (MoveTarget.y > cache_tf.position.y + centerToFeet)
 			{
 				FindNearestLevelObject(MoveTarget);
+				if (isEndTargVine)
+				{
+					currEndTarg = FindEdgeOfVine(currEndTarg);
+				}
 				if (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)))
 				{
 					levelCounter = GameManager.Instance.gmLevelObjectScript.numberOfLevels;
 					while (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)) && levelCounter > 0)
 					{
 						FindNearestLevelObject(currEndTarg);
+						if(isEndTargVine)
+						{
+							currEndTarg = FindEdgeOfVine(currEndTarg);
+						}
 						levelCounter--;
 					}
 				}
@@ -451,13 +595,22 @@ public class AI : Actor
 				}
 				else
 				{
-					currEndTargBound = FindEdgeOfVine(currEndTarg);
+					currEndTarg.z = 0.0f;
+					currEndTargBound = currEndTarg;
 				}
 			}
 			else if (MoveTarget.y <= cache_tf.position.y - centerToFeet)
 			{
 				FindNearestLevelObject(MoveTarget);
-				currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+				if (!isEndTargVine)
+				{
+					currEndTargBound = FindEdgeOfPlatform(currEndTarg);
+				}
+				else
+				{
+					currEndTarg.z = 0.0f;
+					currEndTargBound = currEndTarg;
+				}
 			}
 		}
 	}
@@ -504,13 +657,7 @@ public class AI : Actor
 					if (Y.transform.position.y < FinalPos.y)
 					{
 						dist = (Y.transform.position - position).magnitude;
-						if (currClosestDist == 0.0f)
-						{
-							currClosestDist = dist;
-							currEndTarg = Y.transform.position;
-							isEndTargVine = true;
-						}
-						else if (dist < currClosestDist)
+						if (dist < currClosestDist)
 						{
 							currClosestDist = dist;
 							currEndTarg = Y.transform.position;
@@ -553,11 +700,11 @@ public class AI : Actor
 			{
 				if(cache_tf.position.y < Y.transform.position.y)
 				{
-					result.y -= (Y.GetComponent<BoxCollider2D>().size.y - 1.0f);
+					result.y -= ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
 				}
 				else
 				{
-					result.y += (Y.GetComponent<BoxCollider2D>().size.y - 1.0f);
+					result.y += ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
 				}
 			}
 		}
@@ -800,5 +947,20 @@ public class AI : Actor
 	{
 		yield return new WaitForSeconds(2.0f);
 		onCatchCoolDown = false;
+	}
+
+	IEnumerator WaitToCheckEndTarg()
+	{
+		isTargetCoroutineRunning = true;
+		yield return new WaitForSeconds(5.0f);
+		isTargetCoroutineRunning = false;
+		if (!updateEndTargBeforeCoroutine)
+		{
+			UpdateEndTarget();
+		}
+		else
+		{
+			updateEndTargBeforeCoroutine = false;
+		}
 	}
 }
