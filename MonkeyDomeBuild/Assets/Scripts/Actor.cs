@@ -322,9 +322,13 @@ public class Actor : MonoBehaviour
                     Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
                     if (!ballHolding.GetComponent<BallInfo>().IsBall)
                     {
-                        if (ballHolding.GetComponent<TrophyInfo>().IsColliderOff)
+                        if (ballHolding.GetComponent<BallInfo>().BallType == ThrowableType.Trophy )
                         {
                             ballHolding.GetComponent<TrophyInfo>().InvokeEnableCollider();
+                        }
+                        if (ballHolding.GetComponent<BallInfo>().BallType == ThrowableType.Coconut)
+                        {
+                            ballHolding.GetComponent<CoconutInfo>().ThrowCoconut();
                         }
                     }
                     ReleaseBall();
@@ -352,6 +356,7 @@ public class Actor : MonoBehaviour
         {
             ballHolding.GetComponent<BallInfo>().Reset();
         }
+        ballCanCatch = null;
         ballHolding = null;
         isCharging = false;
         if (Time.timeScale != 1)
@@ -582,10 +587,24 @@ public class Actor : MonoBehaviour
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
-            ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
-            if (!ballInRange)
+            if(other.GetComponentInParent<BallInfo>() is CoconutInfo)
             {
-                ballInRange = true;
+                if (!other.GetComponentInParent<CoconutInfo>().IsThrown)
+                {
+                    ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
+                    if (!ballInRange)
+                    {
+                        ballInRange = true;
+                    }
+                }
+            }
+            else
+            {
+                ballCanCatch = other.gameObject.GetComponentInParent<BallInfo>();
+                if (!ballInRange)
+                {
+                    ballInRange = true;
+                }
             }
         }
         if (other.gameObject.CompareTag("Banana"))

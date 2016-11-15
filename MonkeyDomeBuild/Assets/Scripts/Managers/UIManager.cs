@@ -59,9 +59,12 @@ public class UIManager : MonoBehaviour
         {
             if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
             {
-                playerHoldingBall = true;
-                shotClockPlayerText.text = "P" + (i+1).ToString();
-                break;
+                if(GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ballHolding.GetComponent<BallInfo>().BallType == ThrowableType.Ball)
+                {
+                    playerHoldingBall = true;
+                    shotClockPlayerText.text = "P" + (i + 1).ToString();
+                    break;
+                }
             }
             else
             {

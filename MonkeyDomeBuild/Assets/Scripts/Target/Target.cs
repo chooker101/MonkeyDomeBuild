@@ -180,43 +180,59 @@ public class Target : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ball"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ball")||(other.CompareTag("Ball")))
         {
-            if (other.GetComponent<BallInfo>().IsBall && other.GetComponent<BallInfo>().GetLastThrowMonkey() != null)
+            if (other.GetComponent<BallInfo>().BallType == ThrowableType.Ball || other.GetComponent<BallInfo>().BallType == ThrowableType.Coconut )
             {
                 //TargetSetter(-1);
-                if (!isHit)
+                bool canHit = true;
+                if (other.GetComponent<BallInfo>().BallType == ThrowableType.Coconut)
                 {
-                    panel.ChangeTargetState(TargetBaseState.Hit);
-                    activeInCam = false;
-                    GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
-                    GameObject particle = ParticlesManager.Instance.TargetHitParticle;
-                    particle.SetActive(true);
-                    particle.transform.position = hitParticlePivot.position;
-                    Vector3 ballPos = other.transform.position;
-                    ballPos.z = 0;
-                    Vector3 pivotPos = hitParticlePivot.position;
-                    pivotPos.z = 0;
-                    Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, (ballPos - pivotPos).normalized);
-                    particle.transform.rotation = Quaternion.Euler(0, 0, targetAng.eulerAngles.z);
-                    particle.GetComponentInChildren<ParticleSystem>().Play();
-                    //hitParticlePivot.localEulerAngles = new Vector3(0, 0, targetAng.eulerAngles.z);
-
-                    //hitParticlePivot.GetComponentInChildren<ParticleSystem>().Play();
-                    Reset();
-                    DisableCollider();
-                    // isHit = true;
-                    inAlarm = false;
-                    targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
-                    targetManager.sequenceIndex++;
-                    targetManager.TargetHit();
-                    if (other.GetComponent<BallInfo>().lastThrowMonkey != null)
+                    if (!other.GetComponent<CoconutInfo>().IsThrown)
                     {
-                        GameManager.Instance.gmTrophyManager.TargetsHit(other.GetComponent<BallInfo>().lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                        canHit = false;
                     }
-                    //targetManager.advanceTier = targetManager.CheckRally();
-                    ResetTarget();
                 }
+                if (other.GetComponent<BallInfo>().GetLastThrowMonkey() == null)
+                {
+                    canHit = false;
+                }
+                if(canHit)
+                {
+                    if (!isHit)
+                    {
+                        panel.ChangeTargetState(TargetBaseState.Hit);
+                        activeInCam = false;
+                        GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
+                        GameObject particle = ParticlesManager.Instance.TargetHitParticle;
+                        particle.SetActive(true);
+                        particle.transform.position = hitParticlePivot.position;
+                        Vector3 ballPos = other.transform.position;
+                        ballPos.z = 0;
+                        Vector3 pivotPos = hitParticlePivot.position;
+                        pivotPos.z = 0;
+                        Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, (ballPos - pivotPos).normalized);
+                        particle.transform.rotation = Quaternion.Euler(0, 0, targetAng.eulerAngles.z);
+                        particle.GetComponentInChildren<ParticleSystem>().Play();
+                        //hitParticlePivot.localEulerAngles = new Vector3(0, 0, targetAng.eulerAngles.z);
+
+                        //hitParticlePivot.GetComponentInChildren<ParticleSystem>().Play();
+                        Reset();
+                        DisableCollider();
+                        // isHit = true;
+                        inAlarm = false;
+                        targetManager.targetsHitInSequence[targetManager.sequenceIndex] = true;
+                        targetManager.sequenceIndex++;
+                        targetManager.TargetHit();
+                        if (other.GetComponent<BallInfo>().lastThrowMonkey != null)
+                        {
+                            GameManager.Instance.gmTrophyManager.TargetsHit(other.GetComponent<BallInfo>().lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                        }
+                        //targetManager.advanceTier = targetManager.CheckRally();
+                        ResetTarget();
+                    }
+                }
+
 
             }
         }

@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 public enum ThrowableType
 {
     Ball = 0,
-    Trophy = 1
+    Trophy = 1,
+    Coconut = 2
 }
 
 public class BallInfo : MonoBehaviour
@@ -40,7 +41,7 @@ public class BallInfo : MonoBehaviour
     {
         return distanceTravel;
     }
-    public bool GetCanBeCatch()
+    public virtual bool GetCanBeCatch()
     {
         return canBeCatch;
     }
@@ -123,7 +124,9 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey != null)
         {
-			m_rigid.transform.position = holdingMonkey.GetComponent<Actor>().catchCenter.position;
+            Vector3 newLoc = holdingMonkey.GetComponent<Actor>().catchCenter.position;
+            newLoc.z = transform.position.z;
+            m_rigid.transform.position = newLoc;
         }
     }
 
@@ -265,8 +268,7 @@ public class BallInfo : MonoBehaviour
         return false;
     }
     void OnTriggerEnter2D(Collider2D other)
-    {
-        
+    {     
         if(other.gameObject.tag == "Player")
         {
              isballnear = true;
@@ -325,6 +327,13 @@ public class BallInfo : MonoBehaviour
 
         }
         */
+    }
+    public ThrowableType BallType
+    {
+        get
+        {
+            return type;
+        }
     }
 
     void BounceCount()
