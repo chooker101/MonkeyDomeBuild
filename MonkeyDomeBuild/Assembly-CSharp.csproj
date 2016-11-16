@@ -46,18 +46,20 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\AudienceSE.cs" />
+     <Compile Include="Assets\PointEffect.cs" />
+     <Compile Include="Assets\PointsManager.cs" />
      <Compile Include="Assets\Scripts\AI\AI.cs" />
      <Compile Include="Assets\Scripts\Actor.cs" />
      <Compile Include="Assets\Scripts\Actor\Character.cs" />
      <Compile Include="Assets\Scripts\Actor\Gorilla.cs" />
      <Compile Include="Assets\Scripts\Actor\Monkey.cs" />
      <Compile Include="Assets\Scripts\Actor\ThrowCombo.cs" />
-     <Compile Include="Assets\Scripts\AudienceAnimator.cs" />
      <Compile Include="Assets\Scripts\Audio\AudioMain.cs" />
      <Compile Include="Assets\Scripts\Audio\AudioPregame.cs" />
-     <Compile Include="Assets\Scripts\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Ball\BallInfo.cs" />
      <Compile Include="Assets\Scripts\Ball\BallReturn.cs" />
+     <Compile Include="Assets\Scripts\Ball\CoconutInfo.cs" />
+     <Compile Include="Assets\Scripts\Ball\CoconutSpawner.cs" />
      <Compile Include="Assets\Scripts\Ball\TrophyInfo.cs" />
      <Compile Include="Assets\Scripts\Banana.cs" />
      <Compile Include="Assets\Scripts\BananaReset.cs" />
@@ -68,8 +70,10 @@
      <Compile Include="Assets\Scripts\GameOptionsManager.cs" />
      <Compile Include="Assets\Scripts\Gorillapickertest.cs" />
      <Compile Include="Assets\Scripts\LevelObjectScript.cs" />
+     <Compile Include="Assets\Scripts\Managers\AudienceAnimator.cs" />
      <Compile Include="Assets\Scripts\Managers\AudienceManager.cs" />
      <Compile Include="Assets\Scripts\Managers\AudioEffectManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Managers\ButtonManager.cs" />
      <Compile Include="Assets\Scripts\Managers\EventManager.cs" />
      <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
@@ -100,6 +104,7 @@
      <Compile Include="Assets\Scripts\Target\TargetHead.cs" />
      <Compile Include="Assets\Scripts\Target\TargetNode.cs" />
      <Compile Include="Assets\Scripts\Target\TargetNodeManager.cs" />
+     <Compile Include="Assets\Scripts\Target\TargetStand.cs" />
      <Compile Include="Assets\Scripts\Turret\ProjectileBehavior.cs" />
      <Compile Include="Assets\Scripts\Turret\TargetQueue.cs" />
      <Compile Include="Assets\Scripts\Turret\Turret.cs" />
@@ -108,7 +113,7 @@
      <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
      <Compile Include="Assets\Scripts\UI\ScoreVisualizer.cs" />
      <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
-     <Compile Include="Assets\Scripts\UIEffect.cs" />
+     <Compile Include="Assets\Scripts\UI\UIEffect.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity53/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
