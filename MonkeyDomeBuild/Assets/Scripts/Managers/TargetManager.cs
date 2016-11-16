@@ -135,16 +135,16 @@ public class TargetManager : MonoBehaviour
         switch (targetTier)
         {
             case 0:
-                startLifeTime = 14f;
+                startLifeTime = 30f;
                 break;
             case 1:
-                startLifeTime = 10f;
+                startLifeTime = 25f;
                 break;
             case 2:
-                startLifeTime = 8f;
+                startLifeTime = 20f;
                 break;
             case 3:
-                startLifeTime = 6f;
+                startLifeTime = 15f;
                 break;
         }
         return startLifeTime;
@@ -227,9 +227,8 @@ public class TargetManager : MonoBehaviour
     IEnumerator ActiveWaiter(Target t)
     {
         //activeTargets++;
-        yield return new WaitForSeconds(activateTimes[activateCounter] + timeBetweenRallies);
+        yield return new WaitForSeconds(timeBetweenRallies);
         t.targetActive = true;
-        //t.SetTargetHeads(targetTier);
         t.TargetSetter();
         t.TargetTime();
     }
@@ -290,7 +289,7 @@ public class TargetManager : MonoBehaviour
         for(int k = 0; k < tempTargetIndexs.Count; k++)
         {
             activeTargets++;
-            gameTargets[tempTargetIndexs[k]].WaitTime = activateTimes[activateCounter] + timeBetweenRallies;
+            gameTargets[tempTargetIndexs[k]].WaitTime = timeBetweenRallies;
             StartCoroutine(ActiveWaiter(gameTargets[tempTargetIndexs[k]]));
             activateCounter++;
             if (activateCounter == 6)
