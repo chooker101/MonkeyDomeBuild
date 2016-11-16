@@ -8,6 +8,7 @@ public class PointEffect : MonoBehaviour {
     private Vector2 flyOffset;
     private Transform flyToMe;
 
+    private bool canBeUsed;
 	// Use this for initialization
 	void Start () {
 

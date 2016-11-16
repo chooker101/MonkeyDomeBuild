@@ -15,17 +15,22 @@ public class PointsManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	// if queue > 1 run it
 	}
 
     void DisplayQueue()
     {
-
+        // display 
     }
 
-    void SetQueue()
+    void AddQueue(int score)
     {
+        displayQueue.Add(score);
+    }
 
+    void SetSprite()
+    {
+        // switch to check which sprite to set
     }
 
 
