@@ -47,7 +47,6 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        considerTargets = true;
         shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
         //CamSize = myCam.orthographicSize;
@@ -217,7 +216,10 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                positionSum += GameManager.Instance.gmPlayers[i].transform.position;
+                if (GameManager.Instance.gmPlayers[i] != null)
+                {
+                    positionSum += GameManager.Instance.gmPlayers[i].transform.position;
+                }
             }
         }
         if (throwingMonkey != null)
