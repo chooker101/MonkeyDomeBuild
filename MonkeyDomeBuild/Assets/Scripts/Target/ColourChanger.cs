@@ -27,6 +27,8 @@ public class ColourChanger : MonoBehaviour
     private bool canEnableTargetHeadCollider = false;
     private PreGameTimer preGameTimerObject;
 
+    bool join = false;
+
     // Use this for initialization
     void Start()
     {
@@ -55,9 +57,10 @@ public class ColourChanger : MonoBehaviour
     }
     void Update()
     {
+        CheckNewPlayerJoinInput();
         DebugFunction();
         // Add player target to join
-        if (GameManager.Instance.gmInputs[playerTargetIndex].mJump && !activated)
+        if (join && !activated)
         {
             GameManager.Instance.AddPlayer(playerTargetIndex);
             activated = true;
@@ -329,6 +332,35 @@ public class ColourChanger : MonoBehaviour
         get
         {
             return activated;
+        }
+    }
+    void CheckNewPlayerJoinInput()
+    {
+        string p = "p" + (playerTargetIndex + 1);
+        if (Input.GetJoystickNames().Length >= playerTargetIndex + 1)
+        {
+            if (Input.GetJoystickNames()[playerTargetIndex] != null)
+            {
+                if (Input.GetJoystickNames()[playerTargetIndex] == "Wireless Controller")
+                {
+                    join = Input.GetButtonDown(p+"_ps4_jump");
+                }
+                else if (Input.GetJoystickNames()[playerTargetIndex] == "XBOX 360 For Windows (Controller)")
+                {
+                    join = Input.GetButtonDown(p+"_jump");
+                }
+                else
+                {
+                    join = Input.GetButtonDown(p+"_jump");
+                }
+            }
+            else
+            {
+                if (Input.GetJoystickNames()[playerTargetIndex] == "Wireless Controller")
+                    join = Input.GetButtonDown(p+"_ps4_jump");
+                else if (Input.GetJoystickNames()[playerTargetIndex] == "XBOX 360 For Windows (Controller)")
+                    join = Input.GetButtonDown(p+"_jump");
+            }
         }
     }
 }
