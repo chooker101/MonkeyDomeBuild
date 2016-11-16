@@ -107,33 +107,37 @@ public class GameManager : MonoBehaviour
     public void UpdateInputs()
     {
 
-        if (Instance.gmPlayerScripts[(int)PN.P1].isPlayer)
+        /*if (Instance.gmPlayerScripts[(int)PN.P1].isPlayer)
         {
-			if (Input.GetJoystickNames().Length >= 1)
-			{
-				if(Input.GetJoystickNames()[0] != null)
-				{
-					Instance.gmInputs[(int)PN.P1].mXY.x = Input.GetAxis("p1_joy_x");
-					Instance.gmInputs[(int)PN.P1].mXY.y = -Input.GetAxis("p1_joy_y");
-					Instance.gmInputs[(int)PN.P1].mAimStomp = Input.GetButtonDown("p1_aim/stomp");
-					Instance.gmInputs[(int)PN.P1].mChargeStomp = Input.GetButton("p1_aim/stomp");
 
-					if (Input.GetJoystickNames()[0] == "Wireless Controller")
-					{
-						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
-						Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_ps4_catch/throw");
-						Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_ps4_catch/throw");
-						Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_ps4_catch/throw");
-						Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_ps4_start");
-					}
-					else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
-					{
-						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
-						Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_catch/throw");
-						Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_catch/throw");
-						Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
-						Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_start");
-					}
+        }*/
+        if (Input.GetJoystickNames().Length >= 1)
+        {
+            if (Input.GetJoystickNames()[0] != null)
+            {
+                if (Instance.gmPlayerScripts[(int)PN.P1].isPlayer)
+                {
+                    Instance.gmInputs[(int)PN.P1].mXY.x = Input.GetAxis("p1_joy_x");
+                    Instance.gmInputs[(int)PN.P1].mXY.y = -Input.GetAxis("p1_joy_y");
+                    Instance.gmInputs[(int)PN.P1].mAimStomp = Input.GetButtonDown("p1_aim/stomp");
+                    Instance.gmInputs[(int)PN.P1].mChargeStomp = Input.GetButton("p1_aim/stomp");
+
+                    if (Input.GetJoystickNames()[0] == "Wireless Controller")
+                    {
+                        Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
+                        Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_ps4_catch/throw");
+                        Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_ps4_catch/throw");
+                        Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_ps4_catch/throw");
+                        Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_ps4_start");
+                    }
+                    else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
+                    {
+                        Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
+                        Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_catch/throw");
+                        Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_catch/throw");
+                        Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
+                        Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_start");
+                    }
                     else
                     {
                         Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
@@ -142,17 +146,16 @@ public class GameManager : MonoBehaviour
                         Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
                         Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_start");
                     }
-				}
-				else
-				{
-					if (Input.GetJoystickNames()[0] == "Wireless Controller")
-						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
-					else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
-						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
-				}
-			}
+                }
+            }
+            else
+            {
+                if (Input.GetJoystickNames()[0] == "Wireless Controller")
+                    Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
+                else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
+                    Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
+            }
         }
-
         if (Instance.gmPlayerScripts[(int)PN.P2] != null)
         {
 			if (Input.GetJoystickNames().Length >= 2)

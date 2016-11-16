@@ -39,6 +39,7 @@ public class CameraController : MonoBehaviour
 
     public bool considerTargets = false;
     public bool considerTurrets = false;
+    public bool considerBalls = true;
     private bool targetsExist = false;
     public float focusAmount = 1f;
     private float monkeyHoldingCount = 0;
@@ -46,7 +47,6 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        considerTargets = true;
         shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
         //CamSize = myCam.orthographicSize;
@@ -169,38 +169,41 @@ public class CameraController : MonoBehaviour
             //meanPosition = positionSum / (GameManager.Instance.TotalNumberofPlayers);
         }
         bool monkeyCharging = false;
-        if (GameManager.Instance.gmBalls[0] != null)
+        if (considerBalls)
         {
-            if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey() != null)
+            if (GameManager.Instance.gmBalls[0] != null)
             {
-                if (GameManager.Instance.gmInputs[GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().playerIndex].mChargeThrow)
+                if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey() != null)
                 {
-                    if (!monkeyCharging)
+                    if (GameManager.Instance.gmInputs[GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().playerIndex].mChargeThrow)
                     {
-                        focusAmount = 1f;
-                    }
-                    if (monkeyHoldingCount > 0.3f)
-                    {
-                        monkeyCharging = true;
-                    }
-                    else
-                    {
-                        monkeyHoldingCount += Time.deltaTime;
+                        if (!monkeyCharging)
+                        {
+                            focusAmount = 1f;
+                        }
+                        if (monkeyHoldingCount > 0.3f)
+                        {
+                            monkeyCharging = true;
+                        }
+                        else
+                        {
+                            monkeyHoldingCount += Time.deltaTime;
+                        }
                     }
                 }
-            }
-            else
-            {
-                if (monkeyHoldingCount != 0)
+                else
                 {
-                    monkeyHoldingCount = 0;
+                    if (monkeyHoldingCount != 0)
+                    {
+                        monkeyHoldingCount = 0;
+                    }
                 }
             }
         }
         Actor throwingMonkey = null;
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
-            if (monkeyCharging)
+            if (monkeyCharging && considerBalls)
             {
                 if (GameManager.Instance.gmPlayers[i] != GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey())
                 {
@@ -213,7 +216,10 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                positionSum += GameManager.Instance.gmPlayers[i].transform.position;
+                if (GameManager.Instance.gmPlayers[i] != null)
+                {
+                    positionSum += GameManager.Instance.gmPlayers[i].transform.position;
+                }
             }
         }
         if (throwingMonkey != null)
@@ -250,24 +256,26 @@ public class CameraController : MonoBehaviour
             }
             meanPosition = positionSum / i;
         }
-        if (GameManager.Instance.gmBalls[0] != null)
+        if (considerBalls)
         {
-            if (throwingMonkey != null)
+            if (GameManager.Instance.gmBalls[0] != null)
             {
-                meanPosition += GameManager.Instance.gmBalls[0].transform.position;
-                meanPosition /= 2;
-                meanPosition += throwingMonkey.transform.position;
-                focusAmount = Mathf.Lerp(focusAmount, 2, Time.deltaTime * 20f);
-                meanPosition /= focusAmount;
-            }
-            else
-            {
-                focusAmount = Mathf.Lerp(focusAmount, 1, Time.deltaTime * 5f);
-                meanPosition += GameManager.Instance.gmBalls[0].transform.position;
-                meanPosition = meanPosition / 2;
+                if (throwingMonkey != null)
+                {
+                    meanPosition += GameManager.Instance.gmBalls[0].transform.position;
+                    meanPosition /= 2;
+                    meanPosition += throwingMonkey.transform.position;
+                    focusAmount = Mathf.Lerp(focusAmount, 2, Time.deltaTime * 20f);
+                    meanPosition /= focusAmount;
+                }
+                else
+                {
+                    focusAmount = Mathf.Lerp(focusAmount, 1, Time.deltaTime * 5f);
+                    meanPosition += GameManager.Instance.gmBalls[0].transform.position;
+                    meanPosition = meanPosition / 2;
+                }
             }
         }
-
     }
 
     void FindPanning()
@@ -312,6 +320,7 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
+        /*
         if (considerTurrets && GameManager.Instance.gmTurretManager.turrets.Count > 0)
         {
             for (int i = 0; i < GameManager.Instance.gmTurretManager.turrets.Count; i++)
@@ -329,6 +338,7 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
+        */
         if (GameManager.Instance.gmBalls[0] != null)
         {
             if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmBalls[0].transform.position.x))
@@ -356,7 +366,8 @@ public class CameraController : MonoBehaviour
     void SetCamera()
     {
         //lerp to new camera size and position
-		Vector3 currentPos = transform.position;
+        MeanOfPositions();
+        Vector3 currentPos = transform.position;
         meanPosition.y += offsetUp;
         meanPosition.y = Mathf.Max(meanPosition.y, minCameraHeight);
         if (meanPosition.x > 0)
@@ -367,21 +378,23 @@ public class CameraController : MonoBehaviour
         {
             meanPosition.x = Mathf.Max(meanPosition.x, -maxDistanceXFromZero);
         }
-        if (meanPosition.y > 0)
+        /*if (meanPosition.y > 0)
         {
             meanPosition.y = Mathf.Min(meanPosition.y, maxDistanceYFromZero);
-        }
+        }*/
+        meanPosition.y = currentPos.y;
         Vector3 myLerp = Vector3.Lerp(currentPos, meanPosition, (Time.deltaTime * smoothing));
 
         myLerp.z = currentPos.z;
         transform.position = myLerp;
+        /*
         FindPanning();
         
         panningY = Mathf.Max(minCamSize, panningY);
         panningY = Mathf.Min(maxCamSize, panningY);
 
         myCam.orthographicSize = Mathf.Lerp(myCam.orthographicSize, panningY, Time.deltaTime * smoothing);
-
+        */
 
     }
 
