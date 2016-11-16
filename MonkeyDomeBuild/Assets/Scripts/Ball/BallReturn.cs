@@ -5,6 +5,7 @@ public class BallReturn : MonoBehaviour
 {
     public GameObject[] balls;
     public BallInfo[] ballsInfo;
+    public GameObject pgt;
 
     private bool[] wasActive;
     // Use this for initialization
@@ -22,30 +23,39 @@ public class BallReturn : MonoBehaviour
 
     void checkEnable()
     {
-        // Checks the record keeper for what colour the player is, and if the player has the same sprite material as the ball, disables the ball.
-        for (int i = 0; i < balls.Length; i++)
+        if(pgt.GetComponent<PreGameTimer>().gameState == GameState.Pregame_PickingColours)
         {
-            wasActive[i] = balls[i].activeSelf;
-            for(int o = 0; o < GameManager.Instance.gmRecordKeeper.colourPlayers.Count; o++)
+            // Checks the record keeper for what colour the player is, and if the player has the same sprite material as the ball, disables the ball.
+            for (int i = 0; i < balls.Length; i++)
             {
-                Material ball = balls[i].GetComponent<BallInfo>().mySpriteColour;
-                Material player = GameManager.Instance.gmRecordKeeper.colourPlayers[o];
-
-                if (ball == player)
+                wasActive[i] = balls[i].activeSelf;
+                for(int o = 0; o < GameManager.Instance.gmRecordKeeper.colourPlayers.Count; o++)
                 {
-                    balls[i].SetActive(false);
-                    break;
+                    Material ball = balls[i].GetComponent<BallInfo>().mySpriteColour;
+                    Material player = GameManager.Instance.gmRecordKeeper.colourPlayers[o];
+
+                    if (ball == player)
+                    {
+                        balls[i].SetActive(false);
+                        break;
+                    }
+                    else
+                    {
+                        balls[i].SetActive(true);
+
+                    }
                 }
-                else
+                if (!wasActive[i] && balls[i].activeSelf)
                 {
-                    balls[i].SetActive(true);
-
+                    balls[i].GetComponent<Transform>().position = transform.position;
                 }
-
             }
-            if (!wasActive[i] && balls[i].activeSelf)
+        }
+        else
+        {
+            for(int i = 0; i < balls.Length; i++)
             {
-                balls[i].GetComponent<Transform>().position = transform.position;
+                balls[i].SetActive(false);
             }
         }
     }
