@@ -56,7 +56,7 @@ public class BallInfo : MonoBehaviour
     public bool IsBall
     {
         get
-        {
+        { 
             if (type == ThrowableType.Ball)
             {
                 return true;

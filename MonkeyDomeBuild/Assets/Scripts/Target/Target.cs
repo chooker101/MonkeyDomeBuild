@@ -52,7 +52,7 @@ public class Target : MonoBehaviour
     float warningTime = 2f;
     public bool activeInCam = false;
 
-    TargetBase panel;
+    //TargetBase panel;
 
     void Start()
     {
@@ -67,14 +67,14 @@ public class Target : MonoBehaviour
         targetRot = Vector3.zero;
         Init();
     }
-    public TargetBase SetTargetBase
+    /*public TargetBase SetTargetBase
     {
         set
         {
             panel = value;
             panel.SetTarget = this;
         }
-    }
+    }*/
     void Init()
     {
         switch (targetAxis)
@@ -118,7 +118,7 @@ public class Target : MonoBehaviour
                 {
                     if (!targetActive)
                     {
-                        panel.ChangeTargetState(TargetBaseState.Prep);
+                        //panel.ChangeTargetState(TargetBaseState.Prep);
                         activeInCam = true;
                     }
                     waitTime = 0;
@@ -201,7 +201,7 @@ public class Target : MonoBehaviour
                 {
                     if (!isHit)
                     {
-                        panel.ChangeTargetState(TargetBaseState.Hit);
+                        //panel.ChangeTargetState(TargetBaseState.Hit);
                         activeInCam = false;
                         GameManager.Instance.gmScoringManager.HitTargetScore(other.GetComponentInParent<BallInfo>());
                         GameObject particle = ParticlesManager.Instance.TargetHitParticle;
@@ -358,7 +358,7 @@ public class Target : MonoBehaviour
             lifeTime -= Time.deltaTime;
             if (lifeTime < warningTime)
             {
-                panel.ChangeTargetState(TargetBaseState.Warning);
+                //panel.ChangeTargetState(TargetBaseState.Warning);
             }
             else
             {
@@ -368,7 +368,7 @@ public class Target : MonoBehaviour
             {
                 // deactive alarm, reset lifeTime
                 //TargetSetter(-1f);
-                panel.ChangeTargetState(TargetBaseState.Miss);
+                //panel.ChangeTargetState(TargetBaseState.Miss);
                 activeInCam = false;
                 Reset();
                 if (targetManager != null)
@@ -445,15 +445,15 @@ public class Target : MonoBehaviour
     }
     public void Popup()
     {
-        panel.ChangeTargetState(TargetBaseState.Pop);
+        //panel.ChangeTargetState(TargetBaseState.Pop);
     }
     public void RallyStart()
     {
-        panel.ChangeTargetState(TargetBaseState.RallyStart);
+        //panel.ChangeTargetState(TargetBaseState.RallyStart);
     }
     public void RallyEnd()
     {
-        panel.ChangeTargetState(TargetBaseState.RallyEnd);
+        //panel.ChangeTargetState(TargetBaseState.RallyEnd);
     }
     public float InitialLifeTime
     {

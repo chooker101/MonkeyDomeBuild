@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     //private GameObject ball;
     public float smoothing = 2f;
     public float maxCamSize = 40f;
-    public float minCamSize = 25f;
+    private float minCamSize = 0;
     private float minCameraHeight = 12f;
     public float maxDistanceXFromZero = 4f;
     public float maxDistanceYFromZero = 20f;
@@ -49,6 +49,7 @@ public class CameraController : MonoBehaviour
     {
         shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
+        minCamSize = myCam.orthographicSize;
         //CamSize = myCam.orthographicSize;
         MeanOfPositions();
 
@@ -282,7 +283,7 @@ public class CameraController : MonoBehaviour
     {
         //get average position of players
         //then use it to get the average position of the ball and the players
-        MeanOfPositions();
+        //MeanOfPositions();
         maxXDistance = 0f;
         maxYDistance = 0f;
         // get maxXDistance       
@@ -339,7 +340,7 @@ public class CameraController : MonoBehaviour
             }
         }
         */
-        if (GameManager.Instance.gmBalls[0] != null)
+        if (GameManager.Instance.gmBalls[0] != null && considerBalls)
         {
             if (maxXDistance < Mathf.Abs(meanPosition.x - GameManager.Instance.gmBalls[0].transform.position.x))
             {
@@ -355,11 +356,11 @@ public class CameraController : MonoBehaviour
         maxXDistance = maxXDistance * (myCam.aspect/2);
         if(maxXDistance > maxYDistance)
         {
-            panningY = maxXDistance + buffer;
+            panningY = maxXDistance;
         }
         else
         {
-            panningY = maxYDistance + buffer;
+            panningY = maxYDistance;
         }
     }
 
@@ -387,14 +388,12 @@ public class CameraController : MonoBehaviour
 
         myLerp.z = currentPos.z;
         transform.position = myLerp;
-        /*
         FindPanning();
         
         panningY = Mathf.Max(minCamSize, panningY);
         panningY = Mathf.Min(maxCamSize, panningY);
 
         myCam.orthographicSize = Mathf.Lerp(myCam.orthographicSize, panningY, Time.deltaTime * smoothing);
-        */
 
     }
 
