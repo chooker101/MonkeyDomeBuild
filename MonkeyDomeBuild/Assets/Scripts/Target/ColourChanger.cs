@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class ColourChanger : MonoBehaviour
 {
     public TargetAxis targetAxis = TargetAxis.OnTop;
-    public int playerTargetIndex = -1;
+    public int inputTargetIndex = -1;
+    public int playerIndex = 0;
     public bool isHit = false;
     public bool activated = false;
     public Transform hitParticlePivot;
@@ -29,13 +30,19 @@ public class ColourChanger : MonoBehaviour
 
     bool join = false;
 
+
+    public bool jumped = false;
+    public bool catched = false;
+    public bool haveBall = false;
+    bool climbed = false;
+
     // Use this for initialization
     void Start()
     {
         // Fills a list with all current players
         target = transform.FindChild("Pivot").gameObject;
 		//myPlayer = GameManager.Instance.gmPlayers[playerTargetIndex];
-        playerTargetNumberRegular = playerTargetIndex + 1;
+        playerTargetNumberRegular = inputTargetIndex + 1;
         GetComponentInChildren<CircleCollider2D>().enabled = false;
         preGameTimerObject = FindObjectOfType<PreGameTimer>().GetComponent<PreGameTimer>();
         Init();
@@ -62,14 +69,34 @@ public class ColourChanger : MonoBehaviour
         // Add player target to join
         if (join && !activated)
         {
-            playerTargetIndex = GameManager.Instance.AddPlayer(playerTargetIndex);
+            playerIndex = GameManager.Instance.AddPlayer(inputTargetIndex);
             activated = true;
             GetComponentInChildren<Collider2D>().enabled = false;
             TargetSetter();
             playerNumberText.gameObject.SetActive(true);
             //playerNumberText.text = "P" + "1";//playerTargetIndex.ToString();
-
         }
+        else
+        {
+            switch (FindObjectOfType<PreGameTimer>().tutorialState)
+            {
+                case TutorialState.Jump:
+                    if (join && !jumped)
+                    {
+                        jumped = true;
+                        FindObjectOfType<PreGameTimer>().AddMonkeyAction();
+                    }
+                    break;
+                case TutorialState.Catch:
+                    if (catched && GameManager.Instance.gmPlayers[playerIndex].GetComponent<Actor>().IsHoldingBall && !haveBall)
+                    {
+                        haveBall = true;
+                        FindObjectOfType<PreGameTimer>().AddMonkeyAction();
+                    }
+                    break;
+            }
+        }
+
         if (Vector3.Distance(target.transform.localEulerAngles, targetRot) > 0.01f)
         {
             target.transform.localRotation = Quaternion.LerpUnclamped(target.transform.localRotation, Quaternion.Euler(targetRot), Time.deltaTime * 10f);
@@ -84,6 +111,9 @@ public class ColourChanger : MonoBehaviour
                     GetComponentInChildren<CircleCollider2D>().enabled = true;
                 }
             }
+
+
+
         }
 
         // State of target
@@ -117,7 +147,7 @@ public class ColourChanger : MonoBehaviour
                 targetReadyAll.gameObject.SetActive(false);
 
                 playerNumberText.gameObject.SetActive(true);
-                playerNumberText.text = "P" + (playerTargetIndex + 1).ToString();
+                playerNumberText.text = "P" + (playerIndex + 1).ToString();
 			}
         }
         else if(activated && isHit && !preGameTimerObject.AllTargetsHit())
@@ -145,12 +175,12 @@ public class ColourChanger : MonoBehaviour
 
         if(activated) // Displays player heads on panel
         {
-            if (GameManager.Instance.gmPlayerScripts[playerTargetIndex].characterType is Gorilla && !targetHeadGorilla.gameObject.activeSelf)
+            if (GameManager.Instance.gmPlayerScripts[playerIndex].characterType is Gorilla && !targetHeadGorilla.gameObject.activeSelf)
             {
                 targetHeadGorilla.gameObject.SetActive(true);
                 targetHeadMonkey.gameObject.SetActive(false);
             }
-            else if (GameManager.Instance.gmPlayerScripts[playerTargetIndex].characterType is Monkey && !targetHeadMonkey.gameObject.activeSelf)
+            else if (GameManager.Instance.gmPlayerScripts[playerIndex].characterType is Monkey && !targetHeadMonkey.gameObject.activeSelf)
             {
                 targetHeadGorilla.gameObject.SetActive(false);
                 targetHeadMonkey.gameObject.SetActive(true);
@@ -176,15 +206,15 @@ public class ColourChanger : MonoBehaviour
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, (ballPos - pivotPos).normalized);
                 particle.transform.rotation = Quaternion.Euler(0, 0, targetAng.eulerAngles.z);
                 particle.GetComponentInChildren<ParticleSystem>().Play();
-                if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerTargetIndex) // If the player who threw the ball is the one for this target
+                if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerIndex) // If the player who threw the ball is the one for this target
                 {
                     isHit = true;
                     if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().IsHoldingBall)
                     {
                         objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().ReleaseBall();
                     }
-                    GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerTargetIndex, materialToApply);
-                    GameManager.Instance.gmPlayers[playerTargetIndex].GetComponent<Actor>().UpdateColour();
+                    GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, materialToApply);
+                    GameManager.Instance.gmPlayers[playerIndex].GetComponent<Actor>().UpdateColour();
                 }
             }
         }
@@ -254,7 +284,7 @@ public class ColourChanger : MonoBehaviour
     {
         bool keyPressed = false;
         bool isHitKeyPressed = false;
-        switch (playerTargetIndex)
+        switch (inputTargetIndex)
         {
             case 0:
                 if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -319,7 +349,7 @@ public class ColourChanger : MonoBehaviour
             }
             else
             {
-                playerTargetIndex = GameManager.Instance.AddPlayer(playerTargetIndex);
+                playerIndex = GameManager.Instance.AddPlayer(inputTargetIndex);
                 activated = true;
                 GetComponentInChildren<Collider2D>().enabled = false;
                 TargetSetter();
@@ -339,30 +369,56 @@ public class ColourChanger : MonoBehaviour
     }
     void CheckNewPlayerJoinInput()
     {
-        string p = "p" + (playerTargetIndex + 1);
-        if (Input.GetJoystickNames().Length >= playerTargetIndex + 1)
+        string p = "p" + (inputTargetIndex + 1);
+        if (Input.GetJoystickNames().Length >= inputTargetIndex + 1)
         {
-            if (Input.GetJoystickNames()[playerTargetIndex] != null)
+            if (Input.GetJoystickNames()[inputTargetIndex] != null)
             {
-                if (Input.GetJoystickNames()[playerTargetIndex] == "Wireless Controller")
+                if (Input.GetJoystickNames()[inputTargetIndex] == "Wireless Controller")
                 {
                     join = Input.GetButtonDown(p+"_ps4_jump");
+                    if(Input.GetButtonDown(p + "_ps4_catch/throw"))
+                    {
+                        catched = true;
+                    }
+
                 }
-                else if (Input.GetJoystickNames()[playerTargetIndex] == "XBOX 360 For Windows (Controller)")
+                else if (Input.GetJoystickNames()[inputTargetIndex] == "XBOX 360 For Windows (Controller)")
                 {
                     join = Input.GetButtonDown(p+"_jump");
+                    if (Input.GetButtonDown(p + "_catch/throw"))
+                    {
+                        catched = true;
+                    }
                 }
                 else
                 {
                     join = Input.GetButtonDown(p+"_jump");
+                    if (Input.GetButtonDown(p + "_catch/throw"))
+                    {
+                        catched = true;
+                    }
                 }
             }
             else
             {
-                if (Input.GetJoystickNames()[playerTargetIndex] == "Wireless Controller")
-                    join = Input.GetButtonDown(p+"_ps4_jump");
-                else if (Input.GetJoystickNames()[playerTargetIndex] == "XBOX 360 For Windows (Controller)")
-                    join = Input.GetButtonDown(p+"_jump");
+                if (Input.GetJoystickNames()[inputTargetIndex] == "Wireless Controller")
+                {
+                    join = Input.GetButtonDown(p + "_ps4_jump");
+                    if (Input.GetButtonDown(p + "_ps4_catch/throw"))
+                    {
+                        catched = true;
+                    }
+                }
+                else if (Input.GetJoystickNames()[inputTargetIndex] == "XBOX 360 For Windows (Controller)")
+                {
+                    join = Input.GetButtonDown(p + "_jump");
+                    if (Input.GetButtonDown(p + "_catch/throw"))
+                    {
+                        catched = true;
+                    }
+                }
+
             }
         }
     }
