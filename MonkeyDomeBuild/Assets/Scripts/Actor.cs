@@ -14,8 +14,8 @@ public class Actor : MonoBehaviour
     public int playerIndex;
     public bool isPlayer;
 
-	public Vector2 movement = Vector2.zero;
-	//public CameraController cam;
+    public Vector2 movement = Vector2.zero;
+    //public CameraController cam;
 
 
     //public bool canJump = true;
@@ -65,7 +65,7 @@ public class Actor : MonoBehaviour
     public Transform catchCenter;
     public BoxCollider2D raycastCol;
 
-	protected bool beingSmack = false;
+    protected bool beingSmack = false;
     public bool justJump = false;
     protected bool isDashing = false;
     protected float dashingCount = 0;
@@ -95,14 +95,14 @@ public class Actor : MonoBehaviour
     }
     void Start()
     {
-		DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject);
 
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
-		cache_rb = GetComponent<Rigidbody2D>();
-		animator = GetComponentInChildren<Animator>();
-		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-		cache_tf = GetComponent<Transform>();
+        cache_rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        cache_tf = GetComponent<Transform>();
         catchCenter = transform.FindChild("CatchCenter").transform;
         raycastCol = transform.FindChild("RayCastCol").GetComponent<BoxCollider2D>();
         monkeyCrown.SetActive(false);
@@ -112,63 +112,65 @@ public class Actor : MonoBehaviour
         col2 = pointerBase.GetComponent<Image>().color;
     }
 
-	void Update()
-	{
+    void Update()
+    {
         //JumpCheck();
         //cType = characterType.ToString();
-		if (GameManager.Instance.gmInputs[playerIndex].mJump)
-		{
-			Jumping();
-		}
-		Aim();
-		characterType.CHUpdate();
+        if (GameManager.Instance.gmInputs[playerIndex].mJump)
+        {
+            Jumping();
+        }
+        Aim();
+        characterType.CHUpdate();
         CheckLeader();
 
-        if(isinair && cache_rb.velocity.y < 0f)
+        if (isinair && cache_rb.velocity.y < 0f)
         {
             if (isClimbing)
             {
                 //animator.SetBool("IsIdle", true);
                 //animator.SetBool("IsInAirDown", false); 
-                animator.SetBool("IsClimbing", true);     
-            } else
+                animator.SetBool("IsClimbing", true);
+            }
+            else
             {
                 animator.SetBool("IsClimbing", false);
                 animator.SetBool("IsInAirDown", true);
                 animator.SetBool("IsInAir", false);
                 animator.SetBool("IsJumping", false);
             }
-        } else if (isinair && cache_rb.velocity.y >= 0f )
+        }
+        else if (isinair && cache_rb.velocity.y >= 0f)
         {
             animator.SetBool("IsInAir", true);
             //animator.SetBool("IsStartJump", false);
-        } 
-	}
+        }
+    }
 
     void FixedUpdate()
-	{
+    {
         MovementVelocity();
         AnimationControl();
-		//Movement();
-		characterType.CHFixedUpdate();
+        //Movement();
+        characterType.CHFixedUpdate();
         if (IsHoldingBall && ballHolding == null)
         {
             ReleaseBall();
         }
-	}
+    }
 
-	//public virtual void CheckInputs() { }
+    //public virtual void CheckInputs() { }
 
 
     public bool IsInAir
     {
         get { return isinair; }
     }
-	protected void Jumping()
-	{
-		if (!isinair)
-		{
-			isinair = true;
+    protected void Jumping()
+    {
+        if (!isinair)
+        {
+            isinair = true;
             justJump = true;
             Invoke("ResetJustJump", 0.3f);
             if (ParticlesManager.Instance != null)
@@ -185,24 +187,24 @@ public class Actor : MonoBehaviour
                 }
 
             }
-            cache_rb.AddForce(Vector2.up * characterType.jumpforce,ForceMode2D.Impulse);
+            cache_rb.AddForce(Vector2.up * characterType.jumpforce, ForceMode2D.Impulse);
             animator.SetBool("IsJumping", true);
             if (AudioEffectManager.Instance != null)
             {
                 AudioEffectManager.Instance.PlayMonkeyJumpSE();
             }
 
-		}
-		else
-		{
-			if (isClimbing)
-			{
-				isClimbing = false;
+        }
+        else
+        {
+            if (isClimbing)
+            {
+                isClimbing = false;
                 if (cache_rb.gravityScale == 0)
                 {
                     cache_rb.gravityScale = 2;
                     animator.SetBool("IsWalking", false);
-                    animator.SetBool("IsIdle",true);
+                    animator.SetBool("IsIdle", true);
                 }
 
                 if (GameManager.Instance.gmInputs[playerIndex].mXY.y >= 0)
@@ -216,25 +218,25 @@ public class Actor : MonoBehaviour
                     }
                 }
             }
-			else if(canClimb)
-			{
-				isClimbing = true;
+            else if (canClimb)
+            {
+                isClimbing = true;
                 if (cache_rb.gravityScale != 0)
                     cache_rb.gravityScale = 0;
             }
-		}
-	}
+        }
+    }
     protected void ResetJustJump()
     {
         justJump = false;
     }
-	protected void MovementVelocity()
-	{
+    protected void MovementVelocity()
+    {
         movement = cache_rb.velocity;
         if (!isClimbing)
-		{
-			if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
-			{
+        {
+            if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
+            {
                 if (characterType is Gorilla && characterType.manuallyCharging)
                 {
                     movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
@@ -243,7 +245,7 @@ public class Actor : MonoBehaviour
                 {
                     movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
                 }
-                if(isDashing)
+                if (isDashing)
                 {
                     if (dashingCount >= dashingTime)
                     {
@@ -256,14 +258,14 @@ public class Actor : MonoBehaviour
                         dashingCount += Time.fixedDeltaTime;
                     }
                 }
-			}
-		}
-		else
-		{
+            }
+        }
+        else
+        {
             movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
             movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
         }
-        if(!beingSmack)
+        if (!beingSmack)
         {
             if (startSlowMo)
             {
@@ -274,9 +276,9 @@ public class Actor : MonoBehaviour
                 cache_rb.velocity = movement;
             }
         }
-	}
+    }
 
-	public void ThrowCheck()
+    public void ThrowCheck()
     {
         if (canCharge)
         {
@@ -322,7 +324,7 @@ public class Actor : MonoBehaviour
                     Rigidbody2D ballRigid = ballHolding.GetComponent<Rigidbody2D>();
                     if (!ballHolding.GetComponent<BallInfo>().IsBall)
                     {
-                        if (ballHolding.GetComponent<BallInfo>().BallType == ThrowableType.Trophy )
+                        if (ballHolding.GetComponent<BallInfo>().BallType == ThrowableType.Trophy)
                         {
                             ballHolding.GetComponent<TrophyInfo>().InvokeEnableCollider();
                         }
@@ -469,7 +471,7 @@ public class Actor : MonoBehaviour
             return haveBall;
         }
     }
-	protected void OnCollisionEnter2D(Collision2D other)
+    protected void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
@@ -486,7 +488,7 @@ public class Actor : MonoBehaviour
                         if (p is Monkey)
                         {
                             //knock both player off vine for now
-                            if(GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing ||
+                            if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing ||
                                 !GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsInAir)
                             {
                                 GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing = false;
@@ -516,7 +518,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-	protected void OnCollisionStay2D(Collision2D other)
+    protected void OnCollisionStay2D(Collision2D other)
     {
         if (characterType is Gorilla)
         {
@@ -530,16 +532,16 @@ public class Actor : MonoBehaviour
     protected void KnockOffMonkey(GameObject monkey)
     {
         monkey.GetComponent<Actor>().TempDisableInput(disableInputTime);
-		if (monkey.GetComponent<Actor>().IsHoldingBall) 
-		{
-			monkey.GetComponent<Actor>().ReleaseBall();
-		}
-        Vector2 dir = -1*(transform.position - monkey.transform.position).normalized;
+        if (monkey.GetComponent<Actor>().IsHoldingBall)
+        {
+            monkey.GetComponent<Actor>().ReleaseBall();
+        }
+        Vector2 dir = -1 * (transform.position - monkey.transform.position).normalized;
         if (!isinair)
         {
             dir.y = 0.3f;
         }
-        else if(isinair)
+        else if (isinair)
         {
             if (!monkey.GetComponent<Actor>().IsInAir)
             {
@@ -569,7 +571,7 @@ public class Actor : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             if (!justJump && isinair)
             {
@@ -587,7 +589,7 @@ public class Actor : MonoBehaviour
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
-            if(other.GetComponentInParent<BallInfo>() is CoconutInfo)
+            if (other.GetComponentInParent<BallInfo>() is CoconutInfo)
             {
                 if (!other.GetComponentInParent<CoconutInfo>().IsThrown)
                 {
@@ -644,7 +646,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-	protected void OnTriggerExit2D(Collider2D other)
+    protected void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
@@ -673,7 +675,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-	protected void OnTriggerStay2D(Collider2D other)
+    protected void OnTriggerStay2D(Collider2D other)
     {
         OnTriggerEnter2D(other);
     }
@@ -699,29 +701,33 @@ public class Actor : MonoBehaviour
         characterInc += inc;
     }
 
-	protected void CheckLeader()
+    protected void CheckLeader()
     {
+        bool hasHighestScore = false;
+        int highestScore = 0;
+
+        /*
         if (GameManager.Instance.gmScoringManager.p1Score == GameManager.Instance.gmScoringManager.p2Score && GameManager.Instance.gmScoringManager.p2Score == GameManager.Instance.gmScoringManager.p3Score)
         {
             monkeyCrown.SetActive(false);
         }
-		else if(
+        else if (
                     (
-                    playerIndex == 0 && 
+                    playerIndex == 0 &&
                     GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p2Score &&
-					GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p3Score
-                    ) 
+                    GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p3Score
+                    )
                     ||
                     (
                     playerIndex == 1 &&
-					GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p1Score &&
-					GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p3Score
-                    ) 
+                    GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p1Score &&
+                    GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p3Score
+                    )
                     ||
                     (
                     playerIndex == 2 &&
-					GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p1Score &&
-					GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p2Score
+                    GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p1Score &&
+                    GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p2Score
                     )
                 )
         {
@@ -730,10 +736,32 @@ public class Actor : MonoBehaviour
         else
         {
             monkeyCrown.SetActive(false);
+        }*/
+
+        if (GameManager.Instance.gmScoringManager.p1Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p1Score; }
+        if (GameManager.Instance.gmScoringManager.p2Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p2Score; }
+        if (GameManager.Instance.gmScoringManager.p3Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p3Score; }
+        if (GameManager.Instance.gmScoringManager.p4Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p4Score; }
+        if (GameManager.Instance.gmScoringManager.p5Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p5Score; }
+
+        if (playerIndex == 0 && GameManager.Instance.gmScoringManager.p1Score == highestScore && highestScore != 0) { hasHighestScore = true; }
+        else if (playerIndex == 1 && GameManager.Instance.gmScoringManager.p2Score == highestScore && highestScore != 0) { hasHighestScore = true; }
+        else if (playerIndex == 2 && GameManager.Instance.gmScoringManager.p3Score == highestScore && highestScore != 0) { hasHighestScore = true; }
+        else if (playerIndex == 3 && GameManager.Instance.gmScoringManager.p4Score == highestScore && highestScore != 0) { hasHighestScore = true; }
+        else if (playerIndex == 4 && GameManager.Instance.gmScoringManager.p5Score == highestScore && highestScore != 0) { hasHighestScore = true; }
+        else { hasHighestScore = false; }
+
+        if (hasHighestScore && !monkeyCrown.activeSelf)
+        {
+            monkeyCrown.SetActive(true);
+        }
+        else if (!hasHighestScore && monkeyCrown.activeSelf)
+        {
+            monkeyCrown.SetActive(false);
         }
     }
 
-	public void UpdateColour()
+    public void UpdateColour()
     {
         GetComponentInChildren<SpriteRenderer>().material = GameManager.Instance.gmRecordKeeper.colourPlayers[playerIndex];
     }
@@ -788,8 +816,8 @@ public class Actor : MonoBehaviour
     }
     public void ResetTimeScale()
     {
-        if(GameManager.Instance.gmPauseManager.isGamePaused == false)
-        Time.timeScale = 1;
+        if (GameManager.Instance.gmPauseManager.isGamePaused == false)
+            Time.timeScale = 1;
         startSlowMo = false;
         canBeInSlowMotion = true;
         slowMoCount = 0;
@@ -801,13 +829,13 @@ public class Actor : MonoBehaviour
         ballHolding = ball;
     }
 
-	public void GorillaCatchReset()
-	{
+    public void GorillaCatchReset()
+    {
 
-	}
+    }
 
-	public bool IsChargingThrow = false;
-	public void SwitchRoomReset()
+    public bool IsChargingThrow = false;
+    public void SwitchRoomReset()
     {
         ReleaseBall();
         canClimb = false;
