@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     public TrophyManager gmTrophyManager;
     public AudienceManager gmAudienceManager;
     public AudienceAnimator gmAudienceAnimator;
-    public LevelObjectScript gmLevelObjectScript;
+    public LevelObjectsScript gmLevelObjectsScript;
     public GameOptionsManager gmGameOptionsManager;
     public PauseManager gmPauseManager;
     public TurretsManager gmTurretManager;
@@ -87,7 +87,9 @@ public class GameManager : MonoBehaviour
             CreateInputs();
             CreatePlayers();
         }
-        gmBalls.Clear();
+		gmPlayers.TrimExcess();
+		gmPlayerScripts.TrimExcess();
+		gmBalls.Clear();
 
     }
 
@@ -98,7 +100,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateInputs()
     {
-        for (int i = 0; i < (int)PN.Length; ++i)
+        for (int i = 0; i < TotalNumberofPlayers; ++i)
         {
             Instance.gmInputs[i] = (InputManager)ScriptableObject.CreateInstance("InputManager");
         }
@@ -153,7 +155,7 @@ public class GameManager : MonoBehaviour
 			}
         }
 
-        if (Instance.gmPlayerScripts[(int)PN.P2] != null)
+        if (Instance.gmPlayerScripts.Count >= 2)
         {
 			if (Input.GetJoystickNames().Length >= 2)
 			{
@@ -201,7 +203,7 @@ public class GameManager : MonoBehaviour
 				}
             }
         }
-        if (Instance.gmPlayerScripts[(int)PN.P3] != null)
+        if (Instance.gmPlayerScripts.Count >= 3)
         {
 			if (Input.GetJoystickNames().Length >= 3)
 			{
@@ -249,7 +251,7 @@ public class GameManager : MonoBehaviour
 				}
             }
         }
-        if (Instance.gmPlayerScripts[(int)PN.P4] != null)
+        if (Instance.gmPlayerScripts.Count >= 4)
         {
 			if (Input.GetJoystickNames().Length >= 4)
 			{
@@ -297,7 +299,7 @@ public class GameManager : MonoBehaviour
 				}
             }
         }
-        if (Instance.gmPlayerScripts[(int)PN.P5] != null)
+        if (Instance.gmPlayerScripts.Count >= 5)
         {
 			if (Input.GetJoystickNames().Length >= 5)
 			{
@@ -347,6 +349,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public void CreatePlayers()
     {
         if (TotalNumberofPlayers > 0)
@@ -368,26 +371,26 @@ public class GameManager : MonoBehaviour
                 Transform temp = Instance.gmSpawnManager.SpawnPoints[i];
                 if (NumberOfPlayersToBuild > 0)
                 {
-                    if (Instance.gmPlayers[i] == null)
-                    {
-                        Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
-                        Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<Player>();
-                        Instance.gmPlayerScripts[i].isPlayer = true;
-                    }
+					gmPlayers.Add(null);
+					gmPlayerScripts.Add(null);
+                    gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
+                    gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<Player>();
+                    gmPlayerScripts[i].isPlayer = true;
+                    
                     --NumberOfPlayersToBuild;
                 }
                 else if (NumberOfBotsToBuild > 0)
                 {
-                    if (Instance.gmPlayers[i] == null)
-                    {
-                        Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
-                        Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<AI>();
-                        Instance.gmPlayerScripts[i].isPlayer = false;
-                    }
+					gmPlayers.Add(null);
+					gmPlayerScripts.Add(null);
+					gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
+                    gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<AI>();
+                    gmPlayerScripts[i].isPlayer = false;
+                    
                     --NumberOfBotsToBuild;
                 }
 
-                Instance.gmPlayers[i].GetComponent<Actor>().playerIndex = i;
+                gmPlayers[i].GetComponent<Actor>().playerIndex = i;
 
                 if (PlayerGorilla == i)
                 {

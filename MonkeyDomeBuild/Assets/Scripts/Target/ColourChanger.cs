@@ -56,17 +56,20 @@ public class ColourChanger : MonoBehaviour
     void Update()
     {
         DebugFunction();
-        // Add player target to join
-        if (GameManager.Instance.gmInputs[playerTargetIndex].mJump && !activated)
-        {
-            GameManager.Instance.AddPlayer(playerTargetIndex);
-            activated = true;
-            GetComponentInChildren<Collider2D>().enabled = false;
-            TargetSetter();
-            playerNumberText.gameObject.SetActive(false);
-            playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
+		// Add player target to join
+		if (GameManager.Instance.gmInputs[playerTargetIndex] != null)
+		{
+			if (GameManager.Instance.gmInputs[playerTargetIndex].mJump && !activated)
+			{
+				GameManager.Instance.AddPlayer(playerTargetIndex);
+				activated = true;
+				GetComponentInChildren<Collider2D>().enabled = false;
+				TargetSetter();
+				playerNumberText.gameObject.SetActive(false);
+				playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
 
-        }
+			}
+		}
         if (Vector3.Distance(target.transform.localEulerAngles, targetRot) > 0.01f)
         {
             target.transform.localRotation = Quaternion.LerpUnclamped(target.transform.localRotation, Quaternion.Euler(targetRot), Time.deltaTime * 10f);

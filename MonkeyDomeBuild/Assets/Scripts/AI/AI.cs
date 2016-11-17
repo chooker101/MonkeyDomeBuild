@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 
@@ -80,6 +82,7 @@ public class AI : Actor
 	private Vector2 posOnParabola;
 	private Vector2 prevPosOnParabola;
 	private Target nearestSignTarget;
+	private int gorillaIndex;
 
 	State currentState;
 
@@ -87,9 +90,9 @@ public class AI : Actor
 	void Start()
 	{
 		DontDestroyOnLoad(this.gameObject);
-        //currentState = State.Move;
-		lastSceneOld = EditorApplication.currentScene.ToString();
+		//currentState = State.Move;
 #if UNITY_5_3
+		lastSceneOld = EditorApplication.currentScene.ToString();
 		oldSceneCheck = true;
 #elif UNITY_5_4
 		SceneManager.activeSceneChanged += sceneChangedDelegate;
@@ -116,7 +119,9 @@ public class AI : Actor
 	{
 		if (oldSceneCheck)
 		{
+#if UNITY_5_3
 			currSceneOld = EditorApplication.currentScene.ToString();
+#endif
 			if (currSceneOld != lastSceneOld)
 			{
 				sceneChangedOld();
@@ -228,28 +233,80 @@ public class AI : Actor
 		{
 			if(!IsTargetViable(MoveTarget))
 			{
-				//change
+				List<Transform> viableTargets = null;
+				float dirX = 0.0f;
+				float dirY = 0.0f;
+
+				if (haveBall)
+				{
+					dirX = (cache_tf.position - GameManager.Instance.gmPlayers[gorillaIndex].transform.position).x;
+					dirY = (cache_tf.position - GameManager.Instance.gmPlayers[gorillaIndex].transform.position).y;
+					dirX = dirX / Mathf.Abs(dirX);
+					dirY = dirY / Mathf.Abs(dirY);
+					foreach (GameObject T in GameManager.Instance.gmLevelObjectsScript.loPlatforms)
+					{
+						if (T.transform.position.y * dirY > cache_tf.position.y && T.transform.position.x * dirX > cache_tf.position.x)
+						{
+							viableTargets.Add(T.transform);
+						}
+					}
+				}
+				else
+				{
+					foreach (GameObject T in GameManager.Instance.gmLevelObjectsScript.loPlatforms)
+					{
+						foreach (Actor P in GameManager.Instance.gmPlayerScripts)
+						{
+							dirX = (cache_tf.position - P.transform.position).x;
+							dirY = (cache_tf.position - P.transform.position).y;
+							dirX = dirX / Mathf.Abs(dirX);
+							dirY = dirY / Mathf.Abs(dirY);
+							if (T.transform.position.y * dirY > cache_tf.position.y && T.transform.position.x * dirX > cache_tf.position.x)
+							{
+								viableTargets.Add(T.transform);
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
 
 	bool IsTargetViable(Vector3 target)
 	{
-		if(haveBall)
+		if (haveBall)
 		{
-			foreach(GameObject P in GameManager.Instance.gmPlayers)
+			foreach (Actor P in GameManager.Instance.gmPlayerScripts)
 			{
-				if(P is Gorilla)
+				if (P.characterType is Gorilla)
 				{
-
+					if ((P.transform.position - target).magnitude <= (cache_tf.position - target).magnitude)
+					{
+						gorillaIndex = P.playerIndex;
+						return false;
+					}
 				}
 			}
 		}
 		else
 		{
-
+			foreach (Actor P in GameManager.Instance.gmPlayerScripts)
+			{
+				if(P.haveBall)
+				{
+					if(target == GameManager.Instance.gmBalls[0].transform.position)
+					{
+						return false;
+					}
+				}
+				if((P.transform.position - target).magnitude <= 2.5f)
+				{
+					return false;
+				}
+			}
 		}
-		return false;
+		return true;
 	}
 
 	void ExecuteState()
@@ -363,26 +420,21 @@ public class AI : Actor
 	State ExecuteThrow()
 	{
 		//Debug.Log("Throw");
-		if (haveBall)
+		
+		GameManager.Instance.gmInputs[playerIndex].mXY.x = aimDir.x;
+		GameManager.Instance.gmInputs[playerIndex].mXY.y = aimDir.y;
+		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
+		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = true;
+		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = true;
+		StartCoroutine(RealisticInputThrow());
+		wantsToThrow = false;
+		if (!onCatchCoolDown)
 		{
-			GameManager.Instance.gmInputs[playerIndex].mXY.x = aimDir.x;
-			GameManager.Instance.gmInputs[playerIndex].mXY.y = aimDir.y;
-			GameManager.Instance.gmInputs[playerIndex].mCatch = true;
-			GameManager.Instance.gmInputs[playerIndex].mChargeThrow = true;
-			GameManager.Instance.gmInputs[playerIndex].mCatchRelease = true;
-			StartCoroutine(RealisticInputThrow());
-			wantsToThrow = false;
-			if (!onCatchCoolDown)
-			{
-				onCatchCoolDown = true;
-				StartCoroutine(WaitForCatchCoolDown());
-			}
-			currentState = State.Idle;
+			onCatchCoolDown = true;
+			StartCoroutine(WaitForCatchCoolDown());
 		}
-		else
-		{
-			currentState = State.Move;
-		}
+		currentState = State.Idle;
+		
 		return currentState;
 	}
 
@@ -491,13 +543,14 @@ public class AI : Actor
 										StartCoroutine(RealisticInputJump());
 									}
 								}
-								else if(IsInAir && canClimb)
+								else if((IsInAir && canClimb) && !isClimbing)
 								{
-									if(cache_tf.position.y >= currEndTargBound.y)
+									if(isAtTargetX)
 									{
 										GameManager.Instance.gmInputs[playerIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
+										currEndTarg = currEndTargBound;
 									}
 								}
 							}
@@ -531,6 +584,10 @@ public class AI : Actor
 			xInput = 0.0f;
 		}
 
+		if (isEndTargVine && isClimbing)
+		{
+			GameManager.Instance.gmInputs[playerIndex].mXY.y = (currEndTarg - cache_tf.position).normalized.y;
+		}
 		GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
 
 		return currentState;
@@ -545,9 +602,16 @@ public class AI : Actor
 		if(timeInSamePos >= 1.0f)
 		{
 			timeInSamePos = 0.0f;
-			isStuck = true;
-			StartCoroutine(RealisticInputX());
-			reverseX = -xInput;
+			if (!isAtTargetX)
+			{
+				isStuck = true;
+				StartCoroutine(RealisticInputX());
+				reverseX = -xInput;
+			}
+			else
+			{
+				Debug.LogError("Cannot make it to end target");
+			}
 		}
 	}
 
@@ -578,7 +642,7 @@ public class AI : Actor
 				}
 				if (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)))
 				{
-					levelCounter = GameManager.Instance.gmLevelObjectScript.numberOfLevels;
+					levelCounter = GameManager.Instance.gmLevelObjectsScript.numberOfLevels;
 					while (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)) && levelCounter > 0)
 					{
 						FindNearestLevelObject(currEndTarg);
@@ -596,7 +660,6 @@ public class AI : Actor
 				else
 				{
 					currEndTarg.z = 0.0f;
-					currEndTargBound = currEndTarg;
 				}
 			}
 			else if (MoveTarget.y <= cache_tf.position.y - centerToFeet)
@@ -609,7 +672,6 @@ public class AI : Actor
 				else
 				{
 					currEndTarg.z = 0.0f;
-					currEndTargBound = currEndTarg;
 				}
 			}
 		}
@@ -628,7 +690,7 @@ public class AI : Actor
 		for (float i = 0.0f; i <= 1.0f; i += 0.05f)
 		{
 			position = Vector3.Lerp(cache_tf.position, FinalPos, i);
-			foreach (var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
+			foreach (var T in GameManager.Instance.gmLevelObjectsScript.loPlatforms)
 			{
 				if (T.transform.position != FinalPos && !((cache_tf.position.x < T.transform.position.x + 0.5f && cache_tf.position.x > T.transform.position.x - 0.5f) && (T.transform.position.y > cache_tf.position.y - (centerToFeet + 0.5f) && T.transform.position.y < cache_tf.position.y + (centerToFeet + 0.5f))))
 				{
@@ -650,7 +712,7 @@ public class AI : Actor
 					}
 				}
 			}
-			foreach (var Y in GameManager.Instance.gmLevelObjectScript.loVines)
+			foreach (var Y in GameManager.Instance.gmLevelObjectsScript.loVines)
 			{
 				if (Y.transform.position != FinalPos && !((cache_tf.position.x < Y.transform.position.x + 0.5f && cache_tf.position.x > Y.transform.position.x - 0.5f) && (Y.transform.position.y > cache_tf.position.y - (centerToFeet + 0.5f) && Y.transform.position.y < cache_tf.position.y + (centerToFeet + 0.5f))))
 				{
@@ -672,7 +734,7 @@ public class AI : Actor
 	private Vector3 FindEdgeOfPlatform(Vector3 platPos)
 	{
 		Vector3 result = Vector3.zero;
-		foreach (var T in GameManager.Instance.gmLevelObjectScript.loPlatforms)
+		foreach (var T in GameManager.Instance.gmLevelObjectsScript.loPlatforms)
 		{
 			if (platPos == T.transform.position)
 			{
@@ -694,17 +756,20 @@ public class AI : Actor
 	private Vector3 FindEdgeOfVine(Vector3 vinePos)
 	{
 		Vector3 result = vinePos;
-		foreach (var Y in GameManager.Instance.gmLevelObjectScript.loVines)
+		currEndTargBound = vinePos;
+		foreach (var Y in GameManager.Instance.gmLevelObjectsScript.loVines)
 		{
 			if (vinePos == Y.transform.position)
 			{
 				if(cache_tf.position.y < Y.transform.position.y)
 				{
 					result.y -= ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
+					currEndTargBound.y += ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
 				}
 				else
 				{
 					result.y += ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
+					currEndTargBound.y -= ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
 				}
 			}
 		}
