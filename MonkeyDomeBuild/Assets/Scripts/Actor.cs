@@ -571,6 +571,20 @@ public class Actor : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
+        {
+            if (isDashing)
+            {
+                GameManager.Instance.gmInputs[playerIndex].mCatch = true;
+                if (isPlayer == true)
+                {
+                    isPlayer = false;
+                    StartCoroutine(RealisticDashCatch());
+                }
+            }
+            //Debug.Log("touching ball;");
+
+        }
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             if (!justJump && isinair)
@@ -844,5 +858,12 @@ public class Actor : MonoBehaviour
         {
             cache_rb.gravityScale = 2;
         }
+    }
+
+    IEnumerator RealisticDashCatch()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GameManager.Instance.gmInputs[playerIndex].mCatch = false;
+        isPlayer = true;
     }
 }

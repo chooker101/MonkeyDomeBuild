@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     public TrophyManager gmTrophyManager;
     public AudienceManager gmAudienceManager;
     public AudienceAnimator gmAudienceAnimator;
-    public LevelObjectScript gmLevelObjectScript;
+    public LevelObjectsScript gmLevelObjectsScript;
     public GameOptionsManager gmGameOptionsManager;
     public PauseManager gmPauseManager;
     public TurretsManager gmTurretManager;
@@ -84,10 +84,14 @@ public class GameManager : MonoBehaviour
         {
             DontDestroyOnLoad(this.gameObject);
             TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
-            CreateInputs();
+			gmPlayers.Clear();
+			gmPlayerScripts.Clear();
+			CreateInputs();
             CreatePlayers();
         }
-        gmBalls.Clear();
+		gmPlayers.TrimExcess();
+		gmPlayerScripts.TrimExcess();
+		gmBalls.Clear();
 
     }
 
@@ -98,7 +102,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateInputs()
     {
-        for (int i = 0; i < (int)PN.Length; ++i)
+        for (int i = 0; i < TotalNumberofPlayers; ++i)
         {
             Instance.gmInputs[i] = (InputManager)ScriptableObject.CreateInstance("InputManager");
         }
@@ -107,37 +111,33 @@ public class GameManager : MonoBehaviour
     public void UpdateInputs()
     {
 
-        /*if (Instance.gmPlayerScripts[(int)PN.P1].isPlayer)
+        if (Instance.gmPlayerScripts[(int)PN.P1].isPlayer)
         {
+			if (Input.GetJoystickNames().Length >= 1)
+			{
+				if(Input.GetJoystickNames()[0] != null)
+				{
+					Instance.gmInputs[(int)PN.P1].mXY.x = Input.GetAxis("p1_joy_x");
+					Instance.gmInputs[(int)PN.P1].mXY.y = -Input.GetAxis("p1_joy_y");
+					Instance.gmInputs[(int)PN.P1].mAimStomp = Input.GetButtonDown("p1_aim/stomp");
+					Instance.gmInputs[(int)PN.P1].mChargeStomp = Input.GetButton("p1_aim/stomp");
 
-        }*/
-        if (Input.GetJoystickNames().Length >= 1)
-        {
-            if (Input.GetJoystickNames()[0] != null)
-            {
-                if (Instance.gmPlayerScripts[(int)PN.P1].isPlayer)
-                {
-                    Instance.gmInputs[(int)PN.P1].mXY.x = Input.GetAxis("p1_joy_x");
-                    Instance.gmInputs[(int)PN.P1].mXY.y = -Input.GetAxis("p1_joy_y");
-                    Instance.gmInputs[(int)PN.P1].mAimStomp = Input.GetButtonDown("p1_aim/stomp");
-                    Instance.gmInputs[(int)PN.P1].mChargeStomp = Input.GetButton("p1_aim/stomp");
-
-                    if (Input.GetJoystickNames()[0] == "Wireless Controller")
-                    {
-                        Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
-                        Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_ps4_catch/throw");
-                        Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_ps4_catch/throw");
-                        Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_ps4_catch/throw");
-                        Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_ps4_start");
-                    }
-                    else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
-                    {
-                        Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
-                        Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_catch/throw");
-                        Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_catch/throw");
-                        Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
-                        Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_start");
-                    }
+					if (Input.GetJoystickNames()[0] == "Wireless Controller")
+					{
+						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
+						Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_ps4_catch/throw");
+						Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_ps4_catch/throw");
+						Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_ps4_catch/throw");
+						Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_ps4_start");
+					}
+					else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
+					{
+						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
+						Instance.gmInputs[(int)PN.P1].mCatch = Input.GetButtonDown("p1_catch/throw");
+						Instance.gmInputs[(int)PN.P1].mChargeThrow = Input.GetButton("p1_catch/throw");
+						Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
+						Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_start");
+					}
                     else
                     {
                         Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
@@ -146,17 +146,18 @@ public class GameManager : MonoBehaviour
                         Instance.gmInputs[(int)PN.P1].mCatchRelease = Input.GetButtonUp("p1_catch/throw");
                         Instance.gmInputs[(int)PN.P1].mStart = Input.GetButtonDown("p1_start");
                     }
-                }
-            }
-            else
-            {
-                if (Input.GetJoystickNames()[0] == "Wireless Controller")
-                    Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
-                else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
-                    Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
-            }
+				}
+				else
+				{
+					if (Input.GetJoystickNames()[0] == "Wireless Controller")
+						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_ps4_jump");
+					else if (Input.GetJoystickNames()[0] == "XBOX 360 For Windows (Controller)")
+						Instance.gmInputs[(int)PN.P1].mJump = Input.GetButtonDown("p1_jump");
+				}
+			}
         }
-        if (Instance.gmPlayerScripts[(int)PN.P2] != null)
+
+        if (Instance.gmPlayerScripts.Count >= 2)
         {
 			if (Input.GetJoystickNames().Length >= 2)
 			{
@@ -204,7 +205,7 @@ public class GameManager : MonoBehaviour
 				}
             }
         }
-        if (Instance.gmPlayerScripts[(int)PN.P3] != null)
+        if (Instance.gmPlayerScripts.Count >= 3)
         {
 			if (Input.GetJoystickNames().Length >= 3)
 			{
@@ -252,7 +253,7 @@ public class GameManager : MonoBehaviour
 				}
             }
         }
-        if (Instance.gmPlayerScripts[(int)PN.P4] != null)
+        if (Instance.gmPlayerScripts.Count >= 4)
         {
 			if (Input.GetJoystickNames().Length >= 4)
 			{
@@ -300,7 +301,7 @@ public class GameManager : MonoBehaviour
 				}
             }
         }
-        if (Instance.gmPlayerScripts[(int)PN.P5] != null)
+        if (Instance.gmPlayerScripts.Count >= 5)
         {
 			if (Input.GetJoystickNames().Length >= 5)
 			{
@@ -350,6 +351,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public void CreatePlayers()
     {
         if (TotalNumberofPlayers > 0)
@@ -371,26 +373,26 @@ public class GameManager : MonoBehaviour
                 Transform temp = Instance.gmSpawnManager.SpawnPoints[i];
                 if (NumberOfPlayersToBuild > 0)
                 {
-                    if (Instance.gmPlayers[i] == null)
-                    {
-                        Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
-                        Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<Player>();
-                        Instance.gmPlayerScripts[i].isPlayer = true;
-                    }
+					gmPlayers.Add(null);
+					gmPlayerScripts.Add(null);
+                    gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
+                    gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<Player>();
+                    gmPlayerScripts[i].isPlayer = true;
+                    
                     --NumberOfPlayersToBuild;
                 }
                 else if (NumberOfBotsToBuild > 0)
                 {
-                    if (Instance.gmPlayers[i] == null)
-                    {
-                        Instance.gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
-                        Instance.gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<AI>();
-                        Instance.gmPlayerScripts[i].isPlayer = false;
-                    }
+					gmPlayers.Add(null);
+					gmPlayerScripts.Add(null);
+					gmPlayers[i] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
+                    gmPlayerScripts[i] = Instance.gmPlayers[i].GetComponent<AI>();
+                    gmPlayerScripts[i].isPlayer = false;
+                    
                     --NumberOfBotsToBuild;
                 }
 
-                Instance.gmPlayers[i].GetComponent<Actor>().playerIndex = i;
+                gmPlayers[i].GetComponent<Actor>().playerIndex = i;
 
                 if (PlayerGorilla == i)
                 {
