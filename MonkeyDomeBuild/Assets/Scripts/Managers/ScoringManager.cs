@@ -130,12 +130,14 @@ public class ScoringManager : MonoBehaviour
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
                 {
                     scoreGetThrower += longThrowScore;
+                    GameManager.Instance.gmPlayers[thrower.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(longThrowScore, thrower.GetComponent<Actor>().playerIndex);
                     //TODO add in BouncePassEvent call here
                     //AddScore(thrower.GetComponent<Actor>().playerIndex, longThrowScore);
                     //Debug.Log("long throw");
                     if (numberOfBounce >= minBounce && numberOfBounce <= maxBounce)
                     {
                         scoreGetThrower += bounceScore;
+                        GameManager.Instance.gmPlayers[thrower.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(bounceScore, thrower.GetComponent<Actor>().playerIndex);
                         //TODO add in BouncePassEvent call here
                         //AddScore(thrower.GetComponent<Actor>().playerIndex, bounceScore);
                         //Debug.Log("bounce");
@@ -143,13 +145,16 @@ public class ScoringManager : MonoBehaviour
                     if (catcher.GetComponent<Actor>().IsInAir)
                     {
                         scoreGetCatcher += catchInAirScore;
+                        GameManager.Instance.gmPlayers[catcher.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(catchInAirScore, catcher.GetComponent<Actor>().playerIndex);
                     }
                 }
                 FindObjectOfType<ScoreVisualizer>().UpdateScore(thrower.GetComponent<Actor>().playerIndex, GetScore(thrower.GetComponent<Actor>().playerIndex), scoreGetThrower, "Successful Throw");
                 FindObjectOfType<ScoreVisualizer>().UpdateScore(catcher.GetComponent<Actor>().playerIndex, GetScore(catcher.GetComponent<Actor>().playerIndex), scoreGetCatcher, "Successful Catch");
                 AddScore(thrower.GetComponent<Actor>().playerIndex, scoreGetThrower);
                 AddScore(catcher.GetComponent<Actor>().playerIndex, scoreGetCatcher);
-                
+                // adding point ups
+                GameManager.Instance.gmPlayers[thrower.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(scoreGetThrower, thrower.GetComponent<Actor>().playerIndex);
+                GameManager.Instance.gmPlayers[catcher.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(scoreGetCatcher, catcher.GetComponent<Actor>().playerIndex);
                 throwCombo++;
             }
         }
@@ -175,6 +180,8 @@ public class ScoringManager : MonoBehaviour
                         switchScore += Mathf.Abs(monkeyGettingInterceptScore);
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), monkeyGettingInterceptScore, "Being Intercept");
                         AddScore(i, monkeyGettingInterceptScore);
+                        // adding point ups
+                        GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(monkeyGettingInterceptScore, i);
                     }
                     GameManager.Instance.gmPlayers[i].GetComponent<EffectControl>().PlaySadFace();
                 }
@@ -191,6 +198,8 @@ public class ScoringManager : MonoBehaviour
                         switchScore += Mathf.Abs(innocentMonkeyScore);
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), innocentMonkeyScore, "Being Intercept");
                         AddScore(i, innocentMonkeyScore);
+                        // adding point ups
+                        GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(innocentMonkeyScore, i);
                     }
                     GameManager.Instance.gmPlayers[i].GetComponent<EffectControl>().PlaySadFace();
                 }
@@ -198,6 +207,8 @@ public class ScoringManager : MonoBehaviour
         }
         FindObjectOfType<ScoreVisualizer>().UpdateScore(gorilla.GetComponent<Actor>().playerIndex, GetScore(gorilla.GetComponent<Actor>().playerIndex), switchScore, "Intercept");
         AddScore(gorilla.GetComponent<Actor>().playerIndex, switchScore);
+        // adding points ups
+        GameManager.Instance.gmPlayers[gorilla.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(switchScore, gorilla.GetComponent<Actor>().playerIndex);
     }
     int GetPassScore()
     {
@@ -253,6 +264,8 @@ public class ScoringManager : MonoBehaviour
         }
         FindObjectOfType<ScoreVisualizer>().UpdateScore(monkeyIndex, GetScore(monkeyIndex), score, "Hit Target");
         AddScore(monkeyIndex, score);
+        // adding up score
+        GameManager.Instance.gmPlayers[monkeyIndex].GetComponentInChildren<PointsManager>().AddQueue(score, monkeyIndex);
     }
     public void ResetCombo()
     {
