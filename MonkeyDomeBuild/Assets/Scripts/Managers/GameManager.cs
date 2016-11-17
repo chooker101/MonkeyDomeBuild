@@ -160,8 +160,7 @@ public class GameManager : MonoBehaviour
 			}
         }
 
-        //if (Instance.gmPlayerScripts.Count >= 2)
-        //{
+ 
 			if (Input.GetJoystickNames().Length >= 2)
 			{
 				if (Input.GetJoystickNames()[1] != null)
@@ -207,10 +206,8 @@ public class GameManager : MonoBehaviour
 					}
 				}
             }
-        //}
-        //if (Instance.gmPlayerScripts.Count >= 3)
-        //{
-			if (Input.GetJoystickNames().Length >= 3)
+		
+		if (Input.GetJoystickNames().Length >= 3)
 			{
 				if (Input.GetJoystickNames()[2] != null)
 				{
@@ -255,9 +252,7 @@ public class GameManager : MonoBehaviour
 					}
 				}
             }
-        //}
-       // if (Instance.gmPlayerScripts.Count >= 4)
-        //{
+       
 			if (Input.GetJoystickNames().Length >= 4)
 			{
 				if (Input.GetJoystickNames()[3] != null)
@@ -303,9 +298,7 @@ public class GameManager : MonoBehaviour
 					}
 				}
             }
-        //}
-        //if (Instance.gmPlayerScripts.Count >= 5)
-        //{
+       
 			if (Input.GetJoystickNames().Length >= 5)
 			{
 				if (Input.GetJoystickNames()[4] != null)
@@ -352,7 +345,7 @@ public class GameManager : MonoBehaviour
 					}
 				}
             }
-        //}
+        
     }
 
     public void CreatePlayers()
@@ -403,7 +396,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (!noGorilla)
                     {
-                        Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Gorilla(i, gmPlayerScripts[i].inputIndex);
+                        Instance.gmPlayers[i].GetComponent<Actor>().characterType = new Gorilla(i, i);
                         Instance.gmPlayers[i].GetComponent<Transform>().localScale = Instance.gmPlayers[i].GetComponent<Actor>().characterType.gorillaSize;
                     }
                     else
@@ -448,9 +441,9 @@ public class GameManager : MonoBehaviour
     }
     public void RemovePlayer()
     {
-        Destroy(Instance.gmPlayers[(int)TotalNumberofPlayers]);
-        Instance.gmPlayers[(int)TotalNumberofPlayers] = null;
-        Instance.gmPlayerScripts[(int)TotalNumberofPlayers] = null;
+        Destroy(Instance.gmPlayers[(int)TotalNumberofPlayers - 1]);
+        Instance.gmPlayers[(int)TotalNumberofPlayers - 1] = null;
+        Instance.gmPlayerScripts[(int)TotalNumberofPlayers - 1] = null;
         gmPlayers.TrimExcess();
         gmPlayerScripts.TrimExcess();
         TotalNumberofPlayers--;

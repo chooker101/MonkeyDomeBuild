@@ -283,7 +283,7 @@ public class Actor : MonoBehaviour
     {
         if (canCharge)
         {
-            if (GameManager.Instance.gmInputs[inputIndex].mChargeThrow && haveBall && !cantHoldAnymore)
+            if ((GameManager.Instance.gmInputs[inputIndex].mChargeThrow && haveBall) && !cantHoldAnymore)
             {
                 isCharging = true;
                 if (!startSlowMo)
@@ -481,7 +481,7 @@ public class Actor : MonoBehaviour
                 dashingCount = 0;
                 isDashing = false;
                 GetComponent<EffectControl>().EndDashEffect();
-                for (int i = 0; i < GameManager.Instance.gmPlayers.Capacity; ++i)
+                for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
                 {
                     if (GameManager.Instance.gmPlayers[i] != null)
                     {
