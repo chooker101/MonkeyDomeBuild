@@ -67,7 +67,7 @@ public class ColourChanger : MonoBehaviour
             GetComponentInChildren<Collider2D>().enabled = false;
             TargetSetter();
             playerNumberText.gameObject.SetActive(true);
-            playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
+            //playerNumberText.text = "P" + "1";//playerTargetIndex.ToString();
 
         }
         if (Vector3.Distance(target.transform.localEulerAngles, targetRot) > 0.01f)
@@ -117,8 +117,8 @@ public class ColourChanger : MonoBehaviour
                 targetReadyAll.gameObject.SetActive(false);
 
                 playerNumberText.gameObject.SetActive(true);
-                playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
-            }
+                playerNumberText.text = "P" + (playerTargetIndex + 1).ToString();
+			}
         }
         else if(activated && isHit && !preGameTimerObject.AllTargetsHit())
         {
