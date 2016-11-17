@@ -11,6 +11,7 @@ public class PointsManager : MonoBehaviour {
     public GameObject pointPrefab;
 
     public int amount = 10;
+    bool canDisplay = true;
     // Use this for initialization
     void Start () {
         for(int i = 0; i < amount; i++)
@@ -18,22 +19,30 @@ public class PointsManager : MonoBehaviour {
             GameObject tempPoint = (GameObject)Instantiate(pointPrefab, transform.position, Quaternion.identity);
             tempPoint.transform.SetParent(transform);
             pointObjects.Add(tempPoint.transform);
+            tempPoint.GetComponent<PointEffect>().Init();
+            tempPoint.SetActive(false);
         }
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
         // if queue > 1 run it
-        if (displayQueue.Count > 0)
+        if (canDisplay)
         {
-            for (int i = 0; i < displayQueue.Count; i++)
+            if (displayQueue.Count > 0)
             {
-                for(int j = 0; j < pointObjects.Count; j++)
+                for (int j = 0; j < pointObjects.Count; j++)
                 {
-                    if (pointObjects[j].gameObject.activeInHierarchy)
+                    if (!pointObjects[j].gameObject.activeInHierarchy)
                     {
-                        SetSprite(displayQueue[i], playerIndex[i]);
+                        SetSprite(displayQueue[0], j);
+                        canDisplay = false;
+                        StartCoroutine(PointDelay());
                         pointObjects[j].gameObject.SetActive(true);
+                        pointObjects[j].GetComponent<PointEffect>().IsDisplaying = true;
+                        displayQueue.RemoveAt(0);
+                        playerIndex.RemoveAt(0);
                         break;
                     }
                 }
@@ -42,7 +51,7 @@ public class PointsManager : MonoBehaviour {
 
 	}
 
-    void AddQueue(int score, int index)
+    public void AddQueue(int score, int index)
     {
         displayQueue.Add(score);
         playerIndex.Add(index);
@@ -83,5 +92,9 @@ public class PointsManager : MonoBehaviour {
         }
     }
 
-
+    IEnumerator PointDelay()
+    {
+        yield return new WaitForSeconds(.2f);
+        canDisplay = true;
+    }
 }

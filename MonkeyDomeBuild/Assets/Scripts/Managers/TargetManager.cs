@@ -15,7 +15,7 @@ public class TargetManager : MonoBehaviour
     public bool[] targetsHitInSequence = new bool[5];
     public int sequenceIndex = 0;
     public bool advanceTier;
-    private float timeBetweenRallies = 10f;
+    private float timeBetweenRallies = 6f;
 
     [SerializeField]
     private Target[] gameTargets;

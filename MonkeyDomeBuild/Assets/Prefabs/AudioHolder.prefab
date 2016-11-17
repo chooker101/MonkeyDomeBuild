@@ -42,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4209d696f4978cc46a81ee8f0fde2bbe, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 613716afa59c11544a7b556dec6a9157, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -190,7 +190,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: bcf48945d046df1459b8a7920e741f27, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5fce6503b903cd64080f259395acbba1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -264,7 +264,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1815f2f8c6e88dc44988993f2f672ebf, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e718e329940b0bf4f8f238685433daaf, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -338,7 +338,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 613716afa59c11544a7b556dec6a9157, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1815f2f8c6e88dc44988993f2f672ebf, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -416,10 +416,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startTrack: {fileID: 8300000, guid: e718e329940b0bf4f8f238685433daaf, type: 3}
   mainLoop: {fileID: 8300000, guid: 5fce6503b903cd64080f259395acbba1, type: 3}
-  levelAudio2: {fileID: 8299466}
-  levelAudio: {fileID: 8299784}
-  startAudio: {fileID: 8272156}
-  startAudio2: {fileID: 8260828}
+  levelAudio2: {fileID: 8260828}
+  levelAudio: {fileID: 8272156}
+  startAudio: {fileID: 8299466}
+  startAudio2: {fileID: 8299784}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
