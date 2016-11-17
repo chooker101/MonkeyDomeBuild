@@ -149,6 +149,7 @@ public class ScoringManager : MonoBehaviour
                 FindObjectOfType<ScoreVisualizer>().UpdateScore(catcher.GetComponent<Actor>().playerIndex, GetScore(catcher.GetComponent<Actor>().playerIndex), scoreGetCatcher, "Successful Catch");
                 AddScore(thrower.GetComponent<Actor>().playerIndex, scoreGetThrower);
                 AddScore(catcher.GetComponent<Actor>().playerIndex, scoreGetCatcher);
+                
                 throwCombo++;
             }
         }
