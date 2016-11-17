@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEditor;
+//using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -88,11 +88,12 @@ public class AI : Actor
 	{
 		DontDestroyOnLoad(this.gameObject);
         //currentState = State.Move;
-		lastSceneOld = EditorApplication.currentScene.ToString();
+
 #if UNITY_5_3
+        lastSceneOld = EditorApplication.currentScene.ToString();
 		oldSceneCheck = true;
 #elif UNITY_5_4
-		SceneManager.activeSceneChanged += sceneChangedDelegate;
+        SceneManager.activeSceneChanged += sceneChangedDelegate;
 #endif
 			//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
@@ -116,7 +117,9 @@ public class AI : Actor
 	{
 		if (oldSceneCheck)
 		{
+            #if UNITY_5_3
 			currSceneOld = EditorApplication.currentScene.ToString();
+#endif
 			if (currSceneOld != lastSceneOld)
 			{
 				sceneChangedOld();
