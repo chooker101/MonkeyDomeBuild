@@ -15,9 +15,10 @@ public class Gorilla : Character
     private float justDashedTime = 2f;
     private GorillaCharge chargeUI;
 
-	public Gorilla(int x)
+	public Gorilla(int x,int y)
 	{
 		myPlayer = x;
+        myInput = y;
 		throwForce = GameManager.Instance.gmMovementManager.gThrowForce;
 		jumpforce = GameManager.Instance.gmMovementManager.gJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.gSpeed;
@@ -60,7 +61,7 @@ public class Gorilla : Character
 
 	protected void CatchCheck()
 	{
-        if (GameManager.Instance.gmInputs[myPlayer].mCatch && cacheplayer.ballCanCatch != null)
+        if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null)
         {
             if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
                 Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
@@ -96,7 +97,7 @@ public class Gorilla : Character
 	public override void Mutate()
 	{
         cacheplayer.GorillaCatchReset();
-        cacheplayer.characterType = new Monkey(myPlayer);
+        cacheplayer.characterType = new Monkey(myPlayer,myInput);
 		//cacheplayer.GetComponent<Transform>().localScale = monkeySize;
 
 		/*
@@ -126,7 +127,7 @@ public class Gorilla : Character
 	}
 	protected void StompCheck()
 	{
-        if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && canDash)
+        if (GameManager.Instance.gmInputs[myInput].mAimStomp && canDash)
         {
             manuallyCharging = false;
             justDashed = true;
@@ -144,7 +145,7 @@ public class Gorilla : Character
             }
             else
             {
-                if (GameManager.Instance.gmInputs[myPlayer].mChargeStomp)
+                if (GameManager.Instance.gmInputs[myInput].mChargeStomp)
                 {
                     chargeCount += Time.deltaTime * 3f;
                     manuallyCharging = true;

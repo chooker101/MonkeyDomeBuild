@@ -1926,7 +1926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalNumberofPlayers: 0
-  NumberOfPlayersToBuild: 3
+  NumberOfPlayersToBuild: 1
   NumberOfBotsToBuild: 0
   RandomGorilla: 0
   PlayerGorilla: 0
@@ -1963,12 +1963,13 @@ MonoBehaviour:
   gmTrophyManager: {fileID: 11469230}
   gmAudienceManager: {fileID: 0}
   gmAudienceAnimator: {fileID: 0}
-  gmLevelObjectScript: {fileID: 0}
+  gmLevelObjectsScript: {fileID: 0}
   gmGameOptionsManager: {fileID: 11492684}
   gmPauseManager: {fileID: 404905926}
   gmTurretManager: {fileID: 11458014}
   gmCurtainController: {fileID: 0}
   nextRoom: 
+  InputIndecies: 0000000000000000000000000000000000000000
   noGorilla: 1
 --- !u!114 &11439808
 MonoBehaviour:

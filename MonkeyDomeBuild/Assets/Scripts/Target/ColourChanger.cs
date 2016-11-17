@@ -62,7 +62,7 @@ public class ColourChanger : MonoBehaviour
         // Add player target to join
         if (join && !activated)
         {
-            GameManager.Instance.AddPlayer(playerTargetIndex);
+            playerTargetIndex = GameManager.Instance.AddPlayer(playerTargetIndex);
             activated = true;
             GetComponentInChildren<Collider2D>().enabled = false;
             TargetSetter();
@@ -311,15 +311,15 @@ public class ColourChanger : MonoBehaviour
         {
             if (activated)
             {
-                GameManager.Instance.gmRecordKeeper.ResetPlayerMaterial(playerTargetIndex);
-                GameManager.Instance.RemovePlayer(playerTargetIndex);
+                GameManager.Instance.gmRecordKeeper.ResetPlayerMaterial((int)GameManager.Instance.TotalNumberofPlayers - 1);
+                GameManager.Instance.RemovePlayer();
                 activated = false;
                 GetComponentInChildren<Collider2D>().enabled = false;
                 Reset();
             }
             else
             {
-                GameManager.Instance.AddPlayer(playerTargetIndex);
+                playerTargetIndex = GameManager.Instance.AddPlayer(playerTargetIndex);
                 activated = true;
                 GetComponentInChildren<Collider2D>().enabled = false;
                 TargetSetter();

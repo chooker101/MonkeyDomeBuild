@@ -12,6 +12,7 @@ public class Actor : MonoBehaviour
      * - provide a key to accessing each player's stats 
      */
     public int playerIndex;
+    public int inputIndex;
     public bool isPlayer;
 
     public Vector2 movement = Vector2.zero;
@@ -116,7 +117,7 @@ public class Actor : MonoBehaviour
     {
         //JumpCheck();
         //cType = characterType.ToString();
-        if (GameManager.Instance.gmInputs[playerIndex].mJump)
+        if (GameManager.Instance.gmInputs[inputIndex].mJump)
         {
             Jumping();
         }
@@ -207,7 +208,7 @@ public class Actor : MonoBehaviour
                     animator.SetBool("IsIdle", true);
                 }
 
-                if (GameManager.Instance.gmInputs[playerIndex].mXY.y >= 0)
+                if (GameManager.Instance.gmInputs[inputIndex].mXY.y >= 0)
                 {
                     cache_rb.velocity *= 0.3f;
                     cache_rb.AddForce(Vector2.up * characterType.jumpforce, ForceMode2D.Impulse);
@@ -235,15 +236,15 @@ public class Actor : MonoBehaviour
         movement = cache_rb.velocity;
         if (!isClimbing)
         {
-            if (!RayCastSide(GameManager.Instance.gmInputs[playerIndex].mXY.x))
+            if (!RayCastSide(GameManager.Instance.gmInputs[inputIndex].mXY.x))
             {
                 if (characterType is Gorilla && characterType.manuallyCharging)
                 {
-                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.chargespeed + characterInc);
+                    movement.x = GameManager.Instance.gmInputs[inputIndex].mXY.x * (characterType.chargespeed + characterInc);
                 }
                 else
                 {
-                    movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
+                    movement.x = GameManager.Instance.gmInputs[inputIndex].mXY.x * (characterType.movespeed + characterInc);
                 }
                 if (isDashing)
                 {
@@ -262,8 +263,8 @@ public class Actor : MonoBehaviour
         }
         else
         {
-            movement.x = GameManager.Instance.gmInputs[playerIndex].mXY.x * (characterType.movespeed + characterInc);
-            movement.y = GameManager.Instance.gmInputs[playerIndex].mXY.y * (characterType.movespeed + characterInc);
+            movement.x = GameManager.Instance.gmInputs[inputIndex].mXY.x * (characterType.movespeed + characterInc);
+            movement.y = GameManager.Instance.gmInputs[inputIndex].mXY.y * (characterType.movespeed + characterInc);
         }
         if (!beingSmack)
         {
@@ -282,7 +283,7 @@ public class Actor : MonoBehaviour
     {
         if (canCharge)
         {
-            if (GameManager.Instance.gmInputs[playerIndex].mChargeThrow && haveBall && !cantHoldAnymore)
+            if (GameManager.Instance.gmInputs[inputIndex].mChargeThrow && haveBall && !cantHoldAnymore)
             {
                 isCharging = true;
                 if (!startSlowMo)
@@ -334,7 +335,7 @@ public class Actor : MonoBehaviour
                         }
                     }
                     ReleaseBall();
-                    ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[playerIndex].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[playerIndex].mXY.y * tempThrowForce), ForceMode2D.Impulse);
+                    ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[inputIndex].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[inputIndex].mXY.y * tempThrowForce), ForceMode2D.Impulse);
                     stat_throw++;
                     holdingCatchCount = 0f;
                 }
@@ -342,7 +343,7 @@ public class Actor : MonoBehaviour
         }
         else
         {
-            if (GameManager.Instance.gmInputs[playerIndex].mCatchRelease)
+            if (GameManager.Instance.gmInputs[inputIndex].mCatchRelease)
             {
                 canCharge = true;
             }
@@ -438,9 +439,9 @@ public class Actor : MonoBehaviour
             //Debug.Log(a);
             var a = Mathf.Lerp(1, 4, holdingCatchCount / maxChargeCount);
             PointerCenter.transform.parent.GetComponent<RectTransform>().localScale = new Vector3(a, a, a);
-            if (GameManager.Instance.gmInputs[playerIndex].mXY.x != 0 || GameManager.Instance.gmInputs[playerIndex].mXY.y != 0)
+            if (GameManager.Instance.gmInputs[inputIndex].mXY.x != 0 || GameManager.Instance.gmInputs[inputIndex].mXY.y != 0)
             {
-                Vector3 dir = new Vector3(GameManager.Instance.gmInputs[playerIndex].mXY.x, GameManager.Instance.gmInputs[playerIndex].mXY.y, 0);
+                Vector3 dir = new Vector3(GameManager.Instance.gmInputs[inputIndex].mXY.x, GameManager.Instance.gmInputs[inputIndex].mXY.y, 0);
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
                 if (targetAng.eulerAngles.y == 180f)
                 {
@@ -575,7 +576,7 @@ public class Actor : MonoBehaviour
         {
             if (isDashing)
             {
-                GameManager.Instance.gmInputs[playerIndex].mCatch = true;
+                GameManager.Instance.gmInputs[inputIndex].mCatch = true;
                 if (isPlayer == true)
                 {
                     isPlayer = false;
@@ -791,7 +792,7 @@ public class Actor : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-        if (Mathf.Abs(cache_rb.velocity.x) > 1f || GameManager.Instance.gmInputs[playerIndex].mXY.x != 0)
+        if (Mathf.Abs(cache_rb.velocity.x) > 1f || GameManager.Instance.gmInputs[inputIndex].mXY.x != 0)
         {
             animator.SetBool("IsWalking", true);
             animator.SetBool("IsIdle", false);
@@ -808,14 +809,14 @@ public class Actor : MonoBehaviour
         Vector2 dashDir = Vector2.zero;
         GetComponent<EffectControl>().PlayDashEffect();
         dashDir.y = 1f;
-        if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) > 0)
+        if (Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.x) > 0)
         {
-            dashDir.x = GameManager.Instance.gmInputs[playerIndex].mXY.x > 0 ? 1f : -1f;
+            dashDir.x = GameManager.Instance.gmInputs[inputIndex].mXY.x > 0 ? 1f : -1f;
             //dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 0.5f : -1.2f;
         }
-        if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) > 0)
+        if (Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.y) > 0)
         {
-            dashDir.y = GameManager.Instance.gmInputs[playerIndex].mXY.y > 0 ? 1f : -1f;
+            dashDir.y = GameManager.Instance.gmInputs[inputIndex].mXY.y > 0 ? 1f : -1f;
         }
         dashDir.x *= 0.5f;
         dashDir *= dashForce;
@@ -863,7 +864,7 @@ public class Actor : MonoBehaviour
     IEnumerator RealisticDashCatch()
     {
         yield return new WaitForSeconds(0.5f);
-        GameManager.Instance.gmInputs[playerIndex].mCatch = false;
+        GameManager.Instance.gmInputs[inputIndex].mCatch = false;
         isPlayer = true;
     }
 }

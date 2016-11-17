@@ -12,6 +12,7 @@ public class Character
 	public float chargespeed;
     public bool manuallyCharging = false;
     protected int myPlayer;
+    protected int myInput;
 	protected Actor cacheplayer;
 
 

@@ -144,7 +144,7 @@ public class AI : Actor
 			IsBallNear();
 		}
 		//cType = characterType.ToString();
-		if (GameManager.Instance.gmInputs[playerIndex].mJump)
+		if (GameManager.Instance.gmInputs[inputIndex].mJump)
 		{
 			Jumping();
 		}
@@ -343,8 +343,8 @@ public class AI : Actor
 
 	State ExecuteCatch()
 	{
-		GameManager.Instance.gmInputs[playerIndex].mXY.x = 0.0f;
-		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
+		GameManager.Instance.gmInputs[inputIndex].mXY.x = 0.0f;
+		GameManager.Instance.gmInputs[inputIndex].mCatch = true;
 		StartCoroutine(RealisticInputCatch());
 		int lowestPoints = 0;
 		int secondLowest = 0;
@@ -425,11 +425,11 @@ public class AI : Actor
 	{
 		//Debug.Log("Throw");
 		
-		GameManager.Instance.gmInputs[playerIndex].mXY.x = aimDir.x;
-		GameManager.Instance.gmInputs[playerIndex].mXY.y = aimDir.y;
-		GameManager.Instance.gmInputs[playerIndex].mCatch = true;
-		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = true;
-		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = true;
+		GameManager.Instance.gmInputs[inputIndex].mXY.x = aimDir.x;
+		GameManager.Instance.gmInputs[inputIndex].mXY.y = aimDir.y;
+		GameManager.Instance.gmInputs[inputIndex].mCatch = true;
+		GameManager.Instance.gmInputs[inputIndex].mChargeThrow = true;
+		GameManager.Instance.gmInputs[inputIndex].mCatchRelease = true;
 		StartCoroutine(RealisticInputThrow());
 		wantsToThrow = false;
 		if (!onCatchCoolDown)
@@ -492,7 +492,7 @@ public class AI : Actor
 								xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
 								if (xInput <= 1.0f && xInput >= -1.0f)
 								{
-									GameManager.Instance.gmInputs[playerIndex].mJump = true;
+									GameManager.Instance.gmInputs[inputIndex].mJump = true;
 									canJump = false;
 									StartCoroutine(RealisticInputJump());
 								}
@@ -504,7 +504,7 @@ public class AI : Actor
 									xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
 									if (xInput <= 1.0f && xInput >= -1.0f)
 									{
-										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
 									}
@@ -513,7 +513,7 @@ public class AI : Actor
 								{
 									if (cache_tf.position.y >= currEndTargBound.y)
 									{
-										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
 									}
@@ -529,7 +529,7 @@ public class AI : Actor
 									xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
 									if (xInput <= 1.0f && xInput >= -1.0f)
 									{
-										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
 									}
@@ -542,7 +542,7 @@ public class AI : Actor
 									xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
 									if (xInput <= 1.0f && xInput >= -1.0f)
 									{
-										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
 									}
@@ -551,7 +551,7 @@ public class AI : Actor
 								{
 									if(isAtTargetX)
 									{
-										GameManager.Instance.gmInputs[playerIndex].mJump = true;
+										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
 										currEndTarg = currEndTargBound;
@@ -590,9 +590,9 @@ public class AI : Actor
 
 		if (isEndTargVine && isClimbing)
 		{
-			GameManager.Instance.gmInputs[playerIndex].mXY.y = (currEndTarg - cache_tf.position).normalized.y;
+			GameManager.Instance.gmInputs[inputIndex].mXY.y = (currEndTarg - cache_tf.position).normalized.y;
 		}
-		GameManager.Instance.gmInputs[playerIndex].mXY.x = xInput;
+		GameManager.Instance.gmInputs[inputIndex].mXY.x = xInput;
 
 		return currentState;
 	}
@@ -979,22 +979,22 @@ public class AI : Actor
 	IEnumerator RealisticInputJump()
 	{
 		yield return new WaitForEndOfFrame();
-		GameManager.Instance.gmInputs[playerIndex].mJump = false;
+		GameManager.Instance.gmInputs[inputIndex].mJump = false;
 	}
 
 	IEnumerator RealisticInputCatch()
 	{
 		yield return new WaitForSeconds(0.3f);
-		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
+		GameManager.Instance.gmInputs[inputIndex].mCatch = false;
 	}
 
 	IEnumerator RealisticInputThrow()
 	{
 		yield return new WaitForSeconds(0.05f);
-		GameManager.Instance.gmInputs[playerIndex].mCatch = false;
+		GameManager.Instance.gmInputs[inputIndex].mCatch = false;
 		yield return new WaitForSeconds(0.05f);
-		GameManager.Instance.gmInputs[playerIndex].mChargeThrow = false;
-		GameManager.Instance.gmInputs[playerIndex].mCatchRelease = false;
+		GameManager.Instance.gmInputs[inputIndex].mChargeThrow = false;
+		GameManager.Instance.gmInputs[inputIndex].mCatchRelease = false;
 		yield return new WaitForSeconds(0.3f);
 		currentState = State.Move;
 	}
