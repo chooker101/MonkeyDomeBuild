@@ -66,7 +66,7 @@ public class ColourChanger : MonoBehaviour
             activated = true;
             GetComponentInChildren<Collider2D>().enabled = false;
             TargetSetter();
-            playerNumberText.gameObject.SetActive(false);
+            playerNumberText.gameObject.SetActive(true);
             playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
 
         }
@@ -115,6 +115,9 @@ public class ColourChanger : MonoBehaviour
                 targetUnready.gameObject.SetActive(true);
                 targetReady.gameObject.SetActive(false);
                 targetReadyAll.gameObject.SetActive(false);
+
+                playerNumberText.gameObject.SetActive(true);
+                playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
             }
         }
         else if(activated && isHit && !preGameTimerObject.AllTargetsHit())
