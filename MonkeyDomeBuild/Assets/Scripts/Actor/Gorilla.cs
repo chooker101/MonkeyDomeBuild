@@ -33,9 +33,15 @@ public class Gorilla : Character
 	public override void CHUpdate()
 	{
 		timeBeingGorilla += Time.deltaTime;
-		
-		CatchCheck();
+
+        if (cacheplayer.haveBall)
+        {
+            cacheplayer.ThrowCheck();
+        }
+
+        CatchCheck();
 		StompCheck();
+        
 
         if (GameManager.Instance.gmPlayerScripts[myPlayer].characterType is Gorilla)
         {
@@ -58,7 +64,7 @@ public class Gorilla : Character
 	{
 		
 	}
-
+    /* OLD Catch 
 	protected void CatchCheck()
 	{
         if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null)
@@ -75,6 +81,37 @@ public class Gorilla : Character
                         {
 							cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().ReleaseBall();
 							GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);
+               
+                        }
+                        cacheplayer.CaughtBall(cacheplayer.ballCanCatch.gameObject);
+                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
+                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
+                        cacheplayer.stat_ballGrab++;
+                    }
+                }
+            }
+
+        }
+    }
+     * */
+
+        //new catch for coconuts
+    protected void CatchCheck()
+    {
+        if( GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null )
+        {
+            if( !Physics2D.Raycast( cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
+                Vector3.Distance( cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position ), cacheplayer.layerMask ) )
+            {
+                if( cacheplayer.ballInRange )
+                {
+                    if( cacheplayer.ballCanCatch.GetComponent<BallInfo>().IsBall )
+                    {
+                        // Checks to see if the current scene isn't the pre-game room
+                        if( cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom" )
+                        {
+                            cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().ReleaseBall();
+                            GameManager.Instance.gmScoringManager.GorillaInterceptScore( GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(), cacheplayer.ballCanCatch.gameObject );
                             //On interception check for active audience interception event
                             //if (GameManager.Instance.gmAudienceManager.GetEventActive())
                             //{ 
@@ -84,12 +121,28 @@ public class Gorilla : Character
                             //    }
                             //}
                         }
-                        cacheplayer.CaughtBall(cacheplayer.ballCanCatch.gameObject);
-                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);
-                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().BeingCatch(cacheplayer.gameObject);
+                        cacheplayer.CaughtBall( cacheplayer.ballCanCatch.gameObject );
+                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change( myPlayer );
+                        cacheplayer.ballCanCatch.GetComponent<BallInfo>().BeingCatch( cacheplayer.gameObject );
+                        cacheplayer.stat_ballGrab++;
+                    }
+                    else if( !cacheplayer.haveBall && cacheplayer.ballInRange )
+                    {
+                        if( cacheplayer.ballCanCatch.BallType == ThrowableType.Trophy )
+                        {
+                            cacheplayer.ballCanCatch.GetComponent<TrophyInfo>().DisableCollider();
+                        }
+                        cacheplayer.GetComponent<EffectControl>().PlayCatchEffect( cacheplayer.ballCanCatch.gameObject );
+                        if( cacheplayer.ballCanCatch.GetComponent<BallInfo>().IsPerfectCatch( cacheplayer ) )
+                        {
+                            cacheplayer.GetComponent<EffectControl>().PlayPerfectCatchEffect( cacheplayer.ballCanCatch.gameObject );
+                        }
+                        cacheplayer.CaughtBall( cacheplayer.ballCanCatch.gameObject );
+                        cacheplayer.ballHolding.GetComponent<BallInfo>().BeingCatch( cacheplayer.gameObject );
                         cacheplayer.stat_ballGrab++;
                     }
                 }
+
             }
 
         }

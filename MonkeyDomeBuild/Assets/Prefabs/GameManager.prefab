@@ -1926,7 +1926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalNumberofPlayers: 0
-  NumberOfPlayersToBuild: 1
+  NumberOfPlayersToBuild: 3
   NumberOfBotsToBuild: 0
   RandomGorilla: 0
   PlayerGorilla: 0
@@ -2396,7 +2396,7 @@ MonoBehaviour:
   gScale: {x: 2, y: 2, z: 2}
   gSpeed: 19
   gJumpForce: 30
-  gThrowForce: 10
+  gThrowForce: 40
   gChargeSpeed: 50
 --- !u!114 &11483538
 MonoBehaviour:
