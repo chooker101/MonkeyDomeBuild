@@ -89,12 +89,12 @@ public class AI : Actor
 		DontDestroyOnLoad(this.gameObject);
         //currentState = State.Move;
 
-#if UNITY_5_3
-        lastSceneOld = EditorApplication.currentScene.ToString();
-		oldSceneCheck = true;
-#elif UNITY_5_4
-        SceneManager.activeSceneChanged += sceneChangedDelegate;
-#endif
+//#if UNITY_5_3
+//        lastSceneOld = EditorApplication.currentScene.ToString();
+//		oldSceneCheck = true;
+//#elif UNITY_5_4
+//        SceneManager.activeSceneChanged += sceneChangedDelegate;
+//#endif
 			//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
@@ -118,7 +118,7 @@ public class AI : Actor
 		if (oldSceneCheck)
 		{
             #if UNITY_5_3
-			currSceneOld = EditorApplication.currentScene.ToString();
+			//currSceneOld = EditorApplication.currentScene.ToString();
 #endif
 			if (currSceneOld != lastSceneOld)
 			{
