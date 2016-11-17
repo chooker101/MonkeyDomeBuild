@@ -103,7 +103,7 @@ public class BananaSpawner : MonoBehaviour
     }
     void UpdateScores()
     {
-        for(int i = 0; i < GameManager.Instance.gmPlayers.Count; i++)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
             playerScores[i] = GameManager.Instance.gmScoringManager.GetScore(i);
         }
