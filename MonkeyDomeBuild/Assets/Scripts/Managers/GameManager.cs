@@ -84,7 +84,9 @@ public class GameManager : MonoBehaviour
         {
             DontDestroyOnLoad(this.gameObject);
             TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
-            CreateInputs();
+			gmPlayers.Clear();
+			gmPlayerScripts.Clear();
+			CreateInputs();
             CreatePlayers();
         }
 		gmPlayers.TrimExcess();
