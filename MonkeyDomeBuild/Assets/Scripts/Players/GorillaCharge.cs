@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GorillaCharge : MonoBehaviour
 {
-
+    public Image circularSilder;
     public Text chargeCountText;
     public float chargeCount;
     private float maxChargeTime;
@@ -19,15 +19,17 @@ public class GorillaCharge : MonoBehaviour
     }
     void Update()
     {
-        if(GetComponentInParent<Actor>().characterType is Gorilla)
+        if (GetComponentInParent<Actor>().characterType is Gorilla)
         {
             if (chargeCount > 0.5f && chargeCount < maxChargeTime)
             {
                 chargeCountText.text = Math.Round(chargeCount, 2).ToString();
+                circularSilder.fillAmount = chargeCount / maxChargeTime;
             }
             else
             {
                 chargeCountText.text = "";
+                circularSilder.fillAmount = 0;
             }
         }
         else
@@ -36,6 +38,9 @@ public class GorillaCharge : MonoBehaviour
             {
                 chargeCountText.text = "";
             }
+            if (circularSilder.fillAmount != 0)
+                circularSilder.fillAmount = 0;
+
         }
 
     }

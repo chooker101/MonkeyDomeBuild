@@ -1963,12 +1963,13 @@ MonoBehaviour:
   gmTrophyManager: {fileID: 11469230}
   gmAudienceManager: {fileID: 0}
   gmAudienceAnimator: {fileID: 0}
-  gmLevelObjectScript: {fileID: 0}
+  gmLevelObjectsScript: {fileID: 0}
   gmGameOptionsManager: {fileID: 11492684}
   gmPauseManager: {fileID: 404905926}
   gmTurretManager: {fileID: 11458014}
   gmCurtainController: {fileID: 0}
   nextRoom: 
+  InputIndecies: 0000000000000000000000000000000000000000
   noGorilla: 1
 --- !u!114 &11439808
 MonoBehaviour:
@@ -2395,7 +2396,7 @@ MonoBehaviour:
   gScale: {x: 2, y: 2, z: 2}
   gSpeed: 19
   gJumpForce: 30
-  gThrowForce: 10
+  gThrowForce: 40
   gChargeSpeed: 50
 --- !u!114 &11483538
 MonoBehaviour:

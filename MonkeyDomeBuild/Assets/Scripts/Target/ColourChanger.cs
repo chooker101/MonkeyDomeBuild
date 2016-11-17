@@ -62,12 +62,12 @@ public class ColourChanger : MonoBehaviour
         // Add player target to join
         if (join && !activated)
         {
-            GameManager.Instance.AddPlayer(playerTargetIndex);
+            playerTargetIndex = GameManager.Instance.AddPlayer(playerTargetIndex);
             activated = true;
             GetComponentInChildren<Collider2D>().enabled = false;
             TargetSetter();
-            playerNumberText.gameObject.SetActive(false);
-            playerNumberText.text = "P" + playerTargetNumberRegular.ToString();
+            playerNumberText.gameObject.SetActive(true);
+            //playerNumberText.text = "P" + "1";//playerTargetIndex.ToString();
 
         }
         if (Vector3.Distance(target.transform.localEulerAngles, targetRot) > 0.01f)
@@ -115,7 +115,10 @@ public class ColourChanger : MonoBehaviour
                 targetUnready.gameObject.SetActive(true);
                 targetReady.gameObject.SetActive(false);
                 targetReadyAll.gameObject.SetActive(false);
-            }
+
+                playerNumberText.gameObject.SetActive(true);
+                playerNumberText.text = "P" + (playerTargetIndex + 1).ToString();
+			}
         }
         else if(activated && isHit && !preGameTimerObject.AllTargetsHit())
         {
@@ -308,15 +311,15 @@ public class ColourChanger : MonoBehaviour
         {
             if (activated)
             {
-                GameManager.Instance.gmRecordKeeper.ResetPlayerMaterial(playerTargetIndex);
-                GameManager.Instance.RemovePlayer(playerTargetIndex);
+                GameManager.Instance.gmRecordKeeper.ResetPlayerMaterial((int)GameManager.Instance.TotalNumberofPlayers - 1);
+                GameManager.Instance.RemovePlayer();
                 activated = false;
                 GetComponentInChildren<Collider2D>().enabled = false;
                 Reset();
             }
             else
             {
-                GameManager.Instance.AddPlayer(playerTargetIndex);
+                playerTargetIndex = GameManager.Instance.AddPlayer(playerTargetIndex);
                 activated = true;
                 GetComponentInChildren<Collider2D>().enabled = false;
                 TargetSetter();

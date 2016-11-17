@@ -67,9 +67,9 @@
      <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
      <Compile Include="Assets\Scripts\CurtainsController.cs" />
      <Compile Include="Assets\Scripts\Freezer.cs" />
-     <Compile Include="Assets\Scripts\GameOptionsManager.cs" />
      <Compile Include="Assets\Scripts\Gorillapickertest.cs" />
-     <Compile Include="Assets\Scripts\LevelObjectScript.cs" />
+     <Compile Include="Assets\Scripts\LevelObject.cs" />
+     <Compile Include="Assets\Scripts\LevelObjectsScript.cs" />
      <Compile Include="Assets\Scripts\Managers\AudienceAnimator.cs" />
      <Compile Include="Assets\Scripts\Managers\AudienceManager.cs" />
      <Compile Include="Assets\Scripts\Managers\AudioEffectManager.cs" />
@@ -77,6 +77,7 @@
      <Compile Include="Assets\Scripts\Managers\ButtonManager.cs" />
      <Compile Include="Assets\Scripts\Managers\EventManager.cs" />
      <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\GameOptionsManager.cs" />
      <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
      <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
      <Compile Include="Assets\Scripts\Managers\ParticlesManager.cs" />

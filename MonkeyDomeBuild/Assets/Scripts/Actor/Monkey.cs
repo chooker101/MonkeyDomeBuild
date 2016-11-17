@@ -5,9 +5,10 @@ using UnityEngine.UI;
 public class Monkey : Character
 {
     private CallForBallReset callForBall;
-	public Monkey(int x)
+	public Monkey(int x,int y)
 	{
 		myPlayer = x;
+        myInput = y;
 		throwForce = GameManager.Instance.gmMovementManager.mThrowForce;
 		jumpforce = GameManager.Instance.gmMovementManager.mJumpForce;
 		movespeed = GameManager.Instance.gmMovementManager.mSpeed;
@@ -52,7 +53,7 @@ public class Monkey : Character
 	}
     protected void CallForBall()
     {
-        if (GameManager.Instance.gmInputs[myPlayer].mAimStomp && !callForBall.CallForBallActive && !cacheplayer.IsHoldingBall)
+        if (GameManager.Instance.gmInputs[myInput].mAimStomp && !callForBall.CallForBallActive && !cacheplayer.IsHoldingBall)
         {
             callForBall.CallForBall();
             GameManager.Instance.gmTrophyManager.CallsForBall(myPlayer);
@@ -60,7 +61,7 @@ public class Monkey : Character
     }
 	protected void CatchCheck()
 	{
-		if (GameManager.Instance.gmInputs[myPlayer].mCatch && cacheplayer.ballCanCatch != null)
+		if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null)
 		{
             if (cacheplayer.ballCanCatch.GetCanBeCatch())
             {
@@ -94,7 +95,7 @@ public class Monkey : Character
 		{
             cacheplayer.ReleaseBall();
 		}
-		cacheplayer.characterType = new Gorilla(myPlayer);
+		cacheplayer.characterType = new Gorilla(myPlayer,myInput);
         //cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
 
 

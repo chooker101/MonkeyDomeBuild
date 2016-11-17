@@ -10,7 +10,7 @@ public class PauseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (((GameManager.Instance.gmInputs[0].mStart || GameManager.Instance.gmInputs[1].mStart) || (GameManager.Instance.gmInputs[2].mStart || GameManager.Instance.gmInputs[3].mStart)) || GameManager.Instance.gmInputs[4].mStart)
+        if (CheckStartButton())
 		{
             isGamePaused = !isGamePaused;
 
@@ -27,5 +27,17 @@ public class PauseManager : MonoBehaviour
                 //close ui
 			}
 		}
+	}
+
+	bool CheckStartButton()
+	{
+		for(int i = 0;i < GameManager.Instance.TotalNumberofPlayers;++i)
+		{
+			if(GameManager.Instance.gmInputs[i].mStart)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
