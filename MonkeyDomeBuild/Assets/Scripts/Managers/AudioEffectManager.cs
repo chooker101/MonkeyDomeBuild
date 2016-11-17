@@ -111,7 +111,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (audienceCatch != null && audienceCatch.clip != null && !mute)
         {
-            audienceCatch.pitch = Random.Range(.65f, 1.35f);
+            audienceCatch.pitch = Random.Range(.65f, .9f);
             audienceCatch.volume = Random.Range(.3f, .6f);
             audienceCatch.PlayOneShot(audienceCatch.clip);
         }
@@ -120,7 +120,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (audienceInterception != null && audienceInterception.clip != null && !mute)
         {
-            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.pitch = Random.Range(.85f, 1.05f);
             audienceCatch.volume = Random.Range(0.65f, 1.05f);
             audienceInterception.PlayOneShot(audienceInterception.clip);
         }
@@ -129,7 +129,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (audienceShotClock != null && audienceShotClock.clip != null && !mute)
         {
-            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.pitch = Random.Range(.65f, .85f);
             audienceCatch.volume = Random.Range(.4f, .8f);
             audienceShotClock.PlayOneShot(audienceShotClock.clip);
         }
@@ -138,7 +138,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (audienceTargetUp != null && audienceTargetUp.clip != null && !mute)
         {
-            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.pitch = Random.Range(.65f, .85f);
             audienceCatch.volume = Random.Range(.7f, .9f);
             audienceTargetUp.PlayOneShot(audienceTargetUp.clip);
         }
@@ -147,7 +147,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (audienceSmash != null && audienceSmash.clip != null && !mute)
         {
-            audienceCatch.pitch = Random.Range(.95f, 1.35f);
+            audienceCatch.pitch = Random.Range(.95f, 1f);
             audienceCatch.volume = Random.Range(.8f, 1.2f);
             audienceSmash.PlayOneShot(audienceSmash.clip);
         }
@@ -156,7 +156,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (audiencePoop != null && audiencePoop.clip != null && !mute)
         {
-            audiencePoop.pitch = Random.Range(.95f, 1.35f);
+            audiencePoop.pitch = Random.Range(.65f, 1.05f);
             audiencePoop.volume = Random.Range(.8f, 1.2f);
             audiencePoop.PlayOneShot(audiencePoop.clip);
         }

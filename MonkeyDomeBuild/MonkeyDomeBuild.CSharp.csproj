@@ -79,6 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AudienceSE.cs" />
+    <Compile Include="Assets\PointEffect.cs" />
+    <Compile Include="Assets\PointsManager.cs" />
     <Compile Include="Assets\Scripts\AI\AI.cs" />
     <Compile Include="Assets\Scripts\Actor.cs" />
     <Compile Include="Assets\Scripts\Actor\Character.cs" />
