@@ -2057,6 +2057,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11409498, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
+      propertyPath: startMatchTime
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
   m_IsPrefabParent: 0
@@ -4351,7 +4355,6 @@ MonoBehaviour:
   shaking: 0
   smoothing: 3
   maxCamSize: 35
-  minCamSize: 28
   maxDistanceXFromZero: 5
   maxDistanceYFromZero: 25
   considerTargets: 1

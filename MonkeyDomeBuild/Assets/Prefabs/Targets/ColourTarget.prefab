@@ -714,7 +714,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetAxis: -1
-  playerTargetIndex: 0
+  inputTargetIndex: 0
+  playerIndex: 0
   isHit: 0
   activated: 0
   hitParticlePivot: {fileID: 434580}
@@ -726,6 +727,17 @@ MonoBehaviour:
   targetHeadMonkey: {fileID: 11486916}
   targetHeadGorilla: {fileID: 11492586}
   playerNumberText: {fileID: 11441256}
+  targetSphere1: {fileID: 185504}
+  targetSphere2: {fileID: 138000}
+  targetSphere3: {fileID: 131650}
+  targetColourDefault1: {fileID: 2100000, guid: 861ab3f39adf0aa4cb5736a5a7edd5e2,
+    type: 2}
+  targetColourDefault2: {fileID: 2100000, guid: 910a97ed5f821b14c96b49d14375aaa3,
+    type: 2}
+  targetColour: {fileID: 2100000, guid: 861ab3f39adf0aa4cb5736a5a7edd5e2, type: 2}
+  jumped: 0
+  catched: 0
+  haveBall: 0
 --- !u!114 &11447538
 MonoBehaviour:
   m_ObjectHideFlags: 1

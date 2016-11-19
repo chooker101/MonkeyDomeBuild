@@ -24,8 +24,6 @@ public class PreGameTimer : MonoBehaviour
     public bool debugStartMatch = false;
     public Text timerText;
     public Text gorillaSmashText;
-    //public float pregameTimer;
-    public float trophyRoomTimer;
     public GameObject spinner;
     public Material resetMaterial;
     public GameObject sign_catch;
@@ -35,19 +33,20 @@ public class PreGameTimer : MonoBehaviour
     public GameObject sign_climbVines;
     public GameObject sign_throw;
     public GameObject sign_throwLong;
-
-    GameObject newSpinner;
     public GameState gameState = GameState.Null;
     public TutorialState tutorialState = TutorialState.Jump;
     public bool gorillaSet = false;
     public bool gorillaSmashed = false;
-    private List<int> monkeysActions = new List<int>();
+    public int gorillaSmashes = 0;
     public bool allMonkeysJumped = false;
     public bool allMonkeysCatchBall = false;
     public bool allMonkeysClimbed = false;
     public bool allMonkeysThrew = false;
     public bool allMonkeysCalled = false;
+    public float allTargetsHitTimer;
 
+    private List<int> monkeysActions = new List<int>();
+    private GameObject newSpinner;
     private bool spinnerSpawned = false;
     private GameObject[] colourTargets;
     private bool loadedScene = false;
@@ -84,15 +83,10 @@ public class PreGameTimer : MonoBehaviour
         {
             gorillaSmashed = true;
         }
-
-        // Check to see what signs come up
-        //if (!monkeysJumped)
-        //{
-            //for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
-            //{
-
-            //}
-        //}
+        if(gorillaSmashes >= 3)
+        {
+            gorillaSmashed = true;
+        }
 
         // Check the game state to set
         if (!AllTargetsHit()) { gameState = GameState.Pregame_PickingColours; }
@@ -100,29 +94,29 @@ public class PreGameTimer : MonoBehaviour
         else if(AllTargetsHit() && spinnerSpawned && gorillaSet) { gameState = GameState.Pregame_GorillaSet; }
 
         // Defines actions for the room based on the game state
-        /*if(gameState == GameState.Pregame_PickingColours)
+        if(gameState == GameState.Pregame_PickingColours)
         {
             if(!sign_catch.activeSelf)
             {
-                sign_catch.SetActive(true);
-                sign_jump.SetActive(true);
-                sign_callForBall.SetActive(true);
-                sign_climbVines.SetActive(true);
-                sign_throw.SetActive(true);
-                sign_throwLong.SetActive(true);
+                //sign_catch.SetActive(true);
+                //sign_jump.SetActive(true);
+                //sign_callForBall.SetActive(true);
+                //sign_climbVines.SetActive(true);
+                //sign_throw.SetActive(true);
+                //sign_throwLong.SetActive(true);
 
                 sign_gorillaSmash.SetActive(false);
-
+                /*
                 for (int i = 0; i < colourTargets.Length; i++)
                 {
                     Transform targetPivot = colourTargets[i].transform.FindChild("Pivot");
                     targetPivot.gameObject.SetActive(true);
-                }
+                }*/
             }
         }
         else if(gameState == GameState.Pregame_SpinnerSpinning)
         {
-            if(sign_catch.activeSelf)
+            if(sign_jump.activeSelf)
             {
                 sign_catch.SetActive(false);
                 sign_jump.SetActive(false);
@@ -131,6 +125,7 @@ public class PreGameTimer : MonoBehaviour
                 sign_throw.SetActive(false);
                 sign_throwLong.SetActive(false);
 
+                FindObjectOfType<BallReturn>().gameObject.SetActive(false);
                 for (int i = 0; i < colourTargets.Length; i++)
                 {
                     Transform targetPivot = colourTargets[i].transform.FindChild("Pivot");
@@ -140,86 +135,35 @@ public class PreGameTimer : MonoBehaviour
         }
         else if (gameState == GameState.Pregame_GorillaSet)
         {
-            if(!sign_gorillaSmash.activeSelf)
+            if (!sign_gorillaSmash.activeSelf)
             {
                 sign_gorillaSmash.SetActive(true);
             }
-        }*/
+        }
 
         // spawns a spinner that chooses a player to be a gorilla once all targets are hit.
         if (!spinnerSpawned && (AllTargetsHit()||debugStartMatch)) 
         {
-            newSpinner = (GameObject)Instantiate(spinner,spinner.transform.position,spinner.transform.rotation);
-            spinnerSpawned = true;
-        }
-        // Sets the Gorilla Smash text once the gorilla has been chosen
-        if (spinnerSpawned && newSpinner != null)
-        {
-            if (gorillaSet)
+            allTargetsHitTimer -= Time.deltaTime;
+
+            if(allTargetsHitTimer <= 0)
             {
-                gorillaSmashText.text = "Gorilla Smash!";
-            }
-            else
-            {
-                gorillaSmashText.text = "";
+                allTargetsHitTimer = 0;
+                newSpinner = (GameObject)Instantiate(spinner, spinner.transform.position, spinner.transform.rotation);
+                spinnerSpawned = true;
             }
         }
 
-        /*
-        if (pregameTimer > 0 && !gorillaSmashed)
+        /*if (debugStartMatch)
         {
-            pregameTimer -= Time.deltaTime;
+            gorillaSmashed = true;
         }*/
-
-        if (debugStartMatch)
-        {
-            //gorillaSmashed = true;
-        }
         if (gorillaSet && gorillaSmashed && !loadedScene)
         {
-            //pregameTimer = 0;
             loadedScene = true;
             gameState = GameState.Game_Start;
             GameManager.Instance.StartMatch();
         }
-
-        timerText.text = "Pre-game Room\n"; //+ pregameTimer.ToString("F2");
-        
-        /*
-        // TROPHY ROOM
-        else if(gameState == "trophyroom")
-        {
-            if (trophyRoomTimer > 0)
-            {
-                trophyRoomTimer -= Time.deltaTime;
-            }
-            else if (trophyRoomTimer <= 0)
-            {
-                trophyRoomTimer = 0;
-                gameState = "pregame";
-
-                for(int i = 0; i< GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers.Length; i++)
-                {
-                    GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[i] = 0;
-                    GameManager.Instance.gmScoringManager.p1Score = 0;
-                    GameManager.Instance.gmScoringManager.p2Score = 0;
-                    GameManager.Instance.gmScoringManager.p3Score = 0;
-
-                }
-                for(int i = 0; i < GameManager.Instance.gmRecordKeeper.colourPlayers.Count; i++)
-                {
-                    GameManager.Instance.gmRecordKeeper.colourPlayers[i] = resetMaterial;
-                }
-            }
-            timerText.text =
-                (
-                    "Trophy Room\n" + trophyRoomTimer.ToString("F2") + 
-                    "\nFINAL SCORES:\n" +
-                    "P1 - " + GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[0] + 
-                    "\nP2 - " + GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[1] + 
-                    "\nP3 - " + GameManager.Instance.GetComponent<RecordKeeper>().scoreEndPlayers[2]
-                );
-        }*/
     }
 
     public void ChangeGameState(GameState state)

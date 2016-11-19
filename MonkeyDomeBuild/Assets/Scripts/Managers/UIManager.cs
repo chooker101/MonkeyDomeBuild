@@ -128,7 +128,7 @@ public class UIManager : MonoBehaviour
                 if (!loadedScene)
                 {
                     loadedScene = true;
-                    GameManager.Instance.LoadPregameRoom();
+                    GameManager.Instance.LoadTrophyRoom();
                 }
                 //SceneManager.LoadScene("VictoryRoom");
                 //GameManager.Instance.SwitchRooms();

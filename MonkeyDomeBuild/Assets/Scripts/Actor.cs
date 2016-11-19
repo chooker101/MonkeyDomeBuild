@@ -65,6 +65,7 @@ public class Actor : MonoBehaviour
 
     public Transform catchCenter;
     public BoxCollider2D raycastCol;
+    public bool gorillaSmashedObject;
 
     protected bool beingSmack = false;
     public bool justJump = false;
@@ -505,6 +506,12 @@ public class Actor : MonoBehaviour
                 }
                 FindObjectOfType<CameraController>().ScreenShake();
                 AudioEffectManager.Instance.PlayAudienceSmash();
+                
+                PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
+                if (preGameTimer != null)
+                {
+                    preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
+                }
             }
         }
         if (characterType is Gorilla)
@@ -514,6 +521,15 @@ public class Actor : MonoBehaviour
                 if (other.collider.GetComponent<Actor>().characterType is Monkey)
                 {
                     KnockOffMonkey(other.collider.gameObject);
+
+                    if (isDashing)
+                    {
+                        PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
+                        if (preGameTimer != null)
+                        {
+                            preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
+                        }
+                    }
                 }
             }
         }
@@ -823,10 +839,9 @@ public class Actor : MonoBehaviour
         GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
 
         PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
-        //Debug.Log("Actor: Gorilla Dashed");
         if (preGameTimer != null)
         {
-            preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
+            preGameTimer.GetComponent<PreGameTimer>().gorillaSmashes++;
         }
     }
     public void ResetTimeScale()

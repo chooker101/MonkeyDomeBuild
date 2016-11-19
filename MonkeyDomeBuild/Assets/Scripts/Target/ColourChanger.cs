@@ -19,6 +19,12 @@ public class ColourChanger : MonoBehaviour
     public Image targetHeadMonkey;
     public Image targetHeadGorilla;
     public Text playerNumberText;
+    public GameObject targetSphere1;
+    public GameObject targetSphere2;
+    public GameObject targetSphere3;
+    public Material targetColourDefault1;
+    public Material targetColourDefault2;
+    public Material targetColour;
 
     private int playerTargetNumberRegular = 0;
     private GameObject objectHit = null;
@@ -29,7 +35,6 @@ public class ColourChanger : MonoBehaviour
     private PreGameTimer preGameTimerObject;
 
     bool join = false;
-
 
     public bool jumped = false;
     public bool catched = false;
@@ -111,9 +116,6 @@ public class ColourChanger : MonoBehaviour
                     GetComponentInChildren<CircleCollider2D>().enabled = true;
                 }
             }
-
-
-
         }
 
         // State of target
@@ -185,17 +187,32 @@ public class ColourChanger : MonoBehaviour
                 targetHeadGorilla.gameObject.SetActive(false);
                 targetHeadMonkey.gameObject.SetActive(true);
             }
+
+            if (isHit && activated && targetSphere1.GetComponent<MeshRenderer>().material != targetColour)
+            {
+                targetSphere1.GetComponent<MeshRenderer>().material = targetColour;
+                targetSphere2.GetComponent<MeshRenderer>().material = targetColourDefault1;
+                targetSphere3.GetComponent<MeshRenderer>().material = targetColour;
+            }
+            else if (!isHit && activated && targetSphere1.GetComponent<MeshRenderer>().materials[0] != targetColourDefault1)
+            {
+                targetSphere1.GetComponent<MeshRenderer>().materials[0] = targetColourDefault1;
+                targetSphere2.GetComponent<MeshRenderer>().materials[0] = targetColourDefault2;
+                targetSphere3.GetComponent<MeshRenderer>().materials[0] = targetColourDefault1;
+            }
         }
     }
     void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (other.CompareTag("Ball") )
+        if (other.CompareTag("Ball") && other.gameObject != null)
         {
             objectHit = other.GetComponentInParent<BallInfo>().gameObject;
-            if(objectHit != null)
+            if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerIndex) // If the player who threw the ball is the one for this target
             {
+                isHit = true;
                 materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
+
                 GameObject particle = ParticlesManager.Instance.TargetHitParticle;
                 particle.SetActive(true);
                 particle.transform.position = hitParticlePivot.position;
@@ -206,16 +223,15 @@ public class ColourChanger : MonoBehaviour
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, (ballPos - pivotPos).normalized);
                 particle.transform.rotation = Quaternion.Euler(0, 0, targetAng.eulerAngles.z);
                 particle.GetComponentInChildren<ParticleSystem>().Play();
-                if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerIndex) // If the player who threw the ball is the one for this target
+
+                if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().IsHoldingBall)
                 {
-                    isHit = true;
-                    if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().IsHoldingBall)
-                    {
-                        objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().ReleaseBall();
-                    }
-                    GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, materialToApply);
-                    GameManager.Instance.gmPlayers[playerIndex].GetComponent<Actor>().UpdateColour();
+                    objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().ReleaseBall();
                 }
+                GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, materialToApply);
+                GameManager.Instance.gmPlayers[playerIndex].GetComponent<Actor>().UpdateColour();
+                targetColour = other.GetComponent<MeshRenderer>().materials[0];
+                targetHeadMonkey.color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(playerIndex);
             }
         }
     }

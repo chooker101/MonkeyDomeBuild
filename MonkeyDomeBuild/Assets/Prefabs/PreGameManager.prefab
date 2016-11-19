@@ -318,7 +318,6 @@ MonoBehaviour:
   debugStartMatch: 0
   timerText: {fileID: 11462570}
   gorillaSmashText: {fileID: 11471682}
-  trophyRoomTimer: 10
   spinner: {fileID: 142782, guid: 65256354e45a9984ebacb9f7189b219b, type: 2}
   resetMaterial: {fileID: 2100000, guid: 1c5f5859623df434dbc63244581cfcd9, type: 2}
   sign_catch: {fileID: 153036}
@@ -328,8 +327,16 @@ MonoBehaviour:
   sign_climbVines: {fileID: 178898}
   sign_throw: {fileID: 112866}
   sign_throwLong: {fileID: 186026}
+  gameState: 0
+  tutorialState: 0
   gorillaSet: 0
   gorillaSmashed: 0
+  allMonkeysJumped: 0
+  allMonkeysCatchBall: 0
+  allMonkeysClimbed: 0
+  allMonkeysThrew: 0
+  allMonkeysCalled: 0
+  allTargetsHitTimer: 2
 --- !u!114 &11433330
 MonoBehaviour:
   m_ObjectHideFlags: 1

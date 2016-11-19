@@ -476,9 +476,14 @@ public class GameManager : MonoBehaviour
         nextRoom = "mb_level04_v2";
         StartCoroutine(LoadMatchScene(2f));
     }
-    public void LoadPregameRoom()
+    public void LoadTrophyRoom()
     {
         nextRoom = "VictoryRoom";
+        StartCoroutine(LoadMatchScene(0f));
+    }
+    public void LoadPregameRoom()
+    {
+        nextRoom = "PregameRoom";
         StartCoroutine(LoadMatchScene(0f));
     }
 

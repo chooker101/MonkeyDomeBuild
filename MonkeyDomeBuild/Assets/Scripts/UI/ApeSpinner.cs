@@ -11,6 +11,7 @@ public class ApeSpinner : MonoBehaviour
     public float spinnerSpeedMin;
     public float spinnerSpeedMax;
     public float spinnerDecay;
+    public float spinnerResultTime;
 
     Transform pivot;
     private float angle;
@@ -70,8 +71,16 @@ public class ApeSpinner : MonoBehaviour
 
             GameManager.Instance.gmRecordKeeper.playerGorilla = playerChosen-1;
             GameManager.Instance.gmPlayers[playerChosen - 1].GetComponent<Actor>().characterType.Mutate();
+        }
 
-            Destroy(gameObject);
+        if (setGorilla)
+        {
+            spinnerResultTime -= Time.deltaTime;
+
+            if(spinnerResultTime <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
