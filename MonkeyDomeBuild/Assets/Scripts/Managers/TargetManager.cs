@@ -79,7 +79,7 @@ public class TargetManager : MonoBehaviour
         targetTier = 0;
         //ballInfo = GetComponent<BallInfo>();
         RallySetter();
-        Invoke("StartRallyDelay", timeBetweenRallies);
+        Invoke("StartRallyDelay", timeBetweenRallies+4f);
     }
 
 

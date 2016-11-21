@@ -1594,6 +1594,10 @@ Prefab:
       propertyPath: gmAudienceAnimator
       value: 
       objectReference: {fileID: 1328192167}
+    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+      propertyPath: NumberOfPlayersToBuild
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
   m_IsPrefabParent: 0
@@ -2073,11 +2077,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11409498, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
       propertyPath: startMatchTime
-      value: 5
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 11409498, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
       propertyPath: noTime
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
@@ -3617,7 +3621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1188183771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4366,7 +4370,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 25.05
+  orthographic size: 31
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -4387,7 +4391,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1476207506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 17.2, z: -42.06}
+  m_LocalPosition: {x: 0, y: 16.6, z: -42.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -4409,7 +4413,7 @@ MonoBehaviour:
   killShake: 8
   shaking: 0
   smoothing: 3
-  maxCamSize: 35
+  maxCamSize: 38
   maxDistanceXFromZero: 5
   maxDistanceYFromZero: 25
   considerTargets: 1

@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
     public TurretsManager gmTurretManager;
     public CurtainsController gmCurtainController;
     public string nextRoom;
+    public bool playerCanMove = true;
+    protected bool nextIsMatch = false;
 
     bool displayController1Name;
     bool displayController2Name;
@@ -95,12 +97,15 @@ public class GameManager : MonoBehaviour
 		gmPlayers.TrimExcess();
 		gmPlayerScripts.TrimExcess();
 		gmBalls.Clear();
-
     }
 
     void Update()
     {
-        UpdateInputs();
+        if (playerCanMove)
+        {
+            UpdateInputs();
+        }
+
     }
 
     public void CreateInputs()
@@ -459,6 +464,11 @@ public class GameManager : MonoBehaviour
         Instance.gmCurtainController.CloseCurtain();
 
         yield return new WaitForSeconds(3f);
+        playerCanMove = false;
+        foreach(InputManager im in Instance.gmInputs)
+        {
+            im.Reset();
+        }
         for (int i = 0; i < gmPlayers.Count; i++)
         {
             if (gmPlayers[i] != null)
@@ -470,20 +480,32 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(nextRoom);
         yield return new WaitForSeconds(1f);
         Instance.gmCurtainController.OpenCurtain();
+        yield return new WaitForSeconds(2f);
+        if (nextIsMatch)
+        {
+            FindObjectOfType<StartMatchCountDown>().StartCountDown();
+        }
+        else
+        {
+            playerCanMove = true;
+        }
     }
     public void StartMatch()
     {
         nextRoom = "mb_level04_v2";
+        nextIsMatch = true;
         StartCoroutine(LoadMatchScene(2f));
     }
     public void LoadTrophyRoom()
     {
         nextRoom = "VictoryRoom";
+        nextIsMatch = false;
         StartCoroutine(LoadMatchScene(0f));
     }
     public void LoadPregameRoom()
     {
         nextRoom = "PregameRoom";
+        nextIsMatch = false;
         StartCoroutine(LoadMatchScene(0f));
     }
 

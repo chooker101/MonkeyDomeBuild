@@ -47,6 +47,8 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //Debug.Log(Screen.width);
+        
         shakeDur = startShakeDur;
         myCam = GetComponent<Camera>();
         minCamSize = myCam.orthographicSize;

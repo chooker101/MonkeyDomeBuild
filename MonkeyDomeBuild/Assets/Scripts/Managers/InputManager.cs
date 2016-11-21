@@ -11,7 +11,6 @@ public class InputManager : ScriptableObject
 		mJump = ijump;
 		mAimStomp = iaimstomp;
 	}
-
 	public Vector2 mXY;
 	public bool mCatch;
 	public bool mJump;
@@ -20,4 +19,16 @@ public class InputManager : ScriptableObject
     public bool mChargeThrow;
     public bool mCatchRelease;
 	public bool mStart;
+
+    public void Reset()
+    {
+        mXY = Vector2.zero;
+        mCatch = false;
+        mJump = false;
+        mAimStomp = false;
+        mChargeStomp = false;
+        mChargeThrow = false;
+        mCatchRelease = false;
+        mStart = false;
+    }
 }
