@@ -26,19 +26,22 @@ public class TargetBase : MonoBehaviour
     public TargetBaseState state = TargetBaseState.Null;
     public TierStatus tierStatus = TierStatus.TierNull;
     public Transform slider;
-    public Image start;
-    public Image end;
-    public Image hit;
-    public Image miss;
-    public Image pop;
-    public Image prep;
-    public Image warning;
-    public Image upTierLight;
-    public Image stayTierLight;
-    public Image downTierLight;
-    public Image tierUp;
-    public Image tierStay;
-    public Image tierDown;
+    public Transform slider2;
+    public SpriteRenderer start;
+    public SpriteRenderer end;
+    public SpriteRenderer hit;
+    public SpriteRenderer miss;
+    public SpriteRenderer pop;
+    public SpriteRenderer prep;
+    public SpriteRenderer warning;
+    public SpriteRenderer upTierLight;
+    public SpriteRenderer stayTierLight;
+    public SpriteRenderer downTierLight;
+    public SpriteRenderer tierUp;
+    public SpriteRenderer tierStay;
+    public SpriteRenderer tierDown;
+
+    private TargetManager manager;
 
     float timeCount = 0;
     float defaultTime = 2f;
@@ -47,6 +50,7 @@ public class TargetBase : MonoBehaviour
     private GameObject activatedImg = null;
     void Start()
     {
+        manager = FindObjectOfType<TargetManager>();
         changeTier = true;
         //ChangeTargetState(TargetBaseState.RallyStart);
     }
@@ -159,6 +163,7 @@ public class TargetBase : MonoBehaviour
             Vector3 sliderNewScale = slider.localScale;
             sliderNewScale.x = 0;
             slider.localScale = sliderNewScale;
+            slider2.localScale = sliderNewScale;
             timeCount = 0;
             this.state = state;
             if (activatedImg != null)
@@ -217,7 +222,24 @@ public class TargetBase : MonoBehaviour
         }
         if (timeCount <= 0)
         {
-            ChangeTargetState(TargetBaseState.Null);
+            switch (state)
+            {
+                default:
+                    ChangeTargetState(TargetBaseState.Null);
+                    break;
+                case TargetBaseState.RallyStart:
+                    ChangeTargetState(TargetBaseState.Prep);
+                    break;
+                case TargetBaseState.Warning:
+                    ChangeTargetState(TargetBaseState.RallyEnd);
+                    break;
+                case TargetBaseState.Prep:
+                    ChangeTargetState(TargetBaseState.Pop);
+                    break;
+                case TargetBaseState.Pop:
+                    ChangeTargetState(TargetBaseState.Warning);
+                    break;
+            }
         }
         else
         {
@@ -226,6 +248,7 @@ public class TargetBase : MonoBehaviour
                 Vector3 sliderNewScale = slider.localScale;
                 sliderNewScale.x = (time - timeCount) / time;
                 slider.localScale = sliderNewScale;
+                slider2.localScale = sliderNewScale;
             }
             /*if (GetComponentInParent<TargetNode>().stand.IsActivated)
             {
@@ -254,24 +277,28 @@ public class TargetBase : MonoBehaviour
         if (!activatedImg.activeInHierarchy)
         {
             activatedImg.SetActive(true);
-            timeCount = target.InitialLifeTime - target.WarningTime;
+            timeCount = manager.SetLifeTime() - manager.warningTime;
         }
         Vector3 sliderNewScale = slider.localScale;
-        sliderNewScale.x = (target.InitialLifeTime - target.WarningTime - timeCount) / (target.InitialLifeTime - target.WarningTime);
+        sliderNewScale.x = (manager.SetLifeTime() - manager.warningTime - timeCount) / (manager.SetLifeTime() - manager.warningTime);
         /*if (!GetComponentInParent<TargetNode>().stand.IsActivated)
         {
             timeCount -= Time.deltaTime;
         }*/
-        timeCount -= Time.deltaTime;
+        if (timeCount <= 0)
+        {
+            ChangeTargetState(TargetBaseState.Warning);
+        }
+        else
+        {
+            timeCount -= Time.deltaTime;
+        }
         slider.localScale = sliderNewScale;
+        slider2.localScale = sliderNewScale;
     }
     void PrepState()
     {
-        if (!activatedImg.activeInHierarchy)
-        {
-            activatedImg.SetActive(true);
-            timeCount = target.PrepTime;
-        }
+        StartState(manager.prepTime, false);
         //Vector3 sliderNewScale = slider.localScale;
         //sliderNewScale.x = (target.PrepTime - timeCount) / target.PrepTime;
         //timeCount -= Time.deltaTime;
@@ -279,7 +306,7 @@ public class TargetBase : MonoBehaviour
     }
     void WarningState()
     {
-        StartState(target.WarningTime, true);
+        StartState(manager.warningTime, true);
     }
     void EndState()
     {

@@ -15,7 +15,7 @@ public class TargetManager : MonoBehaviour
     public bool[] targetsHitInSequence = new bool[5];
     public int sequenceIndex = 0;
     public bool advanceTier;
-    private float timeBetweenRallies = 6f;
+    public float timeBetweenRallies = 10f;
 
     [SerializeField]
     private Target[] gameTargets;
@@ -26,6 +26,9 @@ public class TargetManager : MonoBehaviour
 
     public bool rallyOn;
     public int activeTargets;
+
+    public float warningTime = 5f;
+    public float prepTime = 3f;
 
     public int ActiveTargets
     {
@@ -91,15 +94,16 @@ public class TargetManager : MonoBehaviour
         if (rallyOn && activeTargets == 0)
         {
             StopAllCoroutines();
-            Invoke("StartRallyDelay", timeBetweenRallies);
+            Invoke("StartRallyDelay", timeBetweenRallies + 2f);
             rallyOn = false;
+            FindObjectOfType<TargetBase>().ChangeTargetState(TargetBaseState.RallyEnd);
             foreach (Target t in gameTargets)
             {
                 t.RallyEnd();
             }
         }
 
-
+        /*
         if (Input.GetKeyDown(KeyCode.J))
         {
             foreach (Target t in gameTargets)
@@ -111,6 +115,7 @@ public class TargetManager : MonoBehaviour
         {
             Rally();
         }
+        */
     }
 
     protected void StartRallyDelay()
@@ -213,10 +218,7 @@ public class TargetManager : MonoBehaviour
         RallySetter();
         //advanceTier = CheckRally();
         StartRally();
-        foreach(Target t in gameTargets)
-        {
-            t.RallyStart();
-        }
+        FindObjectOfType<TargetBase>().ChangeTargetState(TargetBaseState.RallyStart);
     }
 
     void BetweenRallies()
@@ -227,12 +229,11 @@ public class TargetManager : MonoBehaviour
     IEnumerator ActiveWaiter(Target t)
     {
         //activeTargets++;
-        yield return new WaitForSeconds(timeBetweenRallies);
+        yield return new WaitForSeconds(prepTime + 2f);
         t.targetActive = true;
         t.TargetSetter();
         t.TargetTime();
     }
-
     IEnumerator FullRallyWaiter()
     {
         yield return new WaitForSeconds(timeBetweenRallies);
@@ -240,6 +241,7 @@ public class TargetManager : MonoBehaviour
 
     public void ActivateTarget()
     {
+        /*
         int j;
         int i = 0;
 
@@ -255,6 +257,7 @@ public class TargetManager : MonoBehaviour
             activateTimes[i] ^= activateTimes[j];
             i++;
         }
+        */
         foreach(Target t in gameTargets)
         {
             t.WaitTime = 0f;
@@ -289,7 +292,7 @@ public class TargetManager : MonoBehaviour
         for(int k = 0; k < tempTargetIndexs.Count; k++)
         {
             activeTargets++;
-            gameTargets[tempTargetIndexs[k]].WaitTime = timeBetweenRallies;
+            gameTargets[tempTargetIndexs[k]].WaitTime = prepTime + 2f;
             StartCoroutine(ActiveWaiter(gameTargets[tempTargetIndexs[k]]));
             activateCounter++;
             if (activateCounter == 6)
@@ -297,6 +300,7 @@ public class TargetManager : MonoBehaviour
                 Rally();
             }
         }
+        //StartCoroutine(TargetsPopWaiter(SetLifeTime()));
         /*
         foreach (Target t in gameTargets)
         {
