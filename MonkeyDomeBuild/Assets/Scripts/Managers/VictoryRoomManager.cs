@@ -18,6 +18,8 @@ public class VictoryRoomManager : MonoBehaviour
     public GameObject Podium4;
     public GameObject Podium5;
     public List<GameObject> TrophyCase;
+    public List<SpriteRenderer> TrophyBgs;
+
     public GameObject Trophy;
     public Transform[] AwardBananasTrophyPos;
     public Transform[] PerfectCatchTrophyPos;
@@ -158,6 +160,7 @@ public class VictoryRoomManager : MonoBehaviour
             {
                 Podium1.transform.position = Vector3.MoveTowards(Podium1.transform.position,
                     new Vector3(podiumPos1.x, podiumPos1.y + p1score, podiumPos1.z), speed * Time.deltaTime);
+                
             }
             if (GameManager.Instance.TotalNumberofPlayers >= 2)
             {
@@ -268,5 +271,11 @@ public class VictoryRoomManager : MonoBehaviour
         {
             TrophyCase[i].SetActive(false);
         }
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers - 1; i++)
+        {
+            TrophyBgs[i].material = GameManager.Instance.gmRecordKeeper.colourPlayers[i];
+            
+        }
+
     }
 }
