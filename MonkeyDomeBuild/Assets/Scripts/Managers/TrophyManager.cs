@@ -85,7 +85,7 @@ public class TrophyManager : MonoBehaviour
 
     public int AwardBananasTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for(int i = 0; i < playerTrophyStats.Count; i++)
@@ -101,7 +101,7 @@ public class TrophyManager : MonoBehaviour
 
     public int PerfectCatchTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
@@ -117,7 +117,7 @@ public class TrophyManager : MonoBehaviour
 
     public int TargetsHitTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
@@ -133,7 +133,7 @@ public class TrophyManager : MonoBehaviour
 
     public int BallCallingTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
@@ -149,7 +149,7 @@ public class TrophyManager : MonoBehaviour
 
     public int PoopTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
@@ -165,7 +165,7 @@ public class TrophyManager : MonoBehaviour
 
     public int KnockDownTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
@@ -181,7 +181,7 @@ public class TrophyManager : MonoBehaviour
 
     public int AudienceWinsTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
@@ -197,7 +197,7 @@ public class TrophyManager : MonoBehaviour
 
     public int AudienceLossesTrophy()
     {
-        int winningPlayer = 0;
+        int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
