@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ApeSpinner : MonoBehaviour
 {
     public GameObject spinnerBase;
     public GameObject spinnerPointer;
     public GameObject spinnerPivot;
-    public Text playerChosenText;
     public float spinnerSpeedMin;
     public float spinnerSpeedMax;
     public float spinnerDecay;
     public float spinnerResultTime;
+    public bool setGorilla = false;
+    public List<Image> p_Colour;
+    public List<Text> p_Text;
 
     Transform pivot;
     private float angle;
     private float spinnerSpeed;
     private int playerChosen;
-    public bool setGorilla = false;
+    private float playerAngle;
     //private RecordKeeper rk_keeper;
 
     // Use this for initialization
@@ -25,9 +28,27 @@ public class ApeSpinner : MonoBehaviour
     {
         pivot = spinnerPivot.GetComponent<Transform>();
         spinnerSpeed = Random.Range(spinnerSpeedMin, spinnerSpeedMax);
+        
+        playerAngle = 360 / GameManager.Instance.TotalNumberofPlayers;
 
-        //rk_keeper = FindObjectOfType<RecordKeeper>().GetComponent<RecordKeeper>();
-        //rk_keeper.playerGorilla = -1;
+        for(int i = 0; i < p_Colour.Count; i++)
+        {
+            p_Colour[i].transform.localRotation = Quaternion.AngleAxis(playerAngle * i, Vector3.back);
+            p_Colour[i].fillAmount = playerAngle / 360;
+            p_Text[i].transform.localRotation = Quaternion.AngleAxis((playerAngle * i) + (playerAngle / 2), Vector3.back);
+
+            if(GameManager.Instance.TotalNumberofPlayers > i)
+            {
+                p_Colour[i].gameObject.SetActive(true);
+                p_Colour[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+                p_Text[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                p_Colour[i].gameObject.SetActive(false);
+                p_Text[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -39,27 +60,14 @@ public class ApeSpinner : MonoBehaviour
             spinnerSpeed -= spinnerDecay * Time.deltaTime;
             float current_pivot = pivot.transform.eulerAngles.z;
 
-            if (current_pivot >= 0 && current_pivot < 360 / GameManager.Instance.TotalNumberofPlayers && GameManager.Instance.TotalNumberofPlayers >= 1)
+            for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
             {
-                playerChosen = 1;
+                if (current_pivot < 360-(playerAngle*i) && current_pivot >= 360 - (playerAngle*(i+1)))
+                {
+                    playerChosen = i+1;
+                    break;
+                }
             }
-            else if(current_pivot >= 0 + (360 / GameManager.Instance.TotalNumberofPlayers) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers)*2 && GameManager.Instance.TotalNumberofPlayers >= 2)
-            {
-                playerChosen = 2;
-            }
-            else if (current_pivot >= 0 + ((360 / GameManager.Instance.TotalNumberofPlayers) * 2) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers) * 3 && GameManager.Instance.TotalNumberofPlayers >= 3)
-            {
-                playerChosen = 3;
-            }
-            else if (current_pivot >= 0 + ((360 / GameManager.Instance.TotalNumberofPlayers) * 3) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers) * 4 && GameManager.Instance.TotalNumberofPlayers >= 4)
-            {
-                playerChosen = 4;
-            }
-            else if (current_pivot >= 0 + ((360 / GameManager.Instance.TotalNumberofPlayers) * 4) && current_pivot < (360 / GameManager.Instance.TotalNumberofPlayers) * 5 && GameManager.Instance.TotalNumberofPlayers >= 5)
-            {
-                playerChosen = 5;
-            }
-            playerChosenText.text = "PLAYER: " + playerChosen.ToString();
 
             pivot.transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
         }
