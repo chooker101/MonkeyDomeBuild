@@ -52,7 +52,7 @@ public class BallReturn : MonoBehaviour
                 }
                 if (!wasActive[i] && balls[i].activeSelf)
                 {
-                    balls[i].GetComponent<Transform>().position = transform.position;
+                    balls[i].GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y, balls[i].transform.position.z);
                 }
             }
         }
