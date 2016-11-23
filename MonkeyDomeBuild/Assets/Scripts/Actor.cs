@@ -833,6 +833,7 @@ public class Actor : MonoBehaviour
             animator.SetBool("IsWalking", false);
             animator.SetBool("IsIdle", true);
         }
+        animator.SetBool("IsThrowing", isCharging);
     }
     public void GorillaDash()
     {
