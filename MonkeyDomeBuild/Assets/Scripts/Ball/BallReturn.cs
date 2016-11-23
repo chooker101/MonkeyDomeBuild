@@ -13,6 +13,11 @@ public class BallReturn : MonoBehaviour
     {
         balls = GameObject.FindGameObjectsWithTag("Ball");
         wasActive = new bool[balls.Length];
+
+        for (int i = 0; i < balls.Length; i++)
+        {
+            balls[i].transform.position = new Vector3(transform.position.x + (Random.Range(0f, 0.1f) - 0.5f), transform.position.y + (Random.Range(0f, 0.1f) - 0.5f), balls[i].transform.position.z);
+        }
     }
 
     // Update is called once per frame
