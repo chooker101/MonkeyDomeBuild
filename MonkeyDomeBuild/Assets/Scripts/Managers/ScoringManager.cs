@@ -154,6 +154,7 @@ public class ScoringManager : MonoBehaviour
                 AddScore(catcher.GetComponent<Actor>().playerIndex, scoreGetCatcher);
                 // adding point ups
                 GameManager.Instance.gmPlayers[thrower.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(scoreGetThrower, thrower.GetComponent<Actor>().playerIndex);
+				//Debug.Log(catcher.GetComponent<Actor>().playerIndex);
                 GameManager.Instance.gmPlayers[catcher.GetComponent<Actor>().playerIndex].GetComponentInChildren<PointsManager>().AddQueue(scoreGetCatcher, catcher.GetComponent<Actor>().playerIndex);
                 throwCombo++;
             }

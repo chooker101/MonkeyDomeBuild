@@ -73,6 +73,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &127492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 412202}
+  - 114: {fileID: 11470376}
+  m_Layer: 10
+  m_Name: Points
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &130834
 GameObject:
   m_ObjectHideFlags: 1
@@ -421,6 +437,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 441348}
   m_RootOrder: 4
+--- !u!4 &412202
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127492}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.137487, y: -0.4090252, z: -0.6773758}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 441348}
+  m_RootOrder: 5
 --- !u!4 &426416
 Transform:
   m_ObjectHideFlags: 1
@@ -450,6 +479,7 @@ Transform:
   - {fileID: 473944}
   - {fileID: 22493932}
   - {fileID: 400646}
+  - {fileID: 412202}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &460122
@@ -912,6 +942,7 @@ MonoBehaviour:
   currEndTarg: {x: 0, y: 0, z: 0}
   catchWaitTime: 0.3
   currEndTargBound: {x: 0, y: 0, z: 0}
+  currentState: 0
 --- !u!114 &11467550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -999,6 +1030,31 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!114 &11470376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e33aa500af5d4e3448e2aff662be67dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointSprites:
+  - {fileID: 21300000, guid: 70de1a7eaabae34499b8cd3a6c85e3ac, type: 3}
+  - {fileID: 21300000, guid: 1da23f632812ee7448a9cea1f35f75a9, type: 3}
+  - {fileID: 21300000, guid: ca7118a5d3e01bb40ad54fa6d7327a57, type: 3}
+  - {fileID: 21300000, guid: 4357fcd5c8957c743a356f3fcf86df45, type: 3}
+  - {fileID: 21300000, guid: b7ddcd6866efa574a9e6998a231aff28, type: 3}
+  - {fileID: 21300000, guid: c0fae1fbb62f02344a1c49cb2c95ad0b, type: 3}
+  - {fileID: 21300000, guid: d7651b4cf45e71542af0e3c5aba935df, type: 3}
+  - {fileID: 21300000, guid: 6a1c015fdefec2e4585afba0e70d2a8a, type: 3}
+  pointObjects: []
+  displayQueue: 
+  playerIndex: 
+  pointPrefab: {fileID: 185112, guid: cba7d79ee8661ee479e2c4e16cacdfb2, type: 2}
+  amount: 10
 --- !u!114 &11474552
 MonoBehaviour:
   m_ObjectHideFlags: 1
