@@ -87,6 +87,7 @@
      <Compile Include="Assets\Scripts\Managers\ScoringManager.cs" />
      <Compile Include="Assets\Scripts\Managers\ShotClockManager.cs" />
      <Compile Include="Assets\Scripts\Managers\SpawnManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\StartMatchCountDown.cs" />
      <Compile Include="Assets\Scripts\Managers\TargetManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TrophyManager.cs" />
      <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
@@ -115,6 +116,7 @@
      <Compile Include="Assets\Scripts\UI\ScoreVisualizer.cs" />
      <Compile Include="Assets\Scripts\UI\ShotClock.cs" />
      <Compile Include="Assets\Scripts\UI\UIEffect.cs" />
+     <Compile Include="Assets\TrophyRoomTarget.cs" />
      <Compile Include="Assets\VictoryMusic.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity53/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

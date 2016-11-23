@@ -88,6 +88,9 @@ public class Actor : MonoBehaviour
     protected float holdTime = 1f;
     protected float speedMultiplier = 1f;
 
+    protected Vector2 storedThrowDir;
+    protected float currentDir = 1f;
+
     //public string cType = "";
 
     public bool DisableInput
@@ -282,6 +285,18 @@ public class Actor : MonoBehaviour
 
     public void ThrowCheck()
     {
+        if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) >= 0.4f || Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) >= 0.4f)
+        {
+            storedThrowDir = GameManager.Instance.gmInputs[playerIndex].mXY;
+        }
+        if (GameManager.Instance.gmInputs[playerIndex].mXY.x >= 0.1f)
+        {
+            currentDir = 1f;
+        }
+        else if (GameManager.Instance.gmInputs[playerIndex].mXY.x <= -0.1f)
+        {
+            currentDir = -1f;
+        }
         if (canCharge)
         {
             if ((GameManager.Instance.gmInputs[inputIndex].mChargeThrow && haveBall) && !cantHoldAnymore)
@@ -336,7 +351,7 @@ public class Actor : MonoBehaviour
                         }
                     }
                     ReleaseBall();
-                    ballRigid.AddForce(new Vector2(GameManager.Instance.gmInputs[inputIndex].mXY.x * tempThrowForce, GameManager.Instance.gmInputs[inputIndex].mXY.y * tempThrowForce), ForceMode2D.Impulse);
+                    ballRigid.AddForce(storedThrowDir * tempThrowForce, ForceMode2D.Impulse);
                     stat_throw++;
                     holdingCatchCount = 0f;
                 }
@@ -440,7 +455,7 @@ public class Actor : MonoBehaviour
             //Debug.Log(a);
             var a = Mathf.Lerp(1, 4, holdingCatchCount / maxChargeCount);
             PointerCenter.transform.parent.GetComponent<RectTransform>().localScale = new Vector3(a, a, a);
-            if (GameManager.Instance.gmInputs[inputIndex].mXY.x != 0 || GameManager.Instance.gmInputs[inputIndex].mXY.y != 0)
+            if (Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.x) >= 0.4f || Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.y) >= 0.4f)
             {
                 Vector3 dir = new Vector3(GameManager.Instance.gmInputs[inputIndex].mXY.x, GameManager.Instance.gmInputs[inputIndex].mXY.y, 0);
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
@@ -818,6 +833,7 @@ public class Actor : MonoBehaviour
             animator.SetBool("IsWalking", false);
             animator.SetBool("IsIdle", true);
         }
+        animator.SetBool("IsThrowing", isCharging);
     }
     public void GorillaDash()
     {
