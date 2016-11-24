@@ -297,10 +297,8 @@ public class Actor : MonoBehaviour
                 if (spriteRenderer.flipX == false)
                 storedThrowDir = Vector3.right;
                 else
-            storedThrowDir = -Vector3.right;
-                
-                
-            
+                storedThrowDir = -Vector3.right;
+  
         }
         if (GameManager.Instance.gmInputs[playerIndex].mXY.x >= 0.1f)
         {
@@ -865,6 +863,7 @@ public class Actor : MonoBehaviour
     }
     public void GorillaDash()
     {
+        cache_rb.velocity = new Vector2(cache_rb.velocity.x,cache_rb.velocity.y/2);
         isDashing = true;
         Vector2 dashDir = Vector2.zero;
         GetComponent<EffectControl>().PlayDashEffect();
