@@ -157,10 +157,10 @@ public class UIManager : MonoBehaviour
 
             debugLog.text = // Displays all debug info
             "PLAYER 1 STATS: \n" +
-            "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().movement + "\n\n" +
-            "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_jump + "\n" +
-            "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_ballGrab + "\n" +
-            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<Player>().stat_throw + "\n\n"
+            "Mov: " + GameManager.Instance.gmPlayers[0].GetComponent<Actor>().movement + "\n\n" +
+            "# Jumps: " + GameManager.Instance.gmPlayers[0].GetComponent<Actor>().stat_jump + "\n" +
+            "# Ball Grabs: " + GameManager.Instance.gmPlayers[0].GetComponent<Actor>().stat_ballGrab + "\n" +
+            "# Throws: " + GameManager.Instance.gmPlayers[0].GetComponent<Actor>().stat_throw + "\n\n"
             //"Targets Hit: " + ScoringManager.targetsHit;
             //"Audience Attitude: " + "\n" +
             //"Audience Target: " + "\n"
