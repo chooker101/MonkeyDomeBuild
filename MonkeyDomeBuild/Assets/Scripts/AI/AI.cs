@@ -482,7 +482,7 @@ public class AI : Actor
 		calcVar = cache_tf.position;
 		calcVar.y += (maxJump - centerToFeet);
 		Debug.DrawLine(cache_tf.position, currEndTarg, Color.red);
-		Debug.DrawLine(cache_tf.position, MoveTarget, Color.blue);
+		Debug.DrawLine(currEndTarg, MoveTarget, Color.blue);
 		Debug.DrawLine(cache_tf.position, calcVar, Color.yellow);
 		//Debug.DrawLine(cache_tf.position, currEndTargBound, Color.green);
 

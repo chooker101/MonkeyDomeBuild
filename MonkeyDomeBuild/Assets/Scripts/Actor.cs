@@ -91,6 +91,8 @@ public class Actor : MonoBehaviour
     protected Vector2 storedThrowDir;
     protected float currentDir = 1f;
 
+  
+
     //public string cType = "";
 
     public bool DisableInput
@@ -134,8 +136,9 @@ public class Actor : MonoBehaviour
             if (isClimbing)
             {
                 //animator.SetBool("IsIdle", true);
-                //animator.SetBool("IsInAirDown", false); 
+                animator.SetBool("IsInAirDown", false); 
                 animator.SetBool("IsClimbing", true);
+                animator.SetBool("IsInAir", false);
             }
             else
             {
@@ -147,7 +150,15 @@ public class Actor : MonoBehaviour
         }
         else if (isinair && cache_rb.velocity.y >= 0f)
         {
-            animator.SetBool("IsInAir", true);
+            if (isClimbing)
+            {
+                animator.SetBool("IsInAirDown", false);
+                animator.SetBool("IsInAir", false);
+            }
+            else
+            {
+                animator.SetBool("IsClimbing", false);
+            }
             //animator.SetBool("IsStartJump", false);
         }
     }
@@ -288,6 +299,17 @@ public class Actor : MonoBehaviour
         if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) >= 0.4f || Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) >= 0.4f)
         {
             storedThrowDir = GameManager.Instance.gmInputs[playerIndex].mXY;
+        }
+        else
+        {
+            //if not aiming thow direction sprite is facing
+                if (spriteRenderer.flipX == false)
+                storedThrowDir = Vector3.right;
+                else
+            storedThrowDir = -Vector3.right;
+                
+                
+            
         }
         if (GameManager.Instance.gmInputs[playerIndex].mXY.x >= 0.1f)
         {
@@ -447,10 +469,25 @@ public class Actor : MonoBehaviour
     {
         if (isCharging)
         {
-            col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
-            col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
-            PointerCenter.GetComponentInChildren<Image>().color = col1;
-            pointerBase.GetComponentInChildren<Image>().color = col2;
+           
+            if (GameManager.Instance.gmInputs[inputIndex].mXY.x != 0)
+            {
+                col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+                col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+
+                PointerCenter.GetComponentInChildren<Image>().color = col1;
+                pointerBase.GetComponentInChildren<Image>().color = col2;
+            }
+            else
+            {
+                col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+                col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+
+                PointerCenter.GetComponentInChildren<Image>().color = col1;
+                pointerBase.GetComponentInChildren<Image>().color = col2;
+            }
+
+            
 
             //Debug.Log(a);
             var a = Mathf.Lerp(1, 4, holdingCatchCount / maxChargeCount);
@@ -467,7 +504,7 @@ public class Actor : MonoBehaviour
                 {
                     PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
                 }
-            }
+            }  
         }
         else
         {
@@ -814,6 +851,24 @@ public class Actor : MonoBehaviour
 
     protected void AnimationControl()
     {
+        float tempSpeed = Mathf.Abs(cache_rb.velocity.x) > Mathf.Abs(cache_rb.velocity.y) ? Mathf.Abs(cache_rb.velocity.x) : Mathf.Abs(cache_rb.velocity.y);
+        if (characterType is Monkey)
+        {
+            tempSpeed /= GameManager.Instance.gmMovementManager.mSpeed;
+        } else
+        {
+            tempSpeed /= GameManager.Instance.gmMovementManager.gSpeed;
+        }
+        if (tempSpeed > 1f)
+        {
+            tempSpeed = 1f;
+        }
+        if(tempSpeed < .3f)
+        {
+            tempSpeed = .3f;
+        }
+
+        animator.SetFloat("velocity", tempSpeed);
         //Debug.Log(GetComponent<Rigidbody2D>().velocity.x);
         if (cache_rb.velocity.x > 0f)
         {

@@ -12,6 +12,7 @@ public class ColourChanger : MonoBehaviour
     public bool activated = false;
     public Transform hitParticlePivot;
     public Image targetBase;
+    public Image targetSpotlight;
     public Image targetJoin;
     public Image targetUnready;
     public Image targetReady;
@@ -124,6 +125,7 @@ public class ColourChanger : MonoBehaviour
             if (!preGameTimerObject.AllTargetsHit() && !targetJoin.gameObject.activeSelf)
             {
                 targetBase.gameObject.SetActive(true);
+                targetSpotlight.gameObject.SetActive(false);
                 targetJoin.gameObject.SetActive(true);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(false);
@@ -132,6 +134,7 @@ public class ColourChanger : MonoBehaviour
             else if(preGameTimerObject.AllTargetsHit() && targetJoin.gameObject.activeSelf)
             {
                 targetBase.gameObject.SetActive(false);
+                targetSpotlight.gameObject.SetActive(false);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(false);
@@ -143,6 +146,7 @@ public class ColourChanger : MonoBehaviour
             if(!targetUnready.gameObject.activeSelf)
             {
                 targetBase.gameObject.SetActive(true);
+                targetSpotlight.gameObject.SetActive(true);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(true);
                 targetReady.gameObject.SetActive(false);
@@ -157,6 +161,7 @@ public class ColourChanger : MonoBehaviour
             if (!targetReady.gameObject.activeSelf)
             {
                 targetBase.gameObject.SetActive(true);
+                targetSpotlight.gameObject.SetActive(false);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(true);
@@ -168,6 +173,7 @@ public class ColourChanger : MonoBehaviour
             if (!targetReadyAll.gameObject.activeSelf)
             {
                 targetBase.gameObject.SetActive(true);
+                targetSpotlight.gameObject.SetActive(false);
                 targetJoin.gameObject.SetActive(false);
                 targetUnready.gameObject.SetActive(false);
                 targetReady.gameObject.SetActive(false);
