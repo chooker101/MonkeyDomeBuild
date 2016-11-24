@@ -136,8 +136,9 @@ public class Actor : MonoBehaviour
             if (isClimbing)
             {
                 //animator.SetBool("IsIdle", true);
-                //animator.SetBool("IsInAirDown", false); 
+                animator.SetBool("IsInAirDown", false); 
                 animator.SetBool("IsClimbing", true);
+                animator.SetBool("IsInAir", false);
             }
             else
             {
@@ -149,7 +150,15 @@ public class Actor : MonoBehaviour
         }
         else if (isinair && cache_rb.velocity.y >= 0f)
         {
-            animator.SetBool("IsInAir", true);
+            if (isClimbing)
+            {
+                animator.SetBool("IsInAirDown", false);
+                animator.SetBool("IsInAir", false);
+            }
+            else
+            {
+                animator.SetBool("IsClimbing", false);
+            }
             //animator.SetBool("IsStartJump", false);
         }
     }
@@ -840,6 +849,24 @@ public class Actor : MonoBehaviour
 
     protected void AnimationControl()
     {
+        float tempSpeed = Mathf.Abs(cache_rb.velocity.x) > Mathf.Abs(cache_rb.velocity.y) ? Mathf.Abs(cache_rb.velocity.x) : Mathf.Abs(cache_rb.velocity.y);
+        if (characterType is Monkey)
+        {
+            tempSpeed /= GameManager.Instance.gmMovementManager.mSpeed;
+        } else
+        {
+            tempSpeed /= GameManager.Instance.gmMovementManager.gSpeed;
+        }
+        if (tempSpeed > 1f)
+        {
+            tempSpeed = 1f;
+        }
+        if(tempSpeed < .3f)
+        {
+            tempSpeed = .3f;
+        }
+
+        animator.SetFloat("velocity", tempSpeed);
         //Debug.Log(GetComponent<Rigidbody2D>().velocity.x);
         if (cache_rb.velocity.x > 0f)
         {
