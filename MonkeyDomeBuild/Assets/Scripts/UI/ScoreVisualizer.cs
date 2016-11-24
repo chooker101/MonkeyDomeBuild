@@ -88,7 +88,7 @@ public class ScoreVisualizer : MonoBehaviour
             // Changes who's holding the ball on the UI bin
             if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall && !ballPossession[i].gameObject.activeSelf)
             {
-                if (GameManager.Instance.gmPlayers[i].GetComponent<Player>().ballHolding.GetComponent<BallInfo>().IsBall)
+                if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ballHolding.GetComponent<BallInfo>().IsBall)
                 {
                     ballPossession[i].gameObject.SetActive(true);
                 }

@@ -91,6 +91,8 @@ public class Actor : MonoBehaviour
     protected Vector2 storedThrowDir;
     protected float currentDir = 1f;
 
+  
+
     //public string cType = "";
 
     public bool DisableInput
@@ -298,6 +300,17 @@ public class Actor : MonoBehaviour
         {
             storedThrowDir = GameManager.Instance.gmInputs[playerIndex].mXY;
         }
+        else
+        {
+            //if not aiming thow direction sprite is facing
+                if (spriteRenderer.flipX == false)
+                storedThrowDir = Vector3.right;
+                else
+            storedThrowDir = -Vector3.right;
+                
+                
+            
+        }
         if (GameManager.Instance.gmInputs[playerIndex].mXY.x >= 0.1f)
         {
             currentDir = 1f;
@@ -456,10 +469,25 @@ public class Actor : MonoBehaviour
     {
         if (isCharging)
         {
-            col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
-            col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
-            PointerCenter.GetComponentInChildren<Image>().color = col1;
-            pointerBase.GetComponentInChildren<Image>().color = col2;
+           
+            if (GameManager.Instance.gmInputs[inputIndex].mXY.x != 0)
+            {
+                col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+                col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 1, Time.unscaledDeltaTime * 5f);
+
+                PointerCenter.GetComponentInChildren<Image>().color = col1;
+                pointerBase.GetComponentInChildren<Image>().color = col2;
+            }
+            else
+            {
+                col1.a = Mathf.Lerp(PointerCenter.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+                col2.a = Mathf.Lerp(pointerBase.GetComponentInChildren<Image>().color.a, 0, Time.unscaledDeltaTime * 10f);
+
+                PointerCenter.GetComponentInChildren<Image>().color = col1;
+                pointerBase.GetComponentInChildren<Image>().color = col2;
+            }
+
+            
 
             //Debug.Log(a);
             var a = Mathf.Lerp(1, 4, holdingCatchCount / maxChargeCount);
@@ -476,7 +504,7 @@ public class Actor : MonoBehaviour
                 {
                     PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
                 }
-            }
+            }  
         }
         else
         {

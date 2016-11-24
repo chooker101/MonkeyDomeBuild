@@ -81,9 +81,13 @@ public class AI : Actor
 	private RaycastHit2D lineHit;
 	private Vector2 posOnParabola;
 	private Vector2 prevPosOnParabola;
+	private Vector3 prevCurrEndTarg;
+	private Vector3 vineTarget;
 	private Target nearestSignTarget;
 	private int gorillaIndex;
+	private List<Transform> viableTargets = new List<Transform>();
 
+	[SerializeField]
 	State currentState;
 
 	// Use this for initialization
@@ -93,7 +97,7 @@ public class AI : Actor
 		//currentState = State.Move;
 #if UNITY_5_3
 #if UNITY_EDITOR
-		lastSceneOld = EditorApplication.currentScene.ToString();
+		lastSceneOld = "";
 		oldSceneCheck = true;
 #endif
 #elif UNITY_5_4
@@ -152,36 +156,36 @@ public class AI : Actor
 		characterType.CHUpdate();
 		CheckLeader();
 
-        if (isinair && cache_rb.velocity.y < 0f)
-        {
-            if (isClimbing)
-            {
-                //animator.SetBool("IsIdle", true);
-                //animator.SetBool("IsInAirDown", false); 
-                animator.SetBool("IsClimbing", true);
-            }
-            else
-            {
-                animator.SetBool("IsClimbing", false);
-                animator.SetBool("IsInAirDown", true);
-                animator.SetBool("IsInAir", false);
-                animator.SetBool("IsJumping", false);
-            }
-        }
-        else if (isinair && cache_rb.velocity.y >= 0f)
-        {
-            animator.SetBool("IsInAir", true);
-            //animator.SetBool("IsStartJump", false);
-        }
-    }
+		if (isinair && cache_rb.velocity.y < 0f)
+		{
+			if (isClimbing)
+			{
+				//animator.SetBool("IsIdle", true);
+				//animator.SetBool("IsInAirDown", false); 
+				animator.SetBool("IsClimbing", true);
+			}
+			else
+			{
+				animator.SetBool("IsClimbing", false);
+				animator.SetBool("IsInAirDown", true);
+				animator.SetBool("IsInAir", false);
+				animator.SetBool("IsJumping", false);
+			}
+		}
+		else if (isinair && cache_rb.velocity.y >= 0f)
+		{
+			animator.SetBool("IsInAir", true);
+			//animator.SetBool("IsStartJump", false);
+		}
+	}
 
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		
-		if(wantsToThrow && haveBall)
+
+		if (wantsToThrow && haveBall)
 		{
-			if(CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
+			if (CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
 			{
 				currentState = State.Throw;
 				wantsToThrow = false;
@@ -198,7 +202,7 @@ public class AI : Actor
 		UpdateTarget();
 
 		prevAiPos = cache_tf.position;
-		
+
 		hadBalLLastFrame = haveBall;
 	}
 
@@ -229,15 +233,15 @@ public class AI : Actor
 
 	void UpdateTarget()
 	{
-		if(characterType is Gorilla)
+		if (characterType is Gorilla)
 		{
 			MoveTarget = GameManager.Instance.gmBalls[0].transform.position;
 		}
 		else
 		{
-			if(!IsTargetViable(MoveTarget))
+			if ((!IsTargetViable(MoveTarget) || (cache_tf.position - MoveTarget).magnitude < 0.5f) || MoveTarget == Vector3.zero || (!hadBalLLastFrame && haveBall))
 			{
-				List<Transform> viableTargets = null;
+				viableTargets.Clear();
 				float dirX = 0.0f;
 				float dirY = 0.0f;
 
@@ -273,6 +277,11 @@ public class AI : Actor
 						}
 					}
 				}
+				if (viableTargets.Count != 0)
+				{
+					MoveTarget = viableTargets[Random.Range(0, viableTargets.Count - 1)].position;
+					UpdateEndTarget();
+				}
 			}
 		}
 	}
@@ -297,14 +306,14 @@ public class AI : Actor
 		{
 			foreach (Actor P in GameManager.Instance.gmPlayerScripts)
 			{
-				if(P.haveBall)
+				if (P.haveBall)
 				{
-					if(target == GameManager.Instance.gmBalls[0].transform.position)
+					if (target == GameManager.Instance.gmBalls[0].transform.position)
 					{
 						return false;
 					}
 				}
-				if((P.transform.position - target).magnitude <= 2.5f)
+				if ((P.transform.position - target).magnitude <= 2.5f)
 				{
 					return false;
 				}
@@ -364,7 +373,7 @@ public class AI : Actor
 			}
 		}
 
-		if(lowestPoints != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[lowestPoints].characterType is Monkey)
+		if (lowestPoints != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[lowestPoints].characterType is Monkey)
 		{
 			lastPlayerTarget = lowestPoints;
 			if (CalculateThrow(GameManager.Instance.gmPlayers[lowestPoints]))
@@ -378,7 +387,7 @@ public class AI : Actor
 				currentState = State.Move;
 			}
 		}
-		else if(secondLowest != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[secondLowest].characterType is Monkey)
+		else if (secondLowest != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[secondLowest].characterType is Monkey)
 		{
 			lastPlayerTarget = secondLowest;
 			if (CalculateThrow(GameManager.Instance.gmPlayers[secondLowest]))
@@ -395,9 +404,9 @@ public class AI : Actor
 		else
 		{
 			nearestSignTarget = GameManager.Instance.gmTargetManager.GetTargetAtIndex(0);
-			foreach(Target T in GameManager.Instance.gmTargetManager.TargetGetter())
+			foreach (Target T in GameManager.Instance.gmTargetManager.TargetGetter())
 			{
-				if((T.transform.position - cache_tf.position).magnitude < (nearestSignTarget.transform.position - cache_tf.position).magnitude)
+				if ((T.transform.position - cache_tf.position).magnitude < (nearestSignTarget.transform.position - cache_tf.position).magnitude)
 				{
 					nearestSignTarget = T;
 				}
@@ -424,7 +433,7 @@ public class AI : Actor
 	State ExecuteThrow()
 	{
 		//Debug.Log("Throw");
-		
+
 		GameManager.Instance.gmInputs[inputIndex].mXY.x = aimDir.x;
 		GameManager.Instance.gmInputs[inputIndex].mXY.y = aimDir.y;
 		GameManager.Instance.gmInputs[inputIndex].mCatch = true;
@@ -438,7 +447,7 @@ public class AI : Actor
 			StartCoroutine(WaitForCatchCoolDown());
 		}
 		currentState = State.Idle;
-		
+
 		return currentState;
 	}
 
@@ -447,7 +456,7 @@ public class AI : Actor
 		SamePosUpdate();
 		isAtTargetX = CheckClose();
 
-		if (!IsInAir)
+		if (!IsInAir || isClimbing)
 		{
 			if (isAtTargetX)//&& (currEndTarg.y > cache_tf.position.y - (centerToFeet + 0.5f) && currEndTarg.y < cache_tf.position.y + (centerToFeet + 0.5f))))
 			{
@@ -460,7 +469,7 @@ public class AI : Actor
 		calcVar = cache_tf.position;
 		calcVar.y += (maxJump - centerToFeet);
 		Debug.DrawLine(cache_tf.position, currEndTarg, Color.red);
-		Debug.DrawLine(cache_tf.position, MoveTarget, Color.blue);
+		Debug.DrawLine(currEndTarg, MoveTarget, Color.blue);
 		Debug.DrawLine(cache_tf.position, calcVar, Color.yellow);
 		//Debug.DrawLine(cache_tf.position, currEndTargBound, Color.green);
 
@@ -471,15 +480,16 @@ public class AI : Actor
 
 		if (!IsAtMainTarget())
 		{
-			if (MoveTarget.y > cache_tf.position.y + centerToFeet)
+			if (MoveTarget.y > cache_tf.position.y - centerToFeet)
 			{
-				if ((isAtTargetX && currEndTarg.y > cache_tf.position.y) && (!IsInAir && currEndTarg.y < (cache_tf.position.y + maxJump - centerToFeet - 1.5f)))
+
+				if ((isAtTargetX && currEndTarg.y > cache_tf.position.y) && (!IsInAir && currEndTarg.y < (cache_tf.position.y + (maxJump - centerToFeet))))
 				{
-					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
-					dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
-					updateEndTargBeforeCoroutine = true;
-					currEndTarg.x = dirmult;
-					currEndTarg.y = cache_tf.position.y;
+					//float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+					//dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
+					//updateEndTargBeforeCoroutine = true;
+					//currEndTarg.x = dirmult;
+					//currEndTarg.y = cache_tf.position.y;
 				}
 				else
 				{
@@ -509,13 +519,25 @@ public class AI : Actor
 										StartCoroutine(RealisticInputJump());
 									}
 								}
-								else if (IsInAir && canClimb)
+								else if ((IsInAir && canClimb) && !isClimbing)
 								{
 									if (cache_tf.position.y >= currEndTargBound.y)
 									{
 										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
+										if (currEndTarg == currEndTargBound)
+										{
+											if (cache_tf.position.y < vineTarget.y)
+											{
+												currEndTargBound.y += ((vineTarget.y * 0.5f) - 1.0f);
+											}
+											else
+											{
+												currEndTargBound.y -= ((vineTarget.y * 0.5f) - 1.0f);
+											}
+										}
+										currEndTarg = currEndTargBound;
 									}
 								}
 							}
@@ -547,13 +569,27 @@ public class AI : Actor
 										StartCoroutine(RealisticInputJump());
 									}
 								}
-								else if((IsInAir && canClimb) && !isClimbing)
+								else if ((IsInAir && canClimb) && !isClimbing)
 								{
-									if(isAtTargetX)
+									if (isAtTargetX)
 									{
 										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
+										if(currEndTarg == currEndTargBound)
+										{
+											
+											if (cache_tf.position.y < vineTarget.y)
+											{
+												currEndTargBound.y += ((vineTarget.y * 0.5f) - 1.0f);
+											}
+											else
+											{
+												currEndTargBound.y -= ((vineTarget.y * 0.5f) - 1.0f);
+											}
+												
+											
+										}
 										currEndTarg = currEndTargBound;
 									}
 								}
@@ -561,6 +597,7 @@ public class AI : Actor
 						}
 					}
 				}
+
 			}
 			else if (MoveTarget.y < cache_tf.position.y - centerToFeet)
 			{
@@ -578,12 +615,12 @@ public class AI : Actor
 			}
 		}
 
-		if(isStuck)
+		if (isStuck)
 		{
 			xInput = reverseX;
 		}
 
-		if(xInput < 0.05f && xInput > -0.05f)
+		if (xInput < 0.05f && xInput > -0.05f)
 		{
 			xInput = 0.0f;
 		}
@@ -599,11 +636,11 @@ public class AI : Actor
 
 	private void SamePosUpdate()
 	{
-		if(cache_tf.position == prevAiPos)
+		if (cache_tf.position == prevAiPos)
 		{
 			timeInSamePos += Time.deltaTime;
 		}
-		if(timeInSamePos >= 1.0f)
+		if (timeInSamePos >= 1.0f)
 		{
 			timeInSamePos = 0.0f;
 			if (!isAtTargetX)
@@ -614,7 +651,7 @@ public class AI : Actor
 			}
 			else
 			{
-				Debug.LogError("Cannot make it to end target");
+				Debug.Log("Cannot make it to end target");
 			}
 		}
 	}
@@ -637,24 +674,34 @@ public class AI : Actor
 
 		if (!IsAtMainTarget())
 		{
+			
 			if (MoveTarget.y > cache_tf.position.y + centerToFeet)
 			{
-				FindNearestLevelObject(MoveTarget);
+				FindNearestLevelObject(MoveTarget, currEndTarg);
+				prevCurrEndTarg = currEndTarg;
 				if (isEndTargVine)
 				{
+					vineTarget = currEndTarg;
 					currEndTarg = FindEdgeOfVine(currEndTarg);
 				}
-				if (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)))
+				if (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet)))
 				{
 					levelCounter = GameManager.Instance.gmLevelObjectsScript.numberOfLevels;
-					while (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet - 1.5f)) && levelCounter > 0)
+					while (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet)) && levelCounter > 0)
 					{
-						FindNearestLevelObject(currEndTarg);
-						if(isEndTargVine)
+						FindNearestLevelObject(currEndTarg, currEndTarg);
+						if (isEndTargVine)
 						{
+							vineTarget = currEndTarg;
 							currEndTarg = FindEdgeOfVine(currEndTarg);
 						}
+						if (currEndTarg == prevCurrEndTarg)
+						{
+							FindNearestJumpableObject();
+							break;
+						}
 						levelCounter--;
+						prevCurrEndTarg = currEndTarg;
 					}
 				}
 				if (!isEndTargVine)
@@ -668,7 +715,7 @@ public class AI : Actor
 			}
 			else if (MoveTarget.y <= cache_tf.position.y - centerToFeet)
 			{
-				FindNearestLevelObject(MoveTarget);
+				FindNearestLevelObject(MoveTarget,currEndTarg);
 				if (!isEndTargVine)
 				{
 					currEndTargBound = FindEdgeOfPlatform(currEndTarg);
@@ -679,6 +726,12 @@ public class AI : Actor
 				}
 			}
 		}
+		if (currEndTarg == Vector3.zero)
+		{
+			currEndTarg = MoveTarget;
+			currEndTargBound = MoveTarget;
+		}
+
 	}
 
 	private bool IsAtMainTarget()
@@ -686,7 +739,7 @@ public class AI : Actor
 		return ((cache_tf.position.x < MoveTarget.x + 0.5f && cache_tf.position.x > MoveTarget.x - 0.5f) && (MoveTarget.y > cache_tf.position.y - (centerToFeet + 0.5f) && MoveTarget.y < cache_tf.position.y + (centerToFeet + 0.5f)));
 	}
 
-	private void FindNearestLevelObject(Vector3 FinalPos)
+	private void FindNearestLevelObject(Vector3 FinalPos, Vector3 oldEndTarg)
 	{
 		Vector3 position;
 		currClosestDist = 0.0f;
@@ -696,7 +749,7 @@ public class AI : Actor
 			position = Vector3.Lerp(cache_tf.position, FinalPos, i);
 			foreach (var T in GameManager.Instance.gmLevelObjectsScript.loPlatforms)
 			{
-				if (T.transform.position != FinalPos && !((cache_tf.position.x < T.transform.position.x + 0.5f && cache_tf.position.x > T.transform.position.x - 0.5f) && (T.transform.position.y > cache_tf.position.y - (centerToFeet + 0.5f) && T.transform.position.y < cache_tf.position.y + (centerToFeet + 0.5f))))
+				if (T.transform.position != FinalPos && !((cache_tf.position.x < T.transform.position.x + 1.0f && cache_tf.position.x > T.transform.position.x - 1.0f) && (T.transform.position.y > cache_tf.position.y - (centerToFeet + 1.0f) && T.transform.position.y < cache_tf.position.y + (centerToFeet + 1.0f))))
 				{
 					if (T.transform.position.y < FinalPos.y)
 					{
@@ -718,7 +771,7 @@ public class AI : Actor
 			}
 			foreach (var Y in GameManager.Instance.gmLevelObjectsScript.loVines)
 			{
-				if (Y.transform.position != FinalPos && !((cache_tf.position.x < Y.transform.position.x + 0.5f && cache_tf.position.x > Y.transform.position.x - 0.5f) && (Y.transform.position.y > cache_tf.position.y - (centerToFeet + 0.5f) && Y.transform.position.y < cache_tf.position.y + (centerToFeet + 0.5f))))
+				if (Y.transform.position != FinalPos && !((cache_tf.position.x < Y.transform.position.x + 1.0f && cache_tf.position.x > Y.transform.position.x - 1.0f) && (Y.transform.position.y > cache_tf.position.y - (centerToFeet + 1.0f) && Y.transform.position.y < cache_tf.position.y + (centerToFeet + 1.0f))))
 				{
 					if (Y.transform.position.y < FinalPos.y)
 					{
@@ -732,6 +785,51 @@ public class AI : Actor
 					}
 				}
 			}
+		}
+	}
+
+	private void FindNearestJumpableObject()
+	{
+		
+		List<Vector3> viableEndTargets = new List<Vector3>();
+		List<bool> isVines = new List<bool>();
+		Vector3 currClosest = Vector3.zero;
+		int i = 0;
+		foreach (var T in GameManager.Instance.gmLevelObjectsScript.loPlatforms)
+		{
+			if (T.transform.position.y < cache_tf.position.y + (maxJump - centerToFeet) && T.transform.position != currEndTarg)
+			{
+				viableEndTargets.Add(T.transform.position);
+				isVines.Add(false);
+			}
+		}
+		foreach (var Y in GameManager.Instance.gmLevelObjectsScript.loVines)
+		{
+			if (Y.transform.position.y < cache_tf.position.y + (maxJump - centerToFeet) && Y.transform.position != currEndTarg)
+			{
+				viableEndTargets.Add(FindEdgeOfVine(Y.transform.position));
+				isVines.Add(true);
+			}
+		}
+		foreach (var V in viableEndTargets)
+		{
+			if (currClosest == Vector3.zero)
+			{
+				currClosest = V;
+				isEndTargVine = isVines[i];
+			}
+			else if ((MoveTarget - currClosest).magnitude > (MoveTarget - V).magnitude)
+			{
+				currClosest = V;
+				isEndTargVine = isVines[i];
+			}
+			++i;
+		}
+		currEndTarg = currClosest;
+		if (isEndTargVine)
+		{
+			vineTarget = currEndTarg;
+			currEndTarg = FindEdgeOfVine(currEndTarg);
 		}
 	}
 
@@ -765,7 +863,7 @@ public class AI : Actor
 		{
 			if (vinePos == Y.transform.position)
 			{
-				if(cache_tf.position.y < Y.transform.position.y)
+				if (cache_tf.position.y < Y.transform.position.y)
 				{
 					result.y -= ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
 					currEndTargBound.y += ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
@@ -782,20 +880,20 @@ public class AI : Actor
 
 	private void IsBallNear()
 	{
-		if(ballInRange)
+		if (ballInRange)
 		{
 			if (letCatch)
 			{
 				currentState = State.Catch;
 				letCatch = false;
 			}
-			else if(waitForBallOnce)
+			else if (waitForBallOnce)
 			{
 				StartCoroutine(WaitToCatch());
 				waitForBallOnce = false;
 			}
 		}
-		else if(GameManager.Instance.gmBalls[0] != null)
+		else if (GameManager.Instance.gmBalls[0] != null)
 		{
 			if ((GameManager.Instance.gmBalls[0].transform.position - cache_tf.position).magnitude < (currEndTarg - cache_tf.position).magnitude)
 			{
@@ -839,7 +937,7 @@ public class AI : Actor
 		height = (playerTarg.transform.position.y - cache_tf.position.y);
 		posTheta = 0.0f;
 		negTheta = 0.0f;
-		if(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)) > 0.0f)
+		if (((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)) > 0.0f)
 		{
 			posTheta = Mathf.Atan(((throwVelocity * throwVelocity) + Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / (g * range));
 			negTheta = Mathf.Atan(((throwVelocity * throwVelocity) - Mathf.Sqrt(((throwVelocity * throwVelocity) * (throwVelocity * throwVelocity)) - g * (g * (range * range) + 2 * height * (throwVelocity * throwVelocity)))) / (g * range));
@@ -906,7 +1004,7 @@ public class AI : Actor
 		{
 			posOnParabola.x = cache_tf.position.x + (directionOfParabola * xVel1 * i);
 			posOnParabola.y = cache_tf.position.y + (directionOfParabola * yVel1 * i + 0.5f * -g * (i * i));
-			lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola,ballLayer);
+			lineHit = Physics2D.Linecast(prevPosOnParabola, posOnParabola, ballLayer);
 			Debug.DrawLine(prevPosOnParabola, posOnParabola, Color.black, 0.5f);
 			if (lineHit.collider != null)
 			{
@@ -917,7 +1015,7 @@ public class AI : Actor
 					break;
 				}
 			}
-			if(posOnParabola.x >= range - 0.3f && posOnParabola.x <= range + 0.3f)
+			if (posOnParabola.x >= range - 0.3f && posOnParabola.x <= range + 0.3f)
 			{
 				break;
 			}
@@ -958,7 +1056,7 @@ public class AI : Actor
 			aimDir.y = (yVel1 * directionOfParabola) / throwVelocity;
 			return true;
 		}
-		else if(upOrDownThrow == -1)
+		else if (upOrDownThrow == -1)
 		{
 			aimDir.x = (xVel2 * directionOfParabola) / throwVelocity;
 			aimDir.y = (yVel2 * directionOfParabola) / throwVelocity;
