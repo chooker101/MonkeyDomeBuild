@@ -82,7 +82,8 @@ public class AI : Actor
 	private Vector2 posOnParabola;
 	private Vector2 prevPosOnParabola;
 	private Vector3 prevCurrEndTarg;
-	private Vector3 vineTarget;
+	private Vector3 dontUseEndTarg;
+	private Transform vineTarget;
 	private Target nearestSignTarget;
 	private int gorillaIndex;
 	private List<Transform> viableTargets = new List<Transform>();
@@ -114,9 +115,10 @@ public class AI : Actor
 		prevAiPos = cache_tf.position;
 
 		CalculateMaxJump();
-		UpdateTarget();
+		
 		if (currentState == State.Move)
 		{
+			UpdateTarget();
 			UpdateEndTarget();
 		}
 	}
@@ -199,7 +201,10 @@ public class AI : Actor
 		{
 			ReleaseBall();
 		}
-		UpdateTarget();
+		if (currentState == State.Move)
+		{
+			UpdateTarget();
+		}
 
 		prevAiPos = cache_tf.position;
 
@@ -290,6 +295,10 @@ public class AI : Actor
 	{
 		if (haveBall)
 		{
+			if ((target - cache_tf.position).magnitude <= 2.0f)
+			{
+				return false;
+			}
 			foreach (Actor P in GameManager.Instance.gmPlayerScripts)
 			{
 				if (P.characterType is Gorilla)
@@ -304,6 +313,10 @@ public class AI : Actor
 		}
 		else
 		{
+			if ((target - cache_tf.position).magnitude <= 1.0f)
+			{
+				return false;
+			}
 			foreach (Actor P in GameManager.Instance.gmPlayerScripts)
 			{
 				if (P.haveBall)
@@ -313,7 +326,7 @@ public class AI : Actor
 						return false;
 					}
 				}
-				if ((P.transform.position - target).magnitude <= 2.5f)
+				if ((P.transform.position - target).magnitude <= 5.0f)
 				{
 					return false;
 				}
@@ -480,36 +493,47 @@ public class AI : Actor
 
 		if (!IsAtMainTarget())
 		{
+			if (isEndTargVine)
+			{
+				if ((IsInAir && canClimb) && !isClimbing)
+				{
+					if (cache_tf.position.y >= currEndTargBound.y)
+					{
+						GameManager.Instance.gmInputs[inputIndex].mJump = true;
+						canJump = false;
+						StartCoroutine(RealisticInputJump());
+						currEndTargBound = vineTarget.position;
+						currEndTargBound.y += ((vineTarget.lossyScale.y * 0.5f) - 1.0f);
+						currEndTarg = currEndTargBound;
+					}
+				}
+				else if(isClimbing)
+				{
+					currEndTargBound = vineTarget.position;
+					currEndTargBound.y += ((vineTarget.lossyScale.y * 0.5f) - 1.0f);
+					currEndTarg = currEndTargBound;
+				}
+			}
 			if (MoveTarget.y > cache_tf.position.y - centerToFeet)
 			{
 
 				if ((isAtTargetX && currEndTarg.y > cache_tf.position.y) && (!IsInAir && currEndTarg.y < (cache_tf.position.y + (maxJump - centerToFeet))))
 				{
-					//float dirmult = (currEndTargBound - currEndTarg).normalized.x;
-					//dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
-					//updateEndTargBeforeCoroutine = true;
-					//currEndTarg.x = dirmult;
-					//currEndTarg.y = cache_tf.position.y;
+					float dirmult = (currEndTargBound - currEndTarg).normalized.x;
+					dirmult = currEndTargBound.x + (dirmult * (approxJumpDist * 0.5f));
+					updateEndTargBeforeCoroutine = true;
+					currEndTarg.x = dirmult;
+					currEndTarg.y = cache_tf.position.y;
 				}
 				else
 				{
-					if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
+					if (!isClimbing)
 					{
-						if (canJump && !IsInAir)
+						if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
 						{
-							if (!isEndTargVine)
+							if (canJump && !IsInAir)
 							{
-								xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
-								if (xInput <= 1.0f && xInput >= -1.0f)
-								{
-									GameManager.Instance.gmInputs[inputIndex].mJump = true;
-									canJump = false;
-									StartCoroutine(RealisticInputJump());
-								}
-							}
-							else
-							{
-								if (canJump && !IsInAir)
+								if (!isEndTargVine)
 								{
 									xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
 									if (xInput <= 1.0f && xInput >= -1.0f)
@@ -519,79 +543,110 @@ public class AI : Actor
 										StartCoroutine(RealisticInputJump());
 									}
 								}
-								else if ((IsInAir && canClimb) && !isClimbing)
+								else
 								{
-									if (cache_tf.position.y >= currEndTargBound.y)
+									if (canJump && !IsInAir)
 									{
-										GameManager.Instance.gmInputs[inputIndex].mJump = true;
-										canJump = false;
-										StartCoroutine(RealisticInputJump());
-										if (currEndTarg == currEndTargBound)
+										xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+										if (xInput <= 1.0f && xInput >= -1.0f)
 										{
-											if (cache_tf.position.y < vineTarget.y)
-											{
-												currEndTargBound.y += ((vineTarget.y * 0.5f) - 1.0f);
-											}
-											else
-											{
-												currEndTargBound.y -= ((vineTarget.y * 0.5f) - 1.0f);
-											}
+											GameManager.Instance.gmInputs[inputIndex].mJump = true;
+											canJump = false;
+											StartCoroutine(RealisticInputJump());
 										}
-										currEndTarg = currEndTargBound;
 									}
+								}
+							}
+							else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
+							{
+								if (!isEndTargVine)
+								{
+									if (canJump && !IsInAir)
+									{
+										xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+										if (xInput <= 1.0f && xInput >= -1.0f)
+										{
+											GameManager.Instance.gmInputs[inputIndex].mJump = true;
+											canJump = false;
+											StartCoroutine(RealisticInputJump());
+										}
+									}
+								}
+								else
+								{
+									if (canJump && !IsInAir)
+									{
+										xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+										if (xInput <= 1.0f && xInput >= -1.0f)
+										{
+											GameManager.Instance.gmInputs[inputIndex].mJump = true;
+											canJump = false;
+											StartCoroutine(RealisticInputJump());
+										}
+									}
+
 								}
 							}
 						}
-						else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
+					}
+					else if(IsAtMainTarget())
+					{
+						if (currEndTargBound.x >= cache_tf.transform.position.x - approxJumpDist)
 						{
-							if (!isEndTargVine)
+							if (canJump && !IsInAir)
 							{
-								if (canJump && !IsInAir)
+								if (!isEndTargVine)
 								{
-									xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+									xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
 									if (xInput <= 1.0f && xInput >= -1.0f)
 									{
 										GameManager.Instance.gmInputs[inputIndex].mJump = true;
 										canJump = false;
 										StartCoroutine(RealisticInputJump());
+									}
+								}
+								else
+								{
+									if (canJump && !IsInAir)
+									{
+										xInput = CalculateJump(currEndTargBound, false) / characterType.movespeed;
+										if (xInput <= 1.0f && xInput >= -1.0f)
+										{
+											GameManager.Instance.gmInputs[inputIndex].mJump = true;
+											canJump = false;
+											StartCoroutine(RealisticInputJump());
+										}
 									}
 								}
 							}
-							else
+							else if (currEndTargBound.x <= cache_tf.transform.position.x + approxJumpDist)
 							{
-								if (canJump && !IsInAir)
+								if (!isEndTargVine)
 								{
-									xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
-									if (xInput <= 1.0f && xInput >= -1.0f)
+									if (canJump && !IsInAir)
 									{
-										GameManager.Instance.gmInputs[inputIndex].mJump = true;
-										canJump = false;
-										StartCoroutine(RealisticInputJump());
+										xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+										if (xInput <= 1.0f && xInput >= -1.0f)
+										{
+											GameManager.Instance.gmInputs[inputIndex].mJump = true;
+											canJump = false;
+											StartCoroutine(RealisticInputJump());
+										}
 									}
 								}
-								else if ((IsInAir && canClimb) && !isClimbing)
+								else
 								{
-									if (isAtTargetX)
+									if (canJump && !IsInAir)
 									{
-										GameManager.Instance.gmInputs[inputIndex].mJump = true;
-										canJump = false;
-										StartCoroutine(RealisticInputJump());
-										if(currEndTarg == currEndTargBound)
+										xInput = CalculateJump(currEndTargBound, true) / characterType.movespeed;
+										if (xInput <= 1.0f && xInput >= -1.0f)
 										{
-											
-											if (cache_tf.position.y < vineTarget.y)
-											{
-												currEndTargBound.y += ((vineTarget.y * 0.5f) - 1.0f);
-											}
-											else
-											{
-												currEndTargBound.y -= ((vineTarget.y * 0.5f) - 1.0f);
-											}
-												
-											
+											GameManager.Instance.gmInputs[inputIndex].mJump = true;
+											canJump = false;
+											StartCoroutine(RealisticInputJump());
 										}
-										currEndTarg = currEndTargBound;
 									}
+
 								}
 							}
 						}
@@ -625,9 +680,10 @@ public class AI : Actor
 			xInput = 0.0f;
 		}
 
-		if (isEndTargVine && isClimbing)
+		if (isClimbing && !isStuck)
 		{
 			GameManager.Instance.gmInputs[inputIndex].mXY.y = (currEndTarg - cache_tf.position).normalized.y;
+			xInput = (currEndTarg - cache_tf.position).normalized.x;
 		}
 		GameManager.Instance.gmInputs[inputIndex].mXY.x = xInput;
 
@@ -636,29 +692,34 @@ public class AI : Actor
 
 	private void SamePosUpdate()
 	{
-		if (cache_tf.position == prevAiPos)
+		if (!beingSmack)
 		{
-			timeInSamePos += Time.deltaTime;
-		}
-		if (timeInSamePos >= 1.0f)
-		{
-			timeInSamePos = 0.0f;
-			if (!isAtTargetX)
+			if ((prevAiPos - cache_tf.position).magnitude <= 0.01f)
 			{
-				isStuck = true;
-				StartCoroutine(RealisticInputX());
-				reverseX = -xInput;
+				timeInSamePos += Time.deltaTime;
 			}
-			else
+			if (timeInSamePos >= 0.5f)
 			{
-				Debug.Log("Cannot make it to end target");
+				timeInSamePos = 0.0f;
+				if (!(cache_tf.position.x < currEndTarg.x + 1.0f && cache_tf.position.x > currEndTarg.x - 1.0f))
+				{
+					isStuck = true;
+					StartCoroutine(RealisticInputX());
+					reverseX = -xInput;
+				}
+				else
+				{
+					Debug.Log("Cannot make it to end target");
+					dontUseEndTarg = currEndTarg;
+					UpdateEndTarget();
+				}
 			}
 		}
 	}
 
 	private bool CheckClose()
 	{
-		return (cache_tf.position.x < currEndTarg.x + 0.5f && cache_tf.position.x > currEndTarg.x - 0.5f);
+		return (cache_tf.position.x < currEndTarg.x + 1.0f && cache_tf.position.x > currEndTarg.x - 1.0f);
 	}
 
 	private void UpdateEndTarget()
@@ -681,7 +742,6 @@ public class AI : Actor
 				prevCurrEndTarg = currEndTarg;
 				if (isEndTargVine)
 				{
-					vineTarget = currEndTarg;
 					currEndTarg = FindEdgeOfVine(currEndTarg);
 				}
 				if (currEndTarg.y > (cache_tf.position.y + (maxJump - centerToFeet)))
@@ -692,7 +752,6 @@ public class AI : Actor
 						FindNearestLevelObject(currEndTarg, currEndTarg);
 						if (isEndTargVine)
 						{
-							vineTarget = currEndTarg;
 							currEndTarg = FindEdgeOfVine(currEndTarg);
 						}
 						if (currEndTarg == prevCurrEndTarg)
@@ -702,6 +761,10 @@ public class AI : Actor
 						}
 						levelCounter--;
 						prevCurrEndTarg = currEndTarg;
+					}
+					if(currEndTarg == dontUseEndTarg)
+					{
+						FindNearestJumpableObject();
 					}
 				}
 				if (!isEndTargVine)
@@ -731,7 +794,6 @@ public class AI : Actor
 			currEndTarg = MoveTarget;
 			currEndTargBound = MoveTarget;
 		}
-
 	}
 
 	private bool IsAtMainTarget()
@@ -781,6 +843,7 @@ public class AI : Actor
 							currClosestDist = dist;
 							currEndTarg = Y.transform.position;
 							isEndTargVine = true;
+							vineTarget = Y.transform;
 						}
 					}
 				}
@@ -791,7 +854,7 @@ public class AI : Actor
 	private void FindNearestJumpableObject()
 	{
 		
-		List<Vector3> viableEndTargets = new List<Vector3>();
+		List<Transform> viableEndTargets = new List<Transform>();
 		List<bool> isVines = new List<bool>();
 		Vector3 currClosest = Vector3.zero;
 		int i = 0;
@@ -799,7 +862,7 @@ public class AI : Actor
 		{
 			if (T.transform.position.y < cache_tf.position.y + (maxJump - centerToFeet) && T.transform.position != currEndTarg)
 			{
-				viableEndTargets.Add(T.transform.position);
+				viableEndTargets.Add(T.transform);
 				isVines.Add(false);
 			}
 		}
@@ -807,7 +870,7 @@ public class AI : Actor
 		{
 			if (Y.transform.position.y < cache_tf.position.y + (maxJump - centerToFeet) && Y.transform.position != currEndTarg)
 			{
-				viableEndTargets.Add(FindEdgeOfVine(Y.transform.position));
+				viableEndTargets.Add(Y.transform);
 				isVines.Add(true);
 			}
 		}
@@ -815,20 +878,27 @@ public class AI : Actor
 		{
 			if (currClosest == Vector3.zero)
 			{
-				currClosest = V;
+				currClosest = V.position;
 				isEndTargVine = isVines[i];
+				if (isEndTargVine)
+				{
+					vineTarget = V;
+				}
 			}
-			else if ((MoveTarget - currClosest).magnitude > (MoveTarget - V).magnitude)
+			else if ((MoveTarget - currClosest).magnitude > (MoveTarget - V.position).magnitude)
 			{
-				currClosest = V;
+				currClosest = V.position;
 				isEndTargVine = isVines[i];
+				if(isEndTargVine)
+				{
+					vineTarget = V;
+				}
 			}
 			++i;
 		}
 		currEndTarg = currClosest;
 		if (isEndTargVine)
 		{
-			vineTarget = currEndTarg;
 			currEndTarg = FindEdgeOfVine(currEndTarg);
 		}
 	}
@@ -863,16 +933,8 @@ public class AI : Actor
 		{
 			if (vinePos == Y.transform.position)
 			{
-				if (cache_tf.position.y < Y.transform.position.y)
-				{
 					result.y -= ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
-					currEndTargBound.y += ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
-				}
-				else
-				{
-					result.y += ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
-					currEndTargBound.y -= ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
-				}
+					//currEndTargBound.y += ((Y.transform.lossyScale.y * 0.5f) - 1.0f);
 			}
 		}
 		return result;
@@ -895,7 +957,7 @@ public class AI : Actor
 		}
 		else if (GameManager.Instance.gmBalls[0] != null)
 		{
-			if ((GameManager.Instance.gmBalls[0].transform.position - cache_tf.position).magnitude < (currEndTarg - cache_tf.position).magnitude)
+			if ((GameManager.Instance.gmBalls[0].transform.position - cache_tf.position).magnitude < (currEndTarg - cache_tf.position).magnitude || (GameManager.Instance.gmBalls[0].transform.position - cache_tf.position).magnitude < 7.5f)
 			{
 				MoveTarget = GameManager.Instance.gmBalls[0].transform.position;
 			}
