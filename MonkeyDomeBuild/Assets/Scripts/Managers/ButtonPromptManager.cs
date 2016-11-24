@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ButtonPromptManager : MonoBehaviour
 {
+    public Canvas canvas;
     public List<Transform> climbPrompts = new List<Transform>();
     public List<Transform> catchPrompts = new List<Transform>();
     public List<bool> climbConditions = new List<bool>();
@@ -20,12 +21,14 @@ public class ButtonPromptManager : MonoBehaviour
         for(int i = 0; i < 4; i++)
         {
             GameObject temp = (GameObject)Instantiate(climbPrompts[0].gameObject, transform.position, Quaternion.identity);
-            temp.transform.SetParent(transform);
+            temp.transform.SetParent(canvas.transform);
+            temp.transform.localScale = new Vector3(1f, 1f, 1f);
             climbPrompts.Add(temp.transform);
             temp.SetActive(false);
 
             GameObject temp2 = (GameObject)Instantiate(catchPrompts[0].gameObject, transform.position, Quaternion.identity);
-            temp2.transform.SetParent(transform);
+            temp2.transform.SetParent(canvas.transform);
+            temp2.transform.localScale = new Vector3(1f, 1f, 1f);
             catchPrompts.Add(temp2.transform);
             temp2.SetActive(false);
         }
@@ -74,45 +77,48 @@ public class ButtonPromptManager : MonoBehaviour
     {
         for (int i = 0; i < conditions.Count; i++)
         {
-            if (conditions[i])
+            if (i < GameManager.Instance.TotalNumberofPlayers)
             {
-                if (!prompts[i].gameObject.activeInHierarchy)
+                if (conditions[i])
                 {
-                    Color c = prompts[i].GetComponentInChildren<Text>().color;
-                    c.a = 0;
-                    prompts[i].GetComponentInChildren<Text>().color = c;
-                    prompts[i].gameObject.SetActive(true);
-                }
-                else
-                {
-                    Color c = prompts[i].GetComponentInChildren<Text>().color;
-                    Color cf = c;
-                    cf.a = 1f;
-                    c = Color.Lerp(c, cf, Time.deltaTime * 10f);
-                    prompts[i].GetComponentInChildren<Text>().color = c;
-                }
-                Vector3 newPos = GameManager.Instance.gmPlayerScripts[i].transform.position + offset;
-                newPos.z = prompts[i].position.z;
-                prompts[i].position = newPos;
-            }
-            else
-            {
-                if (prompts[i].GetComponentInChildren<Text>().color.a > 0.05f)
-                {
-                    Color c = prompts[i].GetComponentInChildren<Text>().color;
-                    Color cf = c;
-                    cf.a = 0;
-                    c = Color.Lerp(c, cf, Time.deltaTime * 20f);
-                    prompts[i].GetComponentInChildren<Text>().color = c;
+                    if (!prompts[i].gameObject.activeInHierarchy)
+                    {
+                        Color c = prompts[i].GetComponentInChildren<Text>().color;
+                        c.a = 0;
+                        prompts[i].GetComponentInChildren<Text>().color = c;
+                        prompts[i].gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        Color c = prompts[i].GetComponentInChildren<Text>().color;
+                        Color cf = c;
+                        cf.a = 1f;
+                        c = Color.Lerp(c, cf, Time.deltaTime * 10f);
+                        prompts[i].GetComponentInChildren<Text>().color = c;
+                    }
                     Vector3 newPos = GameManager.Instance.gmPlayerScripts[i].transform.position + offset;
                     newPos.z = prompts[i].position.z;
                     prompts[i].position = newPos;
                 }
                 else
                 {
-                    if (prompts[i].gameObject.activeInHierarchy)
+                    if (prompts[i].GetComponentInChildren<Text>().color.a > 0.05f)
                     {
-                        prompts[i].gameObject.SetActive(false);
+                        Color c = prompts[i].GetComponentInChildren<Text>().color;
+                        Color cf = c;
+                        cf.a = 0;
+                        c = Color.Lerp(c, cf, Time.deltaTime * 5f);
+                        prompts[i].GetComponentInChildren<Text>().color = c;
+                        Vector3 newPos = GameManager.Instance.gmPlayerScripts[i].transform.position + offset;
+                        newPos.z = prompts[i].position.z;
+                        prompts[i].position = newPos;
+                    }
+                    else
+                    {
+                        if (prompts[i].gameObject.activeInHierarchy)
+                        {
+                            prompts[i].gameObject.SetActive(false);
+                        }
                     }
                 }
             }
