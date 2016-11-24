@@ -1845,22 +1845,6 @@ Prefab:
       propertyPath: m_Name
       value: Ball (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 2316426, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 7971a29b15e3a644b947b2ccca05d3df, type: 2}
-    - target: {fileID: 11493290, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
-      propertyPath: mySpriteColour
-      value: 
-      objectReference: {fileID: 2100000, guid: f6294e974ec7af04689598f199a1ea47, type: 2}
-    - target: {fileID: 194516, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
-      propertyPath: m_TagString
-      value: BallTrigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 21243964, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 7971a29b15e3a644b947b2ccca05d3df, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
@@ -2644,11 +2628,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
       propertyPath: NumberOfPlayersToBuild
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
       propertyPath: NumberOfPlayersToBuild
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
