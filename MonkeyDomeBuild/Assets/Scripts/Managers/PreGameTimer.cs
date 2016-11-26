@@ -8,6 +8,7 @@ public enum GameState
 {
     Null,
     Pregame_PickingColours,
+    Pregame_allTargetsHit,
     Pregame_SpinnerSpinning,
     Pregame_GorillaSet,
     Game_Start
@@ -45,6 +46,7 @@ public class PreGameTimer : MonoBehaviour
     public bool allMonkeysCalled = false;
     public float allTargetsHitTimer;
 
+    private GameObject ballReturn;
     private List<int> monkeysActions = new List<int>();
     private GameObject newSpinner;
     private bool spinnerSpawned = false;
@@ -63,7 +65,8 @@ public class PreGameTimer : MonoBehaviour
         sign_throwLong.SetActive(true);
 
         sign_gorillaSmash.SetActive(false);
-        
+
+        ballReturn = FindObjectOfType<BallReturn>().gameObject;
         colourTargets = GameObject.FindGameObjectsWithTag("ColourTarget");
         for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
@@ -90,6 +93,7 @@ public class PreGameTimer : MonoBehaviour
 
         // Check the game state to set
         if (!AllTargetsHit()) { gameState = GameState.Pregame_PickingColours; }
+        else if(AllTargetsHit() && !spinnerSpawned) { gameState = GameState.Pregame_allTargetsHit; }
         else if(AllTargetsHit() && spinnerSpawned && !gorillaSet) { gameState = GameState.Pregame_SpinnerSpinning; }
         else if(AllTargetsHit() && spinnerSpawned && gorillaSet) { gameState = GameState.Pregame_GorillaSet; }
 
@@ -114,9 +118,9 @@ public class PreGameTimer : MonoBehaviour
                 }*/
             }
         }
-        else if(gameState == GameState.Pregame_SpinnerSpinning)
+        else if (gameState == GameState.Pregame_allTargetsHit)
         {
-            if(sign_jump.activeSelf)
+            if (sign_jump.activeSelf)
             {
                 sign_catch.SetActive(false);
                 sign_jump.SetActive(false);
@@ -125,13 +129,18 @@ public class PreGameTimer : MonoBehaviour
                 sign_throw.SetActive(false);
                 sign_throwLong.SetActive(false);
 
-                FindObjectOfType<BallReturn>().gameObject.SetActive(false);
+                ballReturn.GetComponent<BallReturn>().checkEnable();
+                ballReturn.SetActive(false);
                 for (int i = 0; i < colourTargets.Length; i++)
                 {
                     Transform targetPivot = colourTargets[i].transform.FindChild("Pivot");
                     targetPivot.gameObject.SetActive(false);
                 }
             }
+        }
+        else if(gameState == GameState.Pregame_SpinnerSpinning)
+        {
+            
         }
         else if (gameState == GameState.Pregame_GorillaSet)
         {

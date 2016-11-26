@@ -26,7 +26,7 @@ public class BallReturn : MonoBehaviour
         checkEnable();// Will Enable the ball if the monkeys do not have the same sprite assigned to it, otherwise it will disable
     }
 
-    void checkEnable()
+    public void checkEnable()
     {
         if(pgt.GetComponent<PreGameTimer>().gameState == GameState.Pregame_PickingColours)
         {

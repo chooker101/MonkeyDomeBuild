@@ -20,28 +20,45 @@ public class TargetBase : MonoBehaviour
         TierNull,
         TierUp,
         TierStay,
-        TierDown
+        TierDown,
+        TierEmpty
     }
     Target target;
     public TargetBaseState state = TargetBaseState.Null;
     public TierStatus tierStatus = TierStatus.TierNull;
     public Transform slider;
-    public Transform slider2;
+    //public Transform sliderBackground;
+    public SpriteRenderer sliderTop; // New image slider
+    public SpriteRenderer sliderTopBackground;
+    public SpriteRenderer sliderBottom; // New image slider
+    public SpriteRenderer sliderBottomBackground;
     public SpriteRenderer start;
     public SpriteRenderer end;
     public SpriteRenderer hit;
+    public SpriteRenderer hit_white;
     public SpriteRenderer miss;
-    public SpriteRenderer pop;
+    public SpriteRenderer active;
     public SpriteRenderer prep;
     public SpriteRenderer warning;
+    public SpriteRenderer tierUp;
+    public SpriteRenderer tierUp_white;
+    public SpriteRenderer tierStay;
+    public SpriteRenderer tierStay_white;
+    public SpriteRenderer tierDown;
+    public SpriteRenderer tierDown_white;
+
     public SpriteRenderer upTierLight;
     public SpriteRenderer stayTierLight;
     public SpriteRenderer downTierLight;
-    public SpriteRenderer tierUp;
-    public SpriteRenderer tierStay;
-    public SpriteRenderer tierDown;
+    public SpriteRenderer targetCounter_black;
+    public SpriteRenderer targetCounter_white;
+    public SpriteRenderer targetCounter_red;
+    public SpriteRenderer targetCounterDowngrade;
+    public SpriteRenderer targetCounterSamegrade;
+    public SpriteRenderer targetCounterUpgrade;
 
     private TargetManager manager;
+    private Color color;
 
     float timeCount = 0;
     float defaultTime = 2f;
@@ -54,7 +71,6 @@ public class TargetBase : MonoBehaviour
         changeTier = true;
         //ChangeTargetState(TargetBaseState.RallyStart);
     }
-
 
     void Update()
     {
@@ -111,11 +127,19 @@ public class TargetBase : MonoBehaviour
                     changeTier = true;
                 }
             }
-            else
+            else if (GameManager.Instance.gmTargetManager.HitSum >= 1)
             {
                 if (tierStatus != TierStatus.TierDown)
                 {
                     tierStatus = TierStatus.TierDown;
+                    changeTier = true;
+                }
+            }
+            else
+            {
+                if (tierStatus != TierStatus.TierEmpty)
+                {
+                    tierStatus = TierStatus.TierEmpty;
                     changeTier = true;
                 }
             }
@@ -131,28 +155,75 @@ public class TargetBase : MonoBehaviour
         if (changeTier)
         {
             changeTier = false;
-            switch (tierStatus)
+            if(state != TargetBaseState.RallyStart && state != TargetBaseState.TierUpdate)
             {
-                case TierStatus.TierNull:
-                    upTierLight.color = Color.black;
-                    stayTierLight.color = Color.black;
-                    downTierLight.color = Color.black;
-                    break;
-                case TierStatus.TierUp:
-                    upTierLight.color = Color.green;
-                    stayTierLight.color = Color.green;
-                    downTierLight.color = Color.green;
-                    break;
-                case TierStatus.TierStay:
-                    upTierLight.color = Color.black;
-                    stayTierLight.color = Color.yellow;
-                    downTierLight.color = Color.yellow;
-                    break;
-                case TierStatus.TierDown:
-                    upTierLight.color = Color.black;
-                    stayTierLight.color = Color.black;
-                    downTierLight.color = Color.red;
-                    break;
+                switch (tierStatus)
+                {
+                    case TierStatus.TierNull:
+                        targetCounter_black.gameObject.SetActive(true);
+                        targetCounter_white.gameObject.SetActive(false);
+                        targetCounter_red.gameObject.SetActive(false);
+                        targetCounterDowngrade.gameObject.SetActive(false);
+                        targetCounterSamegrade.gameObject.SetActive(false);
+                        targetCounterUpgrade.gameObject.SetActive(false);
+                        //upTierLight.color = Color.black;
+                        //stayTierLight.color = Color.black;
+                        //downTierLight.color = Color.black;
+                        break;
+                    case TierStatus.TierUp:
+                        targetCounter_black.gameObject.SetActive(false);
+                        targetCounter_white.gameObject.SetActive(false);
+                        targetCounter_red.gameObject.SetActive(false);
+                        targetCounterDowngrade.gameObject.SetActive(false);
+                        targetCounterSamegrade.gameObject.SetActive(false);
+                        targetCounterUpgrade.gameObject.SetActive(true);
+                        //upTierLight.color = Color.green;
+                        //stayTierLight.color = Color.green;
+                        //downTierLight.color = Color.green;
+                        break;
+                    case TierStatus.TierStay:
+                        targetCounter_black.gameObject.SetActive(false);
+                        targetCounter_white.gameObject.SetActive(false);
+                        targetCounter_red.gameObject.SetActive(false);
+                        targetCounterDowngrade.gameObject.SetActive(false);
+                        targetCounterSamegrade.gameObject.SetActive(true);
+                        targetCounterUpgrade.gameObject.SetActive(false);
+                        //upTierLight.color = Color.black;
+                        //stayTierLight.color = Color.yellow;
+                        //downTierLight.color = Color.yellow;
+                        break;
+                    case TierStatus.TierDown:
+                        targetCounter_black.gameObject.SetActive(false);
+                        targetCounter_white.gameObject.SetActive(false);
+                        targetCounter_red.gameObject.SetActive(false);
+                        targetCounterDowngrade.gameObject.SetActive(true);
+                        targetCounterSamegrade.gameObject.SetActive(false);
+                        targetCounterUpgrade.gameObject.SetActive(false);
+                        //upTierLight.color = Color.black;
+                        //stayTierLight.color = Color.black;
+                        //downTierLight.color = Color.red;
+                        break;
+                    case TierStatus.TierEmpty:
+                        targetCounter_black.gameObject.SetActive(false);
+                        targetCounter_white.gameObject.SetActive(false);
+                        targetCounter_red.gameObject.SetActive(true);
+                        targetCounterDowngrade.gameObject.SetActive(false);
+                        targetCounterSamegrade.gameObject.SetActive(false);
+                        targetCounterUpgrade.gameObject.SetActive(false);
+                        //upTierLight.color = Color.black;
+                        //stayTierLight.color = Color.black;
+                        //downTierLight.color = Color.red;
+                        break;
+                }
+            }
+            else
+            {
+                targetCounter_black.gameObject.SetActive(false);
+                targetCounter_white.gameObject.SetActive(true);
+                targetCounter_red.gameObject.SetActive(false);
+                targetCounterDowngrade.gameObject.SetActive(false);
+                targetCounterSamegrade.gameObject.SetActive(false);
+                targetCounterUpgrade.gameObject.SetActive(false);
             }
         }
     }
@@ -163,17 +234,87 @@ public class TargetBase : MonoBehaviour
             Vector3 sliderNewScale = slider.localScale;
             sliderNewScale.x = 0;
             slider.localScale = sliderNewScale;
-            slider2.localScale = sliderNewScale;
+            //sliderBackground.localScale = sliderNewScale;
             timeCount = 0;
+
             this.state = state;
             if (activatedImg != null)
             {
                 activatedImg.SetActive(false);
+
+                // Set images of screen
+                ColorUtility.TryParseHtmlString("#404041FF", out color); // "black" color
+                sliderTopBackground.color = color;
+                sliderBottomBackground.color = color;
+                if(state != TargetBaseState.TierUpdate && state != TargetBaseState.RallyStart && state != TargetBaseState.Warning)
+                {
+                    switch (tierStatus)
+                    {
+                        default:
+                            goto case TierStatus.TierDown;
+                        case TierStatus.TierUp:
+                            // Set images of screen
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(true);
+                            break;
+                        case TierStatus.TierStay:
+                            // Set images of screen
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(true);
+                            targetCounterUpgrade.gameObject.SetActive(false);
+                            break;
+                        case TierStatus.TierDown:
+                            // Set images of screen
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(true);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(false);
+                            break;
+                        case TierStatus.TierNull:
+                            targetCounter_black.gameObject.SetActive(true);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(false);
+                            break;
+                    }
+                }
             }
             switch (state)
             {
+                case TargetBaseState.Null:
+                    // Set images of screen
+                    targetCounter_black.gameObject.SetActive(true);
+                    targetCounter_white.gameObject.SetActive(false);
+                    targetCounter_red.gameObject.SetActive(false);
+                    targetCounterDowngrade.gameObject.SetActive(false);
+                    targetCounterSamegrade.gameObject.SetActive(false);
+                    targetCounterUpgrade.gameObject.SetActive(false);
+
+                    break;
                 case TargetBaseState.RallyStart:
                     activatedImg = start.gameObject;
+
+                    // Set images of screen
+                    sliderTopBackground.color = Color.white;
+                    sliderBottomBackground.color = Color.white;
+                    targetCounter_black.gameObject.SetActive(false);
+                    targetCounter_white.gameObject.SetActive(true);
+                    targetCounter_red.gameObject.SetActive(false);
+                    targetCounterDowngrade.gameObject.SetActive(false);
+                    targetCounterSamegrade.gameObject.SetActive(false);
+                    targetCounterUpgrade.gameObject.SetActive(false);
+
                     break;
                 case TargetBaseState.Hit:
                     activatedImg = hit.gameObject;
@@ -182,17 +323,60 @@ public class TargetBase : MonoBehaviour
                     activatedImg = miss.gameObject;
                     break;
                 case TargetBaseState.Pop:
-                    activatedImg = pop.gameObject;
+                    activatedImg = active.gameObject;
+
+                    // Set images of screen
+                    color = Color.white;
+                    sliderTopBackground.color = color;
+                    sliderBottomBackground.color = color;
+                    ColorUtility.TryParseHtmlString("#58585bFF", out color); // "Grey" colour
+                    sliderTop.color = color;
+                    sliderBottom.color = color;
+                    targetCounter_black.gameObject.SetActive(false);
+                    targetCounter_white.gameObject.SetActive(false);
+                    targetCounter_red.gameObject.SetActive(true);
+                    targetCounterDowngrade.gameObject.SetActive(false);
+                    targetCounterSamegrade.gameObject.SetActive(false);
+                    targetCounterUpgrade.gameObject.SetActive(false);
                     break;
                 case TargetBaseState.Prep:
                     activatedImg = prep.gameObject;
+
+                    // Set images of screen
+                    ColorUtility.TryParseHtmlString("#404041FF", out color); // "Black" color
+                    sliderTopBackground.color = color;
+                    sliderBottomBackground.color = color;
+                    targetCounter_black.gameObject.SetActive(true);
+                    targetCounter_white.gameObject.SetActive(false);
+                    targetCounter_red.gameObject.SetActive(false);
+                    targetCounterDowngrade.gameObject.SetActive(false);
+                    targetCounterSamegrade.gameObject.SetActive(false);
+                    targetCounterUpgrade.gameObject.SetActive(false);
                     break;
                 case TargetBaseState.Warning:
                     activatedImg = warning.gameObject;
+
+                    // Set images of screen
+                    color = Color.white;
+                    sliderTopBackground.color = color;
+                    sliderBottomBackground.color = color;
+                    ColorUtility.TryParseHtmlString("#58585bFF", out color); // "Grey" colour
+                    sliderTop.color = color;
+                    sliderBottom.color = color;
                     break;
                 case TargetBaseState.RallyEnd:
                     activatedImg = end.gameObject;
                     StartCoroutine(StartUpdateTargetTierState());
+
+                    // Set images of screen
+                    sliderTopBackground.color = Color.white;
+                    sliderBottomBackground.color = Color.white;
+                    targetCounter_black.gameObject.SetActive(false);
+                    targetCounter_white.gameObject.SetActive(true);
+                    targetCounter_red.gameObject.SetActive(false);
+                    targetCounterDowngrade.gameObject.SetActive(false);
+                    targetCounterSamegrade.gameObject.SetActive(false);
+                    targetCounterUpgrade.gameObject.SetActive(false);
                     break;
                 case TargetBaseState.TierUpdate:
                     switch (tierStatus)
@@ -201,12 +385,59 @@ public class TargetBase : MonoBehaviour
                             goto case TierStatus.TierDown;
                         case TierStatus.TierUp:
                             activatedImg = tierUp.gameObject;
+
+                            // Set images of screen
+                            ColorUtility.TryParseHtmlString("#8cc63eFF", out color); // "Green" colour
+                            sliderTopBackground.color = color;
+                            sliderBottomBackground.color = color;
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(true);
                             break;
                         case TierStatus.TierStay:
                             activatedImg = tierStay.gameObject;
+
+                            // Set images of screen
+                            ColorUtility.TryParseHtmlString("#f8ed31FF", out color); // "Yellow" colour
+                            sliderTopBackground.color = color;
+                            sliderBottomBackground.color = color;
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(true);
+                            targetCounterUpgrade.gameObject.SetActive(false);
                             break;
                         case TierStatus.TierDown:
                             activatedImg = tierDown.gameObject;
+
+                            // Set images of screen
+                            ColorUtility.TryParseHtmlString("#ed1c24FF", out color); // "Red" colour
+                            sliderTopBackground.color = color;
+                            sliderBottomBackground.color = color;
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(true);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(false);
+                            break;
+                        case TierStatus.TierEmpty:
+                            activatedImg = tierDown.gameObject;
+
+                            // Set images of screen
+                            ColorUtility.TryParseHtmlString("#ed1c24FF", out color); // "Red" colour
+                            sliderTopBackground.color = color;
+                            sliderBottomBackground.color = color;
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(true);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(false);
                             break;
                     }
                     break;
@@ -248,7 +479,7 @@ public class TargetBase : MonoBehaviour
                 Vector3 sliderNewScale = slider.localScale;
                 sliderNewScale.x = (time - timeCount) / time;
                 slider.localScale = sliderNewScale;
-                slider2.localScale = sliderNewScale;
+                //sliderBackground.localScale = sliderNewScale;
             }
             /*if (GetComponentInParent<TargetNode>().stand.IsActivated)
             {
@@ -294,7 +525,7 @@ public class TargetBase : MonoBehaviour
             timeCount -= Time.deltaTime;
         }
         slider.localScale = sliderNewScale;
-        slider2.localScale = sliderNewScale;
+        //sliderBackground.localScale = sliderNewScale;
     }
     void PrepState()
     {

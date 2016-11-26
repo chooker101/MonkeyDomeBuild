@@ -36,8 +36,8 @@ public class VictoryRoomManager : MonoBehaviour
     public float victoryTimer;
     public float victoryTimerInvisible;
     public Canvas canvas_victoryTimer;
-    // Private Variables
 
+    // Private Variables
     private float totalScore;
     private bool podiumsReady = false;
     private ScoringManager scoreKeeper;
@@ -62,7 +62,6 @@ public class VictoryRoomManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         GameManager = FindObjectOfType<GameManager>();
         TrophyManager = GameManager.Instance.gmTrophyManager;
         scoreKeeper = GameManager.Instance.gmScoringManager;
@@ -81,7 +80,7 @@ public class VictoryRoomManager : MonoBehaviour
 
         totalScore = scoreKeeper.p1Score + scoreKeeper.p2Score + scoreKeeper.p3Score + scoreKeeper.p4Score + scoreKeeper.p5Score;
 
-        if(totalScore != 0)
+        if (totalScore != 0)
         {
             p1score = (scoreKeeper.p1Score / totalScore) * (maxHeight - minHeight) + minHeight;
             p2score = (scoreKeeper.p2Score / totalScore) * (maxHeight - minHeight) + minHeight;
@@ -114,11 +113,11 @@ public class VictoryRoomManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(podiumBufferTime >= 0 && !podiumsReady) // Podium buffer time for entering the room
+        if (podiumBufferTime >= 0 && !podiumsReady) // Podium buffer time for entering the room
         {
             podiumBufferTime -= Time.deltaTime;
 
-            if(podiumBufferTime <= 0)
+            if (podiumBufferTime <= 0)
             {
                 podiumBufferTime = 0;
                 podiumsReady = true;
@@ -140,64 +139,61 @@ public class VictoryRoomManager : MonoBehaviour
         {
             victoryTimer -= Time.deltaTime;
 
-            if(victoryTimer <= 0)
+            if (victoryTimer <= 0)
             {
                 loadedScene = true;
                 victoryTimer = 0;
+
+                scoreKeeper.ClearScores();
                 GameManager.LoadPregameRoom();
-                scoreKeeper.p1Score = 0;
-                scoreKeeper.p2Score = 0;
-                scoreKeeper.p3Score = 0;
-                scoreKeeper.p4Score = 0;
-                scoreKeeper.p5Score = 0;
-            }
-        }
-
-        if (podiumsReady) // Once buffer time has completed
-        {
-            // Podiums
-            if(GameManager.Instance.TotalNumberofPlayers >= 1)
-            {
-                Podium1.transform.position = Vector3.MoveTowards(Podium1.transform.position,
-                    new Vector3(podiumPos1.x, podiumPos1.y + p1score, podiumPos1.z), speed * Time.deltaTime);
-                
-            }
-            if (GameManager.Instance.TotalNumberofPlayers >= 2)
-            {
-                Podium2.transform.position = Vector3.MoveTowards(Podium2.transform.position, 
-                    new Vector3(podiumPos2.x, podiumPos2.y + p2score, podiumPos2.z), speed * Time.deltaTime);
-            }
-            if (GameManager.Instance.TotalNumberofPlayers >= 3)
-            {
-                Podium3.transform.position = Vector3.MoveTowards(Podium3.transform.position, 
-                    new Vector3(podiumPos3.x, podiumPos3.y + p3score, podiumPos3.z), speed * Time.deltaTime);
-            }
-            if (GameManager.Instance.TotalNumberofPlayers >= 4)
-            {
-                Podium4.transform.position = Vector3.MoveTowards(Podium4.transform.position, 
-                    new Vector3(podiumPos4.x, podiumPos4.y + p4score, podiumPos4.z), speed * Time.deltaTime);
-            }
-            if (GameManager.Instance.TotalNumberofPlayers == 5)
-            {
-                Podium5.transform.position = Vector3.MoveTowards(Podium5.transform.position, 
-                    new Vector3(podiumPos5.x, podiumPos5.y + p5score, podiumPos5.z), speed * Time.deltaTime);
-            }
-        }
-
-        if (victoryTimerIsVisible)
-        {
-            if (!canvas_victoryTimer.gameObject.activeSelf)
-            {
-                canvas_victoryTimer.gameObject.SetActive(true);
             }
 
-            text_victoryTimer.text = victoryTimer.ToString("F0");
+            if (podiumsReady) // Once buffer time has completed
+            {
+                // Podiums
+                if (GameManager.Instance.TotalNumberofPlayers >= 1)
+                {
+                    Podium1.transform.position = Vector3.MoveTowards(Podium1.transform.position,
+                        new Vector3(podiumPos1.x, podiumPos1.y + p1score, podiumPos1.z), speed * Time.deltaTime);
+
+                }
+                if (GameManager.Instance.TotalNumberofPlayers >= 2)
+                {
+                    Podium2.transform.position = Vector3.MoveTowards(Podium2.transform.position,
+                        new Vector3(podiumPos2.x, podiumPos2.y + p2score, podiumPos2.z), speed * Time.deltaTime);
+                }
+                if (GameManager.Instance.TotalNumberofPlayers >= 3)
+                {
+                    Podium3.transform.position = Vector3.MoveTowards(Podium3.transform.position,
+                        new Vector3(podiumPos3.x, podiumPos3.y + p3score, podiumPos3.z), speed * Time.deltaTime);
+                }
+                if (GameManager.Instance.TotalNumberofPlayers >= 4)
+                {
+                    Podium4.transform.position = Vector3.MoveTowards(Podium4.transform.position,
+                        new Vector3(podiumPos4.x, podiumPos4.y + p4score, podiumPos4.z), speed * Time.deltaTime);
+                }
+                if (GameManager.Instance.TotalNumberofPlayers == 5)
+                {
+                    Podium5.transform.position = Vector3.MoveTowards(Podium5.transform.position,
+                        new Vector3(podiumPos5.x, podiumPos5.y + p5score, podiumPos5.z), speed * Time.deltaTime);
+                }
+            }
+
+            if (victoryTimerIsVisible)
+            {
+                if (!canvas_victoryTimer.gameObject.activeSelf)
+                {
+                    canvas_victoryTimer.gameObject.SetActive(true);
+                }
+
+                text_victoryTimer.text = victoryTimer.ToString("F0");
+            }
         }
     }
 
     void PlaceTrophies()
     {
-        if (TrophyManager.a >0)
+        if (TrophyManager.a > 0)
         {
             a = TrophyManager.a;
             GameObject BananaTrophy = (GameObject)Instantiate(Trophy, AwardBananasTrophyPos[a].transform.position, podiums.transform.rotation);
@@ -233,7 +229,7 @@ public class VictoryRoomManager : MonoBehaviour
             f = TrophyManager.f;
             GameObject KnockDownTrophy = (GameObject)Instantiate(Trophy, KnockDownTrophyPos[f].transform.position, podiums.transform.rotation);
         }
-        
+
         /*Debug.Log(a);
         Debug.Log(b);
         Debug.Log(c);
@@ -256,7 +252,7 @@ public class VictoryRoomManager : MonoBehaviour
             temp.x = 10.5f;
         if (GameManager.TotalNumberofPlayers == 5)
             temp.x = 6.3f;
-        
+
         podiums.transform.position = temp;
 
         podiumPos1 = Podium1.transform.position;
@@ -265,16 +261,17 @@ public class VictoryRoomManager : MonoBehaviour
         podiumPos4 = Podium4.transform.position;
         podiumPos5 = Podium5.transform.position;
     }
+
     void moveCase()
     {
-        for(int i = 4; i > GameManager.Instance.TotalNumberofPlayers-1; i--)
+        for (int i = 4; i > GameManager.Instance.TotalNumberofPlayers - 1; i--)
         {
             TrophyCase[i].SetActive(false);
         }
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers - 1; i++)
         {
             TrophyBgs[i].material = GameManager.Instance.gmRecordKeeper.colourPlayers[i];
-            
+
         }
 
     }

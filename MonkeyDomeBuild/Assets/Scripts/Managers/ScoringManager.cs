@@ -117,6 +117,15 @@ public class ScoringManager : MonoBehaviour
         }
 
     }
+
+    public void ClearScores()
+    {
+        playerScores[WhichPlayer.Player1] = 0;
+        playerScores[WhichPlayer.Player2] = 0;
+        playerScores[WhichPlayer.Player3] = 0;
+        playerScores[WhichPlayer.Player4] = 0;
+        playerScores[WhichPlayer.Player5] = 0;
+    }
     public void PassingScore(GameObject thrower, GameObject catcher, float distanceTravel, float travelTime, bool perfectCatch, int numberOfBounce)
     {
         int scoreGetThrower = 0;

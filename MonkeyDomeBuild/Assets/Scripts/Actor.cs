@@ -787,38 +787,6 @@ public class Actor : MonoBehaviour
         bool hasHighestScore = false;
         int highestScore = 0;
 
-        /*
-        if (GameManager.Instance.gmScoringManager.p1Score == GameManager.Instance.gmScoringManager.p2Score && GameManager.Instance.gmScoringManager.p2Score == GameManager.Instance.gmScoringManager.p3Score)
-        {
-            monkeyCrown.SetActive(false);
-        }
-        else if (
-                    (
-                    playerIndex == 0 &&
-                    GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p2Score &&
-                    GameManager.Instance.gmScoringManager.p1Score >= GameManager.Instance.gmScoringManager.p3Score
-                    )
-                    ||
-                    (
-                    playerIndex == 1 &&
-                    GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p1Score &&
-                    GameManager.Instance.gmScoringManager.p2Score >= GameManager.Instance.gmScoringManager.p3Score
-                    )
-                    ||
-                    (
-                    playerIndex == 2 &&
-                    GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p1Score &&
-                    GameManager.Instance.gmScoringManager.p3Score >= GameManager.Instance.gmScoringManager.p2Score
-                    )
-                )
-        {
-            monkeyCrown.SetActive(true);
-        }
-        else
-        {
-            monkeyCrown.SetActive(false);
-        }*/
-
         if (GameManager.Instance.gmScoringManager.p1Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p1Score; }
         if (GameManager.Instance.gmScoringManager.p2Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p2Score; }
         if (GameManager.Instance.gmScoringManager.p3Score >= highestScore) { highestScore = GameManager.Instance.gmScoringManager.p3Score; }
