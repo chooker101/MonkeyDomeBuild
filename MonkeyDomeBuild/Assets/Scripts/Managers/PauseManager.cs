@@ -16,13 +16,15 @@ public class PauseManager : MonoBehaviour
 
             if (isGamePaused)
 			{
+                AudioEffectManager.Instance.PlayMenuButtonSE();
 				Time.timeScale = 0;
                 pauseUI.SetActive(true);
                 //call ui
             }
 			else
 			{
-				Time.timeScale = 1;
+                AudioEffectManager.Instance.PlayUnMenuButtonSE();
+                Time.timeScale = 1;
                 pauseUI.SetActive(false);
                 //close ui
 			}
