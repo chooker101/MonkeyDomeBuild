@@ -371,6 +371,7 @@ public class Actor : MonoBehaviour
                         }
                     }
                     ReleaseBall();
+                    AudioEffectManager.Instance.PlayMonkeyThrowSE();
                     ballRigid.AddForce(storedThrowDir * tempThrowForce, ForceMode2D.Impulse);
                     stat_throw++;
                     holdingCatchCount = 0f;
@@ -556,6 +557,7 @@ public class Actor : MonoBehaviour
                 }
                 FindObjectOfType<CameraController>().ScreenShake();
                 AudioEffectManager.Instance.PlayAudienceSmash();
+                AudioEffectManager.Instance.PlayGorillaTackleSE();
                 
                 PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
                 if (preGameTimer != null)

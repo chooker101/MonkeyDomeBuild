@@ -276,6 +276,7 @@ public class TargetBase : MonoBehaviour
     {
         if (!activatedImg.activeInHierarchy)
         {
+            AudioEffectManager.Instance.PlayTargetUpgradeSE();
             activatedImg.SetActive(true);
             timeCount = manager.SetLifeTime() - manager.warningTime;
         }

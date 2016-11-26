@@ -251,6 +251,7 @@ public class BallInfo : MonoBehaviour
             {
                 GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
                 GameManager.Instance.gmTrophyManager.PerformPerfectCatch(who.GetComponent<Actor>().playerIndex);
+                AudioEffectManager.Instance.PlayMonkeyCatchSE();
             }
             UpdateLastThrowMonkey(who);
             ResetScoringStats();
@@ -318,6 +319,13 @@ public class BallInfo : MonoBehaviour
         {
             if (other.gameObject.layer==LayerMask.NameToLayer("Floor"))
             {
+                //if(travelTime > 1f)
+                //{
+                //    AudioEffectManager.Instance.PlayBallBounceHardSE();
+                //} else
+                //{
+                //    AudioEffectManager.Instance.PlayBallBounceSoftSE();
+                //}
                 numberOfBounce++;
             }
         }

@@ -36,6 +36,7 @@ public class AudioEffectManager : MonoBehaviour
     public AudioSource shotClockBuzzSE;
 
     public AudioSource menuButtonSE;
+    public AudioSource unMenuButtonSE;
 
     public AudioSource audienceCheer1;
     public AudioSource audienceCheer2;
@@ -120,7 +121,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (audienceInterception != null && audienceInterception.clip != null && !mute)
         {
-            audienceCatch.pitch = Random.Range(.85f, 1.05f);
+            audienceCatch.pitch = Random.Range(.95f, 1.05f);
             audienceCatch.volume = Random.Range(0.65f, 1.05f);
             audienceInterception.PlayOneShot(audienceInterception.clip);
         }
@@ -148,7 +149,7 @@ public class AudioEffectManager : MonoBehaviour
         if (audienceSmash != null && audienceSmash.clip != null && !mute)
         {
             audienceCatch.pitch = Random.Range(.95f, 1f);
-            audienceCatch.volume = Random.Range(.8f, 1.2f);
+            audienceCatch.volume = Random.Range(.65f, .8f);
             audienceSmash.PlayOneShot(audienceSmash.clip);
         }
     }
@@ -173,7 +174,9 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyThrowSE != null && monkeyThrowSE.clip != null && !mute)
         {
-            monkeyThrowSE.PlayOneShot(monkeyThrowSE.clip);
+                monkeyThrowSE.pitch = Random.Range(.85f, 1f);
+            monkeyThrowSE.volume = Random.Range(.35f, .45f);
+                monkeyThrowSE.PlayOneShot(monkeyThrowSE.clip);
         }
     }
     public void PlayMonkeyCatchSE()
@@ -296,6 +299,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (targetHitSE != null && targetHitSE.clip != null && !mute)
         {
+            targetHitSE.pitch = Random.Range(.75f, 1f);
             targetHitSE.PlayOneShot(targetHitSE.clip);
         }
     }
@@ -367,6 +371,14 @@ public class AudioEffectManager : MonoBehaviour
         if (menuButtonSE != null && menuButtonSE.clip != null && !mute)
         {
             menuButtonSE.PlayOneShot(menuButtonSE.clip);
+        }
+    }
+
+    public void PlayUnMenuButtonSE()
+    {
+        if (unMenuButtonSE != null && unMenuButtonSE.clip != null && !mute)
+        {
+            unMenuButtonSE.PlayOneShot(unMenuButtonSE.clip);
         }
     }
 

@@ -182,6 +182,7 @@ public class Target : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Ball")||(other.CompareTag("Ball")))
         {
+            AudioEffectManager.Instance.PlayTargetHitSE();
             if (other.GetComponent<BallInfo>().BallType == ThrowableType.Ball || other.GetComponent<BallInfo>().BallType == ThrowableType.Coconut )
             {
                 //TargetSetter(-1);

@@ -57,6 +57,7 @@ public class Monkey : Character
         {
             callForBall.CallForBall();
             GameManager.Instance.gmTrophyManager.CallsForBall(myPlayer);
+            AudioEffectManager.Instance.PlayMonkeyCallBallSE();
         }
     }
 	protected void CatchCheck()

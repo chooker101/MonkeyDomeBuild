@@ -53,7 +53,11 @@ public class UIManager : MonoBehaviour
 	{
         // Shot Clock Image States
         float time = GameManager.Instance.gmShotClockManager.ShotClockTime - GameManager.Instance.gmShotClockManager.ShotClockCount;
-        if (time < 0) time = 0f;
+        if (time < 0)
+        {
+            AudioEffectManager.Instance.PlayShotClockBuzzSE();
+            time = 0f;
+        }
 
         for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
