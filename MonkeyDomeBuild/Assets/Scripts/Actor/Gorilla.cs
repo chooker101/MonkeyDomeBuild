@@ -67,7 +67,7 @@ public class Gorilla : Character
 
 	protected void CatchCheck()
 	{
-        if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null)
+        if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null && cacheplayer.CanCatch)
         {
             if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
                 Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))

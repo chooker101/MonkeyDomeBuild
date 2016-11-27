@@ -95,6 +95,8 @@ public class Actor : MonoBehaviour
     protected Vector2 storedThrowDir;
     protected float currentDir = 1f;
 
+    protected bool canCatch = true;
+
   
 
     //public string cType = "";
@@ -135,36 +137,7 @@ public class Actor : MonoBehaviour
         characterType.CHUpdate();
         CheckLeader();
 
-        if (isinair && cache_rb.velocity.y < 0f)
-        {
-            if (isClimbing)
-            {
-                //animator.SetBool("IsIdle", true);
-                animator.SetBool("IsInAirDown", false); 
-                animator.SetBool("IsClimbing", true);
-                animator.SetBool("IsInAir", false);
-            }
-            else
-            {
-                animator.SetBool("IsClimbing", false);
-                animator.SetBool("IsInAirDown", true);
-                animator.SetBool("IsInAir", false);
-                animator.SetBool("IsJumping", false);
-            }
-        }
-        else if (isinair && cache_rb.velocity.y >= 0f)
-        {
-            if (isClimbing)
-            {
-                animator.SetBool("IsInAirDown", false);
-                animator.SetBool("IsInAir", false);
-            }
-            else
-            {
-                animator.SetBool("IsClimbing", false);
-            }
-            //animator.SetBool("IsStartJump", false);
-        }
+
     }
 
     void FixedUpdate()
@@ -381,6 +354,7 @@ public class Actor : MonoBehaviour
                     ballRigid.AddForce(storedThrowDir * tempThrowForce, ForceMode2D.Impulse);
                     stat_throw++;
                     holdingCatchCount = 0f;
+                    StartCoroutine(CanCatchReset());
                 }
             }
         }
@@ -684,6 +658,7 @@ public class Actor : MonoBehaviour
                 animator.SetBool("IsInAirDown", false);
                 isinair = false;
                 animator.SetBool("IsLanding", true);
+                animator.SetBool("IsJumping", false);
             }
         }
         if (other.gameObject.CompareTag("Vine"))
@@ -855,11 +830,7 @@ public class Actor : MonoBehaviour
         {
             tempSpeed = 1f;
         }
-        if(tempSpeed < .3f)
-        {
-            tempSpeed = .3f;
-        }
-        if (tempSpeed == 0)
+        if(tempSpeed < .1f)
         {
             tempSpeed = 0;
         }
@@ -885,6 +856,12 @@ public class Actor : MonoBehaviour
             animator.SetBool("IsIdle", true);
         }
         animator.SetBool("IsThrowing", isCharging);
+        animator.SetBool("IsClimbing", isClimbing);
+        if (isinair && cache_rb.velocity.y < 0f)
+        {
+            animator.SetBool("IsInAirDown", true);
+            animator.SetBool("IsInAir", false);
+        }
     }
     public void GorillaDash()
     {
@@ -966,11 +943,23 @@ public class Actor : MonoBehaviour
             cache_rb.gravityScale = 2;
         }
     }
-
+    public bool CanCatch
+    {
+        get
+        {
+            return canCatch;
+        }
+    }
     IEnumerator RealisticDashCatch()
     {
         yield return new WaitForSeconds(0.5f);
         GameManager.Instance.gmInputs[inputIndex].mCatch = false;
         isPlayer = true;
+    }
+    IEnumerator CanCatchReset()
+    {
+        canCatch = false;
+        yield return new WaitForSeconds(0.3f);
+        canCatch = true;
     }
 }
