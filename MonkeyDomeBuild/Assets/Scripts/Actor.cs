@@ -11,6 +11,10 @@ public class Actor : MonoBehaviour
      * - handle players' stats
      * - provide a key to accessing each player's stats 
      */
+
+    public bool dashWithMomentum;
+    public bool dash360;
+
     public int playerIndex;
     public int inputIndex;
     public bool isPlayer;
@@ -259,6 +263,8 @@ public class Actor : MonoBehaviour
                 }
                 else
                 {
+                    //if dashing don't limit x movement speed.
+                    if (!isDashing)
                     movement.x = GameManager.Instance.gmInputs[inputIndex].mXY.x * (characterType.movespeed + characterInc);
                 }
                 if (isDashing)
@@ -464,6 +470,7 @@ public class Actor : MonoBehaviour
         }
         return false;
     }
+
     public void Aim()
     {
         if (isCharging)
@@ -530,40 +537,56 @@ public class Actor : MonoBehaviour
         {
             if (isDashing)
             {
-                dashingCount = 0;
-                isDashing = false;
-                GetComponent<EffectControl>().EndDashEffect();
-                for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
+             
+                Vector3 normal = other.contacts[0].normal;
+                Vector3 vel = cache_rb.velocity;
+               
+                Debug.Log("angle: : " + Vector3.Angle(vel, -normal));
+
+                // check if gorilla hits floor collider at a reasonable angle
+                if (Vector3.Angle(vel, -normal) > 100 && Vector3.Angle(vel, -normal) < 260)
                 {
-                    if (GameManager.Instance.gmPlayers[i] != null)
+                    Debug.Log("GoodAngle");
+                    dashingCount = 0;
+                    isDashing = false;
+                    GetComponent<EffectControl>().EndDashEffect();
+                    for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
                     {
-                        Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
-                        if (p is Monkey)
+                        if (GameManager.Instance.gmPlayers[i] != null)
                         {
-                            //knock both player off vine for now
-                            if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing ||
-                                !GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsInAir)
+                            Character p = GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType;
+                            if (p is Monkey)
                             {
-                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing = false;
-                                GameManager.Instance.gmPlayers[i].GetComponent<Rigidbody2D>().isKinematic = false;
-                                GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput(disableInputTime * 2);
-                                if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
+                                //knock both player off vine for now
+                                if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing ||
+                                    !GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsInAir)
                                 {
-                                    GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ReleaseBall();
+                                    GameManager.Instance.gmPlayers[i].GetComponent<Actor>().isClimbing = false;
+                                    GameManager.Instance.gmPlayers[i].GetComponent<Rigidbody2D>().isKinematic = false;
+                                    GameManager.Instance.gmPlayers[i].GetComponent<Actor>().TempDisableInput(disableInputTime * 2);
+                                    if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
+                                    {
+                                        GameManager.Instance.gmPlayers[i].GetComponent<Actor>().ReleaseBall();
+                                    }
                                 }
                             }
                         }
                     }
+                    
+                    FindObjectOfType<CameraController>().ScreenShake();
+                    AudioEffectManager.Instance.PlayAudienceSmash();
+                    AudioEffectManager.Instance.PlayGorillaTackleSE();
+
+                    PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
+                    if (preGameTimer != null)
+                    {
+                        preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
+                    }
                 }
-                FindObjectOfType<CameraController>().ScreenShake();
-                AudioEffectManager.Instance.PlayAudienceSmash();
-                AudioEffectManager.Instance.PlayGorillaTackleSE();
-                
-                PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
-                if (preGameTimer != null)
-                {
-                    preGameTimer.GetComponent<PreGameTimer>().gorillaSmashed = true;
-                }
+                else
+                { Debug.Log("Dash too shallow"); }
+
+
             }
         }
         if (characterType is Gorilla)
@@ -825,6 +848,7 @@ public class Actor : MonoBehaviour
             tempSpeed /= GameManager.Instance.gmMovementManager.mSpeed;
         } else
         {
+            if(!isDashing)
             tempSpeed /= GameManager.Instance.gmMovementManager.gSpeed;
         }
         if (tempSpeed > 1f)
@@ -834,6 +858,10 @@ public class Actor : MonoBehaviour
         if(tempSpeed < .3f)
         {
             tempSpeed = .3f;
+        }
+        if (tempSpeed == 0)
+        {
+            tempSpeed = 0;
         }
 
         animator.SetFloat("velocity", tempSpeed);
@@ -860,23 +888,46 @@ public class Actor : MonoBehaviour
     }
     public void GorillaDash()
     {
-        cache_rb.velocity = new Vector2(cache_rb.velocity.x,cache_rb.velocity.y/2);
         isDashing = true;
+
+
+         
+        if (dashWithMomentum)
+        cache_rb.velocity = new Vector2(cache_rb.velocity.x,cache_rb.velocity.y);
+        else
+        cache_rb.velocity = new Vector2(0,0);
+
         Vector2 dashDir = Vector2.zero;
         GetComponent<EffectControl>().PlayDashEffect();
-        dashDir.y = 1f;
-        if (Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.x) > 0)
+
+        if(dash360)
         {
-            dashDir.x = GameManager.Instance.gmInputs[inputIndex].mXY.x > 0 ? 1f : -1f;
-            //dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 0.5f : -1.2f;
+            dashDir.y = 1f;
+            dashDir.x = 1f;
+
+            dashDir = GameManager.Instance.gmInputs[inputIndex].mXY.normalized;
+       
+            dashDir *= dashForce;
+            GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
         }
-        if (Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.y) > 0)
+
+        else
         {
-            dashDir.y = GameManager.Instance.gmInputs[inputIndex].mXY.y > 0 ? 1f : -1f;
+            dashDir.y = 1f;
+            if (Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.x) > 0)
+            {
+                dashDir.x = GameManager.Instance.gmInputs[inputIndex].mXY.x > 0 ? 1f : -1f;
+                //dashDir.x = GameManager.Instance.gmInputs[whichplayer].mXY.x > 0 ? 0.5f : -1.2f;
+            }
+            if (Mathf.Abs(GameManager.Instance.gmInputs[inputIndex].mXY.y) > 0)
+            {
+                dashDir.y = GameManager.Instance.gmInputs[inputIndex].mXY.y > 0 ? 1f : -1f;
+            }
+            dashDir.x *= 0.5f;
+            dashDir *= dashForce;
+            GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
         }
-        dashDir.x *= 0.5f;
-        dashDir *= dashForce;
-        GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
+
 
         PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
         if (preGameTimer != null)
