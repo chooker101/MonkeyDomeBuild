@@ -34,6 +34,8 @@ public class PreGameTimer : MonoBehaviour
     public GameObject sign_climbVines;
     public GameObject sign_throw;
     public GameObject sign_throwLong;
+    public GameObject sign_buttons;
+    public GameObject sign_chooseColour;
     public GameState gameState = GameState.Null;
     public TutorialState tutorialState = TutorialState.Jump;
     public bool gorillaSet = false;
@@ -58,11 +60,13 @@ public class PreGameTimer : MonoBehaviour
     {
         gameState = GameState.Pregame_PickingColours;
         sign_catch.SetActive(false);
-        sign_jump.SetActive(true);
-        sign_callForBall.SetActive(true);
+        sign_jump.SetActive(false);
+        sign_callForBall.SetActive(false);
         sign_climbVines.SetActive(false);
-        sign_throw.SetActive(true);
-        sign_throwLong.SetActive(true);
+        sign_throw.SetActive(false);
+        sign_throwLong.SetActive(false);
+        sign_buttons.SetActive(true);
+        sign_chooseColour.SetActive(true);
 
         sign_gorillaSmash.SetActive(false);
 
@@ -108,6 +112,8 @@ public class PreGameTimer : MonoBehaviour
                 //sign_climbVines.SetActive(true);
                 //sign_throw.SetActive(true);
                 //sign_throwLong.SetActive(true);
+                sign_buttons.SetActive(true);
+                sign_chooseColour.SetActive(true);
 
                 sign_gorillaSmash.SetActive(false);
                 /*
@@ -120,7 +126,7 @@ public class PreGameTimer : MonoBehaviour
         }
         else if (gameState == GameState.Pregame_allTargetsHit)
         {
-            if (sign_jump.activeSelf)
+            if (sign_chooseColour.activeSelf)
             {
                 sign_catch.SetActive(false);
                 sign_jump.SetActive(false);
@@ -128,6 +134,8 @@ public class PreGameTimer : MonoBehaviour
                 sign_climbVines.SetActive(false);
                 sign_throw.SetActive(false);
                 sign_throwLong.SetActive(false);
+                sign_buttons.SetActive(false);
+                sign_chooseColour.SetActive(false);
 
                 ballReturn.GetComponent<BallReturn>().checkEnable();
                 ballReturn.SetActive(false);

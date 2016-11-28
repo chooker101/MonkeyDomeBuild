@@ -319,13 +319,13 @@ public class BallInfo : MonoBehaviour
         {
             if (other.gameObject.layer==LayerMask.NameToLayer("Floor"))
             {
-                //if(travelTime > 1f)
-                //{
-                //    AudioEffectManager.Instance.PlayBallBounceHardSE();
-                //} else
-                //{
-                //    AudioEffectManager.Instance.PlayBallBounceSoftSE();
-                //}
+                if(travelTime > 1f)
+                {
+                    AudioEffectManager.Instance.PlayBallBounceHardSE();
+                } else
+                {
+                    AudioEffectManager.Instance.PlayBallBounceSoftSE();
+                }
                 numberOfBounce++;
             }
         }
