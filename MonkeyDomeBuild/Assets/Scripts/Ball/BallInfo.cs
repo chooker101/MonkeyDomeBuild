@@ -102,7 +102,6 @@ public class BallInfo : MonoBehaviour
 
                         if (GameManager.Instance.gmAudienceAnimator != null)
                         GameManager.Instance.gmAudienceAnimator.AudienceAngry();
-
                         Change();
                     }
                     else
@@ -148,9 +147,12 @@ public class BallInfo : MonoBehaviour
 
     public void Reset()
     {
+        if (holdingMonkey != null)
+        {
+            lastThrowMonkey = holdingMonkey;
+        }
         canBeCatch = true;
         holdingMonkey = null;
-        playerThrewLast = -1;
         //timerUp = false;
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
         m_rigid.isKinematic = false;
@@ -163,6 +165,19 @@ public class BallInfo : MonoBehaviour
 
     public void Change(int index)
     {
+        if (SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
+        {
+            if (lastThrowMonkey != null)
+            {
+                if (index != lastThrowMonkey.GetComponent<Actor>().playerIndex)
+                {
+                    Debug.Log(index);
+                    Debug.Log(lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                    GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, GameManager.Instance.gmPlayers[index], distanceTravel, travelTime, perfectCatch, numberOfBounce);
+
+                }
+            }
+        }
         if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID())
             PickRandomVictim();
         float longestTimeGorilla = 0f;
@@ -246,13 +261,9 @@ public class BallInfo : MonoBehaviour
             if (Vector3.Distance(who.GetComponent<Actor>().catchCenter.position, transform.position) <= perfectCatchDistance)
             {
                 perfectCatch = true;
-            }
-            if(SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
-            {
-                GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
                 GameManager.Instance.gmTrophyManager.PerformPerfectCatch(who.GetComponent<Actor>().playerIndex);
-                AudioEffectManager.Instance.PlayMonkeyCatchSE();
             }
+            AudioEffectManager.Instance.PlayMonkeyCatchSE();
             UpdateLastThrowMonkey(who);
             ResetScoringStats();
             perfectCatch = false;

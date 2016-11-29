@@ -54,9 +54,9 @@ public class ButtonPromptManager : MonoBehaviour
     }
     void LateUpdate()
     {
-        UpdateConditon(climbPrompts, climbConditions, new Vector3(4f,4f));
-        UpdateConditon(catchPrompts, catchConditions, new Vector3(4f, 2.5f));
-        UpdateConditon(throwPrompts, throwConditions, new Vector3(4f, 2.5f));
+        UpdateConditon(climbPrompts, climbConditions, new Vector3(4f,3f));
+        UpdateConditon(catchPrompts, catchConditions, new Vector3(-4f, 3f));
+        UpdateConditon(throwPrompts, throwConditions, new Vector3(-4f, 3f));
     }
     void UpdateConditon(List<Transform> prompts, List<bool> conditions, Vector3 offset)
     {
@@ -71,6 +71,12 @@ public class ButtonPromptManager : MonoBehaviour
                         Color c = prompts[i].GetComponentInChildren<Text>().color;
                         c.a = 0;
                         prompts[i].GetComponentInChildren<Text>().color = c;
+                        if(prompts[i].GetComponentInChildren<Image>()!= null)
+                        {
+                            Color c2 = prompts[i].GetComponentInChildren<Image>().color;
+                            c2.a = 0;
+                            prompts[i].GetComponentInChildren<Image>().color = c2;
+                        }
                         prompts[i].gameObject.SetActive(true);
                     }
                     else
@@ -78,8 +84,16 @@ public class ButtonPromptManager : MonoBehaviour
                         Color c = prompts[i].GetComponentInChildren<Text>().color;
                         Color cf = c;
                         cf.a = 1f;
-                        c = Color.Lerp(c, cf, Time.deltaTime * 10f);
+                        c = Color.Lerp(c, cf, Time.deltaTime * 15f);
                         prompts[i].GetComponentInChildren<Text>().color = c;
+                        if (prompts[i].GetComponentInChildren<Image>() != null)
+                        {
+                            Color c2 = prompts[i].GetComponentInChildren<Image>().color;
+                            Color c2f = c2;
+                            c2f.a = 1f;
+                            c2 = Color.Lerp(c2, c2f, Time.deltaTime * 15f);
+                            prompts[i].GetComponentInChildren<Image>().color = c2;
+                        }
                     }
                     Vector3 newPos = GameManager.Instance.gmPlayerScripts[i].transform.position + offset;
                     newPos.z = prompts[i].position.z;
@@ -92,8 +106,17 @@ public class ButtonPromptManager : MonoBehaviour
                         Color c = prompts[i].GetComponentInChildren<Text>().color;
                         Color cf = c;
                         cf.a = 0;
-                        c = Color.Lerp(c, cf, Time.deltaTime * 5f);
+                        c = Color.Lerp(c, cf, Time.deltaTime * 10f);
                         prompts[i].GetComponentInChildren<Text>().color = c;
+                        if (prompts[i].GetComponentInChildren<Image>() != null)
+                        {
+                            Color c2 = prompts[i].GetComponentInChildren<Image>().color;
+                            Color c2f = c2;
+                            c2f.a = 0;
+                            c2 = Color.Lerp(c2, c2f, Time.deltaTime * 10f);
+                            prompts[i].GetComponentInChildren<Image>().color = c2;
+                        }
+
                         Vector3 newPos = GameManager.Instance.gmPlayerScripts[i].transform.position + offset;
                         newPos.z = prompts[i].position.z;
                         prompts[i].position = newPos;

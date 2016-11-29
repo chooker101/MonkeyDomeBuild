@@ -80,8 +80,7 @@ public class Gorilla : Character
                         if (cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
                         {
 							cacheplayer.ballCanCatch.GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().ReleaseBall();
-							GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);
-               
+							GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(),cacheplayer.ballCanCatch.gameObject);               
                         }
                         cacheplayer.CaughtBall(cacheplayer.ballCanCatch.gameObject);
                         cacheplayer.ballCanCatch.GetComponent<BallInfo>().Change(myPlayer);

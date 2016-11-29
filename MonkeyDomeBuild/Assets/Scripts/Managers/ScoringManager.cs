@@ -132,8 +132,9 @@ public class ScoringManager : MonoBehaviour
         int scoreGetCatcher = 0;
         if (thrower != null && catcher != null)
         {
-            if (thrower.GetInstanceID() != catcher.GetInstanceID())
+            if (thrower.GetComponent<Actor>().playerIndex != catcher.GetComponent<Actor>().playerIndex)
             {
+                Debug.Log("catch");
                 scoreGetThrower += GetPassScore();
                 scoreGetCatcher += perfectCatch ? perfectCatchScore : catchScore;
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
@@ -228,7 +229,6 @@ public class ScoringManager : MonoBehaviour
     }
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey, GameObject ball)
     {
-        //Debug.Log("intercetp");
         //int interceptScore = 0;
         //int monkeyIndex = monkey.GetComponent<Actor>().playerIndex;
         /*if (playerScores[CheckWhichPlayer(monkeyIndex)] < Mathf.Abs(gorillaInterceptScore))
@@ -243,7 +243,11 @@ public class ScoringManager : MonoBehaviour
         }*/
         //AddScore(gorilla.GetComponent<Actor>().playerIndex, interceptScore);
         throwCombo = 0;
-        SwitchingScore(gorilla, ball);
+        if (gorilla != monkey)
+        {
+            Debug.Log("intercept");
+            SwitchingScore(gorilla, ball);
+        }
     }
 
     public void HitTargetScore(BallInfo ball)
