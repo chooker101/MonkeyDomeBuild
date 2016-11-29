@@ -215,6 +215,8 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyJumpSE != null && monkeyJumpSE.clip != null && !mute)
         {
+            monkeyJumpSE.pitch = Random.Range(0.7f, 1);
+            monkeyJumpSE.volume = 0.5f;
             monkeyJumpSE.PlayOneShot(monkeyJumpSE.clip);
         }
     }
@@ -222,7 +224,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyThrowSE != null && monkeyThrowSE.clip != null && !mute)
         {
-            monkeyThrowSE.pitch = Random.Range(.85f, 1f);
+            monkeyThrowSE.pitch = Random.Range(0.85f, 1f);
             monkeyThrowSE.volume = Random.Range(.35f, .45f);
             monkeyThrowSE.PlayOneShot(monkeyThrowSE.clip);
         }

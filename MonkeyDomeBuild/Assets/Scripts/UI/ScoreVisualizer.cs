@@ -61,6 +61,17 @@ public class ScoreVisualizer : MonoBehaviour
             {
                 infos[i].gameObject.SetActive(false);
             }
+
+            if (GameManager.Instance.TotalNumberofPlayers == 1)
+                transform.position = new Vector3(transform.position.x + 8.5f, transform.position.y, transform.position.z);
+            else if (GameManager.Instance.TotalNumberofPlayers == 2)
+                transform.position = new Vector3(transform.position.x + 6.3f, transform.position.y, transform.position.z);
+            else if (GameManager.Instance.TotalNumberofPlayers == 3)
+                transform.position = new Vector3(transform.position.x + 4.1f, transform.position.y, transform.position.z);
+            else if (GameManager.Instance.TotalNumberofPlayers == 4)
+                transform.position = new Vector3(transform.position.x + 1.9f, transform.position.y, transform.position.z);
+            else if (GameManager.Instance.TotalNumberofPlayers == 5)
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         }
     }
     void LateUpdate()

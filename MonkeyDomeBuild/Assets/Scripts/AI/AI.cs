@@ -49,7 +49,7 @@ public class AI : Actor
 	private bool isEndTargVine = false;
 	private Vector3 calcVar;
 	private Vector3 aimDir;
-	private int lastPlayerTarget = 0;
+	private GameObject lastPlayerTarget;
 	private bool letCatch = false;
 	private bool waitForBallOnce = true;
 	private bool wantsToThrow = false;
@@ -64,6 +64,7 @@ public class AI : Actor
 	private bool oldSceneCheck = false;
 	private string currSceneOld;
 	private string lastSceneOld;
+	private bool changeMoveTarget = false;
 
 	//throw away shit
 	private float g;
@@ -187,7 +188,7 @@ public class AI : Actor
 
 		if (wantsToThrow && haveBall)
 		{
-			if (CalculateThrow(GameManager.Instance.gmPlayers[lastPlayerTarget]))
+			if (CalculateThrow(lastPlayerTarget))
 			{
 				currentState = State.Throw;
 				wantsToThrow = false;
@@ -293,6 +294,11 @@ public class AI : Actor
 
 	bool IsTargetViable(Vector3 target)
 	{
+		if(changeMoveTarget)
+		{
+			changeMoveTarget = false;
+			return false;
+		}
 		if (haveBall)
 		{
 			if ((target - cache_tf.position).magnitude <= 2.0f)
@@ -368,51 +374,45 @@ public class AI : Actor
 		GameManager.Instance.gmInputs[inputIndex].mXY.x = 0.0f;
 		GameManager.Instance.gmInputs[inputIndex].mCatch = true;
 		StartCoroutine(RealisticInputCatch());
-		int lowestPoints = 0;
-		int secondLowest = 0;
+		GameObject nearestPlayer = GameManager.Instance.gmPlayers[0];
+		GameObject farthestPlayer = GameManager.Instance.gmPlayers[0];
 		for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
 		{
 			if (i != playerIndex)
 			{
-				if (lowestPoints == -1)
+				if((GameManager.Instance.gmPlayers[i].transform.position - cache_tf.position).magnitude < (nearestPlayer.transform.position - cache_tf.position).magnitude)
 				{
-					lowestPoints = i;
+					nearestPlayer = GameManager.Instance.gmPlayers[i];
 				}
-				else if (lowestPoints >= GameManager.Instance.gmScoringManager.GetScore(i))
+				if((GameManager.Instance.gmPlayers[i].transform.position - cache_tf.position).magnitude > (nearestPlayer.transform.position - cache_tf.position).magnitude)
 				{
-					secondLowest = lowestPoints;
-					lowestPoints = i;
+					farthestPlayer = GameManager.Instance.gmPlayers[i];
 				}
 			}
 		}
 
-		if (lowestPoints != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[lowestPoints].characterType is Monkey)
+		if (nearestPlayer != lastPlayerTarget && nearestPlayer.GetComponent<Actor>().characterType is Monkey)
 		{
-			lastPlayerTarget = lowestPoints;
-			if (CalculateThrow(GameManager.Instance.gmPlayers[lowestPoints]))
+			if((farthestPlayer != lastPlayerTarget && farthestPlayer.GetComponent<Actor>().characterType is Monkey) && CalculateThrow(nearestPlayer))
 			{
+				lastPlayerTarget = farthestPlayer;
 				currentState = State.Throw;
 			}
 			else
 			{
-				wantsToThrow = true;
-				//calc move target
-				currentState = State.Move;
+				lastPlayerTarget = nearestPlayer;
+				if (CalculateThrow(nearestPlayer))
+				{
+					currentState = State.Throw;
+				}
+				else
+				{
+					wantsToThrow = true;
+					//calc move target
+					currentState = State.Move;
+				}
 			}
-		}
-		else if (secondLowest != lastPlayerTarget && GameManager.Instance.gmPlayerScripts[secondLowest].characterType is Monkey)
-		{
-			lastPlayerTarget = secondLowest;
-			if (CalculateThrow(GameManager.Instance.gmPlayers[secondLowest]))
-			{
-				currentState = State.Throw;
-			}
-			else
-			{
-				wantsToThrow = true;
-				//calc move target
-				currentState = State.Move;
-			}
+			
 		}
 		else
 		{
@@ -706,6 +706,11 @@ public class AI : Actor
 					isStuck = true;
 					StartCoroutine(RealisticInputX());
 					reverseX = -xInput;
+				}
+				else if(!(cache_tf.position.x < MoveTarget.x + 1.0f && cache_tf.position.x > MoveTarget.x - 1.0f))
+				{
+					Debug.Log("Cannot make it to move target");
+					changeMoveTarget = true;
 				}
 				else
 				{
