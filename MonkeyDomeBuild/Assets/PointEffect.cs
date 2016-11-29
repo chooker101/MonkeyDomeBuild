@@ -19,7 +19,7 @@ public class PointEffect : MonoBehaviour {
 	void Update () {
         if (isDisplaying)
         {
-            Debug.Log("point display");
+            //Debug.Log("point display");
             transform.localPosition = Vector3.Lerp(transform.localPosition, flyToMe, Time.deltaTime * flySpeed);
             if (Vector3.Distance(transform.localPosition, flyToMe) < .1f)
             {

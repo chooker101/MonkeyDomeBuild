@@ -32,10 +32,10 @@ public class CoconutInfo : BallInfo
         {
             if(other.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                Debug.Log("hit");
+                //Debug.Log("hit");
                 if (other.collider.GetComponent<Actor>().playerIndex != lastThrowMonkey.GetComponent<Actor>().playerIndex)
                 {
-                    Debug.Log("stun");
+                    //Debug.Log("stun");
                     other.collider.GetComponent<Actor>().TempDisableInput(1f);
                     if (canChangeLayer)
                     {

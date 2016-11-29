@@ -806,7 +806,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 462950, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 21243964, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
       propertyPath: m_Sprite
@@ -2099,7 +2099,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22486800, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 22486800, guid: 5a5d6eca87f6a0246a58c1240bfc3930, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -2395,11 +2395,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 741500784}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!82 &745435221 stripped
-AudioSource:
-  m_PrefabParentObject: {fileID: 8269860, guid: 5d86281c551e8c7479d3891ef4ce2836,
-    type: 2}
-  m_PrefabInternal: {fileID: 1586608394}
 --- !u!1 &758913397
 GameObject:
   m_ObjectHideFlags: 0
@@ -2764,11 +2759,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e84cc4c45fcbeb8448e509c2fb653743, type: 2}
   m_IsPrefabParent: 0
---- !u!82 &905184568 stripped
-AudioSource:
-  m_PrefabParentObject: {fileID: 8204370, guid: 5d86281c551e8c7479d3891ef4ce2836,
-    type: 2}
-  m_PrefabInternal: {fileID: 1586608394}
 --- !u!114 &911108003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2839,7 +2829,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 497168, guid: c6b4f7b8d7115bd43b602b4624d8796d, type: 2}
       propertyPath: m_RootOrder
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c6b4f7b8d7115bd43b602b4624d8796d, type: 2}
@@ -3767,7 +3757,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 415818, guid: ebb6201012265f44e8d3b76f56c88158, type: 2}
       propertyPath: m_RootOrder
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 187468, guid: ebb6201012265f44e8d3b76f56c88158, type: 2}
       propertyPath: m_IsActive
@@ -4345,7 +4335,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 415818, guid: ebb6201012265f44e8d3b76f56c88158, type: 2}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 187468, guid: ebb6201012265f44e8d3b76f56c88158, type: 2}
       propertyPath: m_IsActive
@@ -4671,14 +4661,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
-    - target: {fileID: 11452248, guid: 5d86281c551e8c7479d3891ef4ce2836, type: 2}
-      propertyPath: menuButtonSE
-      value: 
-      objectReference: {fileID: 905184568}
-    - target: {fileID: 11452248, guid: 5d86281c551e8c7479d3891ef4ce2836, type: 2}
-      propertyPath: unMenuButtonSE
-      value: 
-      objectReference: {fileID: 745435221}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5d86281c551e8c7479d3891ef4ce2836, type: 2}
   m_IsPrefabParent: 0
@@ -4719,7 +4701,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22405164, guid: 480398a04f0a99e49ae484bef2c7f3ed, type: 2}
       propertyPath: m_RootOrder
-      value: 22
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 22405164, guid: 480398a04f0a99e49ae484bef2c7f3ed, type: 2}
       propertyPath: m_AnchoredPosition.x

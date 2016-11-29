@@ -134,7 +134,7 @@ public class ScoringManager : MonoBehaviour
         {
             if (thrower.GetComponent<Actor>().playerIndex != catcher.GetComponent<Actor>().playerIndex)
             {
-                Debug.Log("catch");
+                //Debug.Log("catch");
                 scoreGetThrower += GetPassScore();
                 scoreGetCatcher += perfectCatch ? perfectCatchScore : catchScore;
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
@@ -245,7 +245,7 @@ public class ScoringManager : MonoBehaviour
         throwCombo = 0;
         if (gorilla != monkey)
         {
-            Debug.Log("intercept");
+            //Debug.Log("intercept");
             SwitchingScore(gorilla, ball);
         }
     }

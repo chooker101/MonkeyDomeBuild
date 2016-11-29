@@ -33,6 +33,8 @@ public class BallInfo : MonoBehaviour
     public float magnitudeOfVelocity = 0f;
     public int numberOfBounce = 0;
     protected bool canBeCatch = true;
+    protected bool canPlaySE = true;
+    protected float lastPlaySETime = 0;
 
     //public GameObject testMonkey;
     public Material mySpriteColour;
@@ -330,12 +332,20 @@ public class BallInfo : MonoBehaviour
         {
             if (other.gameObject.layer==LayerMask.NameToLayer("Floor"))
             {
-                if(travelTime > 1f)
+                if (Time.time - lastPlaySETime > 0.3f)
                 {
-                    AudioEffectManager.Instance.PlayBallBounceHardSE();
-                } else
-                {
-                    AudioEffectManager.Instance.PlayBallBounceSoftSE();
+                    lastPlaySETime = Time.time;
+                    if (m_rigid.velocity.magnitude > 3f)
+                    {
+                        if (travelTime > 1f)
+                        {
+                            AudioEffectManager.Instance.PlayBallBounceHardSE();
+                        }
+                        else
+                        {
+                            AudioEffectManager.Instance.PlayBallBounceSoftSE();
+                        }
+                    }
                 }
                 numberOfBounce++;
             }
@@ -358,6 +368,11 @@ public class BallInfo : MonoBehaviour
     void BounceCount()
     {
 
+    }
+    IEnumerator AudioDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+        canPlaySE = true;
     }
 
 }

@@ -25,14 +25,14 @@ public class AudienceAnimator : MonoBehaviour
     public void AudienceHappy()
     {
         controller.SetBool("Happy", true);
-        Debug.Log("Happy");
+        //Debug.Log("Happy");
         Invoke("ResetAudience", animationLength);
     }
 
     public void AudienceAngry()
     {
         controller.SetBool("Angry", true);
-        Debug.Log("Angry");
+        //Debug.Log("Angry");
         Invoke("ResetAudience", animationLength);
     }
 
