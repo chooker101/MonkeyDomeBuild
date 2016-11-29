@@ -173,6 +173,7 @@ public class EffectControl : MonoBehaviour
 
     public void PlayCatchEffect(GameObject ball)
     {
+        /*
         if (particleColour != GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex))
         {
             particleColour = GameManager.Instance.gmRecordKeeper.GetPlayerColour(GetComponent<Actor>().playerIndex);
@@ -183,6 +184,7 @@ public class EffectControl : MonoBehaviour
         {
             ps.startColor = particleColour;
         }
+        */
         Vector3 ballPos = ball.transform.position;
         ballPos.z = 0;
         Vector3 pivotPos = controller.transform.position;

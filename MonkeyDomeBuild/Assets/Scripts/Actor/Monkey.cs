@@ -62,7 +62,7 @@ public class Monkey : Character
     }
 	protected void CatchCheck()
 	{
-		if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null && cacheplayer.CanCatch)
+		if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null && cacheplayer.CanCatch && !cacheplayer.IsStunned)
 		{
             if (cacheplayer.ballCanCatch.GetCanBeCatch())
             {

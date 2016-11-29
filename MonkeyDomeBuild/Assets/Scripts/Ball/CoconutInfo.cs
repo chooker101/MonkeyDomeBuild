@@ -16,7 +16,9 @@ public class CoconutInfo : BallInfo
     }
     void OnDisable()
     {
-
+        inStage = false;
+        beingThrown = false;
+        canChangeLayer = true;
     }
     public void ThrowCoconut()
     {

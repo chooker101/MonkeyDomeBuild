@@ -83,7 +83,7 @@ public class BallInfo : MonoBehaviour
         ballMat = GetComponent<CircleCollider2D>().sharedMaterial;
         type = ThrowableType.Ball;
         trailParticle = GetComponentInChildren<ParticleSystem>();
-        //trailParticle.startColor = GetComponent<MeshRenderer>().material.color;
+        trailParticle.startColor = GetComponent<SpriteRenderer>().material.color;
         //bounciness = ballMat.bounciness;
         //timer = 8f;
         //PickRandomVictim();

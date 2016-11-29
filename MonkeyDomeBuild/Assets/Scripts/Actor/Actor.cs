@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class Actor : MonoBehaviour
 {
     /*
@@ -129,7 +130,7 @@ public class Actor : MonoBehaviour
     {
         //JumpCheck();
         //cType = characterType.ToString();
-        if (GameManager.Instance.gmInputs[inputIndex].mJump)
+        if (GameManager.Instance.gmInputs[inputIndex].mJump && !beingSmack)
         {
             Jumping();
         }
@@ -639,9 +640,13 @@ public class Actor : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("BallTrigger"))
         {
+
             if (isDashing)
             {
-                GameManager.Instance.gmInputs[inputIndex].mCatch = true;
+                if (SceneManager.GetActiveScene().name != "PregameRoom")
+                {
+                    GameManager.Instance.gmInputs[inputIndex].mCatch = true;
+                }
                 if (isPlayer == true)
                 {
                     isPlayer = false;
@@ -961,5 +966,12 @@ public class Actor : MonoBehaviour
         canCatch = false;
         yield return new WaitForSeconds(0.3f);
         canCatch = true;
+    }
+    public bool IsStunned
+    {
+        get
+        {
+            return beingSmack;
+        }
     }
 }

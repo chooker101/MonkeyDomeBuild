@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class AudioEffectManager : MonoBehaviour
 {
@@ -13,19 +14,19 @@ public class AudioEffectManager : MonoBehaviour
     public AudioSource monkeyGrabLatticeSE;
     public AudioSource ballBounceSoftSE;
     public AudioSource ballBounceHardSE;
-	public AudioSource ballInAirSE;
-	public AudioSource monkeyCatchBananaSE;
-	public AudioSource monkeyCatchPoopSE;
-	public AudioSource bananaHitSurfaceSE;
-	public AudioSource poopHitSurfaceSE;
-	public AudioSource targetPopupSE;
-	public AudioSource targetRetractSE;
-	public AudioSource targetUpgradeSE;
-	public AudioSource targetDowngradeSE;
-	public AudioSource targetHitSE;
+    public AudioSource ballInAirSE;
+    public AudioSource monkeyCatchBananaSE;
+    public AudioSource monkeyCatchPoopSE;
+    public AudioSource bananaHitSurfaceSE;
+    public AudioSource poopHitSurfaceSE;
+    public AudioSource targetPopupSE;
+    public AudioSource targetRetractSE;
+    public AudioSource targetUpgradeSE;
+    public AudioSource targetDowngradeSE;
+    public AudioSource targetHitSE;
     public AudioSource bananaInBasketSE;
 
-    public AudioSource monkeyCallBallSE; 
+    public AudioSource monkeyCallBallSE;
     public AudioSource gorillaChargeupSE;
     public AudioSource gorillaTackleSE;
     public AudioSource gorillaTackleHitSurfaceSE;
@@ -68,99 +69,146 @@ public class AudioEffectManager : MonoBehaviour
     //Audience Sound Effects
     public void PlayAudienceCheer1()
     {
-        if (audienceCheer1 != null && audienceCheer1.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCheer1.PlayOneShot(audienceCheer1.clip);
+            if (audienceCheer1 != null && audienceCheer1.clip != null && !mute)
+            {
+                audienceCheer1.PlayOneShot(audienceCheer1.clip);
+            }
         }
+
     }
     public void PlayAudienceCheer2()
     {
-        if (audienceCheer2 != null && audienceCheer2.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCheer2.PlayOneShot(audienceCheer2.clip);
+            if (audienceCheer2 != null && audienceCheer2.clip != null && !mute)
+            {
+                audienceCheer2.PlayOneShot(audienceCheer2.clip);
+            }
         }
+
     }
     public void PlayAudienceCheer3()
     {
-        if (audienceCheer3 != null && audienceCheer3.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCheer3.PlayOneShot(audienceCheer3.clip);
+            if (audienceCheer3 != null && audienceCheer3.clip != null && !mute)
+            {
+                audienceCheer3.PlayOneShot(audienceCheer3.clip);
+            }
         }
+
     }
     public void PlayAudienceBoo1()
     {
-        if (audienceBoo1 != null && audienceBoo1.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceBoo1.PlayOneShot(audienceBoo1.clip);
+            if (audienceBoo1 != null && audienceBoo1.clip != null && !mute)
+            {
+                audienceBoo1.PlayOneShot(audienceBoo1.clip);
+            }
         }
+
     }
     public void PlayAudienceBoo2()
     {
-        if (audienceBoo2 != null && audienceBoo2.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceBoo2.PlayOneShot(audienceBoo2.clip);
+            if (audienceBoo2 != null && audienceBoo2.clip != null && !mute)
+            {
+                audienceBoo2.PlayOneShot(audienceBoo2.clip);
+            }
         }
+
     }
     public void PlayAudienceBoo3()
     {
-        if (audienceBoo3 != null && audienceBoo3.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceBoo3.PlayOneShot(audienceBoo3.clip);
+            if (audienceBoo3 != null && audienceBoo3.clip != null && !mute)
+            {
+                audienceBoo3.PlayOneShot(audienceBoo3.clip);
+            }
         }
+
     }
     public void PlayAudienceCatch()
     {
-        if (audienceCatch != null && audienceCatch.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCatch.pitch = Random.Range(.65f, .9f);
-            audienceCatch.volume = Random.Range(.3f, .6f);
-            audienceCatch.PlayOneShot(audienceCatch.clip);
+            if (audienceCatch != null && audienceCatch.clip != null && !mute)
+            {
+                audienceCatch.pitch = Random.Range(.65f, .9f);
+                audienceCatch.volume = Random.Range(.3f, .6f);
+                audienceCatch.PlayOneShot(audienceCatch.clip);
+            }
         }
+
     }
     public void PlayAudienceInterception()
     {
-        if (audienceInterception != null && audienceInterception.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCatch.pitch = Random.Range(.95f, 1.05f);
-            audienceCatch.volume = Random.Range(0.65f, 1.05f);
-            audienceInterception.PlayOneShot(audienceInterception.clip);
+            if (audienceInterception != null && audienceInterception.clip != null && !mute)
+            {
+                audienceCatch.pitch = Random.Range(.95f, 1.05f);
+                audienceCatch.volume = Random.Range(0.65f, 1.05f);
+                audienceInterception.PlayOneShot(audienceInterception.clip);
+            }
         }
     }
     public void PlayAudienceShotClock()
     {
-        if (audienceShotClock != null && audienceShotClock.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCatch.pitch = Random.Range(.65f, .85f);
-            audienceCatch.volume = Random.Range(.4f, .8f);
-            audienceShotClock.PlayOneShot(audienceShotClock.clip);
+            if (audienceShotClock != null && audienceShotClock.clip != null && !mute)
+            {
+                audienceCatch.pitch = Random.Range(.65f, .85f);
+                audienceCatch.volume = Random.Range(.4f, .8f);
+                audienceShotClock.PlayOneShot(audienceShotClock.clip);
+            }
         }
+
     }
     public void PlayAudienceTargetUp()
     {
-        if (audienceTargetUp != null && audienceTargetUp.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCatch.pitch = Random.Range(.65f, .85f);
-            audienceCatch.volume = Random.Range(.7f, .9f);
-            audienceTargetUp.PlayOneShot(audienceTargetUp.clip);
+            if (audienceTargetUp != null && audienceTargetUp.clip != null && !mute)
+            {
+                audienceCatch.pitch = Random.Range(.65f, .85f);
+                audienceCatch.volume = Random.Range(.7f, .9f);
+                audienceTargetUp.PlayOneShot(audienceTargetUp.clip);
+            }
         }
+
     }
     public void PlayAudienceSmash()
     {
-        if (audienceSmash != null && audienceSmash.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audienceCatch.pitch = Random.Range(.95f, 1f);
-            audienceCatch.volume = Random.Range(.65f, .8f);
-            audienceSmash.PlayOneShot(audienceSmash.clip);
+            if (audienceSmash != null && audienceSmash.clip != null && !mute)
+            {
+                audienceCatch.pitch = Random.Range(.95f, 1f);
+                audienceCatch.volume = Random.Range(.65f, .8f);
+                audienceSmash.PlayOneShot(audienceSmash.clip);
+            }
         }
+
     }
     public void PlayAudiencePoop()
     {
-        if (audiencePoop != null && audiencePoop.clip != null && !mute)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            audiencePoop.pitch = Random.Range(.65f, 1.05f);
-            audiencePoop.volume = Random.Range(.8f, 1.2f);
-            audiencePoop.PlayOneShot(audiencePoop.clip);
+            if (audiencePoop != null && audiencePoop.clip != null && !mute)
+            {
+                audiencePoop.pitch = Random.Range(.65f, 1.05f);
+                audiencePoop.volume = Random.Range(.8f, 1.2f);
+                audiencePoop.PlayOneShot(audiencePoop.clip);
+            }
         }
+
     }
     //Monkey Sound Effects
     public void PlayMonkeyJumpSE()
@@ -174,9 +222,9 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyThrowSE != null && monkeyThrowSE.clip != null && !mute)
         {
-                monkeyThrowSE.pitch = Random.Range(.85f, 1f);
+            monkeyThrowSE.pitch = Random.Range(.85f, 1f);
             monkeyThrowSE.volume = Random.Range(.35f, .45f);
-                monkeyThrowSE.PlayOneShot(monkeyThrowSE.clip);
+            monkeyThrowSE.PlayOneShot(monkeyThrowSE.clip);
         }
     }
     public void PlayMonkeyCatchSE()
