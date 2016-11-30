@@ -102,9 +102,10 @@ public class VictoryRoomManager : MonoBehaviour
 
         movePodiums();
         GameManager.Instance.gmSpawnManager.Start();
-        
         setCase();
         PlaceTrophies();
+
+
 
     }
 
@@ -264,8 +265,10 @@ public class VictoryRoomManager : MonoBehaviour
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers - 1; i++)
         {
             podiumList[i].SetActive(true);
-            podiumColors[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
+            //podiumColors[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
         }
+
+        
     }
 
 
