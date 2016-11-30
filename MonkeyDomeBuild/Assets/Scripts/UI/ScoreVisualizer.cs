@@ -40,6 +40,7 @@ public class ScoreVisualizer : MonoBehaviour
             playerHead_gorilla[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
             playerBoardBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
             ledBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+            scoreDisplays[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
 
             if(GameManager.Instance.TotalNumberofPlayers > i)
             {

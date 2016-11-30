@@ -243,7 +243,7 @@ public class TargetBase : MonoBehaviour
                 activatedImg.SetActive(false);
 
                 // Set images of screen
-                ColorUtility.TryParseHtmlString("#404041FF", out color); // "black" color
+                ColorUtility.TryParseHtmlString("#1C1D1E", out color); // "black" color
                 sliderTopBackground.color = color;
                 sliderBottomBackground.color = color;
                 if(state != TargetBaseState.TierUpdate && state != TargetBaseState.RallyStart && state != TargetBaseState.Warning)
@@ -343,7 +343,7 @@ public class TargetBase : MonoBehaviour
                     activatedImg = prep.gameObject;
 
                     // Set images of screen
-                    ColorUtility.TryParseHtmlString("#404041FF", out color); // "Black" color
+                    ColorUtility.TryParseHtmlString("#1C1D1E", out color); // "Black" color
                     sliderTopBackground.color = color;
                     sliderBottomBackground.color = color;
                     targetCounter_black.gameObject.SetActive(true);
