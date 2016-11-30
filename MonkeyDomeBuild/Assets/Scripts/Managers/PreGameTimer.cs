@@ -209,11 +209,12 @@ public class PreGameTimer : MonoBehaviour
     }
     IEnumerator TutorialSequence()
     {
+        /*
         while (!sign_catch.activeInHierarchy)
         {
             if (monkeysActions.Count >= GameManager.Instance.TotalNumberofPlayers)
             {
-                sign_catch.SetActive(true);
+                //sign_catch.SetActive(true);
                 monkeysActions.Clear();
                 tutorialState = TutorialState.Catch;
             }
@@ -228,8 +229,9 @@ public class PreGameTimer : MonoBehaviour
                 monkeysActions.Clear();
             }
             yield return null;
-        }
+        }*/
         yield return null;
+        
     }
     public void AddMonkeyAction()
     {

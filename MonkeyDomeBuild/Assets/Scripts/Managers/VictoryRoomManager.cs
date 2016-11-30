@@ -145,6 +145,10 @@ public class VictoryRoomManager : MonoBehaviour
                 victoryTimer = 0;
 
                 scoreKeeper.ClearScores();
+                for(int i = 0; i < GameManager.gmRecordKeeper.colourPlayers.Count; i++)
+                {
+                    GameManager.gmRecordKeeper.colourPlayers[i] = GameManager.gmRecordKeeper.defaultColour;
+                }
                 GameManager.LoadPregameRoom();
             }
 
