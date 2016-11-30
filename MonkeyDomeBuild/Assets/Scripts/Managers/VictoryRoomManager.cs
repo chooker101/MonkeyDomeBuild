@@ -19,7 +19,7 @@ public class VictoryRoomManager : MonoBehaviour
 
 
     public List<GameObject> TrophyCase;
-    public List<SpriteRenderer> TrophyBg;
+    public List<SpriteRenderer> TrophyBg = new List<SpriteRenderer>();
 
 
     public GameObject Trophy;
@@ -144,7 +144,7 @@ public class VictoryRoomManager : MonoBehaviour
                 victoryTimer = 0;
 
                 scoreKeeper.ClearScores();
-                for(int i = 0; i < GameManager.gmRecordKeeper.colourPlayers.Count; i++)
+                for (int i = 0; i < GameManager.gmRecordKeeper.colourPlayers.Count; i++)
                 {
                     GameManager.gmRecordKeeper.colourPlayers[i] = GameManager.gmRecordKeeper.defaultColour;
                 }
@@ -153,7 +153,7 @@ public class VictoryRoomManager : MonoBehaviour
 
             if (podiumsReady) // Once buffer time has completed
             {
-                
+
                 // Podiums
                 if (GameManager.Instance.TotalNumberofPlayers >= 1)
                 {
@@ -258,30 +258,28 @@ public class VictoryRoomManager : MonoBehaviour
         podiumPositions[3] = podiumList[3].transform.position;
         podiumPositions[4] = podiumList[4].transform.position;
 
-        for (int i = 4; i > GameManager.Instance.TotalNumberofPlayers - 1; i--)
+        for (int i = 4; i >= GameManager.Instance.TotalNumberofPlayers; i--)
         {
             podiumList[i].SetActive(false);
         }
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers - 1; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
             podiumList[i].SetActive(true);
             //podiumColors[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
         }
 
-        
+
     }
-
-
 
     void setCase()
     {
-        for (int i = 4; i > GameManager.Instance.TotalNumberofPlayers - 1; i--)
+        for (int i = 4; i >= GameManager.Instance.TotalNumberofPlayers; i--)
         {
             TrophyCase[i].SetActive(false);
         }
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers - 1; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
-            TrophyBg[i].material = GameManager.Instance.gmRecordKeeper.colourPlayers[i];
+            TrophyBg[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
         }
 
     }
