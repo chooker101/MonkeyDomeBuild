@@ -227,6 +227,8 @@ public class TargetBase : MonoBehaviour
                         //stayTierLight.color = Color.black;
                         //downTierLight.color = Color.red;
                         break;
+                    case TierStatus.TierMax:
+                        goto case TierStatus.TierUp;
                 }
             }
             else
@@ -273,7 +275,6 @@ public class TargetBase : MonoBehaviour
                             targetCounterDowngrade.gameObject.SetActive(false);
                             targetCounterSamegrade.gameObject.SetActive(false);
                             targetCounterUpgrade.gameObject.SetActive(true);
-                            tierMax.gameObject.SetActive(false);
                             break;
                         case TierStatus.TierStay:
                             // Set images of screen
@@ -283,7 +284,6 @@ public class TargetBase : MonoBehaviour
                             targetCounterDowngrade.gameObject.SetActive(false);
                             targetCounterSamegrade.gameObject.SetActive(true);
                             targetCounterUpgrade.gameObject.SetActive(false);
-                            tierMax.gameObject.SetActive(false);
                             break;
                         case TierStatus.TierDown:
                             // Set images of screen
@@ -293,7 +293,6 @@ public class TargetBase : MonoBehaviour
                             targetCounterDowngrade.gameObject.SetActive(true);
                             targetCounterSamegrade.gameObject.SetActive(false);
                             targetCounterUpgrade.gameObject.SetActive(false);
-                            tierMax.gameObject.SetActive(false);
                             break;
                         case TierStatus.TierMax:
                             targetCounter_black.gameObject.SetActive(false);
@@ -301,8 +300,7 @@ public class TargetBase : MonoBehaviour
                             targetCounter_red.gameObject.SetActive(false);
                             targetCounterDowngrade.gameObject.SetActive(false);
                             targetCounterSamegrade.gameObject.SetActive(false);
-                            targetCounterUpgrade.gameObject.SetActive(false);
-                            tierMax.gameObject.SetActive(true);
+                            targetCounterUpgrade.gameObject.SetActive(true);
                             break;
                         case TierStatus.TierNull:
                             targetCounter_black.gameObject.SetActive(true);
@@ -463,6 +461,20 @@ public class TargetBase : MonoBehaviour
                             targetCounterDowngrade.gameObject.SetActive(false);
                             targetCounterSamegrade.gameObject.SetActive(false);
                             targetCounterUpgrade.gameObject.SetActive(false);
+                            break;
+                        case TierStatus.TierMax:
+                            activatedImg = tierMax.gameObject;
+
+                            // Set images of screen
+                            ColorUtility.TryParseHtmlString("#8cc63eFF", out color); // "Green" colour
+                            sliderTopBackground.color = color;
+                            sliderBottomBackground.color = color;
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(true);
                             break;
                     }
                     break;
