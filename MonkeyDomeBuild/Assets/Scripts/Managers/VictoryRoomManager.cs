@@ -11,14 +11,16 @@ public class VictoryRoomManager : MonoBehaviour
     public float minHeight;
     public float speed;
     public float podiumBufferTime;
-    public GameObject podiums;
-    public GameObject Podium1;
-    public GameObject Podium2;
-    public GameObject Podium3;
-    public GameObject Podium4;
-    public GameObject Podium5;
+    public GameObject allPodiums;
+    public List<GameObject> podiumList;
+    public List<Material> podiumColors;
+    public List<Vector3> podiumPositions;
+    private Vector3 temp;
+
+
     public List<GameObject> TrophyCase;
-    public List<SpriteRenderer> TrophyBgs;
+    public List<SpriteRenderer> TrophyBg = new List<SpriteRenderer>();
+
 
     public GameObject Trophy;
     public Transform[] AwardBananasTrophyPos;
@@ -27,11 +29,17 @@ public class VictoryRoomManager : MonoBehaviour
     public Transform[] BallCallingTrophyPos;
     public Transform[] AwardPoopTrophyPos;
     public Transform[] KnockDownTrophyPos;
+    [HideInInspector]
     public int a;
+    [HideInInspector]
     public int b;
+    [HideInInspector]
     public int c;
+    [HideInInspector]
     public int d;
+    [HideInInspector]
     public int e;
+    [HideInInspector]
     public int f;
     public float victoryTimer;
     public float victoryTimerInvisible;
@@ -43,12 +51,7 @@ public class VictoryRoomManager : MonoBehaviour
     private ScoringManager scoreKeeper;
     private GameManager GameManager;
     private TrophyManager TrophyManager;
-    private Vector3 podiumPos1;
-    private Vector3 podiumPos2;
-    private Vector3 podiumPos3;
-    private Vector3 podiumPos4;
-    private Vector3 podiumPos5;
-    private Vector3 temp;
+
     private float p1score;
     private float p2score;
     private float p3score;
@@ -97,17 +100,13 @@ public class VictoryRoomManager : MonoBehaviour
             p5score = minHeight;
         }
 
-        Podium1 = GameObject.Find("Podium1");
-        Podium2 = GameObject.Find("Podium2");
-        Podium3 = GameObject.Find("Podium3");
-        Podium4 = GameObject.Find("Podium4");
-        Podium5 = GameObject.Find("Podium5");
-
-
         movePodiums();
         GameManager.Instance.gmSpawnManager.Start();
-        moveCase();
+        setCase();
         PlaceTrophies();
+
+
+
     }
 
     // Update is called once per frame
@@ -145,37 +144,42 @@ public class VictoryRoomManager : MonoBehaviour
                 victoryTimer = 0;
 
                 scoreKeeper.ClearScores();
+                for (int i = 0; i < GameManager.gmRecordKeeper.colourPlayers.Count; i++)
+                {
+                    GameManager.gmRecordKeeper.colourPlayers[i] = GameManager.gmRecordKeeper.defaultColour;
+                }
                 GameManager.LoadPregameRoom();
             }
 
             if (podiumsReady) // Once buffer time has completed
             {
+
                 // Podiums
                 if (GameManager.Instance.TotalNumberofPlayers >= 1)
                 {
-                    Podium1.transform.position = Vector3.MoveTowards(Podium1.transform.position,
-                        new Vector3(podiumPos1.x, podiumPos1.y + p1score, podiumPos1.z), speed * Time.deltaTime);
+                    podiumList[0].transform.position = Vector3.MoveTowards(podiumList[0].transform.position,
+                        new Vector3(podiumPositions[0].x, podiumPositions[0].y + p1score, podiumPositions[0].z), speed * Time.deltaTime);
 
                 }
                 if (GameManager.Instance.TotalNumberofPlayers >= 2)
                 {
-                    Podium2.transform.position = Vector3.MoveTowards(Podium2.transform.position,
-                        new Vector3(podiumPos2.x, podiumPos2.y + p2score, podiumPos2.z), speed * Time.deltaTime);
+                    podiumList[1].transform.position = Vector3.MoveTowards(podiumList[1].transform.position,
+                        new Vector3(podiumPositions[1].x, podiumPositions[1].y + p2score, podiumPositions[1].z), speed * Time.deltaTime);
                 }
                 if (GameManager.Instance.TotalNumberofPlayers >= 3)
                 {
-                    Podium3.transform.position = Vector3.MoveTowards(Podium3.transform.position,
-                        new Vector3(podiumPos3.x, podiumPos3.y + p3score, podiumPos3.z), speed * Time.deltaTime);
+                    podiumList[2].transform.position = Vector3.MoveTowards(podiumList[2].transform.position,
+                        new Vector3(podiumPositions[2].x, podiumPositions[2].y + p3score, podiumPositions[2].z), speed * Time.deltaTime);
                 }
                 if (GameManager.Instance.TotalNumberofPlayers >= 4)
                 {
-                    Podium4.transform.position = Vector3.MoveTowards(Podium4.transform.position,
-                        new Vector3(podiumPos4.x, podiumPos4.y + p4score, podiumPos4.z), speed * Time.deltaTime);
+                    podiumList[3].transform.position = Vector3.MoveTowards(podiumList[3].transform.position,
+                        new Vector3(podiumPositions[3].x, podiumPositions[3].y + p4score, podiumPositions[3].z), speed * Time.deltaTime);
                 }
                 if (GameManager.Instance.TotalNumberofPlayers == 5)
                 {
-                    Podium5.transform.position = Vector3.MoveTowards(Podium5.transform.position,
-                        new Vector3(podiumPos5.x, podiumPos5.y + p5score, podiumPos5.z), speed * Time.deltaTime);
+                    podiumList[4].transform.position = Vector3.MoveTowards(podiumList[4].transform.position,
+                        new Vector3(podiumPositions[4].x, podiumPositions[4].y + p5score, podiumPositions[4].z), speed * Time.deltaTime);
                 }
             }
 
@@ -196,51 +200,44 @@ public class VictoryRoomManager : MonoBehaviour
         if (TrophyManager.a > 0)
         {
             a = TrophyManager.a;
-            GameObject BananaTrophy = (GameObject)Instantiate(Trophy, AwardBananasTrophyPos[a].transform.position, podiums.transform.rotation);
+            GameObject BananaTrophy = (GameObject)Instantiate(Trophy, AwardBananasTrophyPos[a].transform.position, allPodiums.transform.rotation);
         }
-
 
         if (TrophyManager.b >= 0)
         {
             b = TrophyManager.b;
-            GameObject CatchTrophy = (GameObject)Instantiate(Trophy, PerfectCatchTrophyPos[b].transform.position, podiums.transform.rotation);
+            GameObject CatchTrophy = (GameObject)Instantiate(Trophy, PerfectCatchTrophyPos[b].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.c >= 0)
         {
             c = TrophyManager.c;
-            GameObject TargetsTrophy = (GameObject)Instantiate(Trophy, TargetsHitTrophyPos[c].transform.position, podiums.transform.rotation);
+            GameObject TargetsTrophy = (GameObject)Instantiate(Trophy, TargetsHitTrophyPos[c].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.d >= 0)
         {
             d = TrophyManager.d;
-            GameObject CallingTrophy = (GameObject)Instantiate(Trophy, BallCallingTrophyPos[d].transform.position, podiums.transform.rotation);
+            GameObject CallingTrophy = (GameObject)Instantiate(Trophy, BallCallingTrophyPos[d].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.e >= 0)
         {
             e = TrophyManager.e;
-            GameObject PoopTrophy = (GameObject)Instantiate(Trophy, AwardPoopTrophyPos[e].transform.position, podiums.transform.rotation);
+            GameObject PoopTrophy = (GameObject)Instantiate(Trophy, AwardPoopTrophyPos[e].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.f >= 0)
         {
             f = TrophyManager.f;
-            GameObject KnockDownTrophy = (GameObject)Instantiate(Trophy, KnockDownTrophyPos[f].transform.position, podiums.transform.rotation);
+            GameObject KnockDownTrophy = (GameObject)Instantiate(Trophy, KnockDownTrophyPos[f].transform.position, allPodiums.transform.rotation);
         }
 
-        /*Debug.Log(a);
-        Debug.Log(b);
-        Debug.Log(c);
-        Debug.Log(d);
-        Debug.Log(e);
-        Debug.Log(f);*/
     }
 
     void movePodiums()
     {
-        temp = podiums.transform.position;
+        temp = allPodiums.transform.position;
 
         if (GameManager.TotalNumberofPlayers == 1)
             temp.x = 22.6f;
@@ -253,26 +250,39 @@ public class VictoryRoomManager : MonoBehaviour
         if (GameManager.TotalNumberofPlayers == 5)
             temp.x = 6.3f;
 
-        podiums.transform.position = temp;
+        allPodiums.transform.position = temp;
 
-        podiumPos1 = Podium1.transform.position;
-        podiumPos2 = Podium2.transform.position;
-        podiumPos3 = Podium3.transform.position;
-        podiumPos4 = Podium4.transform.position;
-        podiumPos5 = Podium5.transform.position;
+        podiumPositions[0] = podiumList[0].transform.position;
+        podiumPositions[1] = podiumList[1].transform.position;
+        podiumPositions[2] = podiumList[2].transform.position;
+        podiumPositions[3] = podiumList[3].transform.position;
+        podiumPositions[4] = podiumList[4].transform.position;
+
+        for (int i = 4; i >= GameManager.Instance.TotalNumberofPlayers; i--)
+        {
+            podiumList[i].SetActive(false);
+        }
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        {
+            podiumList[i].SetActive(true);
+            //podiumColors[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
+        }
+
+
     }
 
-    void moveCase()
+    void setCase()
     {
-        for (int i = 4; i > GameManager.Instance.TotalNumberofPlayers - 1; i--)
+        for (int i = 4; i >= GameManager.Instance.TotalNumberofPlayers; i--)
         {
             TrophyCase[i].SetActive(false);
         }
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers - 1; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
-            TrophyBgs[i].material = GameManager.Instance.gmRecordKeeper.colourPlayers[i];
-
+            TrophyBg[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
         }
 
     }
+
+
 }

@@ -97,6 +97,7 @@ public class Monkey : Character
             cacheplayer.ReleaseBall();
 		}
 		cacheplayer.characterType = new Gorilla(myPlayer,myInput);
+        cacheplayer.TempDisableInput(2f);
         //cacheplayer.GetComponent<Transform>().localScale = gorillaSize;
 
 

@@ -570,8 +570,10 @@ public class Actor : MonoBehaviour
             {
                 if (other.collider.GetComponent<Actor>().characterType is Monkey)
                 {
-                    KnockOffMonkey(other.collider.gameObject);
-
+                    if (!beingSmack)
+                    {
+                        KnockOffMonkey(other.collider.gameObject);
+                    }
                     if (isDashing)
                     {
                         PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
@@ -620,9 +622,12 @@ public class Actor : MonoBehaviour
 
     public void TempDisableInput(float time)
     {
-        GetComponent<EffectControl>().PlayStunEffect();
-        DisableInput = true;
-        InvokeEnableInput(time);
+        if (!DisableInput)
+        {
+            GetComponent<EffectControl>().PlayStunEffect();
+            DisableInput = true;
+            InvokeEnableInput(time);
+        }
     }
 
     public void InvokeEnableInput(float time)
