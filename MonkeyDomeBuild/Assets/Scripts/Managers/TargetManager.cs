@@ -205,6 +205,17 @@ public class TargetManager : MonoBehaviour
         hitSum = 0;
         sequenceIndex = 0;
     }
+    public bool IsAtMaxTier
+    {
+        get
+        {
+            if(targetTier == 3)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
 
     void ResetTargetPositions()
     {

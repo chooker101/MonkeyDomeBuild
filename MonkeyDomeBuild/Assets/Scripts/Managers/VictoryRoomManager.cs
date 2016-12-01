@@ -13,7 +13,6 @@ public class VictoryRoomManager : MonoBehaviour
     public float podiumBufferTime;
     public GameObject allPodiums;
     public List<GameObject> podiumList;
-    public List<Material> podiumColors;
     public List<Vector3> podiumPositions;
     private Vector3 temp;
 
@@ -264,8 +263,9 @@ public class VictoryRoomManager : MonoBehaviour
         }
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
-            podiumList[i].SetActive(true);
-            //podiumColors[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
+            //podiumList[i].SetActive(true);
+            var podiumCol = GameManager.Instance.gmRecordKeeper.colourPlayers[i];
+            podiumList[i].GetComponent<Renderer>().material = podiumCol;
         }
 
 
@@ -279,7 +279,9 @@ public class VictoryRoomManager : MonoBehaviour
         }
         for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
-            TrophyBg[i].color = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
+            var bkColor = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
+            bkColor.a = 0.5f;
+            TrophyBg[i].color = bkColor;
         }
 
     }
