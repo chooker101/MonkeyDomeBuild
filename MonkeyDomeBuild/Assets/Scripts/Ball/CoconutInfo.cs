@@ -22,6 +22,7 @@ public class CoconutInfo : BallInfo
     }
     public void ThrowCoconut()
     {
+        GameManager.Instance.gmTrophyManager.ThrewCoconut(holdingMonkey.GetComponent<Actor>().playerIndex);
         if (!beingThrown)
         {
             beingThrown = true;

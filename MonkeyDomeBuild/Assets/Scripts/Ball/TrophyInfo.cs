@@ -20,7 +20,7 @@ public class TrophyInfo : BallInfo
     public void InvokeEnableCollider()
     {
         colliderIsOff = false;
-        Invoke("ReactivateCollider", 0.1f);
+        Invoke("ReactivateCollider", 0.05f);
     }
     private void ReactivateCollider()
     {

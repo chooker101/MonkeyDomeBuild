@@ -4,26 +4,34 @@ using System.Collections.Generic;
 public class PlayerTrophyStats
 {
     public int bananasEaten;
+    public int hitByPoop;
     public int perfectCatch;
+    public int audienceLosses;
+    public int audienceWins;
+
+
+    public int Points;
+    public int Catch;
     public int targetsHit;
     public int callsForBall;
-    public int hitByPoop;
-    public int knockDowns;
-    public int audienceWins;
-    public int audienceLosses;
+    public int dashTackle;
+    public int coconutThrows;
+
+
 
     public PlayerTrophyStats()
     {
-        bananasEaten = 0;
-        perfectCatch = 0;
+
+
+        Points = 0;
+        Catch = 0;
+        coconutThrows = 0;
         targetsHit = 0;
         callsForBall = 0;
-        hitByPoop = 0;
-        knockDowns = 0;
-        audienceWins = 0;
-        audienceLosses = 0;
+        dashTackle = 0;
+
     }
-    
+
 }
 
 public class TrophyManager : MonoBehaviour
@@ -43,32 +51,16 @@ public class TrophyManager : MonoBehaviour
 
     void Start()
     {
-        for(int i = 0; i < maxPlayers; i++)
+        for (int i = 0; i < maxPlayers; i++)
         {
             playerTrophyStats.Add(new PlayerTrophyStats());
         }
     }
 
-          
+    /*
     public void BananasEaten(int playerIndex)
     {
         playerTrophyStats[playerIndex].bananasEaten++;
-    }
-    public void TargetsHit(int playerIndex)
-    {
-        playerTrophyStats[playerIndex].targetsHit++;
-    }
-    public void CallsForBall(int playerIndex)
-    {
-        playerTrophyStats[playerIndex].callsForBall++;
-    }
-    public void KnockDowns(int playerIndex)
-    {
-        playerTrophyStats[playerIndex].knockDowns++;
-    }
-    public void PerformPerfectCatch(int playerIndex)
-    {
-        playerTrophyStats[playerIndex].perfectCatch++;
     }
     public void BeingHitByPoop(int playerIndex)
     {
@@ -82,38 +74,72 @@ public class TrophyManager : MonoBehaviour
     {
         playerTrophyStats[playerIndex].audienceLosses++;
     }
-
-    public int AwardBananasTrophy()
+    public void PerformPerfectCatch(int playerIndex)
     {
-        int winningPlayer = -1;
-        int tempHighest = 0;
+        playerTrophyStats[playerIndex].perfectCatch++;
+    }
+     
+     */
 
-        for(int i = 0; i < playerTrophyStats.Count; i++)
-        {
-            if(playerTrophyStats[i].bananasEaten > tempHighest)
-            {
-                tempHighest = playerTrophyStats[i].bananasEaten;
-                winningPlayer = i;
-            }
-        }
-        return winningPlayer;
+
+    public void GotPoints(int playerIndex, int points)
+    {
+        playerTrophyStats[playerIndex].Points += points;
+    }
+    public void TargetsHit(int playerIndex)
+    {
+        playerTrophyStats[playerIndex].targetsHit++;
+    }
+    public void CallsForBall(int playerIndex)
+    {
+        playerTrophyStats[playerIndex].callsForBall++;
+    }
+    public void KnockDowns(int playerIndex)
+    {
+        playerTrophyStats[playerIndex].dashTackle++;
+        //ndy
+    }
+    public void ThrewCoconut(int playerIndex)
+    {
+        playerTrophyStats[playerIndex].coconutThrows++;
+    }
+    public void CaughtBall(int playerIndex)
+    {
+        playerTrophyStats[playerIndex].Catch++;
     }
 
-    public int PerfectCatchTrophy()
+    public int CatchTrophy()
     {
         int winningPlayer = -1;
         int tempHighest = 0;
 
         for (int i = 0; i < playerTrophyStats.Count; i++)
         {
-            if (playerTrophyStats[i].perfectCatch > tempHighest)
+            if (playerTrophyStats[i].Catch > tempHighest)
             {
-                tempHighest = playerTrophyStats[i].perfectCatch;
+                tempHighest = playerTrophyStats[i].Catch;
                 winningPlayer = i;
             }
         }
         return winningPlayer;
     }
+
+    public int AwardPointsTrophy()
+    {
+        int winningPlayer = -1;
+        int tempHighest = 0;
+
+        for (int i = 0; i < playerTrophyStats.Count; i++)
+        {
+            if (playerTrophyStats[i].Points > tempHighest)
+            {
+                tempHighest = playerTrophyStats[i].Points;
+                winningPlayer = i;
+            }
+        }
+        return winningPlayer;
+    }
+   
 
     public int TargetsHitTrophy()
     {
@@ -146,6 +172,56 @@ public class TrophyManager : MonoBehaviour
         }
         return winningPlayer;
     }
+    public int KnockDownTrophy()
+    {
+        int winningPlayer = -1;
+        int tempHighest = 0;
+
+        for (int i = 0; i < playerTrophyStats.Count; i++)
+        {
+            if (playerTrophyStats[i].dashTackle > tempHighest)
+            {
+                tempHighest = playerTrophyStats[i].dashTackle;
+                winningPlayer = i;
+            }
+        }
+        return winningPlayer;
+    }
+
+    public int CoconutTrophy()
+    {
+        int winningPlayer = -1;
+        int tempHighest = 0;
+
+        for (int i = 0; i < playerTrophyStats.Count; i++)
+        {
+            if (playerTrophyStats[i].coconutThrows > tempHighest)
+            {
+                tempHighest = playerTrophyStats[i].coconutThrows;
+                winningPlayer = i;
+            }
+        }
+        return winningPlayer;
+    }
+
+    /*
+
+
+    public int AwardBananasTrophy()
+    {
+        int winningPlayer = -1;
+        int tempHighest = 0;
+
+        for (int i = 0; i < playerTrophyStats.Count; i++)
+        {
+            if (playerTrophyStats[i].bananasEaten > tempHighest)
+            {
+                tempHighest = playerTrophyStats[i].bananasEaten;
+                winningPlayer = i;
+            }
+        }
+        return winningPlayer;
+    }
 
     public int PoopTrophy()
     {
@@ -157,22 +233,6 @@ public class TrophyManager : MonoBehaviour
             if (playerTrophyStats[i].hitByPoop > tempHighest)
             {
                 tempHighest = playerTrophyStats[i].hitByPoop;
-                winningPlayer = i;
-            }
-        }
-        return winningPlayer;
-    }
-
-    public int KnockDownTrophy()
-    {
-        int winningPlayer = -1;
-        int tempHighest = 0;
-
-        for (int i = 0; i < playerTrophyStats.Count; i++)
-        {
-            if (playerTrophyStats[i].knockDowns > tempHighest)
-            {
-                tempHighest = playerTrophyStats[i].knockDowns;
                 winningPlayer = i;
             }
         }
@@ -211,16 +271,32 @@ public class TrophyManager : MonoBehaviour
         return winningPlayer;
     }
 
+         public int PerfectCatchTrophy()
+    {
+        int winningPlayer = -1;
+        int tempHighest = 0;
+
+        for (int i = 0; i < playerTrophyStats.Count; i++)
+        {
+            if (playerTrophyStats[i].perfectCatch > tempHighest)
+            {
+                tempHighest = playerTrophyStats[i].perfectCatch;
+                winningPlayer = i;
+            }
+        }
+        return winningPlayer;
+    }
+    */
 
     //TODO determine how many trophies will be awarded in the match
     public void CheckallWinners()
-    { 
-       a = AwardBananasTrophy();
-       b = PerfectCatchTrophy();
-       c = TargetsHitTrophy();
-       d = BallCallingTrophy();
-       e = PoopTrophy();
-       f = KnockDownTrophy();        
+    {
+        a = AwardPointsTrophy();
+        c = TargetsHitTrophy();
+        d = BallCallingTrophy();
+        b = CatchTrophy();
+        e = CoconutTrophy();
+        f = KnockDownTrophy();
     }
 
 
