@@ -90,7 +90,7 @@ public class AI : Actor
 	private List<Transform> viableTargets = new List<Transform>();
 
 	[SerializeField]
-	State currentState;
+	State currentState = State.Idle;
 
 	// Use this for initialization
 	void Start()
@@ -214,7 +214,7 @@ public class AI : Actor
 
 	private void sceneChangedOld()
 	{
-		if (currSceneOld == "PregameRoom" || currSceneOld == "VictoryRoom")
+		if (currSceneOld == "Assets/Scenes/PregameRoom.unity" || currSceneOld == "Assets/Scenes/VictorRoom.unity")
 		{
 			currentState = State.Idle;
 		}
