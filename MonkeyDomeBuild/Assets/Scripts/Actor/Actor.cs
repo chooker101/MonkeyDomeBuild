@@ -137,8 +137,25 @@ public class Actor : MonoBehaviour
         Aim();
         characterType.CHUpdate();
         CheckLeader();
-
-
+        if(SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            if (ballHolding != null)
+            {
+                if (!ballHolding.gameObject.activeInHierarchy)
+                {
+                    ballInRange = false;
+                    ReleaseBall();
+                }
+            }
+            if (ballCanCatch != null)
+            {
+                if (!ballCanCatch.gameObject.activeInHierarchy)
+                {
+                    ballInRange = false;
+                    ReleaseBall();
+                }
+            }
+        }
     }
 
     void FixedUpdate()
