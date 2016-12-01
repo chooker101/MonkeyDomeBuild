@@ -21,7 +21,8 @@ public class TargetBase : MonoBehaviour
         TierUp,
         TierStay,
         TierDown,
-        TierEmpty
+        TierEmpty,
+        TierMax
     }
     Target target;
     public TargetBaseState state = TargetBaseState.Null;
@@ -46,6 +47,7 @@ public class TargetBase : MonoBehaviour
     public SpriteRenderer tierStay_white;
     public SpriteRenderer tierDown;
     public SpriteRenderer tierDown_white;
+    public SpriteRenderer tierMax;
 
     public SpriteRenderer upTierLight;
     public SpriteRenderer stayTierLight;
@@ -113,10 +115,21 @@ public class TargetBase : MonoBehaviour
         {
             if (GameManager.Instance.gmTargetManager.HitSum >= 3)
             {
-                if (tierStatus != TierStatus.TierUp)
+                if (GameManager.Instance.gmTargetManager.IsAtMaxTier)
                 {
-                    tierStatus = TierStatus.TierUp;
-                    changeTier = true;
+                    if (tierStatus != TierStatus.TierMax)
+                    {
+                        tierStatus = TierStatus.TierMax;
+                        changeTier = true;
+                    }
+                }
+                else
+                {
+                    if (tierStatus != TierStatus.TierUp)
+                    {
+                        tierStatus = TierStatus.TierUp;
+                        changeTier = true;
+                    }
                 }
             }
             else if (GameManager.Instance.gmTargetManager.HitSum >= 2)
@@ -260,6 +273,7 @@ public class TargetBase : MonoBehaviour
                             targetCounterDowngrade.gameObject.SetActive(false);
                             targetCounterSamegrade.gameObject.SetActive(false);
                             targetCounterUpgrade.gameObject.SetActive(true);
+                            tierMax.gameObject.SetActive(false);
                             break;
                         case TierStatus.TierStay:
                             // Set images of screen
@@ -269,6 +283,7 @@ public class TargetBase : MonoBehaviour
                             targetCounterDowngrade.gameObject.SetActive(false);
                             targetCounterSamegrade.gameObject.SetActive(true);
                             targetCounterUpgrade.gameObject.SetActive(false);
+                            tierMax.gameObject.SetActive(false);
                             break;
                         case TierStatus.TierDown:
                             // Set images of screen
@@ -278,6 +293,16 @@ public class TargetBase : MonoBehaviour
                             targetCounterDowngrade.gameObject.SetActive(true);
                             targetCounterSamegrade.gameObject.SetActive(false);
                             targetCounterUpgrade.gameObject.SetActive(false);
+                            tierMax.gameObject.SetActive(false);
+                            break;
+                        case TierStatus.TierMax:
+                            targetCounter_black.gameObject.SetActive(false);
+                            targetCounter_white.gameObject.SetActive(false);
+                            targetCounter_red.gameObject.SetActive(false);
+                            targetCounterDowngrade.gameObject.SetActive(false);
+                            targetCounterSamegrade.gameObject.SetActive(false);
+                            targetCounterUpgrade.gameObject.SetActive(false);
+                            tierMax.gameObject.SetActive(true);
                             break;
                         case TierStatus.TierNull:
                             targetCounter_black.gameObject.SetActive(true);
