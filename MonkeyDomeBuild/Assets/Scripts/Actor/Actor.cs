@@ -494,28 +494,13 @@ public class Actor : MonoBehaviour
             {
                 Vector3 dir = new Vector3(GameManager.Instance.gmInputs[inputIndex].mXY.x, GameManager.Instance.gmInputs[inputIndex].mXY.y, 0);
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
-                if (!isinair)
-                {
-                    if (targetAng.eulerAngles.y == 180f)
-                    {
-                        PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.y, 20 * Time.unscaledDeltaTime));
+             
 
-                    }
-                    else
-                    {
-                        PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
+                 PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
 
-                    }
+             
 
-                }
-                else
-                {
-                    // temp method
-                 
-                    transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
-                    PointerPivot.transform.localEulerAngles = new Vector3(0, 0, 0);
-                }
-                    
+                
 
             }  
         }
@@ -530,6 +515,8 @@ public class Actor : MonoBehaviour
             PointerCenter.transform.parent.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
             transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, 0 , 20 * Time.unscaledDeltaTime));
+            cache_rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
         }
     }
     public bool IsHoldingBall

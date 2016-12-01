@@ -121,6 +121,23 @@ public class PointsManager : MonoBehaviour {
             t = string.Format("{0}", score);
             pointObjects[pointObjectIndex].GetComponentInChildren<Text>().color = loseScoreColor;
         }
+        if (Mathf.Abs(score) >= 20)
+        {
+            pointObjects[pointObjectIndex].transform.localScale = new Vector3(2f, 2f, 2f);
+        }
+        else if(Mathf.Abs(score) >= 10)
+        {
+            pointObjects[pointObjectIndex].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        }
+        else if(Mathf.Abs(score) >= 5)
+        {
+            pointObjects[pointObjectIndex].transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+        }
+        else
+        {
+            pointObjects[pointObjectIndex].transform.localScale = new Vector3(1, 1, 1);
+        }
+        
         pointObjects[pointObjectIndex].GetComponentInChildren<Text>().text = t;
     }
 
