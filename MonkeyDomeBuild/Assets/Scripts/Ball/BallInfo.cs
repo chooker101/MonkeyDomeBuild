@@ -156,7 +156,10 @@ public class BallInfo : MonoBehaviour
         canBeCatch = true;
         holdingMonkey = null;
         //timerUp = false;
-        GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
+        if (IsBall)
+        {
+            GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
+        }
         m_rigid.isKinematic = false;
         //m_rigid.useGravity = true;
     }
@@ -173,10 +176,12 @@ public class BallInfo : MonoBehaviour
             {
                 if (index != lastThrowMonkey.GetComponent<Actor>().playerIndex)
                 {
-                    Debug.Log(index);
-                    Debug.Log(lastThrowMonkey.GetComponent<Actor>().playerIndex);
-                    GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, GameManager.Instance.gmPlayers[index], distanceTravel, travelTime, perfectCatch, numberOfBounce);
-
+                    //Debug.Log(index);
+                    //Debug.Log(lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                    if(!(GameManager.Instance.gmPlayers[index].GetComponent<Actor>().characterType is Gorilla))
+                    {
+                        GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, GameManager.Instance.gmPlayers[index], distanceTravel, travelTime, perfectCatch, numberOfBounce);
+                    }
                 }
             }
         }
