@@ -596,6 +596,7 @@ public class Actor : MonoBehaviour
                     }
                     if (isDashing)
                     {
+                        GameManager.Instance.gmTrophyManager.KnockDowns(playerIndex);
                         PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
                         if (preGameTimer != null)
                         {
@@ -729,7 +730,9 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToBanana(incAmount);
                 Destroy(other.gameObject);
-                GameManager.Instance.gmTrophyManager.BananasEaten(playerIndex);
+
+                //GameManager.Instance.gmTrophyManager.BananasEaten(playerIndex);
+
                 //Audience call for Bananas event
                 //if (GameManager.Instance.gmAudienceManager.GetEventActive())
                 //{
@@ -750,7 +753,9 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToPoop(incAmount);
                 Destroy(other.gameObject);
-                GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
+
+                //GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
+
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
             }
