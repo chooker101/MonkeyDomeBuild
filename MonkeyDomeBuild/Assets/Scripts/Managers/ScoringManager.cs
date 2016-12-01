@@ -103,7 +103,7 @@ public class ScoringManager : MonoBehaviour
     void AddScore(int playerIndex,int score)
     {
         GameManager.Instance.gmPlayers[playerIndex].GetComponent<EffectControl>().PlayHappyFace();
-
+        GameManager.Instance.gmTrophyManager.GotPoints(playerIndex, score);
         if (GameManager.Instance.gmAudienceAnimator != null)
         GameManager.Instance.gmAudienceAnimator.AudienceHappy();
 

@@ -268,8 +268,10 @@ public class BallInfo : MonoBehaviour
             if (Vector3.Distance(who.GetComponent<Actor>().catchCenter.position, transform.position) <= perfectCatchDistance)
             {
                 perfectCatch = true;
-                GameManager.Instance.gmTrophyManager.PerformPerfectCatch(who.GetComponent<Actor>().playerIndex);
+
+                //GameManager.Instance.gmTrophyManager.PerformPerfectCatch(who.GetComponent<Actor>().playerIndex);
             }
+            GameManager.Instance.gmTrophyManager.CaughtBall(who.GetComponent<Actor>().playerIndex);
             AudioEffectManager.Instance.PlayMonkeyCatchSE();
             UpdateLastThrowMonkey(who);
             ResetScoringStats();
