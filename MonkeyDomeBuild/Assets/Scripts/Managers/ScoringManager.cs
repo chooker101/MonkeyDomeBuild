@@ -40,6 +40,7 @@ public class ScoringManager : MonoBehaviour
     private int catchInAirScore = 3;
     private int monkeyGettingInterceptScore = -10;
     private int innocentMonkeyScore = -5;
+    private int gorillaSwitchScore = 5;
     //private int gorillaInterceptScore = 20;
     private int hitTargetScoreT0 = 5;
     private int hitTargetScoreT1 = 10;
@@ -102,7 +103,7 @@ public class ScoringManager : MonoBehaviour
     void AddScore(int playerIndex,int score)
     {
         GameManager.Instance.gmPlayers[playerIndex].GetComponent<EffectControl>().PlayHappyFace();
-
+        GameManager.Instance.gmTrophyManager.GotPoints(playerIndex, score);
         if (GameManager.Instance.gmAudienceAnimator != null)
         GameManager.Instance.gmAudienceAnimator.AudienceHappy();
 
@@ -184,6 +185,10 @@ public class ScoringManager : MonoBehaviour
                     {
                         switchScore += playerScores[CheckWhichPlayer(i)];
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), playerScores[CheckWhichPlayer(i)], "Being Intercept");
+                        if (playerScores[CheckWhichPlayer(i)] > 0)
+                        {
+                            GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(-playerScores[CheckWhichPlayer(i)], i);
+                        }
                         playerScores[CheckWhichPlayer(i)] = 0;
                     }
                     else
@@ -192,7 +197,10 @@ public class ScoringManager : MonoBehaviour
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), monkeyGettingInterceptScore, "Being Intercept");
                         AddScore(i, monkeyGettingInterceptScore);
                         // adding point ups
-                        GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(monkeyGettingInterceptScore, i);
+                        if (playerScores[CheckWhichPlayer(i)] > 0)
+                        {
+                            GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(monkeyGettingInterceptScore, i);
+                        }
                     }
                     GameManager.Instance.gmPlayers[i].GetComponent<EffectControl>().PlaySadFace();
                 }
@@ -202,6 +210,10 @@ public class ScoringManager : MonoBehaviour
                     {
                         switchScore += playerScores[CheckWhichPlayer(i)];
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), playerScores[CheckWhichPlayer(i)], "Being Intercept");
+                        if (playerScores[CheckWhichPlayer(i)] > 0)
+                        {
+                            GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(-playerScores[CheckWhichPlayer(i)], i);
+                        }
                         playerScores[CheckWhichPlayer(i)] = 0;
                     }
                     else
@@ -210,12 +222,16 @@ public class ScoringManager : MonoBehaviour
                         FindObjectOfType<ScoreVisualizer>().UpdateScore(i, GetScore(i), innocentMonkeyScore, "Being Intercept");
                         AddScore(i, innocentMonkeyScore);
                         // adding point ups
-                        GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(innocentMonkeyScore, i);
+                        if (playerScores[CheckWhichPlayer(i)] > 0)
+                        {
+                            GameManager.Instance.gmPlayers[i].GetComponentInChildren<PointsManager>().AddQueue(innocentMonkeyScore, i);
+                        }
                     }
                     GameManager.Instance.gmPlayers[i].GetComponent<EffectControl>().PlaySadFace();
                 }
             }
         }
+        switchScore += gorillaSwitchScore;
         FindObjectOfType<ScoreVisualizer>().UpdateScore(gorilla.GetComponent<Actor>().playerIndex, GetScore(gorilla.GetComponent<Actor>().playerIndex), switchScore, "Intercept");
         AddScore(gorilla.GetComponent<Actor>().playerIndex, switchScore);
         // adding points ups

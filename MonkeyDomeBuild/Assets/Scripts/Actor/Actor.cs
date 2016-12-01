@@ -137,8 +137,25 @@ public class Actor : MonoBehaviour
         Aim();
         characterType.CHUpdate();
         CheckLeader();
-
-
+        if(SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            if (ballHolding != null)
+            {
+                if (!ballHolding.gameObject.activeInHierarchy)
+                {
+                    ballInRange = false;
+                    ReleaseBall();
+                }
+            }
+            if (ballCanCatch != null)
+            {
+                if (!ballCanCatch.gameObject.activeInHierarchy)
+                {
+                    ballInRange = false;
+                    ReleaseBall();
+                }
+            }
+        }
     }
 
     void FixedUpdate()
@@ -477,14 +494,14 @@ public class Actor : MonoBehaviour
             {
                 Vector3 dir = new Vector3(GameManager.Instance.gmInputs[inputIndex].mXY.x, GameManager.Instance.gmInputs[inputIndex].mXY.y, 0);
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
-                if (targetAng.eulerAngles.y == 180f)
-                {
-                    PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.y, 20 * Time.unscaledDeltaTime));
-                }
-                else
-                {
-                    PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
-                }
+             
+
+                 PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
+
+             
+
+                
+
             }  
         }
         else
@@ -495,8 +512,11 @@ public class Actor : MonoBehaviour
 
             PointerCenter.GetComponentInChildren<Image>().color = col1;
             pointerBase.GetComponentInChildren<Image>().color = col2;
-
             PointerCenter.transform.parent.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+
+            transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, 0 , 20 * Time.unscaledDeltaTime));
+            cache_rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
         }
     }
     public bool IsHoldingBall
@@ -576,6 +596,7 @@ public class Actor : MonoBehaviour
                     }
                     if (isDashing)
                     {
+                        GameManager.Instance.gmTrophyManager.KnockDowns(playerIndex);
                         PreGameTimer preGameTimer = FindObjectOfType<PreGameTimer>();
                         if (preGameTimer != null)
                         {
@@ -709,7 +730,9 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToBanana(incAmount);
                 Destroy(other.gameObject);
-                GameManager.Instance.gmTrophyManager.BananasEaten(playerIndex);
+
+                //GameManager.Instance.gmTrophyManager.BananasEaten(playerIndex);
+
                 //Audience call for Bananas event
                 //if (GameManager.Instance.gmAudienceManager.GetEventActive())
                 //{
@@ -730,7 +753,9 @@ public class Actor : MonoBehaviour
                 proj.CollideWithCharacter();
                 ReactionToPoop(incAmount);
                 Destroy(other.gameObject);
-                GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
+
+                //GameManager.Instance.gmTrophyManager.BeingHitByPoop(playerIndex);
+
                 //TODO add poop event logic
                 //Audience opinion increase when hit by poop
             }
