@@ -1,16 +1,9 @@
 fileFormatVersion: 2
 guid: ca6c17287350e304cbd7be453a16b300
-timeCreated: 1480467655
+timeCreated: 1480463451
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: shelf_0
-    21300002: shelf_1
-    21300004: shelf_2
-    21300006: shelf_3
-    21300008: shelf_4
-    21300010: shelf_5
-    21300012: shelf_6
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -45,7 +38,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -53,103 +46,10 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: shelf_0
-      rect:
-        serializedVersion: 2
-        x: 4308
-        y: 901
-        width: 1440
-        height: 2181
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: shelf_1
-      rect:
-        serializedVersion: 2
-        x: 5884
-        y: 2108
-        width: 90
-        height: 227
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: shelf_2
-      rect:
-        serializedVersion: 2
-        x: 5918
-        y: 2064
-        width: 40
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: shelf_3
-      rect:
-        serializedVersion: 2
-        x: 5909
-        y: 2092
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: shelf_4
-      rect:
-        serializedVersion: 2
-        x: 5931
-        y: 2089
-        width: 9
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: shelf_5
-      rect:
-        serializedVersion: 2
-        x: 5912
-        y: 2083
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: shelf_6
-      rect:
-        serializedVersion: 2
-        x: 5915
-        y: 2073
-        width: 6
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
+    sprites: []
     outline: []
   spritePackingTag: 
   userData: 
