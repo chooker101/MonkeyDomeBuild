@@ -15,7 +15,22 @@ public class GameManager : MonoBehaviour
         Length
     }
 
-    public uint TotalNumberofPlayers; //Number of Actors
+	public enum Scene : int
+	{
+		mb_level04_v2,
+		stuff,
+
+		Length
+	}
+	public enum GameMode : int
+	{
+		Keep_Away,
+		Battle_Royal,
+
+		Length
+	}
+
+	public uint TotalNumberofPlayers; //Number of Actors
     [SerializeField]
     private uint NumberOfPlayersToBuild = 1; //Number of Players
     [SerializeField]
@@ -61,11 +76,15 @@ public class GameManager : MonoBehaviour
     public PauseManager gmPauseManager;
     public TurretsManager gmTurretManager;
     public CurtainsController gmCurtainController;
+	public Vector2 allDpad;
     public string nextRoom;
     public bool playerCanMove = true;
     protected bool nextIsMatch = false;
+	public Scene nextSceneUI;
+	public GameMode nextGameModeUI;
+	public int numOfBotsUI;
 
-    bool displayController1Name;
+	bool displayController1Name;
     bool displayController2Name;
     bool displayController3Name;
     bool displayController4Name;
@@ -118,6 +137,13 @@ public class GameManager : MonoBehaviour
 
     public void UpdateInputs()
     {
+		allDpad.x = Input.GetAxis("pX_dpad_x");
+		allDpad.y = Input.GetAxis("pX_dpad_y");
+		if (allDpad == Vector2.zero)
+		{
+			//use ps input
+		}
+		
 
         if (Instance.gmPlayerScripts[(int)PN.P1].isPlayer)
         {
@@ -428,6 +454,28 @@ public class GameManager : MonoBehaviour
     {
         gmBalls.Add(ball);
     }
+
+	public void AddBot()
+	{
+		gmPlayers.Add(null);
+		gmPlayerScripts.Add(null);
+		Transform temp = Instance.gmSpawnManager.SpawnPoints[(int)TotalNumberofPlayers];
+		gmPlayers[(int)TotalNumberofPlayers] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
+		Instance.gmPlayerScripts[(int)TotalNumberofPlayers].isPlayer = false;
+		Instance.gmPlayers[(int)TotalNumberofPlayers].GetComponent<Actor>().playerIndex = (int)TotalNumberofPlayers;
+		for (int i =0;i < TotalNumberofPlayers; ++i)
+		{
+			if(gmInputs[i] == null)
+			{
+				gmPlayerScripts[i].inputIndex = i;
+				Instance.gmPlayers[(int)TotalNumberofPlayers].GetComponent<Actor>().characterType = new Monkey((int)TotalNumberofPlayers, i);
+				InputIndecies[i] = (int)TotalNumberofPlayers;
+				break;
+			}
+		}
+		TotalNumberofPlayers++;
+
+	}
 
     public int AddPlayer(int inIndex)
     {
