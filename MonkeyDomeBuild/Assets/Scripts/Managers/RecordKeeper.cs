@@ -18,7 +18,7 @@ public class RecordKeeper : MonoBehaviour
     {
         //DontDestroyOnLoad(this);
         
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
         {
             colourPlayers.Add(defaultColour);
         }
