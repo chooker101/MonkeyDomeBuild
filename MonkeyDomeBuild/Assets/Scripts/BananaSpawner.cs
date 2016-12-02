@@ -45,7 +45,7 @@ public class BananaSpawner : MonoBehaviour
 		{
 			Baskets[i].SetActive(false);
 		}
-
+        /*
         if (GameManager.Instance.TotalNumberofPlayers == 1)
             transform.position = new Vector3(transform.position.x + 20, transform.position.y, transform.position.z);
         else if (GameManager.Instance.TotalNumberofPlayers == 2)
@@ -56,7 +56,7 @@ public class BananaSpawner : MonoBehaviour
             transform.position = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
         else if (GameManager.Instance.TotalNumberofPlayers == 5)
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-
+        */
 
     }
 
