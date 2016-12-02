@@ -526,6 +526,10 @@ public class GameManager : MonoBehaviour
         }
         Instance.SwitchRooms();
         SceneManager.LoadScene(nextRoom);
+        if (gmUIManager != null)
+        {
+            gmUIManager.SetToGameMode(nextGameModeUI);
+        }
         yield return new WaitForSeconds(1f);
         Instance.gmCurtainController.OpenCurtain();
         yield return new WaitForSeconds(2f);

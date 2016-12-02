@@ -98,7 +98,7 @@ public class Actor : MonoBehaviour
 
     protected bool canCatch = true;
 
-  
+    protected int health = 3;
 
     //public string cType = "";
 

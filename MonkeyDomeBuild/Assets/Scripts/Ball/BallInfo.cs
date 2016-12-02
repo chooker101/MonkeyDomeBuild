@@ -87,6 +87,10 @@ public class BallInfo : MonoBehaviour
         //bounciness = ballMat.bounciness;
         //timer = 8f;
         //PickRandomVictim();
+        if (GameManager.Instance.nextGameModeUI == GameManager.GameMode.Battle_Royal)
+        {
+            gameObject.SetActive(false);
+        }
     }
     void Update()
     {

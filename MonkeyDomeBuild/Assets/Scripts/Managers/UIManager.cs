@@ -47,7 +47,19 @@ public class UIManager : MonoBehaviour
         matchTime = startMatchTime;
         shotClockPlayerText.text = "";
 	}
-	
+	public void SetToGameMode(GameManager.GameMode gameMode)
+    {
+        //set ui to match gamemode requirement
+        switch (gameMode)
+        {
+            case GameManager.GameMode.Keep_Away:
+
+                break;
+            case GameManager.GameMode.Battle_Royal:
+
+                break;
+        }
+    }
 	// Update is called once per frame
 	void LateUpdate ()
 	{

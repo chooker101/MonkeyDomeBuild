@@ -176,29 +176,32 @@ public class CameraController : MonoBehaviour
         {
             if (GameManager.Instance.gmBalls[0] != null)
             {
-                if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey() != null)
+                if (GameManager.Instance.gmBalls[0].activeInHierarchy)
                 {
-                    if (GameManager.Instance.gmInputs[GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().playerIndex].mChargeThrow)
+                    if (GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey() != null)
                     {
-                        if (!monkeyCharging)
+                        if (GameManager.Instance.gmInputs[GameManager.Instance.gmBalls[0].GetComponent<BallInfo>().GetHoldingMonkey().GetComponent<Actor>().playerIndex].mChargeThrow)
                         {
-                            focusAmount = 1f;
-                        }
-                        if (monkeyHoldingCount > 0.3f)
-                        {
-                            monkeyCharging = true;
-                        }
-                        else
-                        {
-                            monkeyHoldingCount += Time.deltaTime;
+                            if (!monkeyCharging)
+                            {
+                                focusAmount = 1f;
+                            }
+                            if (monkeyHoldingCount > 0.3f)
+                            {
+                                monkeyCharging = true;
+                            }
+                            else
+                            {
+                                monkeyHoldingCount += Time.deltaTime;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    if (monkeyHoldingCount != 0)
+                    else
                     {
-                        monkeyHoldingCount = 0;
+                        if (monkeyHoldingCount != 0)
+                        {
+                            monkeyHoldingCount = 0;
+                        }
                     }
                 }
             }

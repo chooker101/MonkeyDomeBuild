@@ -6,6 +6,7 @@ public class CoconutInfo : BallInfo
     bool inStage = false;
     bool beingThrown = false;
     bool canChangeLayer = true;
+    bool canDoDmg = true;
     void Start()
     {
         //Debug.Log("TrophyInfo Start being called");
@@ -44,6 +45,11 @@ public class CoconutInfo : BallInfo
                     {
                         canChangeLayer = false;
                         StartCoroutine(ChangeLayer());
+                    }
+                    if (canDoDmg)
+                    {
+                        canDoDmg = false;
+
                     }
                 }
             }

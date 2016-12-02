@@ -36,6 +36,15 @@ public class CoconutSpawner : MonoBehaviour
                 GameObject tempCoconut = GetAvaliableCoconut();
                 if (tempCoconut != null)
                 {
+                    switch (GameManager.Instance.nextGameModeUI)
+                    {
+                        case GameManager.GameMode.Keep_Away:
+                            tempCoconut.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                            break;
+                        case GameManager.GameMode.Battle_Royal:
+                            tempCoconut.transform.localScale = new Vector3(3, 3, 3);
+                            break;
+                    }
                     tempCoconut.SetActive(true);
                     tempCoconut.layer = LayerMask.NameToLayer("UsedCoconut");
                     tempCoconut.transform.position = newCoconutPos;

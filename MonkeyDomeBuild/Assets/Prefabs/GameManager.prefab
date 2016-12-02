@@ -585,6 +585,7 @@ GameObject:
   - 224: {fileID: 22475782}
   - 222: {fileID: 22272374}
   - 114: {fileID: 11438424}
+  - 114: {fileID: 11477212}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -2006,6 +2007,9 @@ MonoBehaviour:
   allDpad: {x: 0, y: 0}
   nextRoom: 
   playerCanMove: 1
+  nextSceneUI: 0
+  nextGameModeUI: 0
+  numOfBotsUI: 0
   InputIndecies: 0000000000000000000000000000000000000000
   noGorilla: 1
 --- !u!114 &11438424
@@ -2020,7 +2024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 0.68275857, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2409,6 +2413,20 @@ MonoBehaviour:
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11477212
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 3, y: -3}
+  m_UseGraphicAlpha: 1
 --- !u!114 &11477984
 MonoBehaviour:
   m_ObjectHideFlags: 1

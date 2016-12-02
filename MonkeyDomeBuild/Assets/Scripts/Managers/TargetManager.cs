@@ -79,7 +79,10 @@ public class TargetManager : MonoBehaviour
         targetTier = 0;
         //ballInfo = GetComponent<BallInfo>();
         RallySetter();
-        Invoke("StartRallyDelay", timeBetweenRallies+4f);
+        if(GameManager.Instance.nextGameModeUI == GameManager.GameMode.Keep_Away)
+        {
+            Invoke("StartRallyDelay", timeBetweenRallies + 4f);
+        }
     }
 
 
