@@ -238,6 +238,7 @@ public class ColourChanger : MonoBehaviour
                 GameManager.Instance.gmPlayers[playerIndex].GetComponent<Actor>().UpdateColour();
                 targetColour = other.GetComponent<SpriteRenderer>().material;
                 targetHeadMonkey.color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(playerIndex);
+                targetBase.color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(playerIndex);
             }
         }
     }

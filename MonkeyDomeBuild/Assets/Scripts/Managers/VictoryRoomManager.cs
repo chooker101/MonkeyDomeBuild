@@ -13,6 +13,7 @@ public class VictoryRoomManager : MonoBehaviour
     public float podiumBufferTime;
     public GameObject allPodiums;
     public List<GameObject> podiumList;
+    public List<GameObject> podiumListRenderers;
     public List<Vector3> podiumPositions;
     private Vector3 temp;
 
@@ -103,9 +104,6 @@ public class VictoryRoomManager : MonoBehaviour
         GameManager.Instance.gmSpawnManager.Start();
         setCase();
         PlaceTrophies();
-
-
-
     }
 
     // Update is called once per frame
@@ -231,7 +229,6 @@ public class VictoryRoomManager : MonoBehaviour
             f = TrophyManager.f;
             GameObject KnockDownTrophy = (GameObject)Instantiate(Trophy, KnockDownTrophyPos[f].transform.position, allPodiums.transform.rotation);
         }
-
     }
 
     void movePodiums()
@@ -265,10 +262,8 @@ public class VictoryRoomManager : MonoBehaviour
         {
             //podiumList[i].SetActive(true);
             var podiumCol = GameManager.Instance.gmRecordKeeper.colourPlayers[i];
-            podiumList[i].GetComponent<Renderer>().material = podiumCol;
+            podiumListRenderers[i].GetComponent<Renderer>().material = podiumCol;
         }
-
-
     }
 
     void setCase()
@@ -285,6 +280,4 @@ public class VictoryRoomManager : MonoBehaviour
         }
 
     }
-
-
 }
