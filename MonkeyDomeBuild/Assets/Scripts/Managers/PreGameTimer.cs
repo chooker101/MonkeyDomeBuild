@@ -97,8 +97,14 @@ public class PreGameTimer : MonoBehaviour
 
         // Check the game state to set
         if (!AllTargetsHit()) { gameState = GameState.Pregame_PickingColours; }
-        else if(AllTargetsHit() && !spinnerSpawned) { gameState = GameState.Pregame_allTargetsHit; }
-        else if(AllTargetsHit() && spinnerSpawned && !gorillaSet) { gameState = GameState.Pregame_SpinnerSpinning; }
+        else if(AllTargetsHit() && !spinnerSpawned)
+        {
+            gameState = GameState.Pregame_allTargetsHit;
+        }
+        else if(AllTargetsHit() && spinnerSpawned && !gorillaSet)
+        {
+            gameState = GameState.Pregame_SpinnerSpinning;
+        }
         else if(AllTargetsHit() && spinnerSpawned && gorillaSet) { gameState = GameState.Pregame_GorillaSet; }
 
         // Defines actions for the room based on the game state
@@ -126,25 +132,38 @@ public class PreGameTimer : MonoBehaviour
         }
         else if (gameState == GameState.Pregame_allTargetsHit)
         {
-            if (sign_chooseColour.activeSelf)
+            if (GameManager.Instance.nextGameModeUI == GameManager.GameMode.Keep_Away)
             {
-                sign_catch.SetActive(false);
-                sign_jump.SetActive(false);
-                sign_callForBall.SetActive(false);
-                sign_climbVines.SetActive(false);
-                sign_throw.SetActive(false);
-                sign_throwLong.SetActive(false);
-                sign_buttons.SetActive(false);
-                sign_chooseColour.SetActive(false);
-
-                ballReturn.GetComponent<BallReturn>().checkEnable();
-                ballReturn.SetActive(false);
-                for (int i = 0; i < colourTargets.Length; i++)
+                if (sign_chooseColour.activeSelf)
                 {
-                    Transform targetPivot = colourTargets[i].transform.FindChild("Pivot");
-                    targetPivot.gameObject.SetActive(false);
+                    sign_catch.SetActive(false);
+                    sign_jump.SetActive(false);
+                    sign_callForBall.SetActive(false);
+                    sign_climbVines.SetActive(false);
+                    sign_throw.SetActive(false);
+                    sign_throwLong.SetActive(false);
+                    sign_buttons.SetActive(false);
+                    sign_chooseColour.SetActive(false);
+
+                    ballReturn.GetComponent<BallReturn>().checkEnable();
+                    ballReturn.SetActive(false);
+                    for (int i = 0; i < colourTargets.Length; i++)
+                    {
+                        Transform targetPivot = colourTargets[i].transform.FindChild("Pivot");
+                        targetPivot.gameObject.SetActive(false);
+                    }
                 }
             }
+            else if(GameManager.Instance.nextGameModeUI == GameManager.GameMode.Battle_Royal)
+            {
+                if (!loadedScene)
+                {
+                    loadedScene = true;
+                    gameState = GameState.Game_Start;
+                    GameManager.Instance.StartMatch();
+                }
+            }
+
         }
         else if(gameState == GameState.Pregame_SpinnerSpinning)
         {
@@ -159,7 +178,7 @@ public class PreGameTimer : MonoBehaviour
         }
 
         // spawns a spinner that chooses a player to be a gorilla once all targets are hit.
-        if (!spinnerSpawned && (AllTargetsHit()||debugStartMatch)) 
+        if (!spinnerSpawned && (AllTargetsHit() || debugStartMatch) && GameManager.Instance.nextGameModeUI == GameManager.GameMode.Keep_Away) 
         {
             allTargetsHitTimer -= Time.deltaTime;
 

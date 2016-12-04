@@ -98,7 +98,8 @@ public class Actor : MonoBehaviour
 
     protected bool canCatch = true;
 
-    protected int health = 3;
+    public int health = 3;
+    protected bool isDead = false;
 
     //public string cType = "";
 
@@ -130,12 +131,16 @@ public class Actor : MonoBehaviour
     {
         //JumpCheck();
         //cType = characterType.ToString();
-        if (GameManager.Instance.gmInputs[inputIndex].mJump && !beingSmack)
+        if (!isDead)
         {
-            Jumping();
+            if (GameManager.Instance.gmInputs[inputIndex].mJump && !beingSmack)
+            {
+                Jumping();
+            }
+            Aim();
+            characterType.CHUpdate();
         }
-        Aim();
-        characterType.CHUpdate();
+
         CheckLeader();
         if(SceneManager.GetActiveScene().buildIndex == 1)
         {
@@ -160,10 +165,13 @@ public class Actor : MonoBehaviour
 
     void FixedUpdate()
     {
-        MovementVelocity();
+        if (!isDead)
+        {
+            MovementVelocity();
+            //Movement();
+            characterType.CHFixedUpdate();
+        }
         AnimationControl();
-        //Movement();
-        characterType.CHFixedUpdate();
         if (IsHoldingBall && ballHolding == null)
         {
             ReleaseBall();
@@ -483,10 +491,7 @@ public class Actor : MonoBehaviour
 
                 PointerCenter.GetComponentInChildren<Image>().color = col1;
                 pointerBase.GetComponentInChildren<Image>().color = col2;
-            }
-
-            
-
+            }           
             //Debug.Log(a);
             var a = Mathf.Lerp(1, 4, holdingCatchCount / maxChargeCount);
             PointerCenter.transform.parent.GetComponent<RectTransform>().localScale = new Vector3(a, a, a);
@@ -494,14 +499,16 @@ public class Actor : MonoBehaviour
             {
                 Vector3 dir = new Vector3(GameManager.Instance.gmInputs[inputIndex].mXY.x, GameManager.Instance.gmInputs[inputIndex].mXY.y, 0);
                 Quaternion targetAng = Quaternion.FromToRotation(Vector3.right, dir);
-             
 
-                 PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
-
-             
-
-                
-
+                if (targetAng.eulerAngles.y == 180f)
+                {
+                    PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.y, 20 * Time.unscaledDeltaTime));
+                }
+                else
+                {
+                    PointerPivot.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(PointerPivot.transform.localEulerAngles.z, targetAng.eulerAngles.z, 20 * Time.unscaledDeltaTime));
+                }
+     
             }  
         }
         else
@@ -977,6 +984,8 @@ public class Actor : MonoBehaviour
         {
             cache_rb.gravityScale = 2;
         }
+        health = 3;
+        isDead = false;
     }
     public bool CanCatch
     {
@@ -1002,6 +1011,32 @@ public class Actor : MonoBehaviour
         get
         {
             return beingSmack;
+        }
+    }
+    public void Damage(int throwerIndex)
+    {
+        if (health > 0)
+        {
+            health--;
+            TempDisableInput(0.5f);
+            FindObjectOfType<ScoreVisualizer>().PlayerHitHealthUpdate(playerIndex);
+            if (health > 0)
+            {
+                GameManager.Instance.gmScoringManager.BattleRoyaleCoconutHit(throwerIndex);
+            }
+            else
+            {
+                isDead = true;
+                GameManager.Instance.gmScoringManager.BattleRoyaleCoconutKill(throwerIndex);
+            }
+            //add score to thrower
+        }
+    }
+    public bool IsDead
+    {
+        get
+        {
+            return isDead;
         }
     }
 }

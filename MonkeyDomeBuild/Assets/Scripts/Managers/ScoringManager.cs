@@ -301,5 +301,17 @@ public class ScoringManager : MonoBehaviour
     {
         throwCombo = 0;
     }
+    public void BattleRoyaleCoconutHit(int playerIndex)
+    {
+        GameManager.Instance.gmPlayers[playerIndex].GetComponentInChildren<PointsManager>().AddQueue(25, playerIndex);
+        AddScore(playerIndex, 25);
+        FindObjectOfType<ScoreVisualizer>().UpdateScore(playerIndex, GetScore(playerIndex), 25, "Coconut Hit");
+    }
+    public void BattleRoyaleCoconutKill(int playerIndex)
+    {
+        GameManager.Instance.gmPlayers[playerIndex].GetComponentInChildren<PointsManager>().AddQueue(50, playerIndex);
+        AddScore(playerIndex, 25);
+        FindObjectOfType<ScoreVisualizer>().UpdateScore(playerIndex, GetScore(playerIndex), 25, "Coconut Kill");
+    }
 
 }

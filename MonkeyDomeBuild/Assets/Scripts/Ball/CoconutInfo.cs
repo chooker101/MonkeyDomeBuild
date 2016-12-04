@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CoconutInfo : BallInfo
 {
@@ -7,6 +8,7 @@ public class CoconutInfo : BallInfo
     bool beingThrown = false;
     bool canChangeLayer = true;
     bool canDoDmg = true;
+    List<Actor> hitPlayers = new List<Actor>();
     void Start()
     {
         //Debug.Log("TrophyInfo Start being called");
@@ -20,6 +22,7 @@ public class CoconutInfo : BallInfo
         inStage = false;
         beingThrown = false;
         canChangeLayer = true;
+        hitPlayers.Clear();
     }
     public void ThrowCoconut()
     {
@@ -40,7 +43,36 @@ public class CoconutInfo : BallInfo
                 if (other.collider.GetComponent<Actor>().playerIndex != lastThrowMonkey.GetComponent<Actor>().playerIndex)
                 {
                     //Debug.Log("stun");
-                    other.collider.GetComponent<Actor>().TempDisableInput(1f);
+                    //Debug.Log("hit");
+                    switch (GameManager.Instance.nextGameModeUI)
+                    {
+                        case GameManager.GameMode.Battle_Royal:
+                            bool canDmg = true;
+                            if (hitPlayers.Count > 0)
+                            {
+                                for(int i = 0; i < hitPlayers.Count; i++)
+                                {
+                                    if (other.collider.GetComponent<Actor>().playerIndex == hitPlayers[i].playerIndex)
+                                    {
+                                        canDmg = false;
+                                    }
+                                }
+                                if (canDmg)
+                                {
+                                    hitPlayers.Add(other.collider.GetComponent<Actor>());
+                                    other.collider.GetComponent<Actor>().Damage(lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                                }
+                            }
+                            else
+                            {
+                                hitPlayers.Add(other.collider.GetComponent<Actor>());
+                                other.collider.GetComponent<Actor>().Damage(lastThrowMonkey.GetComponent<Actor>().playerIndex);
+                            }
+                            break;
+                        case GameManager.GameMode.Keep_Away:
+                            other.collider.GetComponent<Actor>().TempDisableInput(1f);
+                            break;
+                    }
                     if (canChangeLayer)
                     {
                         canChangeLayer = false;
@@ -99,7 +131,15 @@ public class CoconutInfo : BallInfo
     }
     IEnumerator ChangeLayer()
     {
-        yield return new WaitForSeconds(0.4f);
+        switch (GameManager.Instance.nextGameModeUI)
+        {
+            case GameManager.GameMode.Battle_Royal:
+                yield return new WaitForSeconds(0.8f);
+                break;
+            case GameManager.GameMode.Keep_Away:
+                yield return new WaitForSeconds(0.4f);
+                break;
+        }
         gameObject.layer = LayerMask.NameToLayer("UsedCoconut");
     }
     IEnumerator BeingThrown()

@@ -83,6 +83,11 @@ public class TargetManager : MonoBehaviour
         {
             Invoke("StartRallyDelay", timeBetweenRallies + 4f);
         }
+        else if(GameManager.Instance.nextGameModeUI == GameManager.GameMode.Battle_Royal)
+        {
+            FindObjectOfType<TargetBase>().gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
     }
 
 

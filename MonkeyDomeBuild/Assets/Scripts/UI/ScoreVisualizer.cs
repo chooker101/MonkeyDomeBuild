@@ -17,7 +17,7 @@ public class ScoreVisualizer : MonoBehaviour
     private List<Image> ballPossession = new List<Image>();
 
     private List<Image> playerBoardBack = new List<Image>();
-    private List<Image> ledBack = new List<Image>();
+    private List<Image> ledBack = new List<Image>();   
 
     void Start()
     {
@@ -56,6 +56,10 @@ public class ScoreVisualizer : MonoBehaviour
                 {
                     playerHead_monkey[i].gameObject.SetActive(true);
                     playerHead_gorilla[i].gameObject.SetActive(false);
+                }
+                if (GameManager.Instance.nextGameModeUI == GameManager.GameMode.Battle_Royal)
+                {
+                    infos[i].GetComponentInChildren<LifeImgHolder>().Init();
                 }
             }
             else
@@ -119,7 +123,10 @@ public class ScoreVisualizer : MonoBehaviour
         scoreGainLose[playerIndex].text = gainLoseScore > 0 ? "+" + gainLoseScore.ToString() : "-" + gainLoseScore.ToString();
         actionPerformedTexts[playerIndex].text = action;
         counts[playerIndex] = 1f;
-
+    }
+    public void PlayerHitHealthUpdate(int playerindex)
+    {
+        infos[playerindex].GetComponentInChildren<LifeImgHolder>().LifeDown();
     }
 
 }

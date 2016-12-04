@@ -28,24 +28,21 @@ public class UIManager : MonoBehaviour
     public GameObject ShotClockWarning;
     private bool playerHoldingBall = false;
     private bool loadedScene = false;
-
+    public GameObject shotClock;
+    public GameObject matchTimer;
     void Awake()
 	{
         GameManager.Instance.gmGameOptionsManager.UIManager = this;
-        
-
-        //Debug.Log(this.name);
-
         if (FindObjectOfType<UIManager>() != GameManager.Instance.gmUIManager)
 			GameManager.Instance.gmUIManager = FindObjectOfType<UIManager>();
 	}
 
-    // Use this for initialization
     void Start ()
     {
         //startMatchTime = GameManager.Instance.gmGameOptionsManager.MatchTime;
         matchTime = startMatchTime;
         shotClockPlayerText.text = "";
+        SetToGameMode(GameManager.Instance.nextGameModeUI);
 	}
 	public void SetToGameMode(GameManager.GameMode gameMode)
     {
@@ -56,11 +53,11 @@ public class UIManager : MonoBehaviour
 
                 break;
             case GameManager.GameMode.Battle_Royal:
-
+                shotClock.SetActive(false);
+                matchTimer.transform.localPosition = new Vector3(0, 0, 0);
                 break;
         }
     }
-	// Update is called once per frame
 	void LateUpdate ()
 	{
         // Shot Clock Image States
@@ -118,7 +115,7 @@ public class UIManager : MonoBehaviour
             ShotClockWarning.gameObject.SetActive(false);
         }
 
-        if (noTime == false)
+        if (!noTime)
         {
             if (GameManager.Instance.playerCanMove)
             {
@@ -150,6 +147,26 @@ public class UIManager : MonoBehaviour
                     }
                     //SceneManager.LoadScene("VictoryRoom");
                     //GameManager.Instance.SwitchRooms();
+                }
+                if (GameManager.Instance.nextGameModeUI == GameManager.GameMode.Battle_Royal)
+                {
+                    int activePlayer = 0;
+                    for(int i = 0; i < GameManager.Instance.gmPlayerScripts.Count; i++)
+                    {
+                        if (!GameManager.Instance.gmPlayerScripts[i].IsDead)
+                        {
+                            activePlayer++;
+                        }
+                    }
+                    if (activePlayer <= 1)
+                    {
+                        GameManager.Instance.gmTrophyManager.CheckallWinners();
+                        if (!loadedScene)
+                        {
+                            loadedScene = true;
+                            GameManager.Instance.LoadTrophyRoom();
+                        }
+                    }
                 }
             }
         }
