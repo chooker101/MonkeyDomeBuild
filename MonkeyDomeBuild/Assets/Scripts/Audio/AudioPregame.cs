@@ -13,5 +13,9 @@ public class AudioPregame : MonoBehaviour {
         levelAudio.clip = pregameLoop;
         levelAudio.Play();
 	}
+    void Update()
+    {
+        levelAudio.volume = GameManager.Instance.gmVolumeManager.musicVolume;
+    }
 	
 }

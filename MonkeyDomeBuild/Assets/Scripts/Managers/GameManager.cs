@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
     public AudienceAnimator gmAudienceAnimator;
     public LevelObjectsScript gmLevelObjectsScript;
     public GameOptionsManager gmGameOptionsManager;
+    public VolumeManager gmVolumeManager;
     public PauseManager gmPauseManager;
     public TurretsManager gmTurretManager;
     public CurtainsController gmCurtainController;

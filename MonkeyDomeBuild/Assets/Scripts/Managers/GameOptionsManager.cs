@@ -31,14 +31,9 @@ public class GameOptionsManager : MonoBehaviour {
 
     void Awake()
     {
-  
-
         ShotClockManager = ShotClockManager.FindObjectOfType<ShotClockManager>();
 
         //GameManager = GameManager.FindObjectOfType<GameManager>();
-
-
-
     }
 	// Use this for initialization
 	void Start () {

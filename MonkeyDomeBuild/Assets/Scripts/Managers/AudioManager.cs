@@ -58,6 +58,7 @@ public class AudioManager : MonoBehaviour {
     public void PlayAudioTracks()
     {
         SetAudioTrack(CheckLevel());
+        audioSource.volume = GameManager.Instance.gmVolumeManager.musicVolume;
         audioSource.Play();
 
     }
