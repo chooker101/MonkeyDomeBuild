@@ -1,7 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{73C25BB3-2E0D-F16B-08EA-D893D07E00E3}") = "MonkeyDomeBuild", "Assembly-CSharp.csproj", "{E0941949-CB82-4169-2D61-456085778467}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonkeyDomeBuild", "MonkeyDomeBuild.csproj", "{3DAB90A9-BED8-EBEE-61C1-C257F62D8ADC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,15 +9,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E0941949-CB82-4169-2D61-456085778467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0941949-CB82-4169-2D61-456085778467}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0941949-CB82-4169-2D61-456085778467}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0941949-CB82-4169-2D61-456085778467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DAB90A9-BED8-EBEE-61C1-C257F62D8ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DAB90A9-BED8-EBEE-61C1-C257F62D8ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DAB90A9-BED8-EBEE-61C1-C257F62D8ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DAB90A9-BED8-EBEE-61C1-C257F62D8ADC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal

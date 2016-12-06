@@ -102,7 +102,7 @@ public class AI : Actor
 		lastSceneOld = "";
 		oldSceneCheck = true;
 #endif
-#elif UNITY_5_4
+#elif UNITY_5_4 || UNITY_5_5
 		SceneManager.activeSceneChanged += sceneChangedDelegate;
 #endif
 		//myCollider = GetComponent<BoxCollider2D>();
