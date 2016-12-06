@@ -36,12 +36,12 @@ public class BananaSpawner : MonoBehaviour
         }
 
 
-		for (uint i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+		for (uint i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
 		{
 			Baskets[i].SetActive(true);
 		}
 
-		for (uint i = GameManager.Instance.TotalNumberofPlayers; i <= 4; i++)
+		for (uint i = GameManager.Instance.TotalNumberofActors; i <= 4; i++)
 		{
 			Baskets[i].SetActive(false);
 		}
@@ -103,7 +103,7 @@ public class BananaSpawner : MonoBehaviour
     }
     void UpdateScores()
     {
-        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             playerScores[i] = GameManager.Instance.gmScoringManager.GetScore(i);
         }

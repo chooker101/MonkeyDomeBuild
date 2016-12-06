@@ -34,12 +34,12 @@ public class TurretsManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U))
         {
             //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0,(int)GameManager.Instance.TotalNumberofPlayers)], 0);
+            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0,(int)GameManager.Instance.TotalNumberofActors)], 0);
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
             // first value is which player and the second is banana or poop
-            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofPlayers)], 1);
+            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofActors)], 1);
         }
         //Debug.Log(targetQueues.Count);
         //TempTest();
@@ -93,7 +93,7 @@ public class TurretsManager : MonoBehaviour
             tempShootTime = Random.Range(tempShootTimeMin, tempShootTimeMax);
             //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             int whatToShoot = Random.Range(0, 1);
-            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofPlayers)], whatToShoot);
+            AddFireQueue(GameManager.Instance.gmPlayers[Random.Range(0, (int)GameManager.Instance.TotalNumberofActors)], whatToShoot);
         }
     }
     public void AddTurret(Turret t)

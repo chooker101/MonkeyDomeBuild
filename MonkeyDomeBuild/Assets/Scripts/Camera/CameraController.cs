@@ -207,7 +207,7 @@ public class CameraController : MonoBehaviour
             }
         }
         Actor throwingMonkey = null;
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             if (monkeyCharging && considerBalls)
             {
@@ -230,7 +230,7 @@ public class CameraController : MonoBehaviour
         }
         if (throwingMonkey != null)
         {
-            int i = (int)GameManager.Instance.TotalNumberofPlayers - 1;
+            int i = (int)GameManager.Instance.TotalNumberofActors - 1;
             if (i == 0)
             {
                 i = 1;
@@ -247,7 +247,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            int i = (int)GameManager.Instance.TotalNumberofPlayers;
+            int i = (int)GameManager.Instance.TotalNumberofActors;
             if (i == 0)
             {
                 i = 1;
@@ -292,7 +292,7 @@ public class CameraController : MonoBehaviour
         maxXDistance = 0f;
         maxYDistance = 0f;
         // get maxXDistance       
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             /*   
             if(maxXDistance < Vector3.Distance(meanPosition, GameManager.Instance.gmPlayers[i].transform.position))

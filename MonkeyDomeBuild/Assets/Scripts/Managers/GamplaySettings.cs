@@ -45,12 +45,34 @@ public class GamplaySettings : MonoBehaviour
 						StartCoroutine(DpadYCooldown());
 						if (GameManager.Instance.allDpad.y > 0.0f)
 						{
-							GameManager.Instance.numOfBotsUI = (GameManager.Instance.numOfBotsUI + 1) % (6 - (int)GameManager.Instance.TotalNumberofPlayers);
+							GameManager.Instance.numOfBotsUI = (GameManager.Instance.numOfBotsUI + 1) % (6 - (int)GameManager.Instance.NumberOfPlayers);
+							if(GameManager.Instance.numOfBotsUI != 0)
+							{
+								GameManager.Instance.AddBot();
+							}
+							else
+							{
+								for(int i = 0; i <= GameManager.Instance.TotalNumberofActors - GameManager.Instance.NumberOfPlayers; ++i)
+								{
+									GameManager.Instance.RemoveBot();
+								}
+							}
 						}
 						else
 						{
 							GameManager.Instance.numOfBotsUI--;
-							GameManager.Instance.numOfBotsUI = (GameManager.Instance.numOfBotsUI < 0) ? (5 - (int)GameManager.Instance.TotalNumberofPlayers) : GameManager.Instance.numOfBotsUI;
+							GameManager.Instance.numOfBotsUI = (GameManager.Instance.numOfBotsUI < 0) ? (5 - (int)GameManager.Instance.NumberOfPlayers) : GameManager.Instance.numOfBotsUI;
+							if (GameManager.Instance.numOfBotsUI != (5 - (int)GameManager.Instance.NumberOfPlayers))
+							{
+								GameManager.Instance.RemoveBot();
+							}
+							else
+							{
+								for (int i = 0; i < GameManager.Instance.numOfBotsUI; ++i)
+								{
+									GameManager.Instance.AddBot();
+								}
+							}
 						}
 					}
 					botsText.text = ("<Bots: " + GameManager.Instance.numOfBotsUI + ">");

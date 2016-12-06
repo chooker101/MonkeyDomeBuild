@@ -47,8 +47,17 @@ public class AudioMain : MonoBehaviour
         {
             currentAudio = startAudio;
         }
+        currentAudio.volume = GameManager.Instance.gmVolumeManager.musicVolume;
         currentAudio.Play();
         StartCoroutine(PlayStartTrack());
 
     }
+    void Update()
+    {
+        levelAudio2.volume = GameManager.Instance.gmVolumeManager.musicVolume;
+        levelAudio.volume = GameManager.Instance.gmVolumeManager.musicVolume;
+        startAudio.volume = GameManager.Instance.gmVolumeManager.musicVolume;
+        startAudio2.volume = GameManager.Instance.gmVolumeManager.musicVolume;
+    }
+    
 }

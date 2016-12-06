@@ -29,7 +29,7 @@ public class ApeSpinner : MonoBehaviour
         pivot = spinnerPivot.GetComponent<Transform>();
         spinnerSpeed = Random.Range(spinnerSpeedMin, spinnerSpeedMax);
         
-        playerAngle = 360 / GameManager.Instance.TotalNumberofPlayers;
+        playerAngle = 360 / GameManager.Instance.TotalNumberofActors;
 
         for(int i = 0; i < p_Colour.Count; i++)
         {
@@ -37,7 +37,7 @@ public class ApeSpinner : MonoBehaviour
             p_Colour[i].fillAmount = playerAngle / 360;
             p_Text[i].transform.localRotation = Quaternion.AngleAxis((playerAngle * i) + (playerAngle / 2), Vector3.back);
 
-            if(GameManager.Instance.TotalNumberofPlayers > i)
+            if(GameManager.Instance.TotalNumberofActors > i)
             {
                 p_Colour[i].gameObject.SetActive(true);
                 p_Colour[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
@@ -60,7 +60,7 @@ public class ApeSpinner : MonoBehaviour
             spinnerSpeed -= spinnerDecay * Time.deltaTime;
             float current_pivot = pivot.transform.eulerAngles.z;
 
-            for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+            for(int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
             {
                 if (current_pivot < 360-(playerAngle*i) && current_pivot >= 360 - (playerAngle*(i+1)))
                 {

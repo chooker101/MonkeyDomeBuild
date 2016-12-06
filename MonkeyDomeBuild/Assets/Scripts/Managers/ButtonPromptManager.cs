@@ -45,7 +45,7 @@ public class ButtonPromptManager : MonoBehaviour
 
     void Update()
     {
-        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             ClimbCheck(i);
             CatchCheck(i);
@@ -62,7 +62,7 @@ public class ButtonPromptManager : MonoBehaviour
     {
         for (int i = 0; i < conditions.Count; i++)
         {
-            if (i < GameManager.Instance.TotalNumberofPlayers)
+            if (i < GameManager.Instance.TotalNumberofActors)
             {
                 if (conditions[i])
                 {

@@ -72,7 +72,7 @@ public class PreGameTimer : MonoBehaviour
 
         ballReturn = FindObjectOfType<BallReturn>().gameObject;
         colourTargets = GameObject.FindGameObjectsWithTag("ColourTarget");
-        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             //monkeysJumped.Add
         }
@@ -209,7 +209,7 @@ public class PreGameTimer : MonoBehaviour
 
     public bool AllTargetsHit()
     {
-        if (GameManager.Instance.TotalNumberofPlayers >= 3)
+        if (GameManager.Instance.TotalNumberofActors >= 3)
         {
             for (int i = 0; i < colourTargets.Length; i++)
             {

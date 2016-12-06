@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
             time = 0f;
         }
 
-        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall)
             {
@@ -130,7 +130,7 @@ public class UIManager : MonoBehaviour
                     GameManager.Instance.gmRecordKeeper.scoreEndPlayers[1] = GameManager.Instance.gmScoringManager.p2Score;
                     GameManager.Instance.gmRecordKeeper.scoreEndPlayers[2] = GameManager.Instance.gmScoringManager.p3Score;
 
-                    for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+                    for (int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
                     {
                         if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().characterType is Gorilla)
                         {

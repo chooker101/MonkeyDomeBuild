@@ -376,7 +376,7 @@ public class AI : Actor
 		StartCoroutine(RealisticInputCatch());
 		GameObject nearestPlayer = GameManager.Instance.gmPlayers[0];
 		GameObject farthestPlayer = GameManager.Instance.gmPlayers[0];
-		for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
+		for (int i = 0; i < GameManager.Instance.TotalNumberofActors; ++i)
 		{
 			if (i != playerIndex)
 			{

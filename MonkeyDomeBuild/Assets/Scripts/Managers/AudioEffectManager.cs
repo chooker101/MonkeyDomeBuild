@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 public class AudioEffectManager : MonoBehaviour
 {
     private static AudioEffectManager myInstance;
+
     public bool mute = false;
+
     public AudioSource monkeyJumpSE;
     public AudioSource monkeyThrowSE;
     public AudioSource monkeyCatchSE;
@@ -73,6 +75,7 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceCheer1 != null && audienceCheer1.clip != null && !mute)
             {
+                audienceCheer1.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceCheer1.PlayOneShot(audienceCheer1.clip);
             }
         }
@@ -84,6 +87,7 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceCheer2 != null && audienceCheer2.clip != null && !mute)
             {
+                audienceCheer2.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceCheer2.PlayOneShot(audienceCheer2.clip);
             }
         }
@@ -95,6 +99,7 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceCheer3 != null && audienceCheer3.clip != null && !mute)
             {
+                audienceCheer3.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceCheer3.PlayOneShot(audienceCheer3.clip);
             }
         }
@@ -106,6 +111,7 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceBoo1 != null && audienceBoo1.clip != null && !mute)
             {
+                audienceBoo1.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceBoo1.PlayOneShot(audienceBoo1.clip);
             }
         }
@@ -117,6 +123,7 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceBoo2 != null && audienceBoo2.clip != null && !mute)
             {
+                audienceBoo2.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceBoo2.PlayOneShot(audienceBoo2.clip);
             }
         }
@@ -128,6 +135,7 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceBoo3 != null && audienceBoo3.clip != null && !mute)
             {
+                audienceBoo3.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceBoo3.PlayOneShot(audienceBoo3.clip);
             }
         }
@@ -140,7 +148,8 @@ public class AudioEffectManager : MonoBehaviour
             if (audienceCatch != null && audienceCatch.clip != null && !mute)
             {
                 audienceCatch.pitch = Random.Range(.65f, .9f);
-                audienceCatch.volume = Random.Range(.3f, .6f);
+                //audienceCatch.volume = Random.Range(.3f, .6f);
+                audienceCatch.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceCatch.PlayOneShot(audienceCatch.clip);
             }
         }
@@ -152,8 +161,9 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceInterception != null && audienceInterception.clip != null && !mute)
             {
-                audienceCatch.pitch = Random.Range(.95f, 1.05f);
-                audienceCatch.volume = Random.Range(0.65f, 1.05f);
+                audienceInterception.pitch = Random.Range(.95f, 1.05f);
+                //audienceCatch.volume = Random.Range(0.65f, 1.05f);
+                audienceInterception.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceInterception.PlayOneShot(audienceInterception.clip);
             }
         }
@@ -164,8 +174,9 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceShotClock != null && audienceShotClock.clip != null && !mute)
             {
-                audienceCatch.pitch = Random.Range(.65f, .85f);
-                audienceCatch.volume = Random.Range(.4f, .8f);
+                audienceShotClock.pitch = Random.Range(.65f, .85f);
+                //audienceShotClock.volume = Random.Range(.4f, .8f);
+                audienceShotClock.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceShotClock.PlayOneShot(audienceShotClock.clip);
             }
         }
@@ -177,8 +188,9 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceTargetUp != null && audienceTargetUp.clip != null && !mute)
             {
-                audienceCatch.pitch = Random.Range(.65f, .85f);
-                audienceCatch.volume = Random.Range(.7f, .9f);
+                audienceTargetUp.pitch = Random.Range(.65f, .85f);
+                //audienceTargetUp.volume = Random.Range(.7f, .9f);
+                audienceTargetUp.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceTargetUp.PlayOneShot(audienceTargetUp.clip);
             }
         }
@@ -190,8 +202,9 @@ public class AudioEffectManager : MonoBehaviour
         {
             if (audienceSmash != null && audienceSmash.clip != null && !mute)
             {
-                audienceCatch.pitch = Random.Range(.95f, 1f);
-                audienceCatch.volume = Random.Range(.65f, .8f);
+                audienceSmash.pitch = Random.Range(.95f, 1f);
+                //audienceCatch.volume = Random.Range(.65f, .8f)
+                audienceSmash.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audienceSmash.PlayOneShot(audienceSmash.clip);
             }
         }
@@ -204,7 +217,8 @@ public class AudioEffectManager : MonoBehaviour
             if (audiencePoop != null && audiencePoop.clip != null && !mute)
             {
                 audiencePoop.pitch = Random.Range(.65f, 1.05f);
-                audiencePoop.volume = Random.Range(.8f, 1.2f);
+                //audiencePoop.volume = Random.Range(.8f, 1.2f);
+                audiencePoop.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
                 audiencePoop.PlayOneShot(audiencePoop.clip);
             }
         }
@@ -216,7 +230,8 @@ public class AudioEffectManager : MonoBehaviour
         if (monkeyJumpSE != null && monkeyJumpSE.clip != null && !mute)
         {
             monkeyJumpSE.pitch = Random.Range(0.7f, 1);
-            monkeyJumpSE.volume = 0.5f;
+            //monkeyJumpSE.volume = 0.5f;
+            monkeyJumpSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume / 2 ;
             monkeyJumpSE.PlayOneShot(monkeyJumpSE.clip);
         }
     }
@@ -225,7 +240,8 @@ public class AudioEffectManager : MonoBehaviour
         if (monkeyThrowSE != null && monkeyThrowSE.clip != null && !mute)
         {
             monkeyThrowSE.pitch = Random.Range(0.85f, 1f);
-            monkeyThrowSE.volume = Random.Range(.35f, .45f);
+            //monkeyThrowSE.volume = Random.Range(.35f, .45f);
+            monkeyThrowSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume / 2;
             monkeyThrowSE.PlayOneShot(monkeyThrowSE.clip);
         }
     }
@@ -233,6 +249,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyCatchSE != null && monkeyCatchSE.clip != null && !mute)
         {
+            monkeyCatchSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             monkeyCatchSE.PlayOneShot(monkeyCatchSE.clip);
         }
     }
@@ -240,6 +257,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyPerfectCatchSE != null && monkeyPerfectCatchSE.clip != null && !mute)
         {
+            monkeyPerfectCatchSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             monkeyPerfectCatchSE.PlayOneShot(monkeyPerfectCatchSE.clip);
         }
     }
@@ -247,6 +265,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeylandOnSurfaceSE != null && monkeylandOnSurfaceSE.clip != null && !mute)
         {
+            monkeylandOnSurfaceSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             monkeylandOnSurfaceSE.PlayOneShot(monkeyThrowSE.clip);
         }
     }
@@ -254,6 +273,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyGrabLatticeSE != null && monkeyGrabLatticeSE.clip != null && !mute)
         {
+            monkeyGrabLatticeSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             monkeyGrabLatticeSE.PlayOneShot(monkeyGrabLatticeSE.clip);
         }
     }
@@ -261,6 +281,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyCallBallSE != null && monkeyCallBallSE.clip != null && !mute)
         {
+            monkeyCallBallSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             monkeyCallBallSE.PlayOneShot(monkeyCallBallSE.clip);
         }
     }
@@ -270,6 +291,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (ballBounceSoftSE != null && ballBounceSoftSE.clip != null && !mute)
         {
+            ballBounceSoftSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             ballBounceSoftSE.PlayOneShot(ballBounceSoftSE.clip);
         }
     }
@@ -277,6 +299,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (ballBounceHardSE != null && ballBounceHardSE.clip != null && !mute)
         {
+            ballBounceHardSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             ballBounceHardSE.PlayOneShot(ballBounceHardSE.clip);
         }
     }
@@ -284,6 +307,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (ballInAirSE != null && ballInAirSE.clip != null && !mute)
         {
+            ballInAirSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             ballInAirSE.PlayOneShot(ballInAirSE.clip);
         }
     }
@@ -291,6 +315,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyCatchBananaSE != null && monkeyCatchBananaSE.clip != null && !mute)
         {
+            monkeyCatchBananaSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             monkeyCatchBananaSE.PlayOneShot(monkeyCatchBananaSE.clip);
         }
     }
@@ -299,6 +324,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyCatchPoopSE != null && monkeyCatchPoopSE.clip != null && !mute)
         {
+            monkeyCatchPoopSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             monkeyCatchPoopSE.PlayOneShot(monkeyCatchPoopSE.clip);
         }
     }
@@ -306,6 +332,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (bananaHitSurfaceSE != null && bananaHitSurfaceSE.clip != null && !mute)
         {
+            bananaHitSurfaceSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             bananaHitSurfaceSE.PlayOneShot(bananaHitSurfaceSE.clip);
         }
     }
@@ -313,6 +340,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (poopHitSurfaceSE != null && poopHitSurfaceSE.clip != null && !mute)
         {
+            poopHitSurfaceSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             poopHitSurfaceSE.PlayOneShot(poopHitSurfaceSE.clip);
         }
     }
@@ -321,6 +349,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (targetPopupSE != null && targetPopupSE.clip != null && !mute)
         {
+            targetPopupSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             targetPopupSE.PlayOneShot(targetPopupSE.clip);
         }
     }
@@ -328,6 +357,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (targetRetractSE != null && targetRetractSE.clip != null && !mute)
         {
+            targetRetractSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             targetRetractSE.PlayOneShot(targetRetractSE.clip);
         }
     }
@@ -335,6 +365,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (targetUpgradeSE != null && targetUpgradeSE.clip != null && !mute)
         {
+            targetUpgradeSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             targetUpgradeSE.PlayOneShot(targetUpgradeSE.clip);
         }
     }
@@ -342,6 +373,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (targetDowngradeSE != null && targetDowngradeSE.clip != null && !mute)
         {
+            targetDowngradeSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             targetDowngradeSE.PlayOneShot(targetDowngradeSE.clip);
         }
     }
@@ -349,6 +381,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (targetHitSE != null && targetHitSE.clip != null && !mute)
         {
+            targetHitSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             targetHitSE.pitch = Random.Range(.75f, 1f);
             targetHitSE.PlayOneShot(targetHitSE.clip);
         }
@@ -358,6 +391,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (bananaInBasketSE != null && bananaInBasketSE.clip != null && !mute)
         {
+            bananaInBasketSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             bananaInBasketSE.PlayOneShot(bananaInBasketSE.clip);
         }
     }
@@ -367,6 +401,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (gorillaChargeupSE != null && gorillaChargeupSE.clip != null && !mute)
         {
+            gorillaChargeupSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             gorillaChargeupSE.PlayOneShot(gorillaChargeupSE.clip);
         }
     }
@@ -374,6 +409,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (gorillaTackleSE != null && gorillaTackleSE.clip != null && !mute)
         {
+            gorillaTackleSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             gorillaTackleSE.PlayOneShot(gorillaTackleSE.clip);
         }
     }
@@ -381,6 +417,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (gorillaTackleHitSurfaceSE != null && gorillaTackleHitSurfaceSE.clip != null && !mute)
         {
+            gorillaTackleHitMonkeySE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             gorillaTackleHitSurfaceSE.PlayOneShot(gorillaTackleHitSurfaceSE.clip);
         }
     }
@@ -388,6 +425,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (gorillaTackleHitMonkeySE != null && gorillaTackleHitMonkeySE.clip != null && !mute)
         {
+            gorillaTackleHitMonkeySE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             gorillaTackleHitMonkeySE.PlayOneShot(gorillaTackleHitMonkeySE.clip);
         }
     }
@@ -396,6 +434,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (gorillaInterceptionSE != null && gorillaInterceptionSE.clip != null && !mute)
         {
+            gorillaInterceptionSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             gorillaInterceptionSE.PlayOneShot(gorillaInterceptionSE.clip);
         }
     }
@@ -404,6 +443,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (pregameSpinnerSE != null && pregameSpinnerSE.clip != null && !mute)
         {
+            pregameSpinnerSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             pregameSpinnerSE.PlayOneShot(pregameSpinnerSE.clip);
         }
     }
@@ -412,6 +452,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (shotClockBuzzSE != null && shotClockBuzzSE.clip != null && !mute)
         {
+            shotClockBuzzSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             shotClockBuzzSE.PlayOneShot(shotClockBuzzSE.clip);
         }
     }
@@ -420,6 +461,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (menuButtonSE != null && menuButtonSE.clip != null && !mute)
         {
+            menuButtonSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             menuButtonSE.PlayOneShot(menuButtonSE.clip);
         }
     }
@@ -428,6 +470,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (unMenuButtonSE != null && unMenuButtonSE.clip != null && !mute)
         {
+            unMenuButtonSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume;
             unMenuButtonSE.PlayOneShot(unMenuButtonSE.clip);
         }
     }
