@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 		Length
 	}
 
-	public uint TotalNumberofPlayers; //Number of Actors
+	public uint TotalNumberofActors; //Number of Actors
     [SerializeField]
     private uint NumberOfPlayersToBuild = 1; //Number of Players
     [SerializeField]
@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     private bool RandomGorilla = true;
     [SerializeField]
     private int PlayerGorilla;
+
+	public uint NumberOfPlayers;
 
 
     private static GameManager s_Instance;
@@ -108,7 +110,12 @@ public class GameManager : MonoBehaviour
         else
         {
             DontDestroyOnLoad(this.gameObject);
-            TotalNumberofPlayers = NumberOfPlayersToBuild + NumberOfBotsToBuild;
+            TotalNumberofActors = NumberOfPlayersToBuild + NumberOfBotsToBuild;
+			NumberOfPlayers = NumberOfPlayersToBuild;
+			for (int i = 0; i < 5;i++)
+			{
+				InputIndecies[i] = -1;
+			}
 			gmPlayers.Clear();
 			gmPlayerScripts.Clear();
 			CreateInputs();
@@ -382,7 +389,7 @@ public class GameManager : MonoBehaviour
 
     public void CreatePlayers()
     {
-        if (TotalNumberofPlayers > 0)
+        if (TotalNumberofActors > 0)
         {
             //if(Instance.gmRecordKeeper != null && Instance.gmRecordKeeper.playerGorilla >= 0) // Get gorilla from Record keeper first if possible.
             //{
@@ -396,7 +403,7 @@ public class GameManager : MonoBehaviour
                 PlayerGorilla = RandGor();
             }
 
-            for (int i = 0; i < TotalNumberofPlayers; ++i)
+            for (int i = 0; i < TotalNumberofActors; ++i)
             {
                 Transform temp = Instance.gmSpawnManager.SpawnPoints[i];
                 if (NumberOfPlayersToBuild > 0)
@@ -448,7 +455,7 @@ public class GameManager : MonoBehaviour
 
     public int RandGor()
     {
-        return Random.Range(0, (int)TotalNumberofPlayers);
+        return Random.Range(0, (int)TotalNumberofActors);
     }
 
     public void AddBall(GameObject ball)
@@ -460,49 +467,82 @@ public class GameManager : MonoBehaviour
 	{
 		gmPlayers.Add(null);
 		gmPlayerScripts.Add(null);
-		Transform temp = Instance.gmSpawnManager.SpawnPoints[(int)TotalNumberofPlayers];
-		gmPlayers[(int)TotalNumberofPlayers] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
-		Instance.gmPlayerScripts[(int)TotalNumberofPlayers].isPlayer = false;
-		Instance.gmPlayers[(int)TotalNumberofPlayers].GetComponent<Actor>().playerIndex = (int)TotalNumberofPlayers;
-		for (int i =0;i < TotalNumberofPlayers; ++i)
+		Transform temp = Instance.gmSpawnManager.SpawnPoints[(int)TotalNumberofActors];
+		gmPlayers[(int)TotalNumberofActors] = (GameObject)Instantiate(Instance.gmPlayerPrefabAI, temp.position, temp.rotation);
+		gmPlayerScripts[(int)TotalNumberofActors] = Instance.gmPlayers[(int)TotalNumberofActors].GetComponent<AI>();
+		Instance.gmPlayerScripts[(int)TotalNumberofActors].isPlayer = false;
+		Instance.gmPlayerScripts[(int)TotalNumberofActors].playerIndex = (int)TotalNumberofActors;
+		for (int i =0;i < 5; ++i)
 		{
-			if(gmInputs[i] == null)
+			if(InputIndecies[i] == -1)
 			{
 				gmPlayerScripts[i].inputIndex = i;
-				Instance.gmPlayers[(int)TotalNumberofPlayers].GetComponent<Actor>().characterType = new Monkey((int)TotalNumberofPlayers, i);
-				InputIndecies[i] = (int)TotalNumberofPlayers;
+				Instance.gmPlayers[(int)TotalNumberofActors].GetComponent<Actor>().characterType = new Monkey((int)TotalNumberofActors, i);
+				InputIndecies[i] = (int)TotalNumberofActors;
 				break;
 			}
 		}
-		TotalNumberofPlayers++;
+		TotalNumberofActors++;
 
 	}
 
     public int AddPlayer(int inIndex)
     {
-        gmPlayers.Add(null);
-        gmPlayerScripts.Add(null);
-        Transform temp = Instance.gmSpawnManager.SpawnPoints[(int)TotalNumberofPlayers];
-        Instance.gmPlayers[(int)TotalNumberofPlayers] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
-        Instance.gmPlayerScripts[(int)TotalNumberofPlayers] = Instance.gmPlayers[(int)TotalNumberofPlayers].GetComponent<Player>();
-        Instance.gmPlayerScripts[(int)TotalNumberofPlayers].isPlayer = true;
-        Instance.gmPlayers[(int)TotalNumberofPlayers].GetComponent<Actor>().playerIndex = (int)TotalNumberofPlayers;
-        Instance.gmPlayers[(int)TotalNumberofPlayers].GetComponent<Actor>().characterType = new Monkey((int)TotalNumberofPlayers, inIndex);
-        gmPlayerScripts[(int)TotalNumberofPlayers].inputIndex = inIndex;
-        InputIndecies[inIndex] = (int)TotalNumberofPlayers;
-        TotalNumberofPlayers++;
-        return (int)TotalNumberofPlayers - 1;
+		if (TotalNumberofActors <= 5)
+		{
+			gmPlayers.Add(null);
+			gmPlayerScripts.Add(null);
+			Transform temp = Instance.gmSpawnManager.SpawnPoints[(int)TotalNumberofActors];
+			Instance.gmPlayers[(int)TotalNumberofActors] = (GameObject)Instantiate(Instance.gmPlayerPrefab, temp.position, temp.rotation);
+			Instance.gmPlayerScripts[(int)TotalNumberofActors] = Instance.gmPlayers[(int)TotalNumberofActors].GetComponent<Player>();
+			Instance.gmPlayerScripts[(int)TotalNumberofActors].isPlayer = true;
+			Instance.gmPlayers[(int)TotalNumberofActors].GetComponent<Actor>().playerIndex = (int)TotalNumberofActors;
+			Instance.gmPlayers[(int)TotalNumberofActors].GetComponent<Actor>().characterType = new Monkey((int)TotalNumberofActors, inIndex);
+			gmPlayerScripts[(int)TotalNumberofActors].inputIndex = inIndex;
+			InputIndecies[inIndex] = (int)TotalNumberofActors;
+			TotalNumberofActors++;
+			NumberOfPlayers++;
+			return (int)TotalNumberofActors - 1;
+		}
+		else
+		{
+			return -1;
+		}
     }
+
     public void RemovePlayer()
     {
-        Destroy(Instance.gmPlayers[(int)TotalNumberofPlayers - 1]);
-        Instance.gmPlayers[(int)TotalNumberofPlayers - 1] = null;
-        Instance.gmPlayerScripts[(int)TotalNumberofPlayers - 1] = null;
-        gmPlayers.TrimExcess();
-        gmPlayerScripts.TrimExcess();
-        TotalNumberofPlayers--;
-    }
-    public void SwitchRooms()
+		if (TotalNumberofActors >= 1)
+		{
+			Destroy(Instance.gmPlayers[(int)TotalNumberofActors - 1]);
+			Instance.gmPlayers[(int)TotalNumberofActors - 1] = null;
+			Instance.gmPlayerScripts[(int)TotalNumberofActors - 1] = null;
+			gmPlayers.TrimExcess();
+			gmPlayerScripts.TrimExcess();
+			TotalNumberofActors--;
+			NumberOfPlayers--;
+		}
+	}
+
+	public void RemoveBot()
+	{
+		for (int i = (int)TotalNumberofActors - 1; i >= 0; i--)
+		{
+			if (!gmPlayerScripts[i].isPlayer)
+			{
+				Destroy(Instance.gmPlayers[i]);
+				Instance.gmPlayers[i] = null;
+				gmPlayers.RemoveAt(i);
+				Instance.gmPlayerScripts[i] = null;
+				gmPlayerScripts.RemoveAt(i);
+				gmPlayers.TrimExcess();
+				gmPlayerScripts.TrimExcess();
+				TotalNumberofActors--;
+				break;
+			}
+		}
+	}
+	public void SwitchRooms()
     {
         gmBalls.Clear();
         gmTurretManager.Reset();

@@ -152,28 +152,28 @@ public class VictoryRoomManager : MonoBehaviour
             {
 
                 // Podiums
-                if (GameManager.Instance.TotalNumberofPlayers >= 1)
+                if (GameManager.Instance.TotalNumberofActors >= 1)
                 {
                     podiumList[0].transform.position = Vector3.MoveTowards(podiumList[0].transform.position,
                         new Vector3(podiumPositions[0].x, podiumPositions[0].y + p1score, podiumPositions[0].z), speed * Time.deltaTime);
 
                 }
-                if (GameManager.Instance.TotalNumberofPlayers >= 2)
+                if (GameManager.Instance.TotalNumberofActors >= 2)
                 {
                     podiumList[1].transform.position = Vector3.MoveTowards(podiumList[1].transform.position,
                         new Vector3(podiumPositions[1].x, podiumPositions[1].y + p2score, podiumPositions[1].z), speed * Time.deltaTime);
                 }
-                if (GameManager.Instance.TotalNumberofPlayers >= 3)
+                if (GameManager.Instance.TotalNumberofActors >= 3)
                 {
                     podiumList[2].transform.position = Vector3.MoveTowards(podiumList[2].transform.position,
                         new Vector3(podiumPositions[2].x, podiumPositions[2].y + p3score, podiumPositions[2].z), speed * Time.deltaTime);
                 }
-                if (GameManager.Instance.TotalNumberofPlayers >= 4)
+                if (GameManager.Instance.TotalNumberofActors >= 4)
                 {
                     podiumList[3].transform.position = Vector3.MoveTowards(podiumList[3].transform.position,
                         new Vector3(podiumPositions[3].x, podiumPositions[3].y + p4score, podiumPositions[3].z), speed * Time.deltaTime);
                 }
-                if (GameManager.Instance.TotalNumberofPlayers == 5)
+                if (GameManager.Instance.TotalNumberofActors == 5)
                 {
                     podiumList[4].transform.position = Vector3.MoveTowards(podiumList[4].transform.position,
                         new Vector3(podiumPositions[4].x, podiumPositions[4].y + p5score, podiumPositions[4].z), speed * Time.deltaTime);
@@ -235,15 +235,15 @@ public class VictoryRoomManager : MonoBehaviour
     {
         temp = allPodiums.transform.position;
 
-        if (GameManager.TotalNumberofPlayers == 1)
+        if (GameManager.TotalNumberofActors == 1)
             temp.x = 22.6f;
-        if (GameManager.TotalNumberofPlayers == 2)
+        if (GameManager.TotalNumberofActors == 2)
             temp.x = 18.7f;
-        if (GameManager.TotalNumberofPlayers == 3)
+        if (GameManager.TotalNumberofActors == 3)
             temp.x = 14.6f;
-        if (GameManager.TotalNumberofPlayers == 4)
+        if (GameManager.TotalNumberofActors == 4)
             temp.x = 10.5f;
-        if (GameManager.TotalNumberofPlayers == 5)
+        if (GameManager.TotalNumberofActors == 5)
             temp.x = 6.3f;
 
         allPodiums.transform.position = temp;
@@ -254,11 +254,11 @@ public class VictoryRoomManager : MonoBehaviour
         podiumPositions[3] = podiumList[3].transform.position;
         podiumPositions[4] = podiumList[4].transform.position;
 
-        for (int i = 4; i >= GameManager.Instance.TotalNumberofPlayers; i--)
+        for (int i = 4; i >= GameManager.Instance.TotalNumberofActors; i--)
         {
             podiumList[i].SetActive(false);
         }
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             //podiumList[i].SetActive(true);
             var podiumCol = GameManager.Instance.gmRecordKeeper.colourPlayers[i];
@@ -268,11 +268,11 @@ public class VictoryRoomManager : MonoBehaviour
 
     void setCase()
     {
-        for (int i = 4; i >= GameManager.Instance.TotalNumberofPlayers; i--)
+        for (int i = 4; i >= GameManager.Instance.TotalNumberofActors; i--)
         {
             TrophyCase[i].SetActive(false);
         }
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             var bkColor = GameManager.Instance.gmRecordKeeper.colourPlayers[i].color;
             bkColor.a = 0.5f;

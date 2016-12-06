@@ -552,7 +552,7 @@ public class Actor : MonoBehaviour
                     dashingCount = 0;
                     isDashing = false;
                     GetComponent<EffectControl>().EndDashEffect();
-                    for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
+                    for (int i = 0; i < GameManager.Instance.TotalNumberofActors; ++i)
                     {
                         if (GameManager.Instance.gmPlayers[i] != null)
                         {

@@ -42,7 +42,7 @@ public class ScoreVisualizer : MonoBehaviour
             ledBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
             scoreDisplays[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
 
-            if(GameManager.Instance.TotalNumberofPlayers > i)
+            if(GameManager.Instance.TotalNumberofActors > i)
             {
                 playerNumbers[i].text = "P" + (i + 1).ToString();
                 scoreDisplays[i].text = "0";
@@ -67,7 +67,7 @@ public class ScoreVisualizer : MonoBehaviour
                 infos[i].gameObject.SetActive(false);
             }
         }
-        transform.localPosition = new Vector3((5 - GameManager.Instance.TotalNumberofPlayers) * 10, transform.localPosition.y, transform.localPosition.z);
+        transform.localPosition = new Vector3((5 - GameManager.Instance.TotalNumberofActors) * 10, transform.localPosition.y, transform.localPosition.z);
     }
     void LateUpdate()
     {
@@ -89,7 +89,7 @@ public class ScoreVisualizer : MonoBehaviour
             }
         }
         
-        for (int i = 0; i< GameManager.Instance.TotalNumberofPlayers; i++)
+        for (int i = 0; i< GameManager.Instance.TotalNumberofActors; i++)
         {
             // Changes who's holding the ball on the UI bin
             if (GameManager.Instance.gmPlayers[i].GetComponent<Actor>().IsHoldingBall && !ballPossession[i].gameObject.activeSelf)

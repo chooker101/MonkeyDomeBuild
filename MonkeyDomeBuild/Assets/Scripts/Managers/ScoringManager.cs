@@ -175,7 +175,7 @@ public class ScoringManager : MonoBehaviour
     {
         //subtract score from other monkeys
         int switchScore = 0;
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; i++)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
             if (GameManager.Instance.gmPlayers[i].GetInstanceID() != gorilla.GetInstanceID())
             {

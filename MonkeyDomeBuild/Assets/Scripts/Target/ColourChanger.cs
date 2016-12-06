@@ -52,7 +52,7 @@ public class ColourChanger : MonoBehaviour
         GetComponentInChildren<CircleCollider2D>().enabled = false;
         preGameTimerObject = FindObjectOfType<PreGameTimer>().GetComponent<PreGameTimer>();
         Init();
-        if (GameManager.Instance.TotalNumberofPlayers >= playerTargetNumberRegular)
+        if (GameManager.Instance.TotalNumberofActors >= playerTargetNumberRegular)
         {
             activated = true;
             TargetSetter();
@@ -364,7 +364,7 @@ public class ColourChanger : MonoBehaviour
         {
             if (activated)
             {
-                GameManager.Instance.gmRecordKeeper.ResetPlayerMaterial((int)GameManager.Instance.TotalNumberofPlayers - 1);
+                GameManager.Instance.gmRecordKeeper.ResetPlayerMaterial((int)GameManager.Instance.TotalNumberofActors - 1);
                 GameManager.Instance.RemovePlayer();
                 activated = false;
                 GetComponentInChildren<Collider2D>().enabled = false;

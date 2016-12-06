@@ -61,7 +61,7 @@ public class PauseManager : MonoBehaviour
 
 	bool CheckStartButton()
 	{
-		for(int i = 0;i < GameManager.Instance.TotalNumberofPlayers;++i)
+		for(int i = 0;i < GameManager.Instance.TotalNumberofActors;++i)
 		{
 			if(GameManager.Instance.gmInputs[i].mStart)
 			{
@@ -73,7 +73,7 @@ public class PauseManager : MonoBehaviour
 
     bool CheckOtherButton()
     {
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; ++i)
         {
             //other button for switching between
             if (GameManager.Instance.gmInputs[i].mJump)

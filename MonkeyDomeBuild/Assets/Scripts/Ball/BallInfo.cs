@@ -196,7 +196,7 @@ public class BallInfo : MonoBehaviour
         GameManager.Instance.gmShotClockManager.ResetShotClock();
         GameManager.Instance.gmShotClockManager.IsShotClockActive = false;
         GameObject gorillaToSwitch = null;
-        for(int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
+        for(int i = 0; i < GameManager.Instance.TotalNumberofActors; ++i)
         {
             if (GameManager.Instance.gmPlayerScripts[i].characterType is Gorilla)
             {
@@ -225,7 +225,7 @@ public class BallInfo : MonoBehaviour
         float longestTimeGorilla = 0f;
         GameManager.Instance.gmShotClockManager.ResetShotClock();
         GameObject gorillaToSwitch = null;
-        for (int i = 0; i < GameManager.Instance.TotalNumberofPlayers; ++i)
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; ++i)
         {
             if (GameManager.Instance.gmPlayerScripts[i].characterType is Gorilla)
             {
