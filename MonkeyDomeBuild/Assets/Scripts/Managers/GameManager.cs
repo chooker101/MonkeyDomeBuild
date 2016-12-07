@@ -567,6 +567,15 @@ public class GameManager : MonoBehaviour
         }
         Instance.SwitchRooms();
         SceneManager.LoadScene(nextRoom);
+        if (nextRoom == "PregameRoom")
+        {
+            gmScoringManager.ClearScores();
+            for (int i = 0; i < TotalNumberofActors; i++)
+            {
+                Instance.gmRecordKeeper.SetPlayerMaterial(i, gmRecordKeeper.defaultColour);
+                Instance.gmPlayers[i].GetComponent<Actor>().UpdateColour();
+            }
+        }
         if (gmUIManager != null)
         {
             gmUIManager.SetToGameMode(nextGameModeUI);

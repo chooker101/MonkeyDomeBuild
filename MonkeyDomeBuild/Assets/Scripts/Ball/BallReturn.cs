@@ -11,7 +11,6 @@ public class BallReturn : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        balls = GameObject.FindGameObjectsWithTag("Ball");
         wasActive = new bool[balls.Length];
 
         for (int i = 0; i < balls.Length; i++)
@@ -52,7 +51,7 @@ public class BallReturn : MonoBehaviour
                 }
                 if (!wasActive[i] && balls[i].activeSelf)
                 {
-                    balls[i].GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y, balls[i].transform.position.z);
+                    balls[i].transform.position = new Vector3(transform.position.x + (Random.Range(0f, 0.1f) - 0.5f), transform.position.y + (Random.Range(0f, 0.1f) - 0.5f), balls[i].transform.position.z);
                 }
             }
         }

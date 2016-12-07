@@ -27,8 +27,8 @@ public class EffectControl : MonoBehaviour
     private float stampFadeSpeed = 5f;
 
     public List<Image> playerLocators;
-    private float playerLocatorTimeMax = 5f;
-    private float playerLocatorTimer = 0f;
+    public float playerLocatorTimeMax = 5f;
+    public float playerLocatorTimer = 0f;
     public bool playerLocatorActive = true;
     public bool playerLocatorMatchStart = false;
 

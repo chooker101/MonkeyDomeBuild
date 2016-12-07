@@ -139,12 +139,13 @@ public class VictoryRoomManager : MonoBehaviour
             {
                 loadedScene = true;
                 victoryTimer = 0;
-
-                scoreKeeper.ClearScores();
-                for (int i = 0; i < GameManager.gmRecordKeeper.colourPlayers.Count; i++)
+                
+                /*scoreKeeper.ClearScores();
+                for (int i = 0; i < GameManager.TotalNumberofActors; i++)
                 {
-                    GameManager.gmRecordKeeper.colourPlayers[i] = GameManager.gmRecordKeeper.defaultColour;
-                }
+                    GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(i, GameManager.gmRecordKeeper.defaultColour);
+                    GameManager.Instance.gmPlayers[i].GetComponent<Actor>().UpdateColour();
+                }*/
                 GameManager.LoadPregameRoom();
             }
 

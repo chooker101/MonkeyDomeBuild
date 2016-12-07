@@ -1,14 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CallForBallReset : MonoBehaviour
 {
     public float resetTime = 1f;
     private float resetCount = 0f;
     public GameObject callForBall;
+    public GameObject hereIAm;
+    public GameObject chosenCall;
+    private EffectControl effects;
+
     void Start()
     {
-        callForBall.SetActive(false);
+        effects = transform.GetComponentInParent<EffectControl>();
+        // Selects the appropriate call to use based on level
+        if(SceneManager.GetActiveScene().name == "PregameRoom")
+        {
+            chosenCall = hereIAm;
+        }
+        else
+        {
+            chosenCall = callForBall;
+        }
+
+        chosenCall.SetActive(false);
     }
 
     void OnEnable()
@@ -18,13 +34,22 @@ public class CallForBallReset : MonoBehaviour
 
     void Update()
     {
-        if(GetComponentInParent<Actor>().characterType is Monkey)
+        if (SceneManager.GetActiveScene().name == "PregameRoom")
         {
-            if (callForBall.activeSelf)
+            chosenCall = hereIAm;
+        }
+        else
+        {
+            chosenCall = callForBall;
+        }
+
+        if (GetComponentInParent<Actor>().characterType is Monkey)
+        {
+            if (chosenCall.activeSelf)
             {
                 if (resetCount <= 0)
                 {
-                    callForBall.SetActive(false);
+                    chosenCall.SetActive(false);
                 }
                 else
                 {
@@ -34,22 +59,24 @@ public class CallForBallReset : MonoBehaviour
         }
         else
         {
-            callForBall.SetActive(false);
+            chosenCall.SetActive(false);
         }
 
     }
 
     public void CallForBall()
     {
-        if (!callForBall.activeSelf)
+        if (!chosenCall.activeSelf)
         {
-            callForBall.SetActive(true);
+            chosenCall.SetActive(true);
             resetCount = resetTime;
+            
+            effects.playerLocatorTimer = effects.playerLocatorTimeMax;
         }
     }
 
     public bool CallForBallActive
     {
-        get { return callForBall.activeSelf; }
+        get { return chosenCall.activeSelf; }
     }
 }
