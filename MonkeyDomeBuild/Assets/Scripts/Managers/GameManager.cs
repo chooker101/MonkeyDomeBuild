@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
     public PauseManager gmPauseManager;
     public TurretsManager gmTurretManager;
     public CurtainsController gmCurtainController;
+	public List<Material> gmMaterialOptions;
 	public Vector2 allDpad;
     public string nextRoom;
     public bool playerCanMove = true;
