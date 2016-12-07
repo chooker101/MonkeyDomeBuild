@@ -142,5 +142,5 @@
     <Compile Include="Assets\VictoryMusic.cs" />
     <Compile Include="Assets\VolumeManager.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>

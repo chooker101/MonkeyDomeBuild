@@ -81,6 +81,10 @@ public class GameManager : MonoBehaviour
     public CurtainsController gmCurtainController;
     public BallColorManager gmBallColorManager;
     public List<Material> gmMaterialOptions;
+    public AudioPregame gmAudioPregame;
+    public AudioMain gmAudioMain;
+    public AudioEffectManager gmAudioEffectManager;
+
     public Vector2 allDpad;
     public string nextRoom;
     public bool playerCanMove = true;

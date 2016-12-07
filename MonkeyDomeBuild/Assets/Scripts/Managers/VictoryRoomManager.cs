@@ -222,7 +222,7 @@ public class VictoryRoomManager : MonoBehaviour
         if (TrophyManager.e >= 0)
         {
             e = TrophyManager.e;
-            GameObject PoopTrophy = (GameObject)Instantiate(Trophy, AwardPoopTrophyPos[e].transform.position, allPodiums.transform.rotation);
+            GameObject CoconutTrophy = (GameObject)Instantiate(Trophy, AwardPoopTrophyPos[e].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.f >= 0)

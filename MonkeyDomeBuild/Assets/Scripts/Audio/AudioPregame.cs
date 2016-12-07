@@ -4,7 +4,7 @@ using System.Collections;
 public class AudioPregame : MonoBehaviour {
 
     public AudioClip pregameLoop;
-    private AudioSource levelAudio;
+    public AudioSource levelAudio;
 
 	// Use this for initialization
 	void Start () {

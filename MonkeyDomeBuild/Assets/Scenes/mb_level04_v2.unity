@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44692558, g: 0.49678743, b: 0.57508624, a: 1}
+  m_IndirectSpecularColor: {r: 0.44692492, g: 0.4967869, b: 0.57508546, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -5019,17 +5019,9 @@ Prefab:
       value: 
       objectReference: {fileID: 1328192167}
     - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: NumberOfPlayersToBuild
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 172610, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
-      propertyPath: nextGameModeUI
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: gmAudioMain
+      value: 
+      objectReference: {fileID: 1141166042}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
   m_IsPrefabParent: 0
@@ -10355,6 +10347,12 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!114 &1141166042 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11440162, guid: c9430afbfc7af6540b1dab60bb285088,
+    type: 2}
+  m_PrefabInternal: {fileID: 148887365}
+  m_Script: {fileID: 11500000, guid: d37f8797d36f4f542a432b5a51ea2f49, type: 3}
 --- !u!1 &1146846004
 GameObject:
   m_ObjectHideFlags: 0
