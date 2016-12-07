@@ -217,6 +217,8 @@ public class ColourChanger : MonoBehaviour
             if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerIndex) // If the player who threw the ball is the one for this target
             {
                 isHit = true;
+                //GameManager.Instance.gmBallColorManager.ChangePlayerColor(playerIndex, objectHit.GetComponent<BallInfo>().ballColor);
+
                 materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
 
                 GameObject particle = ParticlesManager.Instance.TargetHitParticle;

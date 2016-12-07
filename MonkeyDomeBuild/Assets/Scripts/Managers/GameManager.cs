@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
     public PauseManager gmPauseManager;
     public TurretsManager gmTurretManager;
     public CurtainsController gmCurtainController;
+    public BallColorManager gmBallColorManager;
 	public Vector2 allDpad;
     public string nextRoom;
     public bool playerCanMove = true;
@@ -595,6 +596,12 @@ public class GameManager : MonoBehaviour
     public void StartMatch()
     {
         nextRoom = "mb_level04_v2";
+        nextIsMatch = true;
+        StartCoroutine(LoadMatchScene(2f));
+    }
+    public void StartMatch(string level)
+    {
+        nextRoom = level;
         nextIsMatch = true;
         StartCoroutine(LoadMatchScene(2f));
     }

@@ -887,7 +887,7 @@ public class Actor : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-        if (Mathf.Abs(cache_rb.velocity.x) > 1f || GameManager.Instance.gmInputs[inputIndex].mXY.x != 0)
+        if (Mathf.Abs(cache_rb.velocity.x) > 0.1f)
         {
             animator.SetBool("IsWalking", true);
             animator.SetBool("IsIdle", false);
@@ -1039,4 +1039,25 @@ public class Actor : MonoBehaviour
             return isDead;
         }
     }
+
+	public void PickRandomColour()
+	{
+		int index = 0;
+		bool isAcceptable = false;
+		while (!isAcceptable)
+		{
+			index = UnityEngine.Random.Range(1,GameManager.Instance.gmMaterialOptions.Count - 1);
+			isAcceptable = true;
+			foreach (var T in GameManager.Instance.gmPlayerScripts)
+			{
+				if (T.spriteRenderer.material == GameManager.Instance.gmMaterialOptions[index])
+				{
+					isAcceptable = false;
+					break;
+				}
+			}
+		}
+		spriteRenderer.material = GameManager.Instance.gmMaterialOptions[index];
+		GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, GameManager.Instance.gmMaterialOptions[index]);
+	}
 }
