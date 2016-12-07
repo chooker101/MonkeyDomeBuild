@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 	public enum Scene : int
 	{
 		mb_level04_v2,
-		stuff,
+		Level02,
 
 		Length
 	}
