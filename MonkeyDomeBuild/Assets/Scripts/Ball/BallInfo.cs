@@ -7,10 +7,20 @@ public enum ThrowableType
     Trophy = 1,
     Coconut = 2
 }
+public enum BallColor
+{
+    White,
+    Yellow,
+    Green,
+    Red,
+    Purple,
+    Brown
+}
 
 public class BallInfo : MonoBehaviour
 {
     protected ThrowableType type = ThrowableType.Ball;
+    public BallColor ballColor = BallColor.White;
     [SerializeField]
     public GameObject lastThrowMonkey = null;
     public GameObject holdingMonkey = null;

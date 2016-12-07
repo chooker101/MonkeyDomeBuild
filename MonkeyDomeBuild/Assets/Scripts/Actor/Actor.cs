@@ -887,7 +887,7 @@ public class Actor : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-        if (Mathf.Abs(cache_rb.velocity.x) > 1f || GameManager.Instance.gmInputs[inputIndex].mXY.x != 0)
+        if (Mathf.Abs(cache_rb.velocity.x) > 0.1f)
         {
             animator.SetBool("IsWalking", true);
             animator.SetBool("IsIdle", false);
