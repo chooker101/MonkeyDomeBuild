@@ -54,6 +54,9 @@ public class PreGameTimer : MonoBehaviour
     private bool spinnerSpawned = false;
     private GameObject[] colourTargets;
     private bool loadedScene = false;
+	private bool pickRandomColoursOnce = true;
+
+	public GamplaySettings gameplaySettings;
 
     // Use this for initialization
     void Start()
@@ -69,8 +72,9 @@ public class PreGameTimer : MonoBehaviour
         sign_chooseColour.SetActive(true);
 
         sign_gorillaSmash.SetActive(false);
+		pickRandomColoursOnce = true;
 
-        ballReturn = FindObjectOfType<BallReturn>().gameObject;
+		ballReturn = FindObjectOfType<BallReturn>().gameObject;
         colourTargets = GameObject.FindGameObjectsWithTag("ColourTarget");
         for(int i = 0; i < GameManager.Instance.TotalNumberofActors; i++)
         {
@@ -95,17 +99,23 @@ public class PreGameTimer : MonoBehaviour
             gorillaSmashed = true;
         }
 
-        // Check the game state to set
-        if (!AllTargetsHit()) { gameState = GameState.Pregame_PickingColours; }
-        else if(AllTargetsHit() && !spinnerSpawned)
-        {
-            gameState = GameState.Pregame_allTargetsHit;
-        }
-        else if(AllTargetsHit() && spinnerSpawned && !gorillaSet)
-        {
-            gameState = GameState.Pregame_SpinnerSpinning;
-        }
-        else if(AllTargetsHit() && spinnerSpawned && gorillaSet) { gameState = GameState.Pregame_GorillaSet; }
+		// Check the game state to set
+		if (!AllTargetsHit())
+		{
+			gameState = GameState.Pregame_PickingColours;
+		}
+		else if (AllTargetsHit() && !spinnerSpawned)
+		{
+			gameState = GameState.Pregame_allTargetsHit;
+		}
+		else if (AllTargetsHit() && spinnerSpawned && !gorillaSet)
+		{
+			gameState = GameState.Pregame_SpinnerSpinning;
+		}
+		else if (AllTargetsHit() && spinnerSpawned && gorillaSet)
+		{
+			gameState = GameState.Pregame_GorillaSet;
+		}
 
         // Defines actions for the room based on the game state
         if(gameState == GameState.Pregame_PickingColours)
@@ -132,6 +142,15 @@ public class PreGameTimer : MonoBehaviour
         }
         else if (gameState == GameState.Pregame_allTargetsHit)
         {
+			if (GameManager.Instance.NumberOfPlayers != GameManager.Instance.TotalNumberofActors && pickRandomColoursOnce)
+			{
+				for (int i = (int)GameManager.Instance.NumberOfPlayers; i < GameManager.Instance.TotalNumberofActors; ++i)
+				{
+					GameManager.Instance.gmPlayerScripts[i].PickRandomColour();
+				}
+				pickRandomColoursOnce = false;
+				gameplaySettings.AbleToEdit = false;
+			}
             if (GameManager.Instance.nextGameModeUI == GameManager.GameMode.Keep_Away)
             {
                 if (sign_chooseColour.activeSelf)

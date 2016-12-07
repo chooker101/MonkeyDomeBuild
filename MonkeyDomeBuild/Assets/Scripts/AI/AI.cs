@@ -88,6 +88,7 @@ public class AI : Actor
 	private Target nearestSignTarget;
 	private int gorillaIndex;
 	private List<Transform> viableTargets = new List<Transform>();
+	private string currScene = "PregameRoom";
 
 	[SerializeField]
 	State currentState = State.Idle;
@@ -102,7 +103,7 @@ public class AI : Actor
 		lastSceneOld = "";
 		oldSceneCheck = true;
 #endif
-#elif UNITY_5_4
+#elif UNITY_5_4 || UNITY_5_5
 		SceneManager.activeSceneChanged += sceneChangedDelegate;
 #endif
 		//myCollider = GetComponent<BoxCollider2D>();
@@ -116,7 +117,7 @@ public class AI : Actor
 		prevAiPos = cache_tf.position;
 
 		CalculateMaxJump();
-		
+
 		if (currentState == State.Move)
 		{
 			UpdateTarget();
@@ -185,7 +186,16 @@ public class AI : Actor
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-
+		if(currScene == "PregameRoom" || currScene == "VictoryRoom")
+		{
+			if(characterType is Gorilla)
+			{
+				if (FindObjectOfType<PreGameTimer>() != null)
+				{
+					FindObjectOfType<PreGameTimer>().GetComponent<PreGameTimer>().gorillaSmashed = true;
+				}
+			}
+		}
 		if (wantsToThrow && haveBall)
 		{
 			if (CalculateThrow(lastPlayerTarget))
@@ -233,8 +243,25 @@ public class AI : Actor
 		}
 		else
 		{
+			//int index = 0;
+			//bool isAcceptable = false;
+			//while(!isAcceptable)
+			//{
+			//	index = Random.Range(1, GameManager.Instance.gmMaterialOptions.Count - 1);
+			//	isAcceptable = true;
+			//	foreach (var T in GameManager.Instance.gmPlayerScripts)
+			//	{
+			//		if(T.spriteRenderer.material == GameManager.Instance.gmMaterialOptions[index])
+			//		{
+			//			isAcceptable = false;
+			//			break;
+			//		}
+			//	}
+			//}
+			//spriteRenderer.material = GameManager.Instance.gmMaterialOptions[index];
 			currentState = State.Move;
 		}
+		currScene = nextScene.name;
 	}
 
 	void UpdateTarget()
@@ -1196,5 +1223,11 @@ public class AI : Actor
 		{
 			updateEndTargBeforeCoroutine = false;
 		}
+	}
+
+	IEnumerator WaitForPreGameSmash()
+	{
+		yield return new WaitForSeconds(5.0f);
+		FindObjectOfType<PreGameTimer>().GetComponent<PreGameTimer>().gorillaSmashed = true;
 	}
 }
