@@ -1046,7 +1046,7 @@ public class Actor : MonoBehaviour
 		bool isAcceptable = false;
 		while (!isAcceptable)
 		{
-			index = UnityEngine.Random.Range(1, UnityEngine.Random.Range(2,GameManager.Instance.gmMaterialOptions.Count - 1));
+			index = UnityEngine.Random.Range(1,GameManager.Instance.gmMaterialOptions.Count - 1);
 			isAcceptable = true;
 			foreach (var T in GameManager.Instance.gmPlayerScripts)
 			{
