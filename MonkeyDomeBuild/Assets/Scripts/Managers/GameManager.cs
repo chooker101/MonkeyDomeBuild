@@ -80,7 +80,8 @@ public class GameManager : MonoBehaviour
     public TurretsManager gmTurretManager;
     public CurtainsController gmCurtainController;
     public BallColorManager gmBallColorManager;
-	public Vector2 allDpad;
+    public List<Material> gmMaterialOptions;
+    public Vector2 allDpad;
     public string nextRoom;
     public bool playerCanMove = true;
     protected bool nextIsMatch = false;
