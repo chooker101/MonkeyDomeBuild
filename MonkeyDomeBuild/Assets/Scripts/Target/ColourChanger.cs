@@ -237,8 +237,8 @@ public class ColourChanger : MonoBehaviour
                     objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().ReleaseBall();
                 }
                 GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, materialToApply);
-                GameManager.Instance.gmBallColorManager.ChangePlayerColor(playerIndex, objectHit.GetComponent<BallInfo>().ballColor);
-                //GameManager.Instance.gmPlayers[playerIndex].GetComponent<Actor>().UpdateColour();
+                //GameManager.Instance.gmBallColorManager.ChangePlayerColor(playerIndex, objectHit.GetComponent<BallInfo>().ballColor);
+                GameManager.Instance.gmPlayers[playerIndex].GetComponent<Actor>().UpdateColour();
                 targetColour = other.GetComponent<SpriteRenderer>().material;
                 targetHeadMonkey.color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(playerIndex);
                 targetBase.color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(playerIndex);
