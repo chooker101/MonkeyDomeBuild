@@ -15,6 +15,10 @@ public class BallColorManager : MonoBehaviour
     void Start()
     {
         GameManager.Instance.gmBallColorManager = this;
+        for(int i = 0; i < 5; i++)
+        {
+            playerColors.Add(BallColor.White);
+        }
     }
     public void ChangePlayerColor(int playerIndex, BallColor color)
     {

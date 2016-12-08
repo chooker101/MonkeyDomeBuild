@@ -1329,12 +1329,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerColors: 
-  whiteAnim: {fileID: 0}
+  whiteAnim: {fileID: 9100000, guid: 072628314a785b148ac2faba4db2a11e, type: 2}
   yellowAnim: {fileID: 0}
   greenAnim: {fileID: 0}
   redAnim: {fileID: 0}
   purpleAnim: {fileID: 0}
-  brownAnim: {fileID: 0}
+  brownAnim: {fileID: 9100000, guid: e8c3bffbb3487874bb78dc961306fb3f, type: 2}
 --- !u!114 &114000010523779114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1785,7 +1785,7 @@ RectTransform:
   m_RootOrder: 5
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: -0.000015258789}
+  m_AnchoredPosition: {x: 149, y: -0.000015258789}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000011780370280
@@ -1935,7 +1935,7 @@ RectTransform:
   m_RootOrder: 6
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -124, y: -0.000015258789}
+  m_AnchoredPosition: {x: -138, y: -0.000015258789}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000013663564624
