@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: purple_throw
+  m_Name: purple_EndThrow
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -19,10 +19,8 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 1cf4f1814ec15da438f8d7c184d757aa, type: 3}
-    - time: 0.083333336
       value: {fileID: 21300000, guid: cb48389749b7a80478b1026b621c9ac6, type: 3}
-    - time: 0.16666667
+    - time: 0.083333336
       value: {fileID: 21300000, guid: d72631678e306024e82d5f7c243e0cb9, type: 3}
     attribute: m_Sprite
     path: 
@@ -42,7 +40,6 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 1cf4f1814ec15da438f8d7c184d757aa, type: 3}
     - {fileID: 21300000, guid: cb48389749b7a80478b1026b621c9ac6, type: 3}
     - {fileID: 21300000, guid: d72631678e306024e82d5f7c243e0cb9, type: 3}
   m_AnimationClipSettings:
@@ -50,7 +47,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.25
+    m_StopTime: 0.16666667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
