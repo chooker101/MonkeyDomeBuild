@@ -17,8 +17,8 @@ public class GameManager : MonoBehaviour
 
     public enum Scene : int
     {
-        mb_level04_v2,
-        stuff,
+        Level01,
+        Level02,
 
         Length
     }
@@ -616,7 +616,18 @@ public class GameManager : MonoBehaviour
     public void StartMatch()
     {
         FindObjectOfType<GamplaySettings>().AbleToEdit = false;
-        nextRoom = "mb_level04_v2";
+        switch (nextSceneUI)
+        {
+            case Scene.Level01:
+                nextRoom = "Level01";
+                break;
+
+            case Scene.Level02:
+                nextRoom = "Level02";
+                break;
+            default:
+                goto case Scene.Level01;
+        }
         nextIsMatch = true;
         StartCoroutine(LoadMatchScene(2f));
     }
