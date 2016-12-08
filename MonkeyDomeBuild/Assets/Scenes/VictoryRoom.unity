@@ -2297,7 +2297,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 359148494}
   m_Layer: 0
-  m_Name: BananaTrophy
+  m_Name: PointsTrophy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2467,43 +2467,48 @@ MonoBehaviour:
   - {fileID: 61819654}
   - {fileID: 1396203316}
   - {fileID: 375784283}
-  Trophy: {fileID: 161890, guid: fe8e7bf8d5f623e488c51e82e2ca4ba9, type: 2}
-  AwardBananasTrophyPos:
+  PointsTrophyPos:
   - {fileID: 792364698}
   - {fileID: 633028644}
   - {fileID: 1534699428}
   - {fileID: 299406880}
   - {fileID: 1781384436}
-  PerfectCatchTrophyPos:
+  PointsTrophy: {fileID: 161890, guid: f320c6a7d41b5cd4292b865073ba9d3e, type: 2}
+  CatchTrophyPos:
   - {fileID: 1179066217}
   - {fileID: 1435230230}
   - {fileID: 509098829}
   - {fileID: 940691683}
   - {fileID: 1393040103}
-  TargetsHitTrophyPos:
+  CatchTrophy: {fileID: 161890, guid: c642d815cc96a0f4ea3302dfcd1bb23a, type: 2}
+  TargetsTrophyPos:
   - {fileID: 348770349}
   - {fileID: 1424952695}
   - {fileID: 1129690547}
   - {fileID: 1260653272}
   - {fileID: 297204528}
-  BallCallingTrophyPos:
+  TargetsTrophy: {fileID: 161890, guid: 1389c11e16bbdb847835cfed0e6e4966, type: 2}
+  CallingTrophyPos:
   - {fileID: 1819882582}
   - {fileID: 1709683938}
   - {fileID: 1468447833}
   - {fileID: 187267563}
   - {fileID: 785854279}
-  AwardPoopTrophyPos:
+  CallingTrophy: {fileID: 161890, guid: 46d25a51c3a733b4c89dbd27c2feaa92, type: 2}
+  CoconutTrophyPos:
   - {fileID: 472588348}
   - {fileID: 100928363}
   - {fileID: 1599971538}
   - {fileID: 1032225330}
   - {fileID: 2028558147}
-  KnockDownTrophyPos:
+  CoconutTrophy: {fileID: 161890, guid: 3e9723aff3d9e5e48a47738c532e895c, type: 2}
+  TackleTrophyPos:
   - {fileID: 1527931746}
   - {fileID: 1598782726}
   - {fileID: 1832598453}
   - {fileID: 1679807818}
   - {fileID: 752794561}
+  TackleTrophy: {fileID: 161890, guid: d238283b6e491214fbf04de4cdbd20d1, type: 2}
   a: 0
   b: 0
   c: 0
@@ -3938,7 +3943,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 687429644}
   m_Layer: 0
-  m_Name: KnockTrophy
+  m_Name: TackleTrophy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8719,7 +8724,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1578130543}
   m_Layer: 0
-  m_Name: PoopTrophy
+  m_Name: CoconutTrophy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

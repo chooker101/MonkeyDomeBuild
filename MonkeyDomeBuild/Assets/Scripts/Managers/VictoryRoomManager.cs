@@ -22,13 +22,22 @@ public class VictoryRoomManager : MonoBehaviour
     public List<SpriteRenderer> TrophyBg = new List<SpriteRenderer>();
 
 
-    public GameObject Trophy;
-    public Transform[] AwardBananasTrophyPos;
-    public Transform[] PerfectCatchTrophyPos;
-    public Transform[] TargetsHitTrophyPos;
-    public Transform[] BallCallingTrophyPos;
-    public Transform[] AwardPoopTrophyPos;
-    public Transform[] KnockDownTrophyPos;
+   
+    public Transform[] PointsTrophyPos;
+    public GameObject PointsTrophy;
+    public Transform[] CatchTrophyPos;
+    public GameObject CatchTrophy;
+    public Transform[] TargetsTrophyPos;
+    public GameObject TargetsTrophy;
+    public Transform[] CallingTrophyPos;
+    public GameObject CallingTrophy;
+
+    public Transform[] CoconutTrophyPos;
+    public GameObject CoconutTrophy;
+
+    public Transform[] TackleTrophyPos;
+    public GameObject TackleTrophy;
+
     [HideInInspector]
     public int a;
     [HideInInspector]
@@ -48,6 +57,7 @@ public class VictoryRoomManager : MonoBehaviour
     // Private Variables
     private float totalScore;
     private bool podiumsReady = false;
+
     private ScoringManager scoreKeeper;
     private GameManager GameManager;
     private TrophyManager TrophyManager;
@@ -198,37 +208,37 @@ public class VictoryRoomManager : MonoBehaviour
         if (TrophyManager.a > 0)
         {
             a = TrophyManager.a;
-            GameObject BananaTrophy = (GameObject)Instantiate(Trophy, AwardBananasTrophyPos[a].transform.position, allPodiums.transform.rotation);
+            GameObject points_trophy = (GameObject)Instantiate(PointsTrophy, PointsTrophyPos[a].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.b >= 0)
         {
             b = TrophyManager.b;
-            GameObject CatchTrophy = (GameObject)Instantiate(Trophy, PerfectCatchTrophyPos[b].transform.position, allPodiums.transform.rotation);
+            GameObject catch_trophy = (GameObject)Instantiate(CatchTrophy, CatchTrophyPos[b].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.c >= 0)
         {
             c = TrophyManager.c;
-            GameObject TargetsTrophy = (GameObject)Instantiate(Trophy, TargetsHitTrophyPos[c].transform.position, allPodiums.transform.rotation);
+            GameObject targets_trophy = (GameObject)Instantiate(TargetsTrophy, TargetsTrophyPos[c].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.d >= 0)
         {
             d = TrophyManager.d;
-            GameObject CallingTrophy = (GameObject)Instantiate(Trophy, BallCallingTrophyPos[d].transform.position, allPodiums.transform.rotation);
+            GameObject calling_trophy = (GameObject)Instantiate(CallingTrophy, CallingTrophyPos[d].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.e >= 0)
         {
             e = TrophyManager.e;
-            GameObject CoconutTrophy = (GameObject)Instantiate(Trophy, AwardPoopTrophyPos[e].transform.position, allPodiums.transform.rotation);
+            GameObject coconut_trophy = (GameObject)Instantiate(CoconutTrophy, CoconutTrophyPos[e].transform.position, allPodiums.transform.rotation);
         }
 
         if (TrophyManager.f >= 0)
         {
             f = TrophyManager.f;
-            GameObject KnockDownTrophy = (GameObject)Instantiate(Trophy, KnockDownTrophyPos[f].transform.position, allPodiums.transform.rotation);
+            GameObject tackle_trophy = (GameObject)Instantiate(TackleTrophy, TackleTrophyPos[f].transform.position, allPodiums.transform.rotation);
         }
     }
 
