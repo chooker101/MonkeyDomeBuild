@@ -9,6 +9,10 @@ public class CoconutInfo : BallInfo
     bool canChangeLayer = true;
     bool canDoDmg = true;
     List<Actor> hitPlayers = new List<Actor>();
+
+    public Sprite regularSprite;
+    public Sprite thrownSprite;
+
     void Start()
     {
         //Debug.Log("TrophyInfo Start being called");
@@ -23,6 +27,7 @@ public class CoconutInfo : BallInfo
         beingThrown = false;
         canChangeLayer = true;
         hitPlayers.Clear();
+        GetComponentInChildren<SpriteRenderer>().sprite = regularSprite;
     }
     public void ThrowCoconut()
     {
@@ -31,7 +36,9 @@ public class CoconutInfo : BallInfo
         {
             beingThrown = true;
             StartCoroutine(BeingThrown());
+            GetComponentInChildren<SpriteRenderer>().sprite = thrownSprite;
         }
+
     }
     void OnCollisionEnter2D(Collision2D other)
     {
