@@ -32,7 +32,11 @@ public class UIManager : MonoBehaviour
     public GameObject matchTimer;
     void Awake()
 	{
-        GameManager.Instance.gmGameOptionsManager.UIManager = this;
+        if (GameManager.Instance.gmGameOptionsManager != null)
+        {
+            GameManager.Instance.gmGameOptionsManager.UIManager = this;
+        }
+
         if (FindObjectOfType<UIManager>() != GameManager.Instance.gmUIManager)
 			GameManager.Instance.gmUIManager = FindObjectOfType<UIManager>();
 	}

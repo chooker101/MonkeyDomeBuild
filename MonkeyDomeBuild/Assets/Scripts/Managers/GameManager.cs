@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
     protected bool nextIsMatch = false;
 	public Scene nextSceneUI;
 	public GameMode nextGameModeUI;
+    private GameMode currentGameMode;
 	public int numOfBotsUI;
 
 	bool displayController1Name;
@@ -600,6 +601,7 @@ public class GameManager : MonoBehaviour
     }
     public void StartMatch()
     {
+        FindObjectOfType<GamplaySettings>().AbleToEdit = false;
         nextRoom = "mb_level04_v2";
         nextIsMatch = true;
         StartCoroutine(LoadMatchScene(2f));

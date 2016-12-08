@@ -49,10 +49,10 @@ public class CoconutSpawner : MonoBehaviour
                     switch (GameManager.Instance.nextGameModeUI)
                     {
                         case GameManager.GameMode.Keep_Away:
-                            tempCoconut.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                            tempCoconut.transform.localScale = new Vector3(2f, 2f, 2f);
                             break;
                         case GameManager.GameMode.Battle_Royal:
-                            tempCoconut.transform.localScale = new Vector3(2, 2, 2);
+                            tempCoconut.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
                             break;
                     }
                     tempCoconut.SetActive(true);

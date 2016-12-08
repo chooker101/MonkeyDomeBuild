@@ -19,7 +19,10 @@ public class GamplaySettings : MonoBehaviour
 	void Start()
 	{
 		AbleToEdit = true;
-	}
+        botsText.text = ("<Bots: " + GameManager.Instance.numOfBotsUI + ">");
+        gamemodeText.text = ("Gamemode: " + GameManager.Instance.nextGameModeUI.ToString());
+        mapText.text = ("Map: " + GameManager.Instance.nextSceneUI.ToString());
+    }
 
 	void Update()
 	{
