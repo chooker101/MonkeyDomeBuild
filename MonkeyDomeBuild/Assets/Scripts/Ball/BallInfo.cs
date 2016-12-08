@@ -184,21 +184,6 @@ public class BallInfo : MonoBehaviour
 
     public void Change(int index)
     {
-        if (SceneManager.GetActiveScene().name != "PregameRoom" && IsBall)
-        {
-            if (lastThrowMonkey != null)
-            {
-                if (index != lastThrowMonkey.GetComponent<Actor>().playerIndex)
-                {
-                    //Debug.Log(index);
-                    //Debug.Log(lastThrowMonkey.GetComponent<Actor>().playerIndex);
-                    if(!(GameManager.Instance.gmPlayers[index].GetComponent<Actor>().characterType is Gorilla))
-                    {
-                        GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, GameManager.Instance.gmPlayers[index], distanceTravel, travelTime, perfectCatch, numberOfBounce);
-                    }
-                }
-            }
-        }
         if (lastThrowMonkey == null || GameManager.Instance.gmPlayers[index].GetInstanceID() == lastThrowMonkey.GetInstanceID())
             PickRandomVictim();
         float longestTimeGorilla = 0f;
@@ -271,7 +256,16 @@ public class BallInfo : MonoBehaviour
                     if (SceneManager.GetActiveScene().name != "PregameRoom")
                     {
                         AudioEffectManager.Instance.PlayAudienceCatch();
+                        if (lastThrowMonkey != null)
+                        {
+                            if (!(who.GetComponent<Actor>().characterType is Gorilla))
+                            {
+                                GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
+                            }
+                        }
                     }
+                    //GameManager.Instance.gmScoringManager.
+
                 }
                 //ResetShotCount();
             }

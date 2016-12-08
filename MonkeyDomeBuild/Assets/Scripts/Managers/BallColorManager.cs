@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 
 public class BallColorManager : MonoBehaviour
 {
     public List<BallColor> playerColors = new List<BallColor>();
-    public AnimatorController whiteAnim;
-    public AnimatorController yellowAnim;
-    public AnimatorController greenAnim;
-    public AnimatorController redAnim;
-    public AnimatorController purpleAnim;
-    public AnimatorController brownAnim;
+    public RuntimeAnimatorController whiteAnim;
+    public RuntimeAnimatorController yellowAnim;
+    public RuntimeAnimatorController greenAnim;
+    public RuntimeAnimatorController redAnim;
+    public RuntimeAnimatorController purpleAnim;
+    public RuntimeAnimatorController brownAnim;
 
     void Start()
     {
@@ -23,7 +22,7 @@ public class BallColorManager : MonoBehaviour
         {
             playerColors[playerIndex] = color;
         }
-        AnimatorController newAnim;
+        RuntimeAnimatorController newAnim;
         switch (color)
         {
             default:

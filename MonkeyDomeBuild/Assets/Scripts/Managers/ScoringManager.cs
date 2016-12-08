@@ -31,10 +31,10 @@ public class ScoringManager : MonoBehaviour
     private int minBounce = 3;
     private int maxBounce = 6;
 
-    private int throwComboInc = 5;
-    private int catchScore = 5;
+    private int throwComboInc = 3;
+    private int catchScore = 3;
     private int perfectCatchScore = 8;
-    private int passScore = 3;
+    private int passScore = 5;
     private int longThrowScore = 5;
     private int bounceScore = 3;
     private int catchInAirScore = 3;
@@ -137,7 +137,7 @@ public class ScoringManager : MonoBehaviour
             {
                 //Debug.Log("catch");
                 scoreGetThrower += GetPassScore();
-                scoreGetCatcher += perfectCatch ? perfectCatchScore : catchScore;
+                scoreGetCatcher += GetCatchScore(perfectCatch);
                 if (distanceTravel >= longThrowDistance && numberOfBounce <= longThrowMaxBounce)
                 {
                     scoreGetThrower += longThrowScore;
@@ -241,6 +241,19 @@ public class ScoringManager : MonoBehaviour
     {
         int score = 0;
         score = passScore + throwCombo * throwComboInc;
+        return score;
+    }
+    int GetCatchScore(bool perfectCatch)
+    {
+        int score = 0;
+        if (perfectCatch)
+        {
+            score = catchScore + throwCombo * throwComboInc + perfectCatchScore;
+        }
+        else
+        {
+            score = catchScore + throwCombo * throwComboInc;
+        }
         return score;
     }
     public void GorillaInterceptScore(GameObject gorilla, GameObject monkey, GameObject ball)
