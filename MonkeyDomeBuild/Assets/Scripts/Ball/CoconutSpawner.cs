@@ -64,7 +64,7 @@ public class CoconutSpawner : MonoBehaviour
         }
         if(GameManager.Instance.nextGameModeUI == GameManager.GameMode.Battle_Royal)
         {
-            yield return new WaitForSeconds(Random.Range(5f, 10f));
+            yield return new WaitForSeconds(Random.Range(5f, 8f));
             StartCoroutine(SpawnCoconut(Random.Range(3, 6)));
         }
         else

@@ -81,7 +81,7 @@ public class Actor : MonoBehaviour
     protected float dashingTime = 0.6f;
     protected float dashForce = 40f;
     protected float smackImpulse = 15f;
-    protected float disableInputTime = 2f;
+    protected float disableInputTime = 1f;
 
     protected bool isCharging = false;
     protected bool canBeInSlowMotion = true;
@@ -547,13 +547,14 @@ public class Actor : MonoBehaviour
              
                 Vector3 normal = other.contacts[0].normal;
                 Vector3 vel = cache_rb.velocity;
-               
-                Debug.Log("angle: : " + Vector3.Angle(vel, -normal));
+
+                //Debug.Log("angle: : " + Vector3.Angle(vel, -normal));
 
                 // check if gorilla hits floor collider at a reasonable angle
-                if (Vector3.Angle(vel, -normal) > 100 && Vector3.Angle(vel, -normal) < 260)
+                bool angleOverride = true;
+                if ((Vector3.Angle(vel, -normal) > 100 && Vector3.Angle(vel, -normal) < 260) || angleOverride)
                 {
-                    Debug.Log("GoodAngle");
+                    //Debug.Log("GoodAngle");
                     dashingCount = 0;
                     isDashing = false;
                     GetComponent<EffectControl>().EndDashEffect();
@@ -930,7 +931,19 @@ public class Actor : MonoBehaviour
             dashDir.x = 1f;
 
             dashDir = GameManager.Instance.gmInputs[inputIndex].mXY.normalized;
-       
+            if (dashDir.x == 0 && dashDir.y == 0)
+            {
+                dashDir.x = GetComponentInChildren<SpriteRenderer>().flipX ? -1f : 1f;
+                dashDir.y = 0.3f;
+            }
+            else
+            {
+                if (dashDir.y > 0 && dashDir.y < 0.3f)
+                {
+                    dashDir.y = 0.3f;
+                }
+            }
+
             dashDir *= dashForce;
             GetComponent<Rigidbody2D>().AddForce(dashDir, ForceMode2D.Impulse);
         }
