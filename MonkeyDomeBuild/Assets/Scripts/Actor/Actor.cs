@@ -27,6 +27,7 @@ public class Actor : MonoBehaviour
     //public bool canJump = true;
     public int layerMask;
     public int layerMaskPlayer;
+    public int layerMaskBall;
     public bool ballInRange = false;
     public GameObject ballHolding = null;
     public bool haveBall = false;
@@ -56,6 +57,7 @@ public class Actor : MonoBehaviour
     public Character characterType;
     public GameObject monkeyCrown;
     public BallInfo ballCanCatch;
+    public List<BallInfo> ballAround = new List<BallInfo>();
 
     [SerializeField]
     protected GameObject PointerPivot;
@@ -114,6 +116,7 @@ public class Actor : MonoBehaviour
 
         layerMask = 1 << LayerMask.NameToLayer("Floor");
         layerMaskPlayer = 1 << LayerMask.NameToLayer("Player");
+        layerMaskBall = 1 << LayerMask.NameToLayer("Ball");
         cache_rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -131,6 +134,7 @@ public class Actor : MonoBehaviour
     {
         //JumpCheck();
         //cType = characterType.ToString();
+        UpdateNearbyBallList();
         if (!isDead)
         {
             if (GameManager.Instance.gmInputs[inputIndex].mJump && !beingSmack)
@@ -405,6 +409,7 @@ public class Actor : MonoBehaviour
         ballCanCatch = null;
         ballHolding = null;
         isCharging = false;
+        canCharge = true;
         if (Time.timeScale != 1)
         {
             Time.timeScale = 1;
@@ -1060,4 +1065,16 @@ public class Actor : MonoBehaviour
 		spriteRenderer.material = GameManager.Instance.gmMaterialOptions[index];
 		GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, GameManager.Instance.gmMaterialOptions[index]);
 	}
+    protected void UpdateNearbyBallList()
+    {
+        Collider2D[] cols = Physics2D.OverlapCircleAll(catchCenter.position, 4.5f, layerMaskBall);
+        ballAround.Clear();
+        if (cols.Length > 0)
+        {
+            for(int i = 0; i < cols.Length; i++)
+            {
+                ballAround.Add(cols[i].GetComponent<BallInfo>());
+            }
+        }
+    }
 }

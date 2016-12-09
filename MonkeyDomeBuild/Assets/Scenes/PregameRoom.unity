@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3735645, g: 0.38112134, b: 0.358878, a: 1}
+  m_IndirectSpecularColor: {r: 0.37356442, g: 0.38112158, b: 0.358878, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1741,6 +1741,14 @@ Prefab:
       propertyPath: mySpriteColour
       value: 
       objectReference: {fileID: 2100000, guid: 2dd9dc57c277839438e29676fa98e017, type: 2}
+    - target: {fileID: 5851362, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+      propertyPath: m_Radius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 463084, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
   m_IsPrefabParent: 0
@@ -2055,6 +2063,10 @@ Prefab:
     - target: {fileID: 11493290, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
       propertyPath: ballColor
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 112218, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35676d16cf332704a83af1caed0eb98f, type: 2}

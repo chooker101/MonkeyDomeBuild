@@ -67,8 +67,35 @@ public class Gorilla : Character
 
 	protected void CatchCheck()
 	{
-        if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null && cacheplayer.CanCatch && !cacheplayer.IsStunned)
+        if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballAround.Count > 0 && cacheplayer.CanCatch && !cacheplayer.IsStunned)
         {
+            BallInfo ballToCatch = null;
+            for (int i = 0; i < cacheplayer.ballAround.Count; i++)
+            {
+                if (cacheplayer.ballAround[i].IsBall)
+                {
+                    if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
+                        Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
+                    {
+                        ballToCatch = cacheplayer.ballAround[i];
+                        break;
+                    }
+                }
+            }
+            if (ballToCatch != null)
+            {
+                cacheplayer.GetComponent<EffectControl>().PlayCatchEffect(ballToCatch.gameObject);
+                if (ballToCatch.GetHoldingMonkey() != null && SceneManager.GetActiveScene().name != "PregameRoom")
+                {
+                    ballToCatch.GetHoldingMonkey().GetComponent<Actor>().ReleaseBall();
+                }
+                GameManager.Instance.gmScoringManager.GorillaInterceptScore(GameManager.Instance.gmPlayers[myPlayer], cacheplayer.ballCanCatch.GetHoldingMonkey(), ballToCatch.gameObject);
+                cacheplayer.CaughtBall(ballToCatch.gameObject);
+                ballToCatch.Change(myPlayer);
+                ballToCatch.BeingCatch(cacheplayer.gameObject);
+                cacheplayer.stat_ballGrab++;
+            }
+            /*
             if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
                 Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
             {
@@ -89,6 +116,7 @@ public class Gorilla : Character
                     }
                 }
             }
+            */
         }
 
     }

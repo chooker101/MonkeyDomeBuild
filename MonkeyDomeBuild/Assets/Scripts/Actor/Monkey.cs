@@ -62,8 +62,44 @@ public class Monkey : Character
     }
 	protected void CatchCheck()
 	{
-		if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballCanCatch != null && cacheplayer.CanCatch && !cacheplayer.IsStunned)
+        if (GameManager.Instance.gmInputs[myInput].mCatch && cacheplayer.ballAround.Count > 0 && cacheplayer.CanCatch && !cacheplayer.IsStunned)
 		{
+            BallInfo ballToCatch = null;
+            float dis = 10f;
+            for(int i = 0; i < cacheplayer.ballAround.Count; i++)
+            {
+                if (cacheplayer.ballAround[i].GetCanBeCatch())
+                {
+                    if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
+                        Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
+                    {
+                        if (Vector2.Distance(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position) < dis)
+                        {
+                            ballToCatch = cacheplayer.ballAround[i];
+                            dis = Vector2.Distance(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position);
+                        }
+                    }
+                }
+            }
+            if (ballToCatch != null)
+            {
+                if (!cacheplayer.haveBall)
+                {
+                    if (ballToCatch.BallType == ThrowableType.Trophy)
+                    {
+                        ballToCatch.GetComponent<TrophyInfo>().DisableCollider();
+                    }
+                    cacheplayer.GetComponent<EffectControl>().PlayCatchEffect(ballToCatch.gameObject);
+                    if (ballToCatch.IsPerfectCatch(cacheplayer))
+                    {
+                        cacheplayer.GetComponent<EffectControl>().PlayPerfectCatchEffect(ballToCatch.gameObject);
+                    }
+                    cacheplayer.CaughtBall(ballToCatch.gameObject);
+                    ballToCatch.BeingCatch(cacheplayer.gameObject);
+                    cacheplayer.stat_ballGrab++;
+                }
+            }
+            /*
             if (cacheplayer.ballCanCatch.GetCanBeCatch())
             {
                 if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
@@ -86,6 +122,7 @@ public class Monkey : Character
                     }
                 }
             }
+            */
 		}
 	}
 
