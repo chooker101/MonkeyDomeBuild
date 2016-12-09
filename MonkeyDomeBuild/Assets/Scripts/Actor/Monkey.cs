@@ -70,8 +70,8 @@ public class Monkey : Character
             {
                 if (cacheplayer.ballAround[i].GetCanBeCatch())
                 {
-                    if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position - cacheplayer.transform.position,
-                        Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballCanCatch.transform.position), cacheplayer.layerMask))
+                    if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position - cacheplayer.transform.position,
+                        Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position), cacheplayer.layerMask))
                     {
                         if (Vector2.Distance(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position) < dis)
                         {
