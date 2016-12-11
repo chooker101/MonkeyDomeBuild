@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GorillaCharge : MonoBehaviour
 {
-    public Image circularSilder;
+    public Image circularSlider;
     private Image sliderBackground;
     public Text chargeCountText;
     public float chargeCount;
@@ -13,7 +13,7 @@ public class GorillaCharge : MonoBehaviour
     void Start()
     {
         //chargeCountText.gameObject.SetActive(false);
-        sliderBackground = circularSilder.transform.FindChild("ChargeBgImage").GetComponent<Image>();
+        sliderBackground = transform.FindChild("ChargeBgImage").GetComponent<Image>();
     }
     void OnEnable()
     {
@@ -28,12 +28,12 @@ public class GorillaCharge : MonoBehaviour
                 sliderBackground.gameObject.SetActive(true);
 
                 chargeCountText.text = Math.Round((maxChargeTime - chargeCount)+1).ToString();
-                circularSilder.fillAmount = chargeCount / maxChargeTime;
+                circularSlider.fillAmount = chargeCount / maxChargeTime;
             }
             else
             {
                 chargeCountText.text = "";
-                circularSilder.fillAmount = 0;
+                circularSlider.fillAmount = 0;
                 sliderBackground.gameObject.SetActive(false);
             }
         }
@@ -43,8 +43,8 @@ public class GorillaCharge : MonoBehaviour
             {
                 chargeCountText.text = "";
             }
-            if (circularSilder.fillAmount != 0)
-                circularSilder.fillAmount = 0;
+            if (circularSlider.fillAmount != 0)
+                circularSlider.fillAmount = 0;
             sliderBackground.gameObject.SetActive(false);
 
         }

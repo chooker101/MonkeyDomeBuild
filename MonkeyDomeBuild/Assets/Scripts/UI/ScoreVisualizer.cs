@@ -15,9 +15,10 @@ public class ScoreVisualizer : MonoBehaviour
     private List<Image> playerHead_monkey = new List<Image>();
     private List<Image> playerHead_gorilla = new List<Image>();
     private List<Image> ballPossession = new List<Image>();
+    private List<SpriteRenderer> playerPanelScore = new List<SpriteRenderer>();
 
-    private List<Image> playerBoardBack = new List<Image>();
-    private List<Image> ledBack = new List<Image>();   
+    //private List<Image> playerBoardBack = new List<Image>();
+    //private List<Image> ledBack = new List<Image>();   
 
     void Start()
     {
@@ -30,19 +31,22 @@ public class ScoreVisualizer : MonoBehaviour
             playerHead_monkey.Add(infos[i].transform.FindChild("Monkey Head").GetComponent<Image>());
             playerHead_gorilla.Add(infos[i].transform.FindChild("Gorilla Head").GetComponent<Image>());
             ballPossession.Add(infos[i].transform.FindChild("Ball Possession").GetComponent<Image>());
-            playerBoardBack.Add(infos[i].transform.FindChild("PlayerBoard Back").GetComponent<Image>());
-            ledBack.Add(infos[i].transform.FindChild("LED Back").GetComponent<Image>());
+            playerPanelScore.Add(infos[i].transform.FindChild("Player Panel Score").GetComponent<SpriteRenderer>());
+            //playerBoardBack.Add(infos[i].transform.FindChild("PlayerBoard Back").GetComponent<Image>());
+            //ledBack.Add(infos[i].transform.FindChild("LED Back").GetComponent<Image>());
             actionPerformedTexts[i].text = "";
             scoreGainLose[i].text = "";
             counts.Add(0);
 
             playerHead_monkey[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
             playerHead_gorilla[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
-            playerBoardBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
-            ledBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
-            scoreDisplays[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+            //playerBoardBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+            //ledBack[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+            //scoreDisplays[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
 
-            if(GameManager.Instance.TotalNumberofActors > i)
+            playerPanelScore[i].color = GameManager.Instance.gmRecordKeeper.GetPlayerColour(i);
+
+            if (GameManager.Instance.TotalNumberofActors > i)
             {
                 playerNumbers[i].text = "P" + (i + 1).ToString();
                 scoreDisplays[i].text = "0";
@@ -67,7 +71,7 @@ public class ScoreVisualizer : MonoBehaviour
                 infos[i].gameObject.SetActive(false);
             }
         }
-        transform.localPosition = new Vector3((5 - GameManager.Instance.TotalNumberofActors) * 10, transform.localPosition.y, transform.localPosition.z);
+        transform.localPosition = new Vector3((5-GameManager.Instance.TotalNumberofActors) * 8.125f, transform.localPosition.y, transform.localPosition.z);
     }
     void LateUpdate()
     {

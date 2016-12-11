@@ -26,6 +26,7 @@ public class ColourChanger : MonoBehaviour
     public Material targetColourDefault1;
     public Material targetColourDefault2;
     public Material targetColour;
+    public AudioSource targetHitSE;
 
     private int playerTargetNumberRegular = 0;
     private GameObject objectHit = null;
@@ -217,6 +218,7 @@ public class ColourChanger : MonoBehaviour
             if (objectHit.GetComponent<BallInfo>().GetLastThrowMonkey().GetComponent<Actor>().playerIndex == playerIndex) // If the player who threw the ball is the one for this target
             {
                 isHit = true;
+                PlayTargetHitSE();
                 //GameManager.Instance.gmBallColorManager.ChangePlayerColor(playerIndex, objectHit.GetComponent<BallInfo>().ballColor);
 
                 materialToApply = objectHit.GetComponent<BallInfo>().mySpriteColour; // Get the material from the ball
@@ -447,6 +449,15 @@ public class ColourChanger : MonoBehaviour
                 }
 
             }
+        }
+    }
+
+    public void PlayTargetHitSE()
+    {
+        if (targetHitSE != null && targetHitSE.clip != null)
+        {
+            targetHitSE.pitch = Random.Range(.75f, 1f);
+            targetHitSE.PlayOneShot(targetHitSE.clip);
         }
     }
 }
