@@ -649,5 +649,10 @@ public class GameManager : MonoBehaviour
         nextIsMatch = false;
         StartCoroutine(LoadMatchScene(0f));
     }
+    public void LoadMain()
+    {
+        GameManager.Instance.gmPauseManager.Unpause();
+        SceneManager.LoadScene(0);
+    }
 
 }

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class PauseManager : MonoBehaviour
 {
-	public bool isGamePaused = false;
+    public bool isGamePaused = false;
     public GameObject pauseUI;
     public GameObject volumeUI;
     public bool inOptions = false;
@@ -14,28 +14,28 @@ public class PauseManager : MonoBehaviour
     void Update()
     {
         if (CheckStartButton())
-		{
+        {
             isGamePaused = !isGamePaused;
 
             if (isGamePaused)
-			{
+            {
                 inOptions = false;
                 AudioEffectManager.Instance.PlayMenuButtonSE();
-				Time.timeScale = 0;
+                Time.timeScale = 0;
                 volumeUI.SetActive(false);
                 pauseUI.SetActive(true);
                 //call ui
             }
-			else
-			{
+            else
+            {
                 AudioEffectManager.Instance.PlayUnMenuButtonSE();
                 Time.timeScale = 1;
                 pauseUI.SetActive(false);
                 volumeUI.SetActive(false);
                 //close ui
-			}
+            }
 
-		}
+        }
         if (isGamePaused)
         {
             if (CheckOtherButton())
@@ -57,19 +57,19 @@ public class PauseManager : MonoBehaviour
 
             }
         }
-	}
+    }
 
-	bool CheckStartButton()
-	{
-		for(int i = 0;i < GameManager.Instance.TotalNumberofActors;++i)
-		{
-			if(GameManager.Instance.gmInputs[i].mStart)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+    bool CheckStartButton()
+    {
+        for (int i = 0; i < GameManager.Instance.TotalNumberofActors; ++i)
+        {
+            if (GameManager.Instance.gmInputs[i].mStart)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     bool CheckOtherButton()
     {
@@ -82,5 +82,14 @@ public class PauseManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1;
+        pauseUI.SetActive(false);
+        volumeUI.SetActive(false);
+        isGamePaused = false;
+        inOptions = false;
     }
 }
