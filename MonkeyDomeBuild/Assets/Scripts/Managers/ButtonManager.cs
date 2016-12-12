@@ -5,19 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
-    private Sprite spriteNormal;
-    private Sprite spriteHover;
+    public Sprite spriteNormal;
+    public Sprite spriteHover;
     //private Button myButton;
 
-    public AudioSource audioPress;
+    private AudioSource audioPress;
 
     // Use this for initialization
     void Awake()
     {
         //myButton = GetComponent<Button>();
-
-        spriteNormal = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/ArtAssets/Menu/Monkey-Dome-Title-Target.png", typeof(Sprite));
-        spriteHover = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/ArtAssets/Menu/Monkey-Dome-Title-Target-Selected.png", typeof(Sprite));
+        
         audioPress = gameObject.GetComponent<AudioSource>();
         gameObject.GetComponent<Image>().sprite = spriteNormal;
     }
