@@ -156,7 +156,7 @@ public class VictoryRoomManager : MonoBehaviour
                     GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(i, GameManager.gmRecordKeeper.defaultColour);
                     GameManager.Instance.gmPlayers[i].GetComponent<Actor>().UpdateColour();
                 }*/
-                GameManager.LoadPregameRoom();
+                GameManager.Instance.LoadPregameRoom();
             }
 
             if (podiumsReady) // Once buffer time has completed

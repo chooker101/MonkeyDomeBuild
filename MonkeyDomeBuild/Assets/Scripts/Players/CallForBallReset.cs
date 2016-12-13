@@ -23,10 +23,13 @@ public class CallForBallReset : MonoBehaviour
         {
             chosenCall = callForBall;
         }
-
         chosenCall.SetActive(false);
     }
-
+    public void Reset()
+    {
+        callForBall.SetActive(false);
+        hereIAm.SetActive(false);
+    }
     void OnEnable()
     {
         resetCount = resetTime;
