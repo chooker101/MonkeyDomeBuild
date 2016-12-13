@@ -140,10 +140,13 @@ public class BallInfo : MonoBehaviour
     {
         if (holdingMonkey != null)
         {
+            m_rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
             Vector3 newLoc = holdingMonkey.GetComponent<Actor>().catchCenter.position;
             newLoc.z = transform.position.z;
             m_rigid.transform.position = newLoc;
         }
+        else
+            m_rigid.constraints = RigidbodyConstraints2D.None;
     }
 
 	public void UpdateLastThrowMonkey(GameObject monkey)
