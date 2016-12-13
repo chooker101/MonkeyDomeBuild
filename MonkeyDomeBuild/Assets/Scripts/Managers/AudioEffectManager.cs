@@ -240,7 +240,7 @@ public class AudioEffectManager : MonoBehaviour
     {
         if (monkeyThrowSE != null && monkeyThrowSE.clip != null && !mute)
         {
-            monkeyThrowSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume / 2;
+            monkeyThrowSE.volume = GameManager.Instance.gmVolumeManager.SFXVolume/2;
             monkeyThrowSE.pitch = Random.Range(0.85f, 1f);
             monkeyThrowSE.volume *= Random.Range(.35f, .45f);
             monkeyThrowSE.PlayOneShot(monkeyThrowSE.clip);

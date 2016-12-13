@@ -25,33 +25,39 @@ public class VolumeManager : MonoBehaviour
     {
         AudioEffectManager SFX = GameManager.Instance.gmAudioEffectManager;
 
-        musicVolume = musicSlider.value;
-        SFXVolume = SFXSlider.value;
-        prevMusicVolume = musicVolume;
-        prevSFXVolume = SFXVolume;
         //Adds a listener to the main slider and invokes a method when the value changes.
         musicSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
         SFXSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
         audioHolder = GameObject.Find("AudioHolder");
 
+        Debug.Log("saved music vol:" + PlayerPrefs.HasKey("MusicVolume"));
+        if (PlayerPrefs.HasKey("MusicVolume"))
+            musicVolume = PlayerPrefs.GetFloat("MusicVolume");
+
+        Debug.Log("saved sfx vol:" + PlayerPrefs.HasKey("SFXVolume"));
+        if (PlayerPrefs.HasKey("SFXVolume"))
+            SFXVolume = PlayerPrefs.GetFloat("SFXVolume");
+
+        musicSlider.value = musicVolume;
+        SFXSlider.value = SFXVolume;
+
+        prevMusicVolume = musicVolume;
+        prevSFXVolume = SFXVolume;
     }
 
     // Invoked when the value of the slider changes.
     public void ValueChangeCheck()
     {
-       
-            AudioMain game = audioHolder.GetComponent<AudioMain>();
-            AudioPregame pregame = audioHolder.GetComponent<AudioPregame>();
-        
-     
+
+        AudioMain game = audioHolder.GetComponent<AudioMain>();
+        AudioPregame pregame = audioHolder.GetComponent<AudioPregame>();
+
+
         musicVolume = musicSlider.value;
         SFXVolume = SFXSlider.value;
 
         if (SFXVolume != prevSFXVolume)
         {
-            Debug.Log("SFX : " + SFXVolume);
-            Debug.Log("previous  : " + prevSFXVolume);
-
             GameManager.Instance.gmAudioEffectManager.monkeyJumpSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.monkeyThrowSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.monkeyCatchSE.volume = SFXVolume;
@@ -98,23 +104,32 @@ public class VolumeManager : MonoBehaviour
 
         else if (musicVolume != prevMusicVolume)
         {
-            Debug.Log("Music : " + musicVolume);
-            Debug.Log("previous  : " + prevMusicVolume);
 
             if (pregame != null)
                 pregame.levelAudio.volume = musicVolume;
 
             if (game != null)
-                {
-                    game.currentAudio.volume = musicVolume;
-                    game.levelAudio.volume = musicVolume;
-                    game.startAudio.volume = musicVolume;
-                    game.startAudio2.volume = musicVolume;
-                }
-                }
+            {
+                game.currentAudio.volume = musicVolume;
+                game.levelAudio.volume = musicVolume;
+                game.startAudio.volume = musicVolume;
+                game.startAudio2.volume = musicVolume;
+            }
+        }
 
 
         prevMusicVolume = musicVolume;
         prevSFXVolume = SFXVolume;
+
+
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+        PlayerPrefs.SetFloat("SFXVolume", SFXVolume);
+    }
+
+    void OnApplicationQuit()
+    {
+        PlayerPrefs.Save();
+        Debug.Log(musicVolume);
+        Debug.Log(SFXVolume);
     }
 }

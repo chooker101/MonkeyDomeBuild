@@ -350,17 +350,12 @@ public class BallInfo : MonoBehaviour
                 if (Time.time - lastPlaySETime > 0.3f)
                 {
                     lastPlaySETime = Time.time;
-                    if (m_rigid.velocity.magnitude > 3f)
-                    {
-                        if (travelTime > 1f)
-                        {
+                    if (m_rigid.velocity.magnitude > 15f)
                             AudioEffectManager.Instance.PlayBallBounceHardSE();
-                        }
-                        else
-                        {
-                            AudioEffectManager.Instance.PlayBallBounceSoftSE();
-                        }
-                    }
+                        
+                    else if (m_rigid.velocity.magnitude > 3f)
+                        AudioEffectManager.Instance.PlayBallBounceSoftSE();
+                    
                 }
                 numberOfBounce++;
             }
