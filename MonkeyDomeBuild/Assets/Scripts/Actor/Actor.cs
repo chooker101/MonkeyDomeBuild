@@ -137,7 +137,7 @@ public class Actor : MonoBehaviour
         UpdateNearbyBallList();
         if (!isDead)
         {
-            if (GameManager.Instance.gmInputs[inputIndex].mJump && !beingSmack)
+            if (GameManager.Instance.gmInputs[inputIndex].mJump && !beingSmack && !GameManager.Instance.gmPauseManager.isGamePaused)
             {
                 Jumping();
             }
@@ -169,16 +169,19 @@ public class Actor : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isDead)
+        if (!GameManager.Instance.gmPauseManager.isGamePaused)
         {
-            MovementVelocity();
-            //Movement();
-            characterType.CHFixedUpdate();
-        }
-        AnimationControl();
-        if (IsHoldingBall && ballHolding == null)
-        {
-            ReleaseBall();
+            if (!isDead)
+            {
+                MovementVelocity();
+                //Movement();
+                characterType.CHFixedUpdate();
+            }
+            AnimationControl();
+            if (IsHoldingBall && ballHolding == null)
+            {
+                ReleaseBall();
+            }
         }
     }
 
