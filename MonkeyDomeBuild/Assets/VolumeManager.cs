@@ -30,11 +30,11 @@ public class VolumeManager : MonoBehaviour
         SFXSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
         audioHolder = GameObject.Find("AudioHolder");
 
-        Debug.Log("saved music vol:" + PlayerPrefs.HasKey("MusicVolume"));
+        //Debug.Log("saved music vol:" + PlayerPrefs.HasKey("MusicVolume"));
         if (PlayerPrefs.HasKey("MusicVolume"))
             musicVolume = PlayerPrefs.GetFloat("MusicVolume");
 
-        Debug.Log("saved sfx vol:" + PlayerPrefs.HasKey("SFXVolume"));
+        //Debug.Log("saved sfx vol:" + PlayerPrefs.HasKey("SFXVolume"));
         if (PlayerPrefs.HasKey("SFXVolume"))
             SFXVolume = PlayerPrefs.GetFloat("SFXVolume");
 
@@ -61,44 +61,44 @@ public class VolumeManager : MonoBehaviour
             GameManager.Instance.gmAudioEffectManager.monkeyJumpSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.monkeyThrowSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.monkeyCatchSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.monkeyPerfectCatchSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.monkeyPerfectCatchSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.monkeylandOnSurfaceSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.monkeyGrabLatticeSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.monkeyGrabLatticeSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.ballBounceSoftSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.ballBounceHardSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.ballInAirSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.monkeyCatchBananaSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.monkeyCatchPoopSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.bananaHitSurfaceSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.poopHitSurfaceSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.targetPopupSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.targetRetractSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.ballInAirSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.monkeyCatchBananaSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.monkeyCatchPoopSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.bananaHitSurfaceSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.poopHitSurfaceSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.targetPopupSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.targetRetractSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.targetUpgradeSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.targetDowngradeSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.targetHitSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.bananaInBasketSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.targetDowngradeSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.targetHitSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.bananaInBasketSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.monkeyCallBallSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.gorillaChargeupSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.gorillaTackleSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.gorillaChargeupSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.gorillaTackleSE.volume = SFXVolume;
             //GameManager.Instance.gmAudioEffectManager.gorrila
-            GameManager.Instance.gmAudioEffectManager.gorillaTackleHitMonkeySE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.gorillaInterceptionSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.pregameSpinnerSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.gorillaTackleHitMonkeySE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.gorillaInterceptionSE.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.pregameSpinnerSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.shotClockBuzzSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.menuButtonSE.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.unMenuButtonSE.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.audienceCheer1.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.audienceCheer2.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.audienceCheer3.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.audienceBoo1.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.audienceBoo2.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.audienceBoo3.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.audienceCheer1.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.audienceCheer2.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.audienceCheer3.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.audienceBoo1.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.audienceBoo2.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.audienceBoo3.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.audienceCatch.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.audienceInterception.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.audienceShotClock.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.audienceTargetUp.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.audienceSmash.volume = SFXVolume;
-            GameManager.Instance.gmAudioEffectManager.audiencePoop.volume = SFXVolume;
+            //GameManager.Instance.gmAudioEffectManager.audiencePoop.volume = SFXVolume;
         }
 
 
@@ -129,7 +129,7 @@ public class VolumeManager : MonoBehaviour
     void OnApplicationQuit()
     {
         PlayerPrefs.Save();
-        Debug.Log(musicVolume);
-        Debug.Log(SFXVolume);
+        //Debug.Log(musicVolume);
+        //Debug.Log(SFXVolume);
     }
 }

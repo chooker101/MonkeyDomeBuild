@@ -118,6 +118,7 @@ public class BallInfo : MonoBehaviour
 
                         if (GameManager.Instance.gmAudienceAnimator != null)
                         GameManager.Instance.gmAudienceAnimator.AudienceAngry();
+                        GameManager.Instance.gmScoringManager.ShotClockExpireScore(lastThrowMonkey.GetComponent<Actor>());
                         Change();
                     }
                     else
@@ -256,13 +257,6 @@ public class BallInfo : MonoBehaviour
                     if (SceneManager.GetActiveScene().name != "PregameRoom")
                     {
                         AudioEffectManager.Instance.PlayAudienceCatch();
-                        if (lastThrowMonkey != null)
-                        {
-                            if (!(who.GetComponent<Actor>().characterType is Gorilla))
-                            {
-                                GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
-                            }
-                        }
                     }
                     //GameManager.Instance.gmScoringManager.
 

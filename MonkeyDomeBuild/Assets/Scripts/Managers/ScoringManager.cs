@@ -46,6 +46,7 @@ public class ScoringManager : MonoBehaviour
     private int hitTargetScoreT1 = 10;
     private int hitTargetScoreT2 = 15;
     private int hitTargetScoreT3 = 20;
+    private int shotClockExpireScore = -10;
 
     void Start()
     {
@@ -127,8 +128,13 @@ public class ScoringManager : MonoBehaviour
         playerScores[WhichPlayer.Player4] = 0;
         playerScores[WhichPlayer.Player5] = 0;
     }
-    public void PassingScore(GameObject thrower, GameObject catcher, float distanceTravel, float travelTime, bool perfectCatch, int numberOfBounce)
+    public void PassingScore(GameObject thrower, GameObject catcher, BallInfo ballinfo)
     {
+        // float distanceTravel, float travelTime, bool perfectCatch, int numberOfBounce
+        float distanceTravel = ballinfo.GetDistanceTravel();
+        float travelTime = ballinfo.travelTime;
+        bool perfectCatch = ballinfo.IsPerfectCatch(catcher.GetComponent<Actor>());
+        int numberOfBounce = ballinfo.numberOfBounce;
         int scoreGetThrower = 0;
         int scoreGetCatcher = 0;
         if (thrower != null && catcher != null)
@@ -309,6 +315,21 @@ public class ScoringManager : MonoBehaviour
         AddScore(monkeyIndex, score);
         // adding up score
         GameManager.Instance.gmPlayers[monkeyIndex].GetComponentInChildren<PointsManager>().AddQueue(score, monkeyIndex);
+    }
+    public void ShotClockExpireScore(Actor monkey)
+    {
+        int loseScore = 0;
+        if (GetScore(monkey.playerIndex) >= Mathf.Abs(shotClockExpireScore))
+        {
+            loseScore = shotClockExpireScore;
+        }
+        else
+        {
+            loseScore = -GetScore(monkey.playerIndex);
+        }
+        FindObjectOfType<ScoreVisualizer>().UpdateScore(monkey.playerIndex, GetScore(monkey.playerIndex), loseScore, "Shot Clock Expire");
+        AddScore(monkey.playerIndex, loseScore);
+        GameManager.Instance.gmPlayers[monkey.playerIndex].GetComponentInChildren<PointsManager>().AddQueue(loseScore, monkey.playerIndex);
     }
     public void ResetCombo()
     {

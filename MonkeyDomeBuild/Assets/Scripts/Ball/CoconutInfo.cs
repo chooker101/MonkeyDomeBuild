@@ -46,11 +46,8 @@ public class CoconutInfo : BallInfo
         {
             if(other.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                //Debug.Log("hit");
                 if (other.collider.GetComponent<Actor>().playerIndex != lastThrowMonkey.GetComponent<Actor>().playerIndex)
                 {
-                    //Debug.Log("stun");
-                    //Debug.Log("hit");
                     switch (GameManager.Instance.nextGameModeUI)
                     {
                         case GameManager.GameMode.Battle_Royal:

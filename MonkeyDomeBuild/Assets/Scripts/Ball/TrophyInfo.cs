@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TrophyInfo : BallInfo
 {
-    private bool colliderIsOff = false;
+    bool beingThrown = false;
+    List<Actor> hitPlayers = new List<Actor>();
+
     void Start()
     {
         //Debug.Log("TrophyInfo Start being called");
@@ -12,55 +15,87 @@ public class TrophyInfo : BallInfo
         ballMat = GetComponent<Collider2D>().sharedMaterial;
         type = ThrowableType.Trophy;
     }
-    public void DisableCollider()
+    public void ThrowTrophy()
     {
-        colliderIsOff = true;
-        GetComponent<PolygonCollider2D>().isTrigger = true;
-    }
-    public void InvokeEnableCollider()
-    {
-        colliderIsOff = false;
-        Invoke("ReactivateCollider", 0.05f);
-    }
-    private void ReactivateCollider()
-    {
-        if (GetComponent<PolygonCollider2D>().isTrigger)
+        GameManager.Instance.gmTrophyManager.ThrewCoconut(holdingMonkey.GetComponent<Actor>().playerIndex);
+        if (!beingThrown)
         {
-            GetComponent<PolygonCollider2D>().isTrigger = false;
+            beingThrown = true;
+            StartCoroutine(BeingThrown());
         }
-    }
-    public bool IsColliderOff
-    {
-        get
-        {
-            return colliderIsOff;
-        }
-        set
-        {
-            colliderIsOff = value;
-        }
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
 
-        if (other.gameObject.tag == "Player")
+    }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            isballnear = true;
-        }
-        if(other.gameObject.layer == LayerMask.NameToLayer("Floor"))
-        {
-            if (!colliderIsOff)
+            if (other.collider.GetComponent<Actor>().playerIndex != lastThrowMonkey.GetComponent<Actor>().playerIndex)
             {
-                if (GetComponent<Collider2D>().isTrigger)
+                bool canDmg = true;
+                if (hitPlayers.Count > 0)
                 {
-                    GetComponent<Collider2D>().isTrigger = false;
+                    for (int i = 0; i < hitPlayers.Count; i++)
+                    {
+                        if (other.collider.GetComponent<Actor>().playerIndex == hitPlayers[i].playerIndex)
+                        {
+                            canDmg = false;
+                        }
+                    }
+                    if (canDmg)
+                    {
+                        hitPlayers.Add(other.collider.GetComponent<Actor>());
+                    }
                 }
+                else
+                {
+                    hitPlayers.Add(other.collider.GetComponent<Actor>());
+                }
+                other.collider.GetComponent<Actor>().TempDisableInput(0.5f);
             }
         }
     }
-    void OnTriggerStay2D(Collider2D other)
+    void OnCollisionStay2D(Collision2D other)
     {
-        OnTriggerEnter2D(other);
+        OnCollisionEnter2D(other);
     }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player" && !beingThrown)
+        {
+            isballnear = true;
+        }
+    }
+    void Update()
+    {
+
+
+    }
+    public bool IsThrown
+    {
+        get
+        {
+            return beingThrown;
+        }
+    }
+    IEnumerator ChangeLayer()
+    {
+        yield return new WaitForSeconds(1f);
+        gameObject.layer = LayerMask.NameToLayer("Ball");
+    }
+    IEnumerator BeingThrown()
+    {
+        yield return new WaitForSeconds(0.05f);
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        yield return new WaitForSeconds(1.5f);
+        gameObject.layer = LayerMask.NameToLayer("Ball");
+        canBeCatch = true;
+        beingThrown = false;
+        
+    }
+    public void BeingCatch()
+    {
+        canBeCatch = false;
+    }
+
 
 }

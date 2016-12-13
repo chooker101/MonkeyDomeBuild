@@ -19,7 +19,7 @@ public class PointsManager : MonoBehaviour {
     void Start () {
         for(int i = 0; i < amount; i++)
         {
-            GameObject tempPoint = (GameObject)Instantiate(pointPrefab, transform.position + Vector3.back * 20f, Quaternion.identity);
+            GameObject tempPoint = (GameObject)Instantiate(pointPrefab, transform.position + Vector3.back * 5f, Quaternion.identity);
             tempPoint.transform.SetParent(transform);
             pointObjects.Add(tempPoint.transform);
             tempPoint.GetComponent<PointEffect>().Init();

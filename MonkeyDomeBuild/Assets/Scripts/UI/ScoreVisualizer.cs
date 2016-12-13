@@ -126,7 +126,7 @@ public class ScoreVisualizer : MonoBehaviour
         scoreDisplays[playerIndex].text = score.ToString();
         scoreGainLose[playerIndex].text = gainLoseScore > 0 ? "+" + gainLoseScore.ToString() : "-" + gainLoseScore.ToString();
         actionPerformedTexts[playerIndex].text = action;
-        counts[playerIndex] = 1f;
+        counts[playerIndex] = 0.001f;
     }
     public void PlayerHitHealthUpdate(int playerindex)
     {

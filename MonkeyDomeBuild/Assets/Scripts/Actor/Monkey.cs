@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
+
 public class Monkey : Character
 {
     private CallForBallReset callForBall;
@@ -71,7 +72,7 @@ public class Monkey : Character
                 if (cacheplayer.ballAround[i].GetCanBeCatch())
                 {
                     if (!Physics2D.Raycast(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position - cacheplayer.transform.position,
-                        Vector3.Distance(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position), cacheplayer.layerMask))
+                        Vector2.Distance(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position), cacheplayer.layerMask))
                     {
                         if (Vector2.Distance(cacheplayer.catchCenter.position, cacheplayer.ballAround[i].transform.position) < dis)
                         {
@@ -87,7 +88,15 @@ public class Monkey : Character
                 {
                     if (ballToCatch.BallType == ThrowableType.Trophy)
                     {
-                        ballToCatch.GetComponent<TrophyInfo>().DisableCollider();
+                        ballToCatch.GetComponent<TrophyInfo>().BeingCatch();
+                    }
+                    else if(ballToCatch.BallType == ThrowableType.Ball)
+                    {
+                        if (GameManager.Instance.IsInMatch)
+                        {
+                            GameManager.Instance.gmScoringManager.PassingScore(ballToCatch.lastThrowMonkey, cacheplayer.gameObject, ballToCatch);
+                        }
+                        //GameManager.Instance.gmScoringManager.PassingScore(lastThrowMonkey, who, distanceTravel, travelTime, perfectCatch, numberOfBounce);
                     }
                     cacheplayer.GetComponent<EffectControl>().PlayCatchEffect(ballToCatch.gameObject);
                     if (ballToCatch.IsPerfectCatch(cacheplayer))

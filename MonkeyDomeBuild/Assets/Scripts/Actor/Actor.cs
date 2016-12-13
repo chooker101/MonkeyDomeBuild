@@ -372,7 +372,7 @@ public class Actor : MonoBehaviour
                     {
                         if (ballHolding.GetComponent<BallInfo>().BallType == ThrowableType.Trophy)
                         {
-                            ballHolding.GetComponent<TrophyInfo>().InvokeEnableCollider();
+                            ballHolding.GetComponent<TrophyInfo>().ThrowTrophy();
                         }
                         if (ballHolding.GetComponent<BallInfo>().BallType == ThrowableType.Coconut)
                         {
@@ -1004,6 +1004,7 @@ public class Actor : MonoBehaviour
         }
         health = 3;
         isDead = false;
+        GetComponentInChildren<CallForBallReset>().Reset();
     }
     public bool CanCatch
     {

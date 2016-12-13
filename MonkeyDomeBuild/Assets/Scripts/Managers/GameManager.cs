@@ -654,5 +654,20 @@ public class GameManager : MonoBehaviour
         GameManager.Instance.gmPauseManager.Unpause();
         SceneManager.LoadScene(0);
     }
+    public bool IsInMatch
+    {
+        get
+        {
+            switch (SceneManager.GetActiveScene().buildIndex)
+            {
+                default:
+                    return false;
+                case 2:
+                    return true;
+                case 3:
+                    goto case 2;
+            }
+        }
+    }
 
 }

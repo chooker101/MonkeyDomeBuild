@@ -68,7 +68,10 @@ public class AudioEffectManager : MonoBehaviour
             return myInstance;
         }
     }
-
+    void Awake()
+    {
+        GameManager.Instance.gmAudioEffectManager = this;
+    }
     //Audience Sound Effects
     public void PlayAudienceCheer1()
     {
