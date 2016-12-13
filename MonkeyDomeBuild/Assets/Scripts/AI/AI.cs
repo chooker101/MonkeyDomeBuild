@@ -109,14 +109,14 @@ public class AI : Actor
 		//myCollider = GetComponent<BoxCollider2D>();
 		cache_tf = GetComponent<Transform>();
 		cache_rb = GetComponent<Rigidbody2D>();
+		layerMaskBall = 1 << LayerMask.NameToLayer("Ball");
 		tempTarg = null;
 		canJump = true;
 		centerToFeet = myCollider.size.y * 0.5f;
 		//(myCollider.size.x * 0.5f - myCollider.offset.x);
-		ballLayer = (1 << 8);
+		ballLayer = (1 << LayerMask.NameToLayer("Ball"));
 		prevAiPos = cache_tf.position;
-
-		CalculateMaxJump();
+		ballAround = new List<BallInfo>();
 
 		if (currentState == State.Move)
 		{
@@ -127,6 +127,7 @@ public class AI : Actor
 
 	void Update()
 	{
+		UpdateNearbyBallList();
 		if (oldSceneCheck)
 		{
 #if UNITY_5_3
@@ -147,10 +148,12 @@ public class AI : Actor
 				StartCoroutine(WaitForCatchCoolDown());
 			}
 		}
+
 		if (!onCatchCoolDown && currentState != State.Idle)
 		{
 			IsBallNear();
 		}
+
 		//cType = characterType.ToString();
 		if (GameManager.Instance.gmInputs[inputIndex].mJump)
 		{
@@ -160,26 +163,21 @@ public class AI : Actor
 		characterType.CHUpdate();
 		CheckLeader();
 
-		if (isinair && cache_rb.velocity.y < 0f)
+		if (ballHolding != null)
 		{
-			if (isClimbing)
+			if (!ballHolding.gameObject.activeInHierarchy)
 			{
-				//animator.SetBool("IsIdle", true);
-				//animator.SetBool("IsInAirDown", false); 
-				animator.SetBool("IsClimbing", true);
-			}
-			else
-			{
-				animator.SetBool("IsClimbing", false);
-				animator.SetBool("IsInAirDown", true);
-				animator.SetBool("IsInAir", false);
-				animator.SetBool("IsJumping", false);
+				ballInRange = false;
+				ReleaseBall();
 			}
 		}
-		else if (isinair && cache_rb.velocity.y >= 0f)
+		if (ballCanCatch != null)
 		{
-			animator.SetBool("IsInAir", true);
-			//animator.SetBool("IsStartJump", false);
+			if (!ballCanCatch.gameObject.activeInHierarchy)
+			{
+				ballInRange = false;
+				ReleaseBall();
+			}
 		}
 	}
 
@@ -205,12 +203,19 @@ public class AI : Actor
 			}
 		}
 		ExecuteState();
-		MovementVelocity();
-		AnimationControl();
-		characterType.CHFixedUpdate();
-		if (IsHoldingBall && ballHolding == null)
+		if (!GameManager.Instance.gmPauseManager.isGamePaused)
 		{
-			ReleaseBall();
+			if (!isDead)
+			{
+				MovementVelocity();
+				//Movement();
+				characterType.CHFixedUpdate();
+			}
+			AnimationControl();
+			if (IsHoldingBall && ballHolding == null)
+			{
+				ReleaseBall();
+			}
 		}
 		if (currentState == State.Move)
 		{
@@ -259,6 +264,7 @@ public class AI : Actor
 			//	}
 			//}
 			//spriteRenderer.material = GameManager.Instance.gmMaterialOptions[index];
+			CalculateMaxJump();
 			currentState = State.Move;
 		}
 		currScene = nextScene.name;
@@ -712,7 +718,19 @@ public class AI : Actor
 			GameManager.Instance.gmInputs[inputIndex].mXY.y = (currEndTarg - cache_tf.position).normalized.y;
 			xInput = (currEndTarg - cache_tf.position).normalized.x;
 		}
+
+		if(xInput > 1.0f)
+		{
+			xInput = 1.0f;
+		}
+		else if(xInput < -1.0f)
+		{
+			xInput = -1.0f;
+		}
 		GameManager.Instance.gmInputs[inputIndex].mXY.x = xInput;
+
+
+		//Debug.Log(GameManager.Instance.gmInputs[inputIndex].mXY.x + " " + GameManager.Instance.gmInputs[inputIndex].mXY.y);
 
 		return currentState;
 	}
@@ -974,7 +992,7 @@ public class AI : Actor
 
 	private void IsBallNear()
 	{
-		if (ballInRange)
+		if (ballAround.Count > 0)
 		{
 			if (letCatch)
 			{

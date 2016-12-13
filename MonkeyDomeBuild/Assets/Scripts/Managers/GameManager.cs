@@ -504,7 +504,6 @@ public class GameManager : MonoBehaviour
             }
         }
         TotalNumberofActors++;
-
     }
 
     public int AddPlayer(int inIndex)
@@ -551,10 +550,11 @@ public class GameManager : MonoBehaviour
         {
             if (!gmPlayerScripts[i].isPlayer)
             {
-                Destroy(Instance.gmPlayers[i]);
-                Instance.gmPlayers[i] = null;
+				Destroy(Instance.gmPlayers[i]);
+				gmPlayers[i] = null;
                 gmPlayers.RemoveAt(i);
-                Instance.gmPlayerScripts[i] = null;
+				InputIndecies[gmPlayerScripts[i].inputIndex] = -1;
+				gmPlayerScripts[i] = null;
                 gmPlayerScripts.RemoveAt(i);
                 gmPlayers.TrimExcess();
                 gmPlayerScripts.TrimExcess();

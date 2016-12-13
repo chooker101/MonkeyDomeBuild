@@ -67,6 +67,7 @@ public class Monkey : Character
 		{
             BallInfo ballToCatch = null;
             float dis = 10f;
+			Debug.Log("run");
             for(int i = 0; i < cacheplayer.ballAround.Count; i++)
             {
                 if (cacheplayer.ballAround[i].GetCanBeCatch())

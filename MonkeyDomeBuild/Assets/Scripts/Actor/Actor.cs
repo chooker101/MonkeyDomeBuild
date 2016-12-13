@@ -269,9 +269,11 @@ public class Actor : MonoBehaviour
                 }
                 else
                 {
-                    //if dashing don't limit x movement speed.
-                    if (!isDashing)
-                    movement.x = GameManager.Instance.gmInputs[inputIndex].mXY.x * (characterType.movespeed + characterInc);
+					//if dashing don't limit x movement speed.
+					if (!isDashing)
+					{
+						movement.x = GameManager.Instance.gmInputs[inputIndex].mXY.x * (characterType.movespeed + characterInc);
+					}
                 }
                 if (isDashing)
                 {
@@ -301,6 +303,7 @@ public class Actor : MonoBehaviour
             }
             else
             {
+				//Debug.Log(playerIndex + " " + movement.x + " " + movement.y);
                 cache_rb.velocity = movement;
             }
         }
@@ -1082,6 +1085,7 @@ public class Actor : MonoBehaviour
 		spriteRenderer.material = GameManager.Instance.gmMaterialOptions[index];
 		GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, GameManager.Instance.gmMaterialOptions[index]);
 	}
+
     protected void UpdateNearbyBallList()
     {
         Collider2D[] cols = Physics2D.OverlapCircleAll(catchCenter.position, 4.5f, layerMaskBall);
