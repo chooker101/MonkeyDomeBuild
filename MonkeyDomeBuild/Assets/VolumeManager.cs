@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class VolumeManager : MonoBehaviour
 {
+    private float loadedSFX;
+    private float loadedMusic;
 
     public Slider musicSlider;
     public Slider SFXSlider;
@@ -18,8 +20,7 @@ public class VolumeManager : MonoBehaviour
     private float prevMusicVolume;
     private float prevSFXVolume;
 
-    public float loadedSFX;
-    public float loadedMusic;
+
 
 
 
@@ -32,23 +33,16 @@ public class VolumeManager : MonoBehaviour
         SFXSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
         audioHolder = GameObject.Find("AudioHolder");
 
-        
-            SFXVolume = PlayerPrefs.GetFloat("SFXVolume");
-
         loadedSFX = PlayerPrefs.GetFloat("SFXVolume");
-
-      
-            musicVolume = PlayerPrefs.GetFloat("MusicVolume");
-
         loadedMusic = PlayerPrefs.GetFloat("MusicVolume"); 
 
-   
-
-        musicSlider.value = musicVolume;
         SFXSlider.value = loadedSFX;
+        SFXVolume = loadedSFX;
+        prevSFXVolume = loadedSFX;
 
-        prevMusicVolume = musicVolume;
-        prevSFXVolume = SFXVolume;
+        musicSlider.value = loadedMusic;
+        musicVolume = loadedMusic;
+        prevMusicVolume = loadedMusic;
     }
 
     // Invoked when the value of the slider changes.
