@@ -18,6 +18,8 @@ public class VolumeManager : MonoBehaviour
     private float prevMusicVolume;
     private float prevSFXVolume;
 
+    public float loadedSFX;
+    public float loadedMusic;
 
 
 
@@ -30,16 +32,20 @@ public class VolumeManager : MonoBehaviour
         SFXSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
         audioHolder = GameObject.Find("AudioHolder");
 
-        //Debug.Log("saved music vol:" + PlayerPrefs.HasKey("MusicVolume"));
-        if (PlayerPrefs.HasKey("MusicVolume"))
-            musicVolume = PlayerPrefs.GetFloat("MusicVolume");
-
-        //Debug.Log("saved sfx vol:" + PlayerPrefs.HasKey("SFXVolume"));
-        if (PlayerPrefs.HasKey("SFXVolume"))
+        
             SFXVolume = PlayerPrefs.GetFloat("SFXVolume");
 
+        loadedSFX = PlayerPrefs.GetFloat("SFXVolume");
+
+      
+            musicVolume = PlayerPrefs.GetFloat("MusicVolume");
+
+        loadedMusic = PlayerPrefs.GetFloat("MusicVolume"); 
+
+   
+
         musicSlider.value = musicVolume;
-        SFXSlider.value = SFXVolume;
+        SFXSlider.value = loadedSFX;
 
         prevMusicVolume = musicVolume;
         prevSFXVolume = SFXVolume;
@@ -99,6 +105,8 @@ public class VolumeManager : MonoBehaviour
             GameManager.Instance.gmAudioEffectManager.audienceTargetUp.volume = SFXVolume;
             GameManager.Instance.gmAudioEffectManager.audienceSmash.volume = SFXVolume;
             //GameManager.Instance.gmAudioEffectManager.audiencePoop.volume = SFXVolume;
+            PlayerPrefs.SetFloat("SFXVolume", SFXVolume);
+
         }
 
 
@@ -115,6 +123,8 @@ public class VolumeManager : MonoBehaviour
                 game.startAudio.volume = musicVolume;
                 game.startAudio2.volume = musicVolume;
             }
+            PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+
         }
 
 
@@ -122,8 +132,6 @@ public class VolumeManager : MonoBehaviour
         prevSFXVolume = SFXVolume;
 
 
-        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
-        PlayerPrefs.SetFloat("SFXVolume", SFXVolume);
     }
 
     void OnApplicationQuit()

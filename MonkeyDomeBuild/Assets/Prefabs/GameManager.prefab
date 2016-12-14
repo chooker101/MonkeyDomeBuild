@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalNumberofActors: 0
-  NumberOfPlayersToBuild: 5
+  NumberOfPlayersToBuild: 3
   NumberOfBotsToBuild: 0
   RandomGorilla: 0
   PlayerGorilla: 0
@@ -1533,8 +1533,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSlider: {fileID: 114000013982348142}
   SFXSlider: {fileID: 114000010235589834}
-  musicVolume: 0
-  SFXVolume: 0
+  musicVolume: 1
+  SFXVolume: 1
+  loadedSFX: 0
+  loadedMusic: 0
 --- !u!114 &114000012558931784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1783,9 +1785,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Exit
-
-'
+  m_Text: Exit
 --- !u!114 &114436040987890336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2125,11 +2125,11 @@ RectTransform:
   m_Father: {fileID: 22456764}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -64, y: -205.0282}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -64.00001, y: 3.5999756}
   m_SizeDelta: {x: 32, y: 32}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!224 &224000013189412680
 RectTransform:
   m_ObjectHideFlags: 1
@@ -2313,8 +2313,8 @@ RectTransform:
   m_Father: {fileID: 224905644264450034}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -0.050007}
+  m_SizeDelta: {x: 160, y: 29.9}
   m_Pivot: {x: 0.5, y: 0.5}
