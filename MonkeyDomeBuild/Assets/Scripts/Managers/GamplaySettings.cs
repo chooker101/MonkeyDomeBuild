@@ -63,7 +63,8 @@ public class GamplaySettings : MonoBehaviour
 								}
 								else
 								{
-									for (int i = 0; i <= GameManager.Instance.TotalNumberofActors - GameManager.Instance.NumberOfPlayers; ++i)
+									int tempTotalBots = (int)(GameManager.Instance.TotalNumberofActors - GameManager.Instance.NumberOfPlayers);
+									for (int i = 0; i <= tempTotalBots; ++i)
 									{
 										GameManager.Instance.RemoveBot();
 									}

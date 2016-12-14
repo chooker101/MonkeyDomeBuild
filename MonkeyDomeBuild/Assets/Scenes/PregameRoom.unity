@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311807, g: 0.38074082, b: 0.35872936, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311822, g: 0.38074005, b: 0.35872957, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -978,6 +978,10 @@ Prefab:
       propertyPath: gmAudioPregame
       value: 
       objectReference: {fileID: 1785423088}
+    - target: {fileID: 11436584, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
+      propertyPath: NumberOfPlayersToBuild
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14c8f7b111a84ac47bf9e0ae662daa7d, type: 2}
   m_IsPrefabParent: 0
@@ -1281,7 +1285,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11426482, guid: ef22560089ce17e4d86764ec28d425e3, type: 2}
       propertyPath: m_Text
-      value: 'Map: mb_level04_v2'
+      value: 'Map: Level01'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef22560089ce17e4d86764ec28d425e3, type: 2}
