@@ -18,7 +18,6 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -146,6 +145,7 @@
     <Compile Include="Assets\Scripts\Turret\Turret.cs" />
     <Compile Include="Assets\Scripts\Turret\TurretsManager.cs" />
     <Compile Include="Assets\Scripts\UI\ApeSpinner.cs" />
+    <Compile Include="Assets\Scripts\UI\MainMenuCanvas.cs" />
     <Compile Include="Assets\Scripts\UI\MatchTime.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreVisualizer.cs" />
     <Compile Include="Assets\Scripts\UI\ShotClock.cs" />

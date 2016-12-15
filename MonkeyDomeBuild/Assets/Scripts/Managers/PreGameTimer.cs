@@ -61,6 +61,7 @@ public class PreGameTimer : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        gameplaySettings = FindObjectOfType<GamplaySettings>();
         gameState = GameState.Pregame_PickingColours;
         sign_catch.SetActive(false);
         sign_jump.SetActive(false);

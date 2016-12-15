@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalNumberofActors: 0
-  NumberOfPlayersToBuild: 3
+  NumberOfPlayersToBuild: 1
   NumberOfBotsToBuild: 0
   RandomGorilla: 0
   PlayerGorilla: 0
@@ -439,7 +439,16 @@ MonoBehaviour:
   gmTurretManager: {fileID: 11458014}
   gmCurtainController: {fileID: 0}
   gmBallColorManager: {fileID: 0}
-  gmMaterialOptions: []
+  gmMaterialOptions:
+  - {fileID: 2100000, guid: 42c5a2666136abd4196fbccb37cbfffd, type: 2}
+  - {fileID: 2100000, guid: 58e29d528975d6c498f56ba0e7c2e8d0, type: 2}
+  - {fileID: 2100000, guid: 7750c4a1230e80847bc0de305bdebaea, type: 2}
+  - {fileID: 2100000, guid: 7b1ea6048aa266645904ffcfb432f831, type: 2}
+  - {fileID: 2100000, guid: 2dd9dc57c277839438e29676fa98e017, type: 2}
+  - {fileID: 2100000, guid: 105db3878981e0f40bfda4eb1d7fde19, type: 2}
+  - {fileID: 2100000, guid: 2f1759906877d3648b3df4562cb35e8a, type: 2}
+  - {fileID: 2100000, guid: f6294e974ec7af04689598f199a1ea47, type: 2}
+  - {fileID: 2100000, guid: f9bebe988a09744418593368848975fd, type: 2}
   gmAudioPregame: {fileID: 0}
   gmAudioMain: {fileID: 0}
   gmAudioEffectManager: {fileID: 0}
@@ -1535,8 +1544,6 @@ MonoBehaviour:
   SFXSlider: {fileID: 114000010235589834}
   musicVolume: 1
   SFXVolume: 1
-  loadedSFX: 0
-  loadedMusic: 0
 --- !u!114 &114000012558931784
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1071,16 +1071,16 @@ public class Actor : MonoBehaviour
 		bool isAcceptable = false;
 		while (!isAcceptable)
 		{
-			index = UnityEngine.Random.Range(1,GameManager.Instance.gmMaterialOptions.Count - 1);
+			index = UnityEngine.Random.Range(1,GameManager.Instance.gmMaterialOptions.Count);
 			isAcceptable = true;
 			foreach (var T in GameManager.Instance.gmPlayerScripts)
 			{
-				if (T.spriteRenderer.material == GameManager.Instance.gmMaterialOptions[index])
-				{
-					isAcceptable = false;
-					break;
-				}
-			}
+                if (T.spriteRenderer.sharedMaterial == GameManager.Instance.gmMaterialOptions[index])
+                {
+                    isAcceptable = false;
+                    break;
+                }
+            }
 		}
 		spriteRenderer.material = GameManager.Instance.gmMaterialOptions[index];
 		GameManager.Instance.gmRecordKeeper.SetPlayerMaterial(playerIndex, GameManager.Instance.gmMaterialOptions[index]);
