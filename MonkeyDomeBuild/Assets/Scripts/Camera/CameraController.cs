@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     public float smoothing = 2f;
     public float maxCamSize = 40f;
     private float minCamSize = 0;
-    private float minCameraHeight = 12f;
+    public float minCameraHeight = 12f;
     public float maxDistanceXFromZero = 4f;
     public float maxDistanceYFromZero = 20f;
     private float buffer = 4f;

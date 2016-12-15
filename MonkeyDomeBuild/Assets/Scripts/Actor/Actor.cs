@@ -311,7 +311,7 @@ public class Actor : MonoBehaviour
 
     public void ThrowCheck()
     {
-        if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) >= 0.4f || Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) >= 0.4f)
+        if (Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.x) >= 0.2f || Mathf.Abs(GameManager.Instance.gmInputs[playerIndex].mXY.y) >= 0.2f)
         {
             storedThrowDir = GameManager.Instance.gmInputs[playerIndex].mXY;
         }

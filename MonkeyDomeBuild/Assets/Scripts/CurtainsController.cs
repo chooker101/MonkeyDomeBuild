@@ -59,7 +59,7 @@ public class CurtainsController : MonoBehaviour
                 percentageComplete = timeStartedLerping / openTime;
             }
         }
-
+        /*
         if (Input.GetKeyDown(KeyCode.J))
         {
             CloseCurtain();
@@ -68,6 +68,7 @@ public class CurtainsController : MonoBehaviour
         {
             OpenCurtain();
         }
+        */
     }
     public void OpenCurtain()
     {

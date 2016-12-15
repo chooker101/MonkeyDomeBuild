@@ -7,7 +7,7 @@ public class AudioPregame : MonoBehaviour {
     public AudioSource levelAudio;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         levelAudio = GetComponent<AudioSource>();
         levelAudio.loop = true;
         levelAudio.clip = pregameLoop;
